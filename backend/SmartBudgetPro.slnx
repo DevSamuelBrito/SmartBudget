@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SmartBudgetPro.API/SmartBudgetPro.API.csproj" />
+    <Project Path="src/SmartBudgetPro.Application/SmartBudgetPro.Application.csproj" />
+    <Project Path="src/SmartBudgetPro.Domain/SmartBudgetPro.Domain.csproj" />
+    <Project Path="src/SmartBudgetPro.Infrastructure/SmartBudgetPro.Infrastructure.csproj" />
+  </Folder>
+</Solution>
