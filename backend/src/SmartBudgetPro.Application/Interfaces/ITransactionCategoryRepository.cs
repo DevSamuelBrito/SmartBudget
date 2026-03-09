@@ -1,5 +1,7 @@
 namespace SmartBudgetPro.Application.Interfaces;
 
+using SmartBudgetPro.Domain;
+
 public interface ITransactionCategoryRepository
 {
     Task AddAsync(TransactionCategory category);

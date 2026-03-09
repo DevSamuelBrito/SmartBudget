@@ -1,6 +1,8 @@
 
 namespace SmartBudgetPro.Application.Interfaces;
 
+using SmartBudgetPro.Domain;
+
 public interface IUserRepository
 {
     Task AddAsync(User user);

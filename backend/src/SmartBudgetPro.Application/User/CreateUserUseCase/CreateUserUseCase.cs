@@ -1,6 +1,9 @@
 
 
-namespace SmartBudgetPro.Application.User;
+using SmartBudgetPro.Application.Interfaces;
+using SmartBudgetPro.Domain;
+
+namespace SmartBudgetPro.Application.User.CreateUserUseCase;
 
 public class CreateUserUseCase(IUserRepository userRepository, IPasswordHasher passwordHasher)
 {
