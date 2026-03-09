@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Backend (.NET build artifacts)
+backend/**/bin/
+backend/**/obj/
+backend/**/*.user
+backend/.vs/
+
+# Frontend (Next.js)
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+
+# Environment files
+**/.env
+**/.env.*
+!.env.example
