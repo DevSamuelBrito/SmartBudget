@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="TransactionCategory/" />
+    <Folder Include="User/" />
+    <Folder Include="User/CreateUserUseCase/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../SmartBudgetPro.Domain/SmartBudgetPro.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
