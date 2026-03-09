@@ -2,6 +2,8 @@ namespace SmartBudgetPro.Domain;
 
 public class TransactionCategory
 {
+    private const int MaxNameLength = 100;
+
     public Guid Id { get; private set; }
     public Guid UserId { get; private set; }
     public string Name { get; private set; } = string.Empty;
@@ -17,6 +19,9 @@ public class TransactionCategory
 
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException("Category name is required.", nameof(name));
+
+        if (name.Trim().Length > MaxNameLength)
+            throw new ArgumentException($"Category name must have at most {MaxNameLength} characters.", nameof(name));
 
         Id = Guid.NewGuid();
         UserId = userId;
@@ -34,6 +39,9 @@ public class TransactionCategory
     {
         if (string.IsNullOrWhiteSpace(newName))
             throw new ArgumentException("Category name is required.", nameof(newName));
+
+        if (newName.Trim().Length > MaxNameLength)
+            throw new ArgumentException($"Category name must have at most {MaxNameLength} characters.", nameof(newName));
 
         Name = newName.Trim();
         UpdatedAt = DateTime.UtcNow;
