@@ -8,8 +8,7 @@
 
   <ItemGroup>
     <Folder Include="TransactionCategory/" />
-    <Folder Include="User/" />
-    <Folder Include="User/CreateUserUseCase/" />
+    <Folder Include="UseCases\User\" />
   </ItemGroup>
 
   <ItemGroup>

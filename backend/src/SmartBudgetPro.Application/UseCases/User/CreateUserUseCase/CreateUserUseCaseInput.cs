@@ -1,4 +1,4 @@
-namespace SmartBudgetPro.Application.User.CreateUserUseCase;
+namespace SmartBudgetPro.Application.UseCases.User.CreateUserUseCase;
 
 public class CreateUserUseCaseInput
 {
