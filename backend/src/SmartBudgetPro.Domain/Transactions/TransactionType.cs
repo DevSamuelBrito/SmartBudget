@@ -1,4 +1,4 @@
-namespace SmartBudgetPro.Domain;
+namespace SmartBudgetPro.Domain.Transactions;
 
 public enum TransactionType
 {

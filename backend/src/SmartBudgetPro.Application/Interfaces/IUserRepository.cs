@@ -1,7 +1,7 @@
 
 namespace SmartBudgetPro.Application.Interfaces;
 
-using SmartBudgetPro.Domain;
+using SmartBudgetPro.Domain.Users;
 
 public interface IUserRepository
 {

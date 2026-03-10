@@ -1,6 +1,6 @@
 namespace SmartBudgetPro.Application.Interfaces;
 
-using SmartBudgetPro.Domain;
+using SmartBudgetPro.Domain.Transactions;
 
 public interface ITransactionCategoryRepository
 {

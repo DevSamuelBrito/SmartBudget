@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using SmartBudgetPro.Domain;
+using SmartBudgetPro.Domain.Budgets;
+using SmartBudgetPro.Domain.Transactions;
+using SmartBudgetPro.Domain.Users;
+using System.Reflection; 
 
 namespace SmartBudgetPro.Infrastructure.Persistence;
 

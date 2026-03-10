@@ -1,5 +1,5 @@
 using SmartBudgetPro.Application.Interfaces;
-using DomainUser = SmartBudgetPro.Domain.User;
+using DomainUser = SmartBudgetPro.Domain.Users.User;
 
 namespace SmartBudgetPro.Application.UseCases.User.CreateUserUseCase;
 
