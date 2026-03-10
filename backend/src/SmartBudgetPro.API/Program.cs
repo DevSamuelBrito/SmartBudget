@@ -1,3 +1,4 @@
+using SmartBudgetPro.API.Middlewares;
 using SmartBudgetPro.Application;
 using SmartBudgetPro.Infrastructure;
 
@@ -17,6 +18,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 
 app.Run();
