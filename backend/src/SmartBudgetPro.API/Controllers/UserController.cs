@@ -4,7 +4,7 @@ using SmartBudgetPro.Application.UseCases.User.CreateUser;
 namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/users")]
     public class UserController(CreateUserUseCase createUserUseCase) : ControllerBase
     {
         [HttpPost]
