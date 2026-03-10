@@ -1,4 +1,4 @@
-namespace SmartBudgetPro.Application.UseCases.User.CreateUserUseCase;
+namespace SmartBudgetPro.Application.UseCases.User.CreateUser;
 
 public record CreateUserUseCaseOutput(
     Guid UserId,

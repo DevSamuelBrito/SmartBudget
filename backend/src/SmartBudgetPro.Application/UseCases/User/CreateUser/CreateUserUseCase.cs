@@ -1,7 +1,7 @@
 using SmartBudgetPro.Application.Interfaces;
 using DomainUser = SmartBudgetPro.Domain.Users.User;
 
-namespace SmartBudgetPro.Application.UseCases.User.CreateUserUseCase;
+namespace SmartBudgetPro.Application.UseCases.User.CreateUser;
 
 public class CreateUserUseCase(IUserRepository userRepository, IPasswordHasher passwordHasher)
 {
