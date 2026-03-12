@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SmartBudgetPro.Application.UseCases.UpdateUser;
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
 using SmartBudgetPro.Application.UseCases.User.DeleteUser;
 using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
@@ -10,9 +11,10 @@ namespace SmartBudgetPro.API.Controllers
     [Route("api/users")]
     public class UserController
     (
-        CreateUserUseCase createUserUseCase,
         GetAllUsersUseCase getAllUsersUseCase,
         GetUserByIDUseCase getUserByIDUseCase,
+        CreateUserUseCase createUserUseCase,
+        UpdateUserUseCase updateUserUseCase,
         DeleteUserUseCase deleteUserUseCase
     ) : ControllerBase
     {
@@ -39,6 +41,13 @@ namespace SmartBudgetPro.API.Controllers
             var output = await createUserUseCase.ExecuteAsync(input);
 
             return Created($"api/users/{output.Id}", output);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserUseCaseInput input)
+        {
+            await updateUserUseCase.ExecuteAsync(id, input);
+            return Ok();
         }
 
         [HttpDelete("{id}")]

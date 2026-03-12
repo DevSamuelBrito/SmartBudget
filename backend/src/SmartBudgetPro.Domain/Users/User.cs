@@ -26,6 +26,12 @@ public class User
         return new User(name, email, passwordHash);
     }
 
+    public void Update(string name, string email)
+    {
+        Name = ValidateAndNormalizeName(name);
+        Email = ValidateAndNormalizeEmail(email);
+    }
+
     public void Rename(string newName)
     {
         Name = ValidateAndNormalizeName(newName);
