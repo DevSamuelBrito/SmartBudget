@@ -1,3 +1,4 @@
+using SmartBudgetPro.Application.Common;
 using SmartBudgetPro.Application.Interfaces;
 using DomainUser = SmartBudgetPro.Domain.Users.User;
 
@@ -5,7 +6,7 @@ namespace SmartBudgetPro.Application.UseCases.User.CreateUser;
 
 public class CreateUserUseCase(IUserRepository userRepository, IPasswordHasher passwordHasher)
 {
-    public async Task<CreateUserUseCaseOutput> ExecuteAsync(CreateUserUseCaseInput input)
+    public async Task<UserDto> ExecuteAsync(CreateUserUseCaseInput input)
     {
         var existingUser = await userRepository.GetByEmailAsync(input.Email);
 
@@ -18,6 +19,6 @@ public class CreateUserUseCase(IUserRepository userRepository, IPasswordHasher p
 
         await userRepository.AddAsync(user);
 
-        return new CreateUserUseCaseOutput(user.Id, user.Name, user.Email);
+        return new UserDto(user.Id, user.Name, user.Email);
     }
 }

@@ -29,7 +29,7 @@ namespace SmartBudgetPro.API.Controllers
         {
             var output = await createUserUseCase.ExecuteAsync(input);
 
-            return Created($"api/users/{output.UserId}", output);
+            return Created($"api/users/{output.Id}", output);
         }
     }
 }
