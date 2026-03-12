@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
+using SmartBudgetPro.Application.UseCases.User.DeleteUser;
 using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
 using SmartBudgetPro.Application.UseCases.User.GetUserByID;
 
@@ -7,13 +8,20 @@ namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
     [Route("api/users")]
-    public class UserController(CreateUserUseCase createUserUseCase, GetAllUsersUseCase getAllUsersUseCase, GetUserByIDUseCase getUserByIDUseCase) : ControllerBase
+    public class UserController
+    (
+        CreateUserUseCase createUserUseCase,
+        GetAllUsersUseCase getAllUsersUseCase,
+        GetUserByIDUseCase getUserByIDUseCase,
+        DeleteUserUseCase deleteUserUseCase
+    ) : ControllerBase
     {
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var output = await getAllUsersUseCase.ExecuteAsync();
+
             return Ok(output);
         }
 
@@ -21,6 +29,7 @@ namespace SmartBudgetPro.API.Controllers
         public async Task<IActionResult> GetByID(Guid id)
         {
             var output = await getUserByIDUseCase.ExecuteAsync(id);
+
             return Ok(output);
         }
 
@@ -31,5 +40,14 @@ namespace SmartBudgetPro.API.Controllers
 
             return Created($"api/users/{output.Id}", output);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await deleteUserUseCase.ExecuteAsync(id);
+
+            return NoContent();
+        }
+
     }
 }
