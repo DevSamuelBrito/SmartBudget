@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
 using SmartBudgetPro.Application.UseCases.User.DeleteUser;
 using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
@@ -17,6 +18,9 @@ public static class DependencyInjection
         services.AddScoped<CreateUserUseCase>();
         services.AddScoped<UpdateUserUseCase>();
         services.AddScoped<DeleteUserUseCase>();
+
+        //transaction
+        services.AddScoped<GetAllTransaction>();
 
         return services;
     }
