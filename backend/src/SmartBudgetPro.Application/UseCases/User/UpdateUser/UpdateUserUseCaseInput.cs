@@ -1,4 +1,4 @@
-namespace SmartBudgetPro.Application.UseCases.UpdateUser;
+namespace SmartBudgetPro.Application.UseCases.User.UpdateUser;
 
 public record UpdateUserUseCaseInput
 (

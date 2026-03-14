@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using SmartBudgetPro.Application.UseCases.UpdateUser;
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
 using SmartBudgetPro.Application.UseCases.User.DeleteUser;
 using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
 using SmartBudgetPro.Application.UseCases.User.GetUserByID;
+using SmartBudgetPro.Application.UseCases.User.UpdateUser;
 
 namespace SmartBudgetPro.API.Controllers
 {

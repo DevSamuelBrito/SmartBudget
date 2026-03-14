@@ -1,7 +1,6 @@
-using SmartBudgetPro.Application.Common;
 using SmartBudgetPro.Application.Interfaces;
 
-namespace SmartBudgetPro.Application.UseCases.UpdateUser;
+namespace SmartBudgetPro.Application.UseCases.User.UpdateUser;
 
 public class UpdateUserUseCase(IUserRepository userRepository)
 {
