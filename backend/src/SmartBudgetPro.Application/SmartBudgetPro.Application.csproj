@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="TransactionCategory/" />
     <Folder Include="UseCases\User\UpdateUser\" />
     <Folder Include="UseCases/User/DeleteUser/" />
     <Folder Include="UseCases/User/GetUserByID/" />
