@@ -7,7 +7,8 @@ namespace SmartBudgetPro.API.Controllers
     [Route("api/transactionCategories")]
     public class TransactionCategoryController
         (
-        GetAllTransactionCategory getAllTransactionCategory
+        GetAllTransactionCategory getAllTransactionCategory,
+        CreateTransactionCategory createTransactionCategory
         )
         : ControllerBase
     {
@@ -19,6 +20,14 @@ namespace SmartBudgetPro.API.Controllers
             var output = await getAllTransactionCategory.ExecuteAsync();
 
             return Ok(output);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateTransactionCategoryUseCaseInput input)
+        {
+            var output = await createTransactionCategory.ExecuteAsync(input);
+
+            return Created($"api/transactionCategories/{output.Id}", output);
         }
 
     }
