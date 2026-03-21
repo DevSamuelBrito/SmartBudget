@@ -11,21 +11,19 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
         {
             var user = await userRepository.GetByIdAsync(input.UserId);
 
-            if( user is null)
+            if (user is null)
                 throw new InvalidOperationException("User not found.");
 
-            var category = DomainCategory.Create(input.UserId, input.Name); 
+            var category = DomainCategory.Create(input.UserId, input.Name);
 
             await transactionCategoryRepository.AddAsync(category);
 
-            return new TransactionCategoryDto
-            {
-                Id = category.Id,
-                UserId = category.UserId,
-                Name = category.Name,
-                CreatedAt = category.CreatedAt,
-                UpdatedAt = category.UpdatedAt
-            };
+            return new TransactionCategoryDto(
+                category.Id,
+                category.UserId,
+                category.Name,
+                category.CreatedAt,
+                category.UpdatedAt);
         }
     }
 }
