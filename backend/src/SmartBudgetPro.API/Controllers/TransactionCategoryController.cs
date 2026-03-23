@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
+using SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory;
 
 namespace SmartBudgetPro.API.Controllers
 {
