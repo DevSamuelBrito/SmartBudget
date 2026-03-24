@@ -5,7 +5,7 @@ using DomainCategory = SmartBudgetPro.Domain.Transactions.TransactionCategory;
 
 namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory
 {
-    public class CreateTransactionCategory(ITransactionCategoryRepository transactionCategoryRepository, IUserRepository userRepository)
+    public class CreateTransactionCategoryUseCase(ITransactionCategoryRepository transactionCategoryRepository, IUserRepository userRepository)
     {
         public async Task<TransactionCategoryDto> ExecuteAsync(CreateTransactionCategoryUseCaseInput input)
         {

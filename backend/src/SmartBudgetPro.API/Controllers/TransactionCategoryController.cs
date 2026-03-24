@@ -8,8 +8,8 @@ namespace SmartBudgetPro.API.Controllers
     [Route("api/transactionCategories")]
     public class TransactionCategoryController
         (
-        GetAllTransactionCategory getAllTransactionCategory,
-        CreateTransactionCategory createTransactionCategory
+        GetAllTransactionCategoryUseCase getAllTransactionCategory,
+        CreateTransactionCategoryUseCase createTransactionCategory
         )
         : ControllerBase
     {

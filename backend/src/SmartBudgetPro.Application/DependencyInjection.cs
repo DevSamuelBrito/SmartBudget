@@ -25,8 +25,8 @@ public static class DependencyInjection
         services.AddScoped<GetAllTransaction>();
 
         //transaction Category
-        services.AddScoped<GetAllTransactionCategory>();
-        services.AddScoped<CreateTransactionCategory>();
+        services.AddScoped<GetAllTransactionCategoryUseCase>();
+        services.AddScoped<CreateTransactionCategoryUseCase>();
 
         return services;
     }
