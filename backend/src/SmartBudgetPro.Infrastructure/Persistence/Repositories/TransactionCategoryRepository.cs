@@ -35,13 +35,9 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
         }
         public async Task DeleteAsync(Guid categoryId)
         {
-            var category = context.TransactionCategories.Find(categoryId);
-
-            if (category is null)
-                return;
-
-            context.TransactionCategories.Remove(category);
-            await context.SaveChangesAsync();
+            await context.TransactionCategories
+               .Where(c => c.Id == categoryId)
+               .ExecuteDeleteAsync();
         }
 
     }
