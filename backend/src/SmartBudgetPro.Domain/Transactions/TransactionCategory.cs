@@ -38,10 +38,10 @@ public class TransactionCategory
     public void Rename(string newName)
     {
         if (string.IsNullOrWhiteSpace(newName))
-            throw new ArgumentException("Category name is required.", nameof(newName));
+            throw new ArgumentException($"Category name is required. Received '{newName}'");
 
         if (newName.Trim().Length > MaxNameLength)
-            throw new ArgumentException($"Category name must have at most {MaxNameLength} characters.", nameof(newName));
+            throw new ArgumentException($"Category name must have at most {MaxNameLength} characters.");
 
         Name = newName.Trim();
         UpdatedAt = DateTime.UtcNow;
