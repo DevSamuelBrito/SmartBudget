@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
+using SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory;
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
 using SmartBudgetPro.Application.UseCases.User.DeleteUser;
 using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
@@ -25,6 +26,7 @@ public static class DependencyInjection
 
         //transaction Category
         services.AddScoped<GetAllTransactionCategory>();
+        services.AddScoped<CreateTransactionCategory>();
 
         return services;
     }

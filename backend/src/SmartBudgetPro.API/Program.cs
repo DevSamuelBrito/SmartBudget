@@ -1,3 +1,4 @@
+using Scalar.AspNetCore;
 using SmartBudgetPro.API.Middlewares;
 using SmartBudgetPro.Application;
 using SmartBudgetPro.Infrastructure;
@@ -15,6 +16,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
