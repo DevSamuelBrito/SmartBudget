@@ -24,7 +24,7 @@ public static class DependencyInjection
         services.AddScoped<DeleteUserUseCase>();
 
         //transaction
-        services.AddScoped<GetAllTransaction>();
+        services.AddScoped<GetAllTransactionUseCase>();
 
         //transaction Category
         services.AddScoped<GetAllTransactionCategoryUseCase>();

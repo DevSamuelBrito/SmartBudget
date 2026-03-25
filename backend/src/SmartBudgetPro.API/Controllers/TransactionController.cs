@@ -7,7 +7,7 @@ namespace SmartBudgetPro.API.Controllers
     [Route("api/transactions")]
     public class TransactionController
         (
-            GetAllTransaction getAllTransaction
+            GetAllTransactionUseCase getAllTransaction
         ) : ControllerBase
     {
 
