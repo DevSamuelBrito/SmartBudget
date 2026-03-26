@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
@@ -24,9 +25,12 @@ public static class DependencyInjection
         services.AddScoped<UpdateUserUseCase>();
         services.AddScoped<DeleteUserUseCase>();
 
-        //transaction
+        //financial transaction
         services.AddScoped<GetAllFinancialTransactionUseCase>();
         services.AddScoped<CreateFinancialTransactionUseCase>();
+
+        //validators financial transaction
+        services.AddValidatorsFromAssemblyContaining<CreateTransactionInputValidator>();
 
         //transaction Category
         services.AddScoped<GetAllTransactionCategoryUseCase>();

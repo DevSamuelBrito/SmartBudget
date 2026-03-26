@@ -24,9 +24,9 @@ namespace SmartBudgetPro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTransactionUseCaseInput input)
         {
-            await createTransactionUseCase.ExecuteAsync(input);
+            var output = await createTransactionUseCase.ExecuteAsync(input);
 
-            return Created();
+            return Created($"/api/transactions/{output}", new { output });
         }
 
     }

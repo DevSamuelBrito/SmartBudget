@@ -1,13 +1,16 @@
 ﻿using SmartBudgetPro.Domain.Transactions;
-
 using SmartBudgetPro.Application.Interfaces;
+using FluentValidation;
 
 namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
 {
-    public class CreateFinancialTransactionUseCase(ITransactionRepository transactionRepository)
+    public class CreateFinancialTransactionUseCase(ITransactionRepository transactionRepository, IValidator<CreateTransactionUseCaseInput> validator)
     {
-        public async Task ExecuteAsync(CreateTransactionUseCaseInput input)
+        public async Task<Guid> ExecuteAsync(CreateTransactionUseCaseInput input)
         {
+
+            await validator.ValidateAndThrowAsync(input);
+
             var transaction = FinancialTransaction.Create(
                 userId: input.UserId,
                 categoryId: input.TransactionCategoryId,
@@ -20,7 +23,7 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
 
             await transactionRepository.AddAsync(transaction);
 
-            return;
+            return transaction.Id;
 
         }
     }
