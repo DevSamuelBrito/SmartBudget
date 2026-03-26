@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
 
 namespace SmartBudgetPro.API.Controllers
@@ -7,7 +8,8 @@ namespace SmartBudgetPro.API.Controllers
     [Route("api/transactions")]
     public class TransactionController
         (
-            GetAllTransactionUseCase getAllTransaction
+            GetAllFinancialTransactionUseCase getAllTransaction,
+            CreateFinancialTransactionUseCase createTransactionUseCase
         ) : ControllerBase
     {
 
@@ -17,6 +19,14 @@ namespace SmartBudgetPro.API.Controllers
             var output = await getAllTransaction.ExecuteAsync();
 
             return Ok(output);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateTransactionUseCaseInput input)
+        {
+            await createTransactionUseCase.ExecuteAsync(input);
+
+            return Created();
         }
 
     }

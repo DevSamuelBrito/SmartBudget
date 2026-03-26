@@ -14,6 +14,11 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
             if (user is null)
                 throw new InvalidOperationException("User not found.");
 
+            var existingCategory = await transactionCategoryRepository.GetByNameAsync(input.UserId, input.Name);
+
+            if (existingCategory is not null)
+                throw new InvalidOperationException("A category with the same name already exists for this user.");
+
             var category = DomainCategory.Create(input.UserId, input.Name);
 
             await transactionCategoryRepository.AddAsync(category);

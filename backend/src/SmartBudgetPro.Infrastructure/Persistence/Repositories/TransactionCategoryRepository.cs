@@ -40,5 +40,10 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                .ExecuteDeleteAsync();
         }
 
+        public async Task<TransactionCategory?> GetByNameAsync(Guid userId, string name)
+        {
+            return await context.TransactionCategories.Where(c => c.UserId == userId && c.Name == name)
+                .FirstOrDefaultAsync();
+        }
     }
 }

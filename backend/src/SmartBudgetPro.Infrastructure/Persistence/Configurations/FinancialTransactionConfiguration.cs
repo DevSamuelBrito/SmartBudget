@@ -4,11 +4,11 @@ using SmartBudgetPro.Domain.Transactions;
 
 namespace SmartBudgetPro.Infrastructure.Persistence.Configurations;
 
-public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
+public class FinancialTransactionConfiguration : IEntityTypeConfiguration<FinancialTransaction>
 {
-    public void Configure(EntityTypeBuilder<Transaction> builder)
+    public void Configure(EntityTypeBuilder<FinancialTransaction> builder)
     {
-        builder.ToTable("Transactions");
+        builder.ToTable("FinancialTransactions");
 
         builder.HasKey(t => t.Id);
 

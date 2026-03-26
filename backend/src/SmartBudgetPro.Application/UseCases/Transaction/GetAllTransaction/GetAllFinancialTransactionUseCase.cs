@@ -3,13 +3,13 @@ using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction
 {
-    public class GetAllTransactionUseCase (ITransactionRepository transactionRepository)
+    public class GetAllFinancialTransactionUseCase (ITransactionRepository transactionRepository)
     {
-        public async Task<IEnumerable<TransactionDTO>> ExecuteAsync()
+        public async Task<IEnumerable<FinancialTransactionDTO>> ExecuteAsync()
         {
             var transactions = await transactionRepository.GetAllAsync();
 
-            return transactions.Select(t => new TransactionDTO(
+            return transactions.Select(t => new FinancialTransactionDTO(
                 t.Id,
                 t.UserId,
                 t.TransactionCategoryId,
