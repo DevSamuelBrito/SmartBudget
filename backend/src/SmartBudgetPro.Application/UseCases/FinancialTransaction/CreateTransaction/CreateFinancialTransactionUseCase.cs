@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
 {
-    public class CreateFinancialTransactionUseCase(ITransactionRepository transactionRepository, IValidator<CreateTransactionUseCaseInput> validator)
+    public class CreateFinancialTransactionUseCase(ITransactionRepository transactionRepository, IValidator<CreateFinancialTransactionUseCaseInput> validator)
     {
-        public async Task<Guid> ExecuteAsync(CreateTransactionUseCaseInput input)
+        public async Task<Guid> ExecuteAsync(CreateFinancialTransactionUseCaseInput input)
         {
 
             await validator.ValidateAndThrowAsync(input);

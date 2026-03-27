@@ -2,10 +2,10 @@
 
 namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
 {
-    public class CreateTransactionInputValidator
-     : AbstractValidator<CreateTransactionUseCaseInput>
+    public class CreateFinancialTransactionInputValidator
+     : AbstractValidator<CreateFinancialTransactionUseCaseInput>
     {
-        public CreateTransactionInputValidator()
+        public CreateFinancialTransactionInputValidator()
         {
             RuleFor(x => x.UserId)
                 .NotEmpty()

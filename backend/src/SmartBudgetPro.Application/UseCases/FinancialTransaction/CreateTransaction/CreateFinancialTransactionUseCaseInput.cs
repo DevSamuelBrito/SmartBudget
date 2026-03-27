@@ -2,7 +2,7 @@
 
 namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
 
-public record CreateTransactionUseCaseInput(
+public record CreateFinancialTransactionUseCaseInput(
     Guid UserId,
     decimal Amount,
     DateTime TransactionDate,

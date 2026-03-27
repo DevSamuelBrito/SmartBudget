@@ -4,7 +4,7 @@ using SmartBudgetPro.Domain.Transactions;
 
 namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
 {
-    public class TransactionRepository(AppDbContext context) : ITransactionRepository
+    public class FinancialTransactionRepository(AppDbContext context) : ITransactionRepository
     {
         public async Task AddAsync(FinancialTransaction transaction)
         {

@@ -30,7 +30,7 @@ public static class DependencyInjection
         services.AddScoped<CreateFinancialTransactionUseCase>();
 
         //validators financial transaction
-        services.AddValidatorsFromAssemblyContaining<CreateTransactionInputValidator>();
+        services.AddValidatorsFromAssemblyContaining<CreateFinancialTransactionInputValidator>();
 
         //transaction Category
         services.AddScoped<GetAllTransactionCategoryUseCase>();
