@@ -12,7 +12,7 @@ using SmartBudgetPro.Infrastructure.Persistence;
 namespace SmartBudgetPro.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260325015708_RenameTransactionTable")]
+    [Migration("20260328023451_RenameTransactionTable")]
     partial class RenameTransactionTable
     {
         /// <inheritdoc />
