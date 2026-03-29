@@ -32,22 +32,7 @@ namespace SmartBudgetPro.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TransactionCategories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TransactionCategories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Transactions",
+                name: "FinancialTransactions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -65,7 +50,22 @@ namespace SmartBudgetPro.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transactions", x => x.Id);
+                    table.PrimaryKey("PK_FinancialTransactions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransactionCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransactionCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -89,20 +89,20 @@ namespace SmartBudgetPro.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_FinancialTransactions_TransactionDate",
+                table: "FinancialTransactions",
+                column: "TransactionDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FinancialTransactions_UserId",
+                table: "FinancialTransactions",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TransactionCategories_UserId_Name",
                 table: "TransactionCategories",
                 columns: new[] { "UserId", "Name" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_TransactionDate",
-                table: "Transactions",
-                column: "TransactionDate");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_UserId",
-                table: "Transactions",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -118,10 +118,10 @@ namespace SmartBudgetPro.Infrastructure.Migrations
                 name: "Budgets");
 
             migrationBuilder.DropTable(
-                name: "TransactionCategories");
+                name: "FinancialTransactions");
 
             migrationBuilder.DropTable(
-                name: "Transactions");
+                name: "TransactionCategories");
 
             migrationBuilder.DropTable(
                 name: "Users");

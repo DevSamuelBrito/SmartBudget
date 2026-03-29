@@ -12,8 +12,8 @@ using SmartBudgetPro.Infrastructure.Persistence;
 namespace SmartBudgetPro.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260328023451_RenameTransactionTable")]
-    partial class RenameTransactionTable
+    [Migration("20260328033340_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
