@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
 
@@ -9,7 +10,8 @@ namespace SmartBudgetPro.API.Controllers
     public class TransactionController
         (
             GetAllFinancialTransactionUseCase getAllTransaction,
-            CreateFinancialTransactionUseCase createTransactionUseCase
+            CreateFinancialTransactionUseCase createTransactionUseCase,
+            UpdateFinancialTransactionUseCase updateFinancialTransactionUseCase
         ) : ControllerBase
     {
 
@@ -27,6 +29,15 @@ namespace SmartBudgetPro.API.Controllers
             var output = await createTransactionUseCase.ExecuteAsync(input);
 
             return Created($"/api/transactions/{output}", new { output });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateFinancialTransactionUseCaseInput input)
+        {
+
+            await updateFinancialTransactionUseCase.ExecuteAsync(id, input);
+
+            return NoContent();
         }
 
     }
