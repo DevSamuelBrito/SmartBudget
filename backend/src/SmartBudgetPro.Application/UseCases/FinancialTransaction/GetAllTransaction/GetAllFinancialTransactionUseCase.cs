@@ -3,7 +3,7 @@ using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction
 {
-    public class GetAllFinancialTransactionUseCase (ITransactionRepository transactionRepository)
+    public class GetAllFinancialTransactionUseCase (IFinancialTransactionRepository transactionRepository)
     {
         public async Task<IEnumerable<FinancialTransactionDTO>> ExecuteAsync()
         {
