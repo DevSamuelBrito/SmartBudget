@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
+using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
@@ -29,6 +30,7 @@ public static class DependencyInjection
         //financial transaction
         services.AddScoped<GetAllFinancialTransactionUseCase>();
         services.AddScoped<CreateFinancialTransactionUseCase>();
+        services.AddScoped<DeleteFinancialTransactionUseCase>();
         services.AddScoped<UpdateFinancialTransactionUseCase>();
 
         //validators financial transaction

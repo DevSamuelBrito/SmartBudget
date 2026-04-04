@@ -28,5 +28,12 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
             context.FinancialTransactions.Update(transaction);
             await context.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(Guid transactionId)
+        {
+            await context.FinancialTransactions
+                .Where(transaction => transaction.Id == transactionId)
+                .ExecuteDeleteAsync();
+        }
     }
 }

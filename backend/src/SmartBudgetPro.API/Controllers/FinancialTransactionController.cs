@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
@@ -11,7 +12,8 @@ namespace SmartBudgetPro.API.Controllers
         (
             GetAllFinancialTransactionUseCase getAllTransaction,
             CreateFinancialTransactionUseCase createTransactionUseCase,
-            UpdateFinancialTransactionUseCase updateFinancialTransactionUseCase
+            UpdateFinancialTransactionUseCase updateFinancialTransactionUseCase,
+            DeleteFinancialTransactionUseCase deleteFinancialTransactionUseCase
         ) : ControllerBase
     {
 
@@ -36,6 +38,19 @@ namespace SmartBudgetPro.API.Controllers
         {
 
             await updateFinancialTransactionUseCase.ExecuteAsync(id, input);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var input = new DeleteFinancialTransactionUseCaseInput
+            {
+                id = id
+            };
+
+            await deleteFinancialTransactionUseCase.ExecuteAsync(input);
 
             return NoContent();
         }

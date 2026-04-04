@@ -31,5 +31,11 @@ namespace SmartBudgetPro.Application.Interfaces
         /// </summary>
         /// <param name="transaction">The transaction with updated data.</param>
         Task UpdateAsync(FinancialTransaction transaction);
+
+        /// <summary>
+        /// Deletes a financial transaction by its identifier.
+        /// </summary>
+        /// <param name="transactionId">The unique identifier of the transaction.</param>
+        Task DeleteAsync(Guid transactionId);
     }
 }
