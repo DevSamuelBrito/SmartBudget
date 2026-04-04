@@ -45,12 +45,7 @@ namespace SmartBudgetPro.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            var input = new DeleteFinancialTransactionUseCaseInput
-            {
-                id = id
-            };
-
-            await deleteFinancialTransactionUseCase.ExecuteAsync(input);
+            await deleteFinancialTransactionUseCase.ExecuteAsync(id);
 
             return NoContent();
         }

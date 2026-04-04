@@ -4,9 +4,9 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinanci
 {
     public class DeleteFinancialTransactionUseCase(IFinancialTransactionRepository financialTransactionRepository)
     {
-        public async Task ExecuteAsync(DeleteFinancialTransactionUseCaseInput input)
+        public async Task ExecuteAsync(Guid transactionId)
         {
-            await financialTransactionRepository.DeleteAsync(input.id);
+            await financialTransactionRepository.DeleteAsync(transactionId);
         }
     }
 }
