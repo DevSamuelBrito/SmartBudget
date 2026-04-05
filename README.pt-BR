@@ -1,0 +1,60 @@
+# SmartBudget
+
+[English version](README.md)
+
+SmartBudget e um projeto full stack de financas pessoais em desenvolvimento ativo, criado como exercicio pratico para consolidar conhecimentos em arquitetura de software, modelagem de dominio e desenvolvimento web moderno.
+
+## Visao Geral
+
+O projeto combina uma API em .NET com uma interface web em Next.js para gerenciar usuarios, categorias, transacoes financeiras e orcamentos mensais. A evolucao acontece de forma incremental, com foco em qualidade de codigo e organizacao por camadas.
+
+## Status
+
+Em desenvolvimento ativo.
+
+## Stack
+
+- Backend: C#, .NET, ASP.NET Core
+- Frontend: Next.js, React, TypeScript, Tailwind CSS
+
+## Funcionalidades Implementadas
+
+- Cadastro, consulta, atualizacao e remocao de usuarios
+- Cadastro, consulta, atualizacao e remocao de categorias de transacao
+- Cadastro, consulta, atualizacao e remocao de transacoes financeiras
+- Estrutura de dominio para controle de orcamentos
+
+## Estrutura do Repositorio
+
+- backend: API, aplicacao, dominio e infraestrutura
+- frontend: aplicacao web
+- exercice.en.md e exercice.pt.md: contexto e requisitos do exercicio
+
+## Como Rodar Localmente
+
+### Backend
+
+```bash
+cd backend/src/SmartBudgetPro.API
+dotnet restore
+dotnet run
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Proximos Passos
+
+- Integrar frontend com os endpoints da API
+- Implementar autenticacao e autorizacao
+- Adicionar testes automatizados
+- Evoluir regras de orcamento e relatorios
+
+## Objetivo do Projeto
+
+Este repositorio foi criado para aprendizado aplicado, mas com direcao de produto real. A ideia e evoluir continuamente o SmartBudget enquanto pratico decisoes tecnicas relevantes para projetos profissionais.
