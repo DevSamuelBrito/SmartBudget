@@ -1,11 +1,18 @@
 //next
 import type { Metadata } from "next";
 
-//components
-import { TooltipProvider } from "@/components/ui/tooltip";
-
 //styles 
 import "./globals.css";
+
+//components
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+
+import { AppSidebar } from "@/components/app-sidebar";
+
+import { SiteHeader } from "@/components/site-header";
+
+import { TooltipProvider } from "@/components/ui/tooltip";
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,7 +28,24 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <TooltipProvider>
-          {children}
+
+
+          <SidebarProvider
+            style={
+              {
+                "--sidebar-width": "calc(var(--spacing) * 72)",
+                "--header-height": "calc(var(--spacing) * 12)",
+              } as React.CSSProperties
+            }
+          >
+            <AppSidebar variant="inset" />
+            <SidebarInset>
+              <SiteHeader />
+              {children}
+
+            </SidebarInset>
+          </SidebarProvider>
+
         </TooltipProvider>
       </body>
     </html>
