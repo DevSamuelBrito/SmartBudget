@@ -1,11 +1,15 @@
 "use client"
 
+//react
 import * as React from "react"
 
-import { NavDocuments } from "@/components/nav-documents"
+//components
 import { NavMain } from "@/components/nav-main"
+
 import { NavSecondary } from "@/components/nav-secondary"
+
 import { NavUser } from "@/components/nav-user"
+
 import {
   Sidebar,
   SidebarContent,
@@ -15,7 +19,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { LayoutDashboardIcon, ListIcon, ChartBarIcon, FolderIcon, UsersIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, SearchIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon } from "lucide-react"
+
+//icons
+import { LayoutDashboardIcon, ListIcon, ChartBarIcon, FolderIcon, UsersIcon, CameraIcon, FileTextIcon, Settings2Icon, CircleHelpIcon, SearchIcon, DatabaseIcon, FileChartColumnIcon, FileIcon, CommandIcon, ArrowLeftRight, LayoutGrid, Tags } from "lucide-react"
 
 const data = {
   user: {
@@ -33,34 +39,18 @@ const data = {
       ),
     },
     {
-      title: "Lifecycle",
+      title: "Transações",
       url: "#",
       icon: (
-        <ListIcon
+        <ArrowLeftRight
         />
       ),
     },
     {
-      title: "Analytics",
+      title: "Categorias",
       url: "#",
       icon: (
-        <ChartBarIcon
-        />
-      ),
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: (
-        <FolderIcon
-        />
-      ),
-    },
-    {
-      title: "Team",
-      url: "#",
-      icon: (
-        <UsersIcon
+        <Tags
         />
       ),
     },
@@ -188,7 +178,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="#">
                 <CommandIcon className="size-5!" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">SmartBudget PRO</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -196,7 +186,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
