@@ -6,7 +6,6 @@ import {
   BusFront,
   CircleDollarSign,
   Coffee,
-  MoreHorizontal,
   PiggyBank,
   Plus,
   ReceiptText,

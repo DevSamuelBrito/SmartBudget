@@ -9,9 +9,6 @@ import { usePathname } from "next/navigation"
 //next
 import { useTheme } from "next-themes"
 
-//react
-import { useEffect, useState } from "react"
-
 //components
 import { Button } from "@/components/ui/button"
 
@@ -23,25 +20,19 @@ export function SiteHeader() {
   const pathname = usePathname()
 
   const { resolvedTheme, theme, setTheme } = useTheme()
-  
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
 
   const title =
     pathname === "/"
       ? "Dashboard"
       : pathname
-          .split("/")
-          .filter(Boolean)
-          .map((segment) =>
-            segment
-              .replace(/-/g, " ")
-              .replace(/\b\w/g, (character) => character.toUpperCase())
-          )
-          .join(" / ") || "Dashboard"
+        .split("/")
+        .filter(Boolean)
+        .map((segment) =>
+          segment
+            .replace(/-/g, " ")
+            .replace(/\b\w/g, (character) => character.toUpperCase())
+        )
+        .join(" / ") || "Dashboard"
 
   const currentTheme = resolvedTheme ?? theme
 
@@ -57,26 +48,19 @@ export function SiteHeader() {
         <div className="flex flex-1 items-center justify-between gap-3">
           <h1 className="text-base font-medium">{title}</h1>
 
-          {isMounted ? (
-            <Button
-              variant="outline"
-              size="icon-sm"
-              onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-              aria-label={
-                currentTheme === "dark"
-                  ? "Alternar para modo claro"
-                  : "Alternar para modo escuro"
-              }
-            >
-              <SunMedium className="size-4 dark:hidden" />
-              <MoonStar className="hidden size-4 dark:block" />
-            </Button>
-          ) : (
-            <Button variant="outline" size="icon-sm" disabled>
-              <SunMedium className="size-4 dark:hidden" />
-              <MoonStar className="hidden size-4 dark:block" />
-            </Button>
-          )}
+          <Button
+            variant="outline"
+            size="icon-sm"
+            onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+            aria-label={
+              currentTheme === "dark"
+                ? "Alternar para modo claro"
+                : "Alternar para modo escuro"
+            }
+          >
+            <SunMedium className="size-4 dark:hidden" />
+            <MoonStar className="hidden size-4 dark:block" />
+          </Button>
         </div>
       </div>
     </header>
