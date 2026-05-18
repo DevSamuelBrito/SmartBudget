@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { Label } from "@/components/ui/label";
+
 import {
     Sheet,
     SheetContent,
@@ -116,16 +117,15 @@ export function CategoryFormSheet({
                                     key={theme.id}
                                     type="button"
                                     onClick={() => setThemeId(theme.id)}
-                                    className={`group rounded-lg border p-2 text-left transition ${themeId === theme.id ? "border-primary ring-2 ring-primary/30" : "border-border"
-                                        }`}
+                                    className="transition"
                                     aria-label={`Selecionar tema ${theme.label}`}
                                 >
                                     <div
-                                        className={`mb-2 flex size-9 items-center justify-center rounded-md text-white ${theme.colorClass}`}
+                                        className={`flex size-14 items-center justify-center rounded-lg text-white transition ${themeId === theme.id ? "ring-2 ring-primary ring-offset-2" : ""
+                                            } ${theme.colorClass}`}
                                     >
-                                        <ThemeIcon iconKey={theme.iconKey} className="size-4" />
+                                        <ThemeIcon iconKey={theme.iconKey} className="size-5" />
                                     </div>
-                                    <p className="line-clamp-1 text-xs text-muted-foreground">{theme.label}</p>
                                 </button>
                             ))}
                         </div>
