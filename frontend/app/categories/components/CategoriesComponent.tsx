@@ -13,11 +13,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 // components
-import { CategoryFormSheet } from "./CategoryFormSheet";
+import { CategoryFormSheet } from "./CategoryForm";
 
 import { CategoryTable } from "./CategoryTable";
 
-import { DeleteCategorySheet } from "./DeleteCategorySheet";
+import { DeleteCategorySheet } from "./DeleteCategory";
 
 // hooks
 import { useCategories } from "../hooks/useCategories";
