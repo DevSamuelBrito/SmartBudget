@@ -23,24 +23,23 @@ import { DeleteCategorySheet } from "./DeleteCategory";
 import { useCategories } from "../hooks/useCategories";
 
 //types
-import type { Category } from "../types";
+import type { CategoryApi } from "../types";
 
 export function CategoriesScreen() {
     const {
         categories,
+        iconThemes,
+
         createCategory,
         deleteCategory,
-        hasMore,
-        loadMore,
         search,
         setSearch,
-        themes,
         updateCategory,
     } = useCategories();
 
     const [createOpen, setCreateOpen] = useState(false);
-    const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-    const [deletingCategory, setDeletingCategory] = useState<Category | null>(null);
+    const [editingCategory, setEditingCategory] = useState<CategoryApi | null>(null);
+    const [deletingCategory, setDeletingCategory] = useState<CategoryApi | null>(null);
 
     const editingOpen = useMemo(() => Boolean(editingCategory), [editingCategory]);
     const deletingOpen = useMemo(() => Boolean(deletingCategory), [deletingCategory]);
@@ -80,11 +79,9 @@ export function CategoriesScreen() {
                 <CardContent className="pt-4">
                     <CategoryTable
                         categories={categories}
-                        hasMore={hasMore}
-                        loadMore={loadMore}
                         onEdit={setEditingCategory}
                         onDelete={setDeletingCategory}
-                        themes={themes}
+                        themes={iconThemes}
                     />
                 </CardContent>
             </Card>
@@ -92,7 +89,7 @@ export function CategoriesScreen() {
             <CategoryFormSheet
                 open={createOpen}
                 mode="create"
-                themes={themes}
+                themes={iconThemes}
                 onOpenChange={setCreateOpen}
                 onSubmit={(values) => {
                     createCategory(values);
@@ -103,7 +100,7 @@ export function CategoriesScreen() {
             <CategoryFormSheet
                 open={editingOpen}
                 mode="edit"
-                themes={themes}
+                themes={iconThemes}
                 category={editingCategory ?? undefined}
                 onOpenChange={closeEditingSheet}
                 onSubmit={(values) => {

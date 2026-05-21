@@ -1,4 +1,5 @@
-"use client";
+//react query
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // react
 import { useMemo, useState } from "react";
@@ -6,91 +7,81 @@ import { useMemo, useState } from "react";
 // data
 import data from "../data.json";
 
-import type { Category, CategoryTheme } from "../types";
+import type { CategoryApi, CategoryTheme } from "../types";
 
-const PAGE_SIZE = 8;
+//services
+import { getCategories } from "../services/categorias.service";
 
 type CreateCategoryPayload = {
   name: string;
-  themeId: string;
+  icon: CategoryApi["icon"];
 };
 
 type UpdateCategoryPayload = {
   name: string;
-  themeId: string;
+  icon: CategoryApi["icon"];
 };
 
 export function useCategories() {
-  const initialCategories = (data.categories as Category[]) ?? [];
-  const themes = (data.themes as CategoryTheme[]) ?? [];
+  const iconThemes = (data.themes as CategoryTheme[]) ?? [];
 
-  const [categories, setCategories] = useState<Category[]>(initialCategories);
+  const queryClient = useQueryClient();
+
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
 
-  const filteredCategories = useMemo(() => {
-    const normalized = search.trim().toLowerCase();
+  const categoriasQuery = useQuery<CategoryApi[]>({
+    queryKey: ["categorias"],
+    queryFn: getCategories,
+  });
 
-    if (!normalized) {
-      return categories;
-    }
-
-    return categories.filter((category) =>
-      category.name.toLowerCase().includes(normalized),
-    );
-  }, [categories, search]);
-
-  const visibleCategories = useMemo(
-    () => filteredCategories.slice(0, page * PAGE_SIZE),
-    [filteredCategories, page],
-  );
-
-  const hasMore = visibleCategories.length < filteredCategories.length;
-
-  function loadMore() {
-    if (!hasMore) {
-      return;
-    }
-
-    setPage((current) => current + 1);
-  }
+  const categories = categoriasQuery.data ?? [];
 
   function setSearchValue(value: string) {
     setSearch(value);
-    setPage(1);
   }
 
   function createCategory(payload: CreateCategoryPayload) {
-    const nextCategory: Category = {
+    const nextCategory: CategoryApi = {
       id: crypto.randomUUID(),
+      userId: "",
       name: payload.name,
-      themeId: payload.themeId,
+      icon: payload.icon,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
-    setCategories((current) => [nextCategory, ...current]);
+    queryClient.setQueryData<CategoryApi[]>(["categorias"], (current) => [
+      nextCategory,
+      ...(current ?? []),
+    ]);
   }
 
   function updateCategory(categoryId: string, payload: UpdateCategoryPayload) {
-    setCategories((current) =>
-      current.map((category) =>
-        category.id === categoryId ? { ...category, ...payload } : category,
+    queryClient.setQueryData<CategoryApi[]>(["categorias"], (current) =>
+      (current ?? []).map((category) =>
+        category.id === categoryId
+          ? {
+              ...category,
+              ...payload,
+              updatedAt: new Date().toISOString(),
+            }
+          : category,
       ),
     );
   }
 
   function deleteCategory(categoryId: string) {
-    setCategories((current) =>
-      current.filter((category) => category.id !== categoryId),
+    queryClient.setQueryData<CategoryApi[]>(["categorias"], (current) =>
+      (current ?? []).filter((category) => category.id !== categoryId),
     );
   }
 
   return {
-    categories: visibleCategories,
-    hasMore,
-    loadMore,
+    categories,
+
     search,
     setSearch: setSearchValue,
-    themes,
+    iconThemes,
     createCategory,
     updateCategory,
     deleteCategory,

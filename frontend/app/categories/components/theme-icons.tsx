@@ -1,4 +1,4 @@
-// lucide
+//lucide react
 import {
     BusFront,
     Cross,
@@ -10,15 +10,12 @@ import {
     Wifi,
 } from "lucide-react";
 
-// types 
-import type { ThemeIconKey } from "../types";
+//react
+import type React from "react";
 
-type ThemeIconProps = {
-    iconKey: ThemeIconKey;
-    className?: string;
-};
+type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
-const iconMap = {
+export const iconMap = {
     ShoppingBasket,
     Lightbulb,
     Droplets,
@@ -27,10 +24,16 @@ const iconMap = {
     HeartPulse,
     Cross,
     Gamepad2,
+} satisfies Record<string, IconComponent>;
+
+export type ThemeIconKey = keyof typeof iconMap;
+
+type ThemeIconProps = {
+    iconKey: ThemeIconKey;
+    className?: string;
 };
 
 export function ThemeIcon({ iconKey, className }: ThemeIconProps) {
     const Icon = iconMap[iconKey];
-
     return <Icon className={className} />;
 }

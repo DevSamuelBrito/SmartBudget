@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/sheet";
 
 // types 
-import type { Category } from "../types";
+import type { CategoryApi } from "../types";
 
 type DeleteCategorySheetProps = {
-    category?: Category;
+    category?: CategoryApi;
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onConfirm: () => void;

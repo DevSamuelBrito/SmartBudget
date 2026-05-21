@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // ui
 import { Button } from "@/components/ui/button";
@@ -23,18 +23,18 @@ import {
 import { ThemeIcon } from "./theme-icons";
 
 // types 
-import type { Category, CategoryTheme } from "../types";
+import type { CategoryApi, CategoryTheme } from "../types";
 
 type CategoryFormValues = {
     name: string;
-    themeId: string;
+    icon: CategoryApi["icon"];
 };
 
 type CategoryFormSheetProps = {
     open: boolean;
     mode: "create" | "edit";
     themes: CategoryTheme[];
-    category?: Category;
+    category?: CategoryApi;
     onOpenChange: (open: boolean) => void;
     onSubmit: (values: CategoryFormValues) => void;
 };
@@ -47,12 +47,18 @@ export function CategoryFormSheet({
     onOpenChange,
     onSubmit,
 }: CategoryFormSheetProps) {
+    
     const [name, setName] = useState(category?.name ?? "");
-    const [themeId, setThemeId] = useState(category?.themeId ?? themes[0]?.id ?? "");
+    const [icon, setIcon] = useState(category?.icon ?? themes[0]?.iconKey ?? "");
+
+    useEffect(() => {
+        setName(category?.name ?? "");
+        setIcon(category?.icon ?? themes[0]?.iconKey ?? "");
+    }, [category, themes]);
 
     function resetForm() {
         setName("");
-        setThemeId(themes[0]?.id ?? "");
+        setIcon(themes[0]?.iconKey ?? "");
     }
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -60,13 +66,13 @@ export function CategoryFormSheet({
 
         const trimmedName = name.trim();
 
-        if (!trimmedName || !themeId) {
+        if (!trimmedName || !icon) {
             return;
         }
 
         onSubmit({
             name: trimmedName,
-            themeId,
+            icon,
         });
 
         if (mode === "create") {
@@ -116,12 +122,12 @@ export function CategoryFormSheet({
                                 <button
                                     key={theme.id}
                                     type="button"
-                                    onClick={() => setThemeId(theme.id)}
+                                    onClick={() => setIcon(theme.iconKey)}
                                     className="transition"
                                     aria-label={`Selecionar tema ${theme.label}`}
                                 >
                                     <div
-                                        className={`flex size-14 items-center justify-center rounded-lg text-white transition ${themeId === theme.id ? "ring-2 ring-primary ring-offset-2" : ""
+                                        className={`flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
                                             } ${theme.colorClass}`}
                                     >
                                         <ThemeIcon iconKey={theme.iconKey} className="size-5" />
