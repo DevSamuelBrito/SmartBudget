@@ -2,7 +2,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 // react
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 // data
 import data from "../data.json";
@@ -10,7 +10,12 @@ import data from "../data.json";
 import type { CategoryApi, CategoryTheme } from "../types";
 
 //services
-import { getCategories } from "../services/categorias.service";
+import {
+  createCategory as createCategoryRequest,
+  getCategories,
+} from "../services/categorias.service";
+
+const MOCK_USER_ID = "1057a770-6f02-47d9-b791-b449d9e95fd3";
 
 type CreateCategoryPayload = {
   name: string;
@@ -36,25 +41,26 @@ export function useCategories() {
 
   const categories = categoriasQuery.data ?? [];
 
+  const createCategoryMutation = useMutation({
+    mutationFn: (payload: { name: string; icon: CategoryApi["icon"] }) =>
+      createCategoryRequest({
+        userId: MOCK_USER_ID,
+        name: payload.name,
+        icon: payload.icon,
+      }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+    },
+  });
+
+  function createCategory(payload: CreateCategoryPayload) {
+    createCategoryMutation.mutate(payload);
+  }
+  
   function setSearchValue(value: string) {
     setSearch(value);
   }
 
-  function createCategory(payload: CreateCategoryPayload) {
-    const nextCategory: CategoryApi = {
-      id: crypto.randomUUID(),
-      userId: "",
-      name: payload.name,
-      icon: payload.icon,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    queryClient.setQueryData<CategoryApi[]>(["categorias"], (current) => [
-      nextCategory,
-      ...(current ?? []),
-    ]);
-  }
 
   function updateCategory(categoryId: string, payload: UpdateCategoryPayload) {
     queryClient.setQueryData<CategoryApi[]>(["categorias"], (current) =>
@@ -83,6 +89,7 @@ export function useCategories() {
     setSearch: setSearchValue,
     iconThemes,
     createCategory,
+    isCreatingCategory: createCategoryMutation.isPending,
     updateCategory,
     deleteCategory,
   };

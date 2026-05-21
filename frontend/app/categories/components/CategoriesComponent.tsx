@@ -23,26 +23,28 @@ import { DeleteCategorySheet } from "./DeleteCategory";
 import { useCategories } from "../hooks/useCategories";
 
 //types
-import type { CategoryApi } from "../types";
+import { CategoryApi } from "../types";
 
 export function CategoriesScreen() {
     const {
         categories,
         iconThemes,
-
+        
         createCategory,
+        isCreatingCategory,
+
         deleteCategory,
         search,
         setSearch,
         updateCategory,
     } = useCategories();
 
-    const [createOpen, setCreateOpen] = useState(false);
     const [editingCategory, setEditingCategory] = useState<CategoryApi | null>(null);
     const [deletingCategory, setDeletingCategory] = useState<CategoryApi | null>(null);
 
-    const editingOpen = useMemo(() => Boolean(editingCategory), [editingCategory]);
-    const deletingOpen = useMemo(() => Boolean(deletingCategory), [deletingCategory]);
+    const [createOpen, setCreateOpen] = useState(false);
+    const editingOpen = Boolean(editingCategory);
+    const deletingOpen = Boolean(deletingCategory);
 
     function closeEditingSheet(open: boolean) {
         if (!open) {
@@ -95,6 +97,7 @@ export function CategoriesScreen() {
                     createCategory(values);
                     setCreateOpen(false);
                 }}
+                isSubmitting={isCreatingCategory}
             />
 
             <CategoryFormSheet

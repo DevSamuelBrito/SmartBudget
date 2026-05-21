@@ -37,6 +37,7 @@ type CategoryFormSheetProps = {
     category?: CategoryApi;
     onOpenChange: (open: boolean) => void;
     onSubmit: (values: CategoryFormValues) => void;
+    isSubmitting?: boolean;
 };
 
 export function CategoryFormSheet({
@@ -46,6 +47,7 @@ export function CategoryFormSheet({
     category,
     onOpenChange,
     onSubmit,
+    isSubmitting = false,
 }: CategoryFormSheetProps) {
     
     const [name, setName] = useState(category?.name ?? "");
@@ -141,7 +143,9 @@ export function CategoryFormSheet({
                         <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                             Cancelar
                         </Button>
-                        <Button type="submit">Salvar</Button>
+                        <Button type="submit" disabled={isSubmitting}>
+                            Salvar
+                        </Button>
                     </SheetFooter>
                 </form>
             </SheetContent>
