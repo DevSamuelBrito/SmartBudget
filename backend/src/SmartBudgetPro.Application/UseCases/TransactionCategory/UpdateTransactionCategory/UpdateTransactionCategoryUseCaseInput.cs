@@ -4,6 +4,7 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransact
     public record UpdateTransactionCategoryUseCaseInput
     (
         Guid Id,
-        string Name
+        string Name,
+        string Icon
     );
 }

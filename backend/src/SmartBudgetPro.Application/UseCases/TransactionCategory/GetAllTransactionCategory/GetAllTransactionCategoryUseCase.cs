@@ -12,6 +12,7 @@ namespace SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCatego
                 c.Id,
                 c.UserId,
                 c.Name,
+                c.Icon,
                 c.CreatedAt,
                 c.UpdatedAt
             ));

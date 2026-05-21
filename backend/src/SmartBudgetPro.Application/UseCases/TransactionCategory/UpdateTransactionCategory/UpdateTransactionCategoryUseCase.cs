@@ -12,6 +12,7 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransact
                 throw new InvalidOperationException("Transaction category not found.");
 
             category.Rename(input.Name);
+            category.ChangeIcon(input.Icon);
 
             await transactionCategoryRepository.UpdateAsync(category);
         }

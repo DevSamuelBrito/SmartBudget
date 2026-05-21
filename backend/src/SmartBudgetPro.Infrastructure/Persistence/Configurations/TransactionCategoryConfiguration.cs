@@ -16,6 +16,10 @@ public class TransactionCategoryConfiguration : IEntityTypeConfiguration<Transac
             .IsRequired()
             .HasMaxLength(100);
 
+        builder.Property(c => c.Icon)
+            .IsRequired()
+            .HasMaxLength(200);
+
         builder.HasIndex(c => new { c.UserId, c.Name })
             .IsUnique();
     }
