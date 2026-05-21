@@ -9,7 +9,17 @@ builder.Services.AddOpenApi();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddControllers(); 
+builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Development", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -19,6 +29,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+app.UseCors("Development");
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
