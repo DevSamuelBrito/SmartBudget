@@ -131,7 +131,7 @@ export function CategoryFormSheet({
                     <SheetDescription>{description}</SheetDescription>
                 </SheetHeader>
 
-                <form className="space-y-4 px-4" onSubmit={handleSubmit}>
+                <form id="category-form" className="space-y-4 px-4" onSubmit={handleSubmit}>
                     <div className="space-y-2">
                         <Label htmlFor="category-name">Nome</Label>
                         <Input
@@ -149,24 +149,25 @@ export function CategoryFormSheet({
                             {renderThemes()}
                         </div>
                     </div>
-
-                    <SheetFooter className="px-0">
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => onOpenChange(false)}
-                            disabled={isSubmitting}>
-                            Cancelar
-                        </Button>
-                        <Button
-                            type="submit"
-                            disabled={isSubmitting}
-                        >
-                            {isSubmitting && <Loader2 className="animate-spin size-4 text-muted-foreground" />}
-                            Salvar
-                        </Button>
-                    </SheetFooter>
                 </form>
+
+                <SheetFooter>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => onOpenChange(false)}
+                        disabled={isSubmitting}>
+                        Cancelar
+                    </Button>
+                    <Button
+                        form="category-form"  
+                        type="submit"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting && <Loader2 className="animate-spin size-4 text-muted-foreground" />}
+                        Salvar
+                    </Button>
+                </SheetFooter>
             </SheetContent>
         </Sheet>
     );
