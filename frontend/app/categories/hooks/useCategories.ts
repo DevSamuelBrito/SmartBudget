@@ -28,13 +28,14 @@ type UpdateCategoryPayload = {
   icon: CategoryApi["icon"];
 };
 
-
 type UseCategoriesProps = {
+  initialCategories: CategoryApi[];
   onCloseCreate: () => void;
   onCloseEdit: () => void;
 };
 
 export function useCategories({
+  initialCategories,
   onCloseCreate,
   onCloseEdit,
 }: UseCategoriesProps) {
@@ -47,6 +48,8 @@ export function useCategories({
   const categoriasQuery = useQuery<CategoryApi[]>({
     queryKey: ["categorias"],
     queryFn: getCategories,
+    initialData: initialCategories,
+    staleTime: Infinity,
   });
 
   const categories = categoriasQuery.data ?? [];
@@ -66,7 +69,7 @@ export function useCategories({
     },
     onError: (error: AxiosError<{ error: string }>) => {
       const message = error.response?.data?.error ?? "Erro ao criar categoria.";
-      
+
       toast.error(message);
     },
   });
@@ -105,7 +108,6 @@ export function useCategories({
 
   return {
     categories,
-    isLoadingCategories: categoriasQuery.isLoading,
 
     handleCreateCategory,
     isCreatingCategory: createCategoryMutation.isPending,

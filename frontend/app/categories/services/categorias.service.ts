@@ -15,6 +15,24 @@ export const getCategories = async () => {
   return response.data;
 };
 
+export const getCategoriesServer = async () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  
+  if (!baseUrl) {
+    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
+  }
+
+  const response = await fetch(`${baseUrl}transactionCategories`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch categories from server.");
+  }
+
+  return (await response.json()) as CategoryApi[];
+};
+
 export const createCategory = async (payload: CreateCategoryRequest) => {
   const response = await api.post<CategoryApi>("/transactionCategories", payload);
 

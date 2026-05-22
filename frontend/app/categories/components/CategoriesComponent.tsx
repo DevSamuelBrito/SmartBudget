@@ -6,7 +6,7 @@ import { useState } from "react";
 //react query
 import { Plus, Search } from "lucide-react";
 
-// ui
+// components
 import { Button } from "@/components/ui/button";
 
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,8 +18,6 @@ import { CategoryFormSheet } from "./CategoryForm";
 
 import { CategoryTable } from "./CategoryTable";
 
-import { CategoryTableSkeleton } from "./category-table-skeleton";
-
 import { DeleteCategorySheet } from "./DeleteCategory";
 
 // hooks
@@ -28,10 +26,13 @@ import { useCategories } from "../hooks/useCategories";
 //types
 import { CategoryApi } from "../types";
 
-export function CategoriesScreen() {
+type CategoriesScreenProps = {
+    initialCategories: CategoryApi[];
+};
+
+export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
     const {
         categories,
-        isLoadingCategories,
 
         iconThemes,
 
@@ -44,6 +45,7 @@ export function CategoriesScreen() {
         updateCategory,
     } = useCategories(
         {
+            initialCategories,
             onCloseCreate: () => setCreateOpen(false),
             onCloseEdit: () => setEditingCategory(null),
         }
@@ -68,20 +70,6 @@ export function CategoriesScreen() {
         }
     }
 
-    const renderTable = () => {
-        return (
-            isLoadingCategories ? (
-                <CategoryTableSkeleton />
-            ) : (
-                <CategoryTable
-                    categories={categories}
-                    onEdit={setEditingCategory}
-                    onDelete={setDeletingCategory}
-                    themes={iconThemes}
-                />
-            )
-        );
-    }
 
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
@@ -104,7 +92,12 @@ export function CategoriesScreen() {
 
             <Card>
                 <CardContent className="pt-4">
-                    {renderTable()}
+                    <CategoryTable
+                        categories={categories}
+                        onEdit={setEditingCategory}
+                        onDelete={setDeletingCategory}
+                        themes={iconThemes}
+                    />
                 </CardContent>
             </Card>
 
