@@ -18,6 +18,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 //providers
 import { Providers } from "./providers/providers";
 
+import { Toaster } from "@/components/ui/sonner";
+
 
 export const metadata: Metadata = {
   title: "SmartBudget PRO",
@@ -52,6 +54,7 @@ export default function RootLayout({
                 <SidebarInset>
                   <SiteHeader />
                   {children}
+                  <Toaster />
                 </SidebarInset>
               </SidebarProvider>
             </TooltipProvider>

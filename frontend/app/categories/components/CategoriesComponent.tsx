@@ -1,7 +1,7 @@
 "use client";
 
 // external
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { Plus, Search } from "lucide-react";
 
@@ -29,15 +29,20 @@ export function CategoriesScreen() {
     const {
         categories,
         iconThemes,
-        
-        createCategory,
+
+        handleCreateCategory,
         isCreatingCategory,
 
         deleteCategory,
         search,
         setSearch,
         updateCategory,
-    } = useCategories();
+    } = useCategories(
+        {
+            onCloseCreate: () => setCreateOpen(false),
+            onCloseEdit: () => setEditingCategory(null),
+        }
+    );
 
     const [editingCategory, setEditingCategory] = useState<CategoryApi | null>(null);
     const [deletingCategory, setDeletingCategory] = useState<CategoryApi | null>(null);
@@ -93,10 +98,7 @@ export function CategoriesScreen() {
                 mode="create"
                 themes={iconThemes}
                 onOpenChange={setCreateOpen}
-                onSubmit={(values) => {
-                    createCategory(values);
-                    setCreateOpen(false);
-                }}
+                onSubmit={handleCreateCategory}
                 isSubmitting={isCreatingCategory}
             />
 

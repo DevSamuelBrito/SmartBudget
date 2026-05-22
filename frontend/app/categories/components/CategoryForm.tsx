@@ -22,13 +22,11 @@ import {
 // components
 import { ThemeIcon } from "./theme-icons";
 
-// types 
-import type { CategoryApi, CategoryTheme } from "../types";
+import { Loader2 } from "lucide-react";
 
-type CategoryFormValues = {
-    name: string;
-    icon: CategoryApi["icon"];
-};
+// types 
+import type { CategoryApi, CategoryFormValues, CategoryTheme } from "../types";
+
 
 type CategoryFormSheetProps = {
     open: boolean;
@@ -49,14 +47,19 @@ export function CategoryFormSheet({
     onSubmit,
     isSubmitting = false,
 }: CategoryFormSheetProps) {
-    
+
     const [name, setName] = useState(category?.name ?? "");
     const [icon, setIcon] = useState(category?.icon ?? themes[0]?.iconKey ?? "");
 
     useEffect(() => {
-        setName(category?.name ?? "");
-        setIcon(category?.icon ?? themes[0]?.iconKey ?? "");
-    }, [category, themes]);
+        if (!open) {
+            resetForm()
+            return
+        }
+
+        setName(category?.name ?? "")
+        setIcon(category?.icon ?? themes[0]?.iconKey ?? "")
+    }, [open, category, themes])
 
     function resetForm() {
         setName("");
@@ -77,9 +80,6 @@ export function CategoryFormSheet({
             icon,
         });
 
-        if (mode === "create") {
-            resetForm();
-        }
     }
 
     const title = mode === "create" ? "Criar categoria" : "Renomear categoria";
@@ -89,10 +89,34 @@ export function CategoryFormSheet({
             ? "Escolha um nome e um Icone para a nova categoria."
             : "Atualize o nome e o Icone da categoria.";
 
+    const renderThemes = () => {
+        return themes.map((theme) => (
+            <button
+                key={theme.id}
+                type="button"
+                onClick={() => setIcon(theme.iconKey)}
+                className="transition"
+                aria-label={`Selecionar tema ${theme.label}`}
+                disabled={isSubmitting}
+            >
+                <div
+                    className={`flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
+                        } ${theme.colorClass}`}
+                >
+                    <ThemeIcon iconKey={theme.iconKey} className="size-5" />
+                </div>
+            </button>
+        ));
+    }
+
     return (
         <Sheet
             open={open}
             onOpenChange={(nextOpen) => {
+                if (isSubmitting && !nextOpen) {
+                    return;
+                }
+
                 if (!nextOpen && mode === "create") {
                     resetForm();
                 }
@@ -100,7 +124,7 @@ export function CategoryFormSheet({
                 onOpenChange(nextOpen);
             }}
         >
-            <SheetContent side="right" className="sm:max-w-md">
+            <SheetContent side="right" className="sm:max-w-md" closeButtonDisabled={isSubmitting}>
                 <SheetHeader>
                     <SheetTitle>{title}</SheetTitle>
                     <SheetDescription>{description}</SheetDescription>
@@ -114,36 +138,30 @@ export function CategoryFormSheet({
                             placeholder="Ex: Conta de Luz"
                             value={name}
                             onChange={(event) => setName(event.target.value)}
+                            disabled={isSubmitting}
                         />
                     </div>
 
                     <div className="space-y-2">
                         <Label>Icones</Label>
                         <div className="grid grid-cols-4 gap-2">
-                            {themes.map((theme) => (
-                                <button
-                                    key={theme.id}
-                                    type="button"
-                                    onClick={() => setIcon(theme.iconKey)}
-                                    className="transition"
-                                    aria-label={`Selecionar tema ${theme.label}`}
-                                >
-                                    <div
-                                        className={`flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
-                                            } ${theme.colorClass}`}
-                                    >
-                                        <ThemeIcon iconKey={theme.iconKey} className="size-5" />
-                                    </div>
-                                </button>
-                            ))}
+                            {renderThemes()}
                         </div>
                     </div>
 
                     <SheetFooter className="px-0">
-                        <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => onOpenChange(false)}
+                            disabled={isSubmitting}>
                             Cancelar
                         </Button>
-                        <Button type="submit" disabled={isSubmitting}>
+                        <Button
+                            type="submit"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting && <Loader2 className="animate-spin size-4 text-muted-foreground" />}
                             Salvar
                         </Button>
                     </SheetFooter>

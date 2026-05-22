@@ -18,8 +18,13 @@ import type { ThemeIconKey } from "../components/theme-icons";
 export type { ThemeIconKey };
 
 export type CategoryTheme = {
-    id: string;
-    label: string;
-    colorClass: string;
-    iconKey: ThemeIconKey;
+  id: string;
+  label: string;
+  colorClass: string;
+  iconKey: ThemeIconKey;
+};
+
+export type CategoryFormValues = {
+  name: string;
+  icon: CategoryApi["icon"];
 };

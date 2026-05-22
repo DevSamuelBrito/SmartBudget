@@ -7,7 +7,7 @@ import { useState } from "react";
 // data
 import data from "../data.json";
 
-import type { CategoryApi, CategoryTheme } from "../types";
+import type { CategoryApi, CategoryFormValues, CategoryTheme } from "../types";
 
 //services
 import {
@@ -15,19 +15,29 @@ import {
   getCategories,
 } from "../services/categorias.service";
 
-const MOCK_USER_ID = "1057a770-6f02-47d9-b791-b449d9e95fd3";
+//toast
+import { toast } from "sonner";
 
-type CreateCategoryPayload = {
-  name: string;
-  icon: CategoryApi["icon"];
-};
+//axios
+import type { AxiosError } from "axios";
+
+const MOCK_USER_ID = "1057a770-6f02-47d9-b791-b449d9e95fd3";
 
 type UpdateCategoryPayload = {
   name: string;
   icon: CategoryApi["icon"];
 };
 
-export function useCategories() {
+
+type UseCategoriesProps = {
+  onCloseCreate: () => void;
+  onCloseEdit: () => void;
+};
+
+export function useCategories({
+  onCloseCreate,
+  onCloseEdit,
+}: UseCategoriesProps) {
   const iconThemes = (data.themes as CategoryTheme[]) ?? [];
 
   const queryClient = useQueryClient();
@@ -42,7 +52,7 @@ export function useCategories() {
   const categories = categoriasQuery.data ?? [];
 
   const createCategoryMutation = useMutation({
-    mutationFn: (payload: { name: string; icon: CategoryApi["icon"] }) =>
+    mutationFn: (payload: CategoryFormValues) =>
       createCategoryRequest({
         userId: MOCK_USER_ID,
         name: payload.name,
@@ -50,17 +60,28 @@ export function useCategories() {
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+
+      toast.success("Categoria criada com sucesso!");
+      onCloseCreate();
+    },
+    onError: (error: AxiosError<{ error: string }>) => {
+      const message = error.response?.data?.error ?? "Erro ao criar categoria.";
+      
+      toast.error(message);
     },
   });
 
-  function createCategory(payload: CreateCategoryPayload) {
+  function createCategory(payload: CategoryFormValues) {
     createCategoryMutation.mutate(payload);
   }
-  
+
+  function handleCreateCategory(payload: CategoryFormValues) {
+    createCategory(payload);
+  }
+
   function setSearchValue(value: string) {
     setSearch(value);
   }
-
 
   function updateCategory(categoryId: string, payload: UpdateCategoryPayload) {
     queryClient.setQueryData<CategoryApi[]>(["categorias"], (current) =>
@@ -84,12 +105,12 @@ export function useCategories() {
 
   return {
     categories,
+    handleCreateCategory,
+    isCreatingCategory: createCategoryMutation.isPending,
 
     search,
     setSearch: setSearchValue,
     iconThemes,
-    createCategory,
-    isCreatingCategory: createCategoryMutation.isPending,
     updateCategory,
     deleteCategory,
   };
