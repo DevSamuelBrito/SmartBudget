@@ -4,8 +4,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 // react
 import { useState } from "react";
 
-// data
-import data from "../data.json";
+// icons
+import { ICONT_THEME } from "../constants/icons-theme";
 
 import type { CategoryApi, CategoryFormValues, CategoryTheme } from "../types";
 
@@ -38,7 +38,7 @@ export function useCategories({
   onCloseCreate,
   onCloseEdit,
 }: UseCategoriesProps) {
-  const iconThemes = (data.themes as CategoryTheme[]) ?? [];
+  const iconThemes = ICONT_THEME;
 
   const queryClient = useQueryClient();
 
@@ -105,6 +105,8 @@ export function useCategories({
 
   return {
     categories,
+    isLoadingCategories: categoriasQuery.isLoading,
+
     handleCreateCategory,
     isCreatingCategory: createCategoryMutation.isPending,
 

@@ -1,8 +1,9 @@
 "use client";
 
-// external
+// react
 import { useState } from "react";
 
+//react query
 import { Plus, Search } from "lucide-react";
 
 // ui
@@ -17,6 +18,8 @@ import { CategoryFormSheet } from "./CategoryForm";
 
 import { CategoryTable } from "./CategoryTable";
 
+import { CategoryTableSkeleton } from "./category-table-skeleton";
+
 import { DeleteCategorySheet } from "./DeleteCategory";
 
 // hooks
@@ -28,6 +31,8 @@ import { CategoryApi } from "../types";
 export function CategoriesScreen() {
     const {
         categories,
+        isLoadingCategories,
+
         iconThemes,
 
         handleCreateCategory,
@@ -63,6 +68,21 @@ export function CategoriesScreen() {
         }
     }
 
+    const renderTable = () => {
+        return (
+            isLoadingCategories ? (
+                <CategoryTableSkeleton />
+            ) : (
+                <CategoryTable
+                    categories={categories}
+                    onEdit={setEditingCategory}
+                    onDelete={setDeletingCategory}
+                    themes={iconThemes}
+                />
+            )
+        );
+    }
+
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -84,12 +104,7 @@ export function CategoriesScreen() {
 
             <Card>
                 <CardContent className="pt-4">
-                    <CategoryTable
-                        categories={categories}
-                        onEdit={setEditingCategory}
-                        onDelete={setDeletingCategory}
-                        themes={iconThemes}
-                    />
+                    {renderTable()}
                 </CardContent>
             </Card>
 
