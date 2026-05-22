@@ -12,6 +12,7 @@ import type { CategoryApi, CategoryFormValues, CategoryTheme } from "../types";
 //services
 import {
   createCategory as createCategoryRequest,
+  deleteCategory as deleteCategoryRequest,
   getCategories,
 } from "../services/categorias.service";
 
@@ -32,12 +33,14 @@ type UseCategoriesProps = {
   initialCategories: CategoryApi[];
   onCloseCreate: () => void;
   onCloseEdit: () => void;
+  onCloseDelete: () => void;
 };
 
 export function useCategories({
   initialCategories,
   onCloseCreate,
   onCloseEdit,
+  onCloseDelete,
 }: UseCategoriesProps) {
   const iconThemes = ICONT_THEME;
 
@@ -74,6 +77,21 @@ export function useCategories({
     },
   });
 
+  const deleteCategoryMutation = useMutation({
+    mutationFn: (categoryId: string) => deleteCategoryRequest(categoryId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+
+      toast.success("Categoria excluída com sucesso!");
+      onCloseDelete();
+    },
+    onError: (error: AxiosError<{ error: string }>) => {
+      const message = error.response?.data?.error ?? "Erro ao excluir categoria.";
+
+      toast.error(message);
+    },
+  });
+
   function createCategory(payload: CategoryFormValues) {
     createCategoryMutation.mutate(payload);
   }
@@ -100,10 +118,8 @@ export function useCategories({
     );
   }
 
-  function deleteCategory(categoryId: string) {
-    queryClient.setQueryData<CategoryApi[]>(["categorias"], (current) =>
-      (current ?? []).filter((category) => category.id !== categoryId),
-    );
+  function handleDeleteCategory(categoryId: string) {
+    deleteCategoryMutation.mutate(categoryId);
   }
 
   return {
@@ -111,11 +127,12 @@ export function useCategories({
 
     handleCreateCategory,
     isCreatingCategory: createCategoryMutation.isPending,
+    isDeletingCategory: deleteCategoryMutation.isPending,
 
     search,
     setSearch: setSearchValue,
     iconThemes,
     updateCategory,
-    deleteCategory,
+    handleDeleteCategory,
   };
 }

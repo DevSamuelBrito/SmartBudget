@@ -1,6 +1,9 @@
 "use client";
 
-// ui
+// icons 
+import { Loader2 } from "lucide-react";
+
+// components
 import { Button } from "@/components/ui/button";
 
 import {
@@ -12,29 +15,40 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 
-// types 
+// types
 import type { CategoryApi } from "../types";
 
 type DeleteCategorySheetProps = {
     category?: CategoryApi;
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    onConfirm: () => void;
+    onSubmit: () => void;
+    isDeleting?: boolean;
 };
 
 export function DeleteCategorySheet({
     category,
     open,
     onOpenChange,
-    onConfirm,
+    onSubmit,
+    isDeleting = false,
 }: DeleteCategorySheetProps) {
     if (!category) {
         return null;
     }
 
     return (
-        <Sheet open={open} onOpenChange={onOpenChange}>
-            <SheetContent side="right" className="sm:max-w-md">
+        <Sheet
+            open={open}
+            onOpenChange={(nextOpen) => {
+                if (isDeleting && !nextOpen) {
+                    return;
+                }
+
+                onOpenChange(nextOpen);
+            }}
+        >
+            <SheetContent side="right" className="sm:max-w-md" closeButtonDisabled={isDeleting}>
                 <SheetHeader>
                     <SheetTitle>Excluir categoria</SheetTitle>
                     <SheetDescription>
@@ -43,10 +57,21 @@ export function DeleteCategorySheet({
                 </SheetHeader>
 
                 <SheetFooter>
-                    <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => onOpenChange(false)}
+                        disabled={isDeleting}
+                    >
                         Cancelar
                     </Button>
-                    <Button type="button" variant="destructive" onClick={onConfirm}>
+                    <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={onSubmit}
+                        disabled={isDeleting}
+                    >
+                        {isDeleting && <Loader2 className="size-4 animate-spin" />}
                         Excluir
                     </Button>
                 </SheetFooter>

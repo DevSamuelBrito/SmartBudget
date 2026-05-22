@@ -17,7 +17,7 @@ export const getCategories = async () => {
 
 export const getCategoriesServer = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-  
+
   if (!baseUrl) {
     throw new Error("NEXT_PUBLIC_API_URL is not defined.");
   }
@@ -37,4 +37,8 @@ export const createCategory = async (payload: CreateCategoryRequest) => {
   const response = await api.post<CategoryApi>("/transactionCategories", payload);
 
   return response.data;
+};
+
+export const deleteCategory = async (categoryId: string) => {
+  await api.delete(`/transactionCategories/${categoryId}`);
 };

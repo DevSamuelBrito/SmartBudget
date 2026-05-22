@@ -39,7 +39,10 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
         handleCreateCategory,
         isCreatingCategory,
 
-        deleteCategory,
+        isDeletingCategory,
+
+        handleDeleteCategory,
+
         search,
         setSearch,
         updateCategory,
@@ -48,6 +51,7 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
             initialCategories,
             onCloseCreate: () => setCreateOpen(false),
             onCloseEdit: () => setEditingCategory(null),
+            onCloseDelete: () => setDeletingCategory(null),
         }
     );
 
@@ -130,13 +134,13 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
                 category={deletingCategory ?? undefined}
                 open={deletingOpen}
                 onOpenChange={closeDeletingSheet}
-                onConfirm={() => {
+                isDeleting={isDeletingCategory}
+                onSubmit={() => {
                     if (!deletingCategory) {
                         return;
                     }
 
-                    deleteCategory(deletingCategory.id);
-                    setDeletingCategory(null);
+                    handleDeleteCategory(deletingCategory.id);
                 }}
             />
         </div>
