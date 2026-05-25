@@ -24,7 +24,4 @@ export type CategoryTheme = {
   iconKey: ThemeIconKey;
 };
 
-export type CategoryFormValues = {
-  name: string;
-  icon: CategoryApi["icon"];
-};
+export type { CategoryFormValues } from "../schemas/category.schema";

@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // ui
 import { Button } from "@/components/ui/button";
@@ -25,8 +25,17 @@ import { ThemeIcon } from "./theme-icons";
 //icons
 import { Loader2 } from "lucide-react";
 
+//RHF
+import { useForm } from "react-hook-form";
+
+//zod
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { categoryFormSchema } from "../schemas/category.schema";
+
 // types 
 import type { CategoryApi, CategoryFormValues, CategoryTheme } from "../types";
+
 
 
 type CategoryFormSheetProps = {
@@ -48,9 +57,24 @@ export function CategoryFormSheet({
     onSubmit,
     isSubmitting = false,
 }: CategoryFormSheetProps) {
+    const defaultIcon = category?.icon ?? themes[0]?.iconKey ?? "";
 
-    const [name, setName] = useState(category?.name ?? "");
-    const [icon, setIcon] = useState(category?.icon ?? themes[0]?.iconKey ?? "");
+    const {
+        register,
+        handleSubmit,
+        setValue,
+        reset,
+        watch,
+        formState: { errors },
+    } = useForm<CategoryFormValues>({
+        resolver: zodResolver(categoryFormSchema),
+        defaultValues: {
+            name: category?.name ?? "",
+            icon: defaultIcon,
+        },
+    });
+
+    const icon = watch("icon");
 
     useEffect(() => {
         if (!open) {
@@ -58,27 +82,23 @@ export function CategoryFormSheet({
             return
         }
 
-        setName(category?.name ?? "")
-        setIcon(category?.icon ?? themes[0]?.iconKey ?? "")
-    }, [open, category, themes])
+        reset({
+            name: category?.name ?? "",
+            icon: category?.icon ?? themes[0]?.iconKey ?? "",
+        });
+    }, [open, category, themes, reset])
 
     function resetForm() {
-        setName("");
-        setIcon(themes[0]?.iconKey ?? "");
+        reset({
+            name: "",
+            icon: themes[0]?.iconKey ?? "",
+        });
     }
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-
-        const trimmedName = name.trim();
-
-        if (!trimmedName || !icon) {
-            return;
-        }
-
+    function submitForm(values: CategoryFormValues) {
         onSubmit({
-            name: trimmedName,
-            icon,
+            name: values.name.trim(),
+            icon: values.icon,
         });
 
     }
@@ -89,26 +109,6 @@ export function CategoryFormSheet({
         mode === "create"
             ? "Escolha um nome e um Icone para a nova categoria."
             : "Atualize o nome e o Icone da categoria.";
-
-    const renderThemes = () => {
-        return themes.map((theme) => (
-            <button
-                key={theme.id}
-                type="button"
-                onClick={() => setIcon(theme.iconKey)}
-                className="transition"
-                aria-label={`Selecionar tema ${theme.label}`}
-                disabled={isSubmitting}
-            >
-                <div
-                    className={`flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
-                        } ${theme.colorClass}`}
-                >
-                    <ThemeIcon iconKey={theme.iconKey} className="size-5" />
-                </div>
-            </button>
-        ));
-    }
 
     return (
         <Sheet
@@ -131,23 +131,45 @@ export function CategoryFormSheet({
                     <SheetDescription>{description}</SheetDescription>
                 </SheetHeader>
 
-                <form id="category-form" className="space-y-4 px-4" onSubmit={handleSubmit}>
+                <form id="category-form" className="space-y-4 px-4" onSubmit={handleSubmit(submitForm)}>
                     <div className="space-y-2">
                         <Label htmlFor="category-name">Nome</Label>
                         <Input
                             id="category-name"
                             placeholder="Ex: Conta de Luz"
-                            value={name}
-                            onChange={(event) => setName(event.target.value)}
+                            {...register("name")}
                             disabled={isSubmitting}
                         />
+                        {errors.name && (
+                            <p className="text-sm text-destructive">{errors.name.message}</p>
+                        )}
                     </div>
 
                     <div className="space-y-2">
                         <Label>Icones</Label>
+                        <input type="hidden" {...register("icon")} />
                         <div className="grid grid-cols-4 gap-2">
-                            {renderThemes()}
+                            {themes.map((theme) => (
+                                <button
+                                    key={theme.id}
+                                    type="button"
+                                    onClick={() => setValue("icon", theme.iconKey, { shouldValidate: true, shouldDirty: true })}
+                                    className="transition"
+                                    aria-label={`Selecionar tema ${theme.label}`}
+                                    disabled={isSubmitting}
+                                >
+                                    <div
+                                        className={`flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
+                                            } ${theme.colorClass}`}
+                                    >
+                                        <ThemeIcon iconKey={theme.iconKey} className="size-5" />
+                                    </div>
+                                </button>
+                            ))}
                         </div>
+                        {errors.icon && (
+                            <p className="text-sm text-destructive">{errors.icon.message}</p>
+                        )}
                     </div>
                 </form>
 
