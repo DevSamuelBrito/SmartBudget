@@ -39,13 +39,15 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
         handleCreateCategory,
         isCreatingCategory,
 
+        handleUpdateCategory,
+        isUpdatingCategory,
+
         isDeletingCategory,
 
         handleDeleteCategory,
 
         search,
         setSearch,
-        updateCategory,
     } = useCategories(
         {
             initialCategories,
@@ -72,6 +74,18 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
         if (!open) {
             setDeletingCategory(null);
         }
+    }
+
+    function handleEditCategory(values: Parameters<typeof handleCreateCategory>[0]) {
+        if (!editingCategory) {
+            return;
+        }
+
+        handleUpdateCategory({
+            id: editingCategory.id,
+            name: values.name,
+            icon: values.icon as CategoryApi["icon"],
+        });
     }
 
 
@@ -120,14 +134,8 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
                 themes={iconThemes}
                 category={editingCategory ?? undefined}
                 onOpenChange={closeEditingSheet}
-                onSubmit={(values) => {
-                    if (!editingCategory) {
-                        return;
-                    }
-
-                    updateCategory(editingCategory.id, values);
-                    setEditingCategory(null);
-                }}
+                onSubmit={handleEditCategory}
+                isSubmitting={isUpdatingCategory}
             />
 
             <DeleteCategorySheet

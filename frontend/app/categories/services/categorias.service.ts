@@ -9,6 +9,12 @@ type CreateCategoryRequest = {
   icon: CategoryApi["icon"];
 };
 
+type UpdateCategoryRequest = {
+  id: string;
+  name: string;
+  icon: CategoryApi["icon"];
+};
+
 export const getCategories = async () => {
   const response = await api.get<CategoryApi[]>("/transactionCategories");
 
@@ -35,6 +41,12 @@ export const getCategoriesServer = async () => {
 
 export const createCategory = async (payload: CreateCategoryRequest) => {
   const response = await api.post<CategoryApi>("/transactionCategories", payload);
+
+  return response.data;
+};
+
+export const updateCategory = async (payload: UpdateCategoryRequest) => {
+  const response = await api.put<CategoryApi>("/transactionCategories", payload);
 
   return response.data;
 };

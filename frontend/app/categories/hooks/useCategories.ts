@@ -7,13 +7,14 @@ import { useState } from "react";
 // icons
 import { ICONT_THEME } from "../constants/icons-theme";
 
-import type { CategoryApi, CategoryFormValues, CategoryTheme } from "../types";
+import type { CategoryApi, CategoryFormValues } from "../types";
 
 //services
 import {
-  createCategory as createCategoryRequest,
-  deleteCategory as deleteCategoryRequest,
   getCategories,
+  createCategory as createCategoryRequest,
+  updateCategory as updateCategoryRequest,
+  deleteCategory as deleteCategoryRequest,
 } from "../services/categorias.service";
 
 //toast
@@ -25,6 +26,7 @@ import type { AxiosError } from "axios";
 const MOCK_USER_ID = "1057a770-6f02-47d9-b791-b449d9e95fd3";
 
 type UpdateCategoryPayload = {
+  id: string;
   name: string;
   icon: CategoryApi["icon"];
 };
@@ -62,7 +64,7 @@ export function useCategories({
       createCategoryRequest({
         userId: MOCK_USER_ID,
         name: payload.name,
-        icon: payload.icon,
+        icon: payload.icon as CategoryApi["icon"],
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categorias"] });
@@ -86,7 +88,23 @@ export function useCategories({
       onCloseDelete();
     },
     onError: (error: AxiosError<{ error: string }>) => {
-      const message = error.response?.data?.error ?? "Erro ao excluir categoria.";
+      const message =
+        error.response?.data?.error ?? "Erro ao excluir categoria.";
+
+      toast.error(message);
+    },
+  });
+
+  const updateCategoryMutation = useMutation({
+    mutationFn: (payload: UpdateCategoryPayload) => updateCategoryRequest(payload),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+
+      toast.success("Categoria atualizada com sucesso!");
+      onCloseEdit();
+    },
+    onError: (error: AxiosError<{ error: string }>) => {
+      const message = error.response?.data?.error ?? "Erro ao atualizar categoria.";
 
       toast.error(message);
     },
@@ -100,22 +118,12 @@ export function useCategories({
     createCategory(payload);
   }
 
-  function setSearchValue(value: string) {
-    setSearch(value);
+  function handleUpdateCategory(payload: UpdateCategoryPayload) {
+    updateCategoryMutation.mutate(payload);
   }
 
-  function updateCategory(categoryId: string, payload: UpdateCategoryPayload) {
-    queryClient.setQueryData<CategoryApi[]>(["categorias"], (current) =>
-      (current ?? []).map((category) =>
-        category.id === categoryId
-          ? {
-              ...category,
-              ...payload,
-              updatedAt: new Date().toISOString(),
-            }
-          : category,
-      ),
-    );
+  function setSearchValue(value: string) {
+    setSearch(value);
   }
 
   function handleDeleteCategory(categoryId: string) {
@@ -126,13 +134,14 @@ export function useCategories({
     categories,
 
     handleCreateCategory,
+    handleUpdateCategory,
     isCreatingCategory: createCategoryMutation.isPending,
+    isUpdatingCategory: updateCategoryMutation.isPending,
     isDeletingCategory: deleteCategoryMutation.isPending,
 
     search,
     setSearch: setSearchValue,
     iconThemes,
-    updateCategory,
     handleDeleteCategory,
   };
 }
