@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 // ui
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,7 @@ import { ThemeIcon } from "./theme-icons";
 import { Loader2 } from "lucide-react";
 
 //RHF
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 //zod
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,14 +57,16 @@ export function CategoryFormSheet({
     onSubmit,
     isSubmitting = false,
 }: CategoryFormSheetProps) {
+    "use no memo"
+
     const defaultIcon = category?.icon ?? themes[0]?.iconKey ?? "";
 
     const {
         register,
         handleSubmit,
+        control,
         setValue,
         reset,
-        watch,
         formState: { errors },
     } = useForm<CategoryFormValues>({
         resolver: zodResolver(categoryFormSchema),
@@ -74,7 +76,17 @@ export function CategoryFormSheet({
         },
     });
 
-    const icon = watch("icon");
+    const icon = useWatch({ control, name: "icon" });
+
+    const resetForm = useCallback(
+        (nextCategory?: CategoryApi) => {
+            reset({
+                name: nextCategory?.name ?? "",
+                icon: nextCategory?.icon ?? themes[0]?.iconKey ?? "",
+            });
+        },
+        [reset, themes],
+    );
 
     useEffect(() => {
         if (!open) {
@@ -82,18 +94,8 @@ export function CategoryFormSheet({
             return
         }
 
-        reset({
-            name: category?.name ?? "",
-            icon: category?.icon ?? themes[0]?.iconKey ?? "",
-        });
-    }, [open, category, themes, reset])
-
-    function resetForm() {
-        reset({
-            name: "",
-            icon: themes[0]?.iconKey ?? "",
-        });
-    }
+        resetForm(category);
+    }, [open, category, resetForm]);
 
     function submitForm(values: CategoryFormValues) {
         onSubmit({
@@ -182,7 +184,7 @@ export function CategoryFormSheet({
                         Cancelar
                     </Button>
                     <Button
-                        form="category-form"  
+                        form="category-form"
                         type="submit"
                         disabled={isSubmitting}
                     >
