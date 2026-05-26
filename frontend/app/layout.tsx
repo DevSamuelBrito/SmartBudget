@@ -1,3 +1,6 @@
+//react
+import { Suspense } from "react";
+
 //next
 import type { Metadata } from "next";
 
@@ -19,6 +22,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Providers } from "./providers/providers";
 
 import { Toaster } from "@/components/ui/sonner";
+
+import { NavigationProgress } from "@/components/NavigationProgress";
 
 
 export const metadata: Metadata = {
@@ -50,6 +55,9 @@ export default function RootLayout({
                   } as React.CSSProperties
                 }
               >
+                <Suspense fallback={null}>
+                  <NavigationProgress />
+                </Suspense>
                 <AppSidebar variant="inset" />
                 <SidebarInset>
                   <SiteHeader />

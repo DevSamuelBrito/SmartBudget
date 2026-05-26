@@ -196,3 +196,20 @@
     letter-spacing: var(--tracking-normal);
   }
 }
+
+#nprogress {
+  pointer-events: none;
+  z-index: 999999 !important;
+}
+
+#nprogress .bar {
+  background: var(--primary) !important;
+  position: fixed !important;
+  z-index: 99999 !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 4px !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
