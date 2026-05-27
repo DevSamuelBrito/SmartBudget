@@ -1,3 +1,7 @@
+//libs
+import { api } from "@/lib/axios";
+
+//types
 import type { TransactionApi } from "../types";
 
 export const getTransactionsServer = async () => {
@@ -16,4 +20,10 @@ export const getTransactionsServer = async () => {
   }
 
   return (await response.json()) as TransactionApi[];
+};
+
+export const getTransactions = async () => {
+  const response = await api.get<TransactionApi[]>("/transactions");
+
+  return response.data;
 };

@@ -19,7 +19,7 @@ import { SiteHeader } from "@/components/site-header";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 //providers
-import { Providers } from "./providers/providers";
+import { Providers } from "../providers/providers";
 
 import { Toaster } from "@/components/ui/sonner";
 
