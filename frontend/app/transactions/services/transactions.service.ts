@@ -4,6 +4,16 @@ import { api } from "@/lib/axios";
 //types
 import type { TransactionApi } from "../types";
 
+export type CreateTransactionRequest = {
+  userId: string;
+  amount: number;
+  transactionDate: string;
+  transactionType: TransactionApi["type"];
+  recurrence: TransactionApi["recurrence"];
+  description: string;
+  transactionCategoryId: string | null;
+};
+
 export const getTransactionsServer = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -24,6 +34,12 @@ export const getTransactionsServer = async () => {
 
 export const getTransactions = async () => {
   const response = await api.get<TransactionApi[]>("/transactions");
+
+  return response.data;
+};
+
+export const createTransaction = async (payload: CreateTransactionRequest) => {
+  const response = await api.post<TransactionApi>("/transactions", payload);
 
   return response.data;
 };
