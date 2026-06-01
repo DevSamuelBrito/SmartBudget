@@ -8,6 +8,7 @@ import { useState } from "react";
 import {
   getTransactions,
   createTransaction,
+  updateTransaction,
   deleteTransaction,
 } from "../services/transactions.service";
 
@@ -32,14 +33,18 @@ const MOCK_USER_ID = "1057a770-6f02-47d9-b791-b449d9e95fd3";
 type UseTransactionsProps = {
   initialTransactions: TransactionApi[];
   onCloseCreate: () => void;
+  onCloseEdit: () => void;
   onCloseDelete: () => void;
 };
+
+type UpdateTransactionPayload = TransactionFormValues & { id: string };
 
 type CreateTransactionPayload = TransactionFormValues;
 
 export function useTransactions({
   initialTransactions,
   onCloseCreate,
+  onCloseEdit,
   onCloseDelete,
 }: UseTransactionsProps) {
   const [search, setSearch] = useState("");
@@ -78,6 +83,32 @@ export function useTransactions({
     },
     onError: (error: AxiosError<{ error: string }>) => {
       const message = error.response?.data?.error ?? "Erro ao criar transação.";
+
+      toast.error(message);
+    },
+  });
+
+  const updateTransactionMutation = useMutation({
+    mutationFn: (payload: UpdateTransactionPayload) =>
+      updateTransaction({
+        id: payload.id,
+        userId: MOCK_USER_ID,
+        amount: payload.amount,
+        transactionDate: payload.transactionDate,
+        transactionType: payload.transactionType,
+        recurrence: payload.recurrence,
+        description: payload.description,
+        transactionCategoryId: payload.transactionCategoryId,
+      }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
+      toast.success("Transação atualizada com sucesso!");
+      onCloseEdit();
+    },
+    onError: (error: AxiosError<{ error: string }>) => {
+      const message =
+        error.response?.data?.error ?? "Erro ao atualizar transação.";
 
       toast.error(message);
     },
@@ -129,6 +160,10 @@ export function useTransactions({
     createTransactionMutation.mutate(payload);
   }
 
+  function handleUpdateTransaction(payload: UpdateTransactionPayload) {
+    updateTransactionMutation.mutate(payload);
+  }
+
   function handleDeleteTransaction(transactionId: string) {
     deleteTransactionMutation.mutate(transactionId);
   }
@@ -139,8 +174,10 @@ export function useTransactions({
     search,
     setSearch,
     handleCreateTransaction,
+    handleUpdateTransaction,
     handleDeleteTransaction,
     isCreatingTransaction: createTransactionMutation.isPending,
+    isUpdatingTransaction: updateTransactionMutation.isPending,
     isDeletingTransaction: deleteTransactionMutation.isPending,
   };
 }

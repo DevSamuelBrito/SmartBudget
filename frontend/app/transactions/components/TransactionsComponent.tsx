@@ -34,8 +34,10 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
         transactions,
         categories,
         handleCreateTransaction,
+        handleUpdateTransaction,
         handleDeleteTransaction,
         isCreatingTransaction,
+        isUpdatingTransaction,
         isDeletingTransaction,
         search,
         setSearch,
@@ -43,18 +45,38 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
         {
             initialTransactions,
             onCloseCreate: () => setCreateOpen(false),
+            onCloseEdit: () => setEditingTransaction(null),
             onCloseDelete: () => setDeletingTransaction(null),
         }
     );
 
     const [createOpen, setCreateOpen] = useState(false);
+    const [editingTransaction, setEditingTransaction] = useState<TransactionApi | null>(null);
     const [deletingTransaction, setDeletingTransaction] = useState<TransactionApi | null>(null);
+    const editingOpen = Boolean(editingTransaction);
     const deletingOpen = Boolean(deletingTransaction);
+
+    function closeEditingSheet(open: boolean) {
+        if (!open) {
+            setEditingTransaction(null);
+        }
+    }
 
     function closeDeletingSheet(open: boolean) {
         if (!open) {
             setDeletingTransaction(null);
         }
+    }
+
+    function handleEditTransaction(values: Parameters<typeof handleCreateTransaction>[0]) {
+        if (!editingTransaction) {
+            return;
+        }
+
+        handleUpdateTransaction({
+            id: editingTransaction.id,
+            ...values,
+        });
     }
 
     return (
@@ -80,6 +102,7 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                 <CardContent className="pt-4">
                     <TransactionTable
                         transactions={transactions}
+                        onEdit={setEditingTransaction}
                         onDelete={setDeletingTransaction}
                     />
                 </CardContent>
@@ -87,10 +110,21 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
 
             <TransactionFormSheet
                 open={createOpen}
+                mode="create"
                 categories={categories}
                 onOpenChange={setCreateOpen}
                 onSubmit={handleCreateTransaction}
                 isSubmitting={isCreatingTransaction}
+            />
+
+            <TransactionFormSheet
+                open={editingOpen}
+                mode="edit"
+                categories={categories}
+                transaction={editingTransaction ?? undefined}
+                onOpenChange={closeEditingSheet}
+                onSubmit={handleEditTransaction}
+                isSubmitting={isUpdatingTransaction}
             />
 
             <DeleteTransactionSheet

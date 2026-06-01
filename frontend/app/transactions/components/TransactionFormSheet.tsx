@@ -56,9 +56,13 @@ import type { CategoryApi } from "@/app/categories/types";
 
 import { transactionFormSchema, type TransactionFormValues } from "../schemas/transaction.schema";
 
+import type { TransactionApi } from "../types";
+
 type TransactionFormSheetProps = {
     open: boolean;
+    mode: "create" | "edit";
     categories: CategoryApi[];
+    transaction?: TransactionApi;
     onOpenChange: (open: boolean) => void;
     onSubmit: (values: TransactionFormValues) => void;
     isSubmitting?: boolean;
@@ -86,7 +90,9 @@ const recurrenceOptions = [
 
 export function TransactionFormSheet({
     open,
+    mode,
     categories,
+    transaction,
     onOpenChange,
     onSubmit,
     isSubmitting = false,
@@ -150,12 +156,29 @@ export function TransactionFormSheet({
         );
     }, [categories, categoryQuery]);
 
-    const resetForm = useCallback(() => {
-        reset(defaultTransactionValues);
-        setCategoryQuery("");
-        setCategoryOpen(false);
-        setDateOpen(false);
-    }, [reset]);
+    const resetForm = useCallback(
+        (nextTransaction?: TransactionApi) => {
+            if (nextTransaction) {
+                const dateStr = nextTransaction.transactionDate.slice(0, 10);
+                reset({
+                    amount: nextTransaction.amount,
+                    transactionDate: dateStr,
+                    transactionType: nextTransaction.type,
+                    recurrence: nextTransaction.recurrence,
+                    description: nextTransaction.description,
+                    transactionCategoryId: nextTransaction.transactionCategoryId,
+                });
+                const cat = categories.find((c) => c.id === nextTransaction.transactionCategoryId);
+                setCategoryQuery(cat?.name ?? "");
+            } else {
+                reset(defaultTransactionValues);
+                setCategoryQuery("");
+            }
+            setCategoryOpen(false);
+            setDateOpen(false);
+        },
+        [reset, categories],
+    );
 
     useEffect(() => {
         if (!open) {
@@ -163,8 +186,8 @@ export function TransactionFormSheet({
             return;
         }
 
-        resetForm();
-    }, [open, resetForm]);
+        resetForm(transaction);
+    }, [open, transaction, resetForm]);
 
     useEffect(() => {
         if (selectedCategory) {
@@ -210,9 +233,12 @@ export function TransactionFormSheet({
         setCategoryOpen(false);
     }
 
-    const title = "Adicionar nova transação";
+    const title = mode === "create" ? "Adicionar nova transação" : "Editar transação";
 
-    const description = "Preencha os dados da transação.";
+    const description =
+        mode === "create"
+            ? "Preencha os dados da transação."
+            : "Atualize os dados da transação.";
 
     return (
         <Sheet

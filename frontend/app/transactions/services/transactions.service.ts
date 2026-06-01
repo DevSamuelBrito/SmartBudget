@@ -44,6 +44,17 @@ export const createTransaction = async (payload: CreateTransactionRequest) => {
   return response.data;
 };
 
+export type UpdateTransactionRequest = CreateTransactionRequest & {
+  id: string;
+};
+
+export const updateTransaction = async (payload: UpdateTransactionRequest) => {
+  const { id, ...body } = payload;
+  const response = await api.put<TransactionApi>(`/transactions/${id}`, body);
+
+  return response.data;
+};
+
 export const deleteTransaction = async (transactionId: string) => {
   await api.delete(`/transactions/${transactionId}`);
 };
