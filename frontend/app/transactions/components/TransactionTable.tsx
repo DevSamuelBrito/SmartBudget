@@ -1,29 +1,34 @@
 //react
 import { useRef } from "react";
 
-//components
+// libs
+import { Pencil, Trash2 } from "lucide-react";
+
+// ui
+import { Button } from "@/components/ui/button";
+
+// components
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-//types
+// types
 import type { TransactionApi } from "../types";
 
-//utils
-import { 
-  formatDate, 
-  formatCurrency, 
-  formatBoolean,
-  formatTransactionType,
-  formatRecurrence 
+// utils
+import {
+    formatDate,
+    formatCurrency,
+    formatBoolean,
+    formatTransactionType,
+    formatRecurrence,
 } from "@/lib/utils/formatters";
 
 type TransactionTableProps = {
-    transactions: TransactionApi[]
+    transactions: TransactionApi[];
+    onEdit?: (transaction: TransactionApi) => void;
+    onDelete?: (transaction: TransactionApi) => void;
 };
 
-const TransactionTable = ({ transactions }: TransactionTableProps) => {
-
-    
-
+const TransactionTable = ({ transactions, onEdit, onDelete }: TransactionTableProps) => {
     const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
     const renderTableBody = () => {
@@ -39,6 +44,29 @@ const TransactionTable = ({ transactions }: TransactionTableProps) => {
                     <TableCell>{transaction.originTransactionId ?? "-"}</TableCell>
                     <TableCell>{formatDate(transaction.createdAt)}</TableCell>
                     <TableCell>{formatDate(transaction.updatedAt)}</TableCell>
+                    <TableCell>
+                        <div className="flex items-center gap-1">
+                            <Button
+                                size="icon-sm"
+                                variant="ghost"
+                                onClick={() => onEdit?.(transaction)}
+                                aria-label={`Editar ${transaction.description}`}
+                                disabled={!onEdit}
+                            >
+                                <Pencil className="size-4" />
+                            </Button>
+
+                            <Button
+                                size="icon-sm"
+                                variant="ghost"
+                                onClick={() => onDelete?.(transaction)}
+                                aria-label={`Excluir ${transaction.description}`}
+                                disabled={!onDelete}
+                            >
+                                <Trash2 className="size-4 text-destructive" />
+                            </Button>
+                        </div>
+                    </TableCell>
                 </TableRow>
             );
         });
@@ -59,15 +87,14 @@ const TransactionTable = ({ transactions }: TransactionTableProps) => {
                             <TableHead>Transação origem</TableHead>
                             <TableHead>Criado em</TableHead>
                             <TableHead>Atualizado em</TableHead>
+                            <TableHead className="w-28">Ações</TableHead>
                         </TableRow>
                     </TableHeader>
-                    <TableBody>
-                        {renderTableBody()}
-                    </TableBody>
+                    <TableBody>{renderTableBody()}</TableBody>
                 </Table>
             </div>
         </div>
     );
-}
+};
 
 export default TransactionTable;

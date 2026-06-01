@@ -8,6 +8,7 @@ import { useState } from "react";
 import {
   getTransactions,
   createTransaction,
+  deleteTransaction,
 } from "../services/transactions.service";
 
 //types
@@ -31,6 +32,7 @@ const MOCK_USER_ID = "1057a770-6f02-47d9-b791-b449d9e95fd3";
 type UseTransactionsProps = {
   initialTransactions: TransactionApi[];
   onCloseCreate: () => void;
+  onCloseDelete: () => void;
 };
 
 type CreateTransactionPayload = TransactionFormValues;
@@ -38,6 +40,7 @@ type CreateTransactionPayload = TransactionFormValues;
 export function useTransactions({
   initialTransactions,
   onCloseCreate,
+  onCloseDelete,
 }: UseTransactionsProps) {
   const [search, setSearch] = useState("");
 
@@ -80,6 +83,22 @@ export function useTransactions({
     },
   });
 
+  const deleteTransactionMutation = useMutation({
+    mutationFn: (transactionId: string) => deleteTransaction(transactionId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+
+      toast.success("Transação excluída com sucesso!");
+      onCloseDelete();
+    },
+    onError: (error: AxiosError<{ error: string }>) => {
+      const message =
+        error.response?.data?.error ?? "Erro ao excluir transação.";
+
+      toast.error(message);
+    },
+  });
+
   const categories = categoriesQuery.data ?? [];
 
   const normalizedSearch = search.trim().toLowerCase();
@@ -110,13 +129,19 @@ export function useTransactions({
     createTransactionMutation.mutate(payload);
   }
 
+  function handleDeleteTransaction(transactionId: string) {
+    deleteTransactionMutation.mutate(transactionId);
+  }
+
   return {
     transactions,
     categories,
     search,
     setSearch,
     handleCreateTransaction,
+    handleDeleteTransaction,
     isCreatingTransaction: createTransactionMutation.isPending,
+    isDeletingTransaction: deleteTransactionMutation.isPending,
   };
 }
 

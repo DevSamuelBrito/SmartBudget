@@ -43,3 +43,7 @@ export const createTransaction = async (payload: CreateTransactionRequest) => {
 
   return response.data;
 };
+
+export const deleteTransaction = async (transactionId: string) => {
+  await api.delete(`/transactions/${transactionId}`);
+};

@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 
 import { TransactionFormSheet } from "./TransactionFormSheet";
 
+import { DeleteTransactionSheet } from "./DeleteTransaction";
+
 import TransactionTable from "./TransactionTable";
 
 // hooks
@@ -32,17 +34,28 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
         transactions,
         categories,
         handleCreateTransaction,
+        handleDeleteTransaction,
         isCreatingTransaction,
+        isDeletingTransaction,
         search,
         setSearch,
     } = useTransactions(
         {
             initialTransactions,
             onCloseCreate: () => setCreateOpen(false),
+            onCloseDelete: () => setDeletingTransaction(null),
         }
     );
 
     const [createOpen, setCreateOpen] = useState(false);
+    const [deletingTransaction, setDeletingTransaction] = useState<TransactionApi | null>(null);
+    const deletingOpen = Boolean(deletingTransaction);
+
+    function closeDeletingSheet(open: boolean) {
+        if (!open) {
+            setDeletingTransaction(null);
+        }
+    }
 
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
@@ -65,7 +78,10 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
 
             <Card>
                 <CardContent className="pt-4">
-                    <TransactionTable transactions={transactions} />
+                    <TransactionTable
+                        transactions={transactions}
+                        onDelete={setDeletingTransaction}
+                    />
                 </CardContent>
             </Card>
 
@@ -75,6 +91,20 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                 onOpenChange={setCreateOpen}
                 onSubmit={handleCreateTransaction}
                 isSubmitting={isCreatingTransaction}
+            />
+
+            <DeleteTransactionSheet
+                transaction={deletingTransaction ?? undefined}
+                open={deletingOpen}
+                onOpenChange={closeDeletingSheet}
+                isDeleting={isDeletingTransaction}
+                onSubmit={() => {
+                    if (!deletingTransaction) {
+                        return;
+                    }
+
+                    handleDeleteTransaction(deletingTransaction.id);
+                }}
             />
         </div>
     );
