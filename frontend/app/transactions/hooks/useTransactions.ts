@@ -17,7 +17,7 @@ import type { CategoryApi } from "@/app/categories/types";
 
 import { getCategories } from "@/app/categories/services/categorias.service";
 
-import type { TransactionApi } from "../types";
+import type { TransactionWithCategory } from "../types";
 
 //schema
 import type { TransactionFormValues } from "../schemas/transaction.schema";
@@ -31,7 +31,7 @@ import type { AxiosError } from "axios";
 const MOCK_USER_ID = "1057a770-6f02-47d9-b791-b449d9e95fd3";
 
 type UseTransactionsProps = {
-  initialTransactions: TransactionApi[];
+  initialTransactions: TransactionWithCategory[];
   onCloseCreate: () => void;
   onCloseEdit: () => void;
   onCloseDelete: () => void;
@@ -49,7 +49,7 @@ export function useTransactions({
 }: UseTransactionsProps) {
   const [search, setSearch] = useState("");
 
-  const transactionsQuery = useQuery({
+  const transactionsQuery = useQuery<TransactionWithCategory[]>({
     queryKey: ["transactions"],
     queryFn: getTransactions,
     initialData: initialTransactions,
@@ -131,18 +131,23 @@ export function useTransactions({
   });
 
   const categories = categoriesQuery.data ?? [];
+  const categoryMap = new Map(categories.map((category) => [category.id, category]));
 
   const normalizedSearch = search.trim().toLowerCase();
 
-  const transactions = (transactionsQuery.data ?? []).filter((transaction) => {
+  const transactions = (transactionsQuery.data ?? [])
+    .map((transaction) => ({
+      ...transaction,
+      category: transaction.transactionCategoryId
+        ? categoryMap.get(transaction.transactionCategoryId)
+        : undefined,
+    }))
+    .filter((transaction) => {
     if (!normalizedSearch) {
       return true;
     }
 
-    const categoryName =
-      categories.find(
-        (category) => category.id === transaction.transactionCategoryId,
-      )?.name ?? "";
+    const categoryName = transaction.category?.name ?? "";
 
     const searchableValues = [
       transaction.description,

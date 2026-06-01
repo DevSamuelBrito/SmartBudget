@@ -17,6 +17,8 @@ import {
   deleteCategory as deleteCategoryRequest,
 } from "../services/categorias.service";
 
+import { invalidateCategoriesCache } from "../actions/categories.actions";
+
 //toast
 import { toast } from "sonner";
 
@@ -68,6 +70,7 @@ export function useCategories({
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+      await invalidateCategoriesCache();
 
       toast.success("Categoria criada com sucesso!");
       onCloseCreate();
@@ -83,6 +86,7 @@ export function useCategories({
     mutationFn: (categoryId: string) => deleteCategoryRequest(categoryId),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+      await invalidateCategoriesCache();
 
       toast.success("Categoria excluída com sucesso!");
       onCloseDelete();
@@ -99,6 +103,7 @@ export function useCategories({
     mutationFn: (payload: UpdateCategoryPayload) => updateCategoryRequest(payload),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+      await invalidateCategoriesCache();
 
       toast.success("Categoria atualizada com sucesso!");
       onCloseEdit();

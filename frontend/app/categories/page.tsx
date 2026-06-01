@@ -1,11 +1,11 @@
 // apis
-import { getCategoriesServer } from "./services/categorias.service";
+import { getCategoriesServerCached } from "./services/categorias.service";
 
 // components
 import { CategoriesScreen } from "./components/CategoriesComponent";
 
 export default async function CategoriesPage() {
-    const initialCategories = await getCategoriesServer();
+    const initialCategories = await getCategoriesServerCached();
 
     return <CategoriesScreen initialCategories={initialCategories} />;
 }

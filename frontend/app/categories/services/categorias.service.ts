@@ -21,7 +21,9 @@ export const getCategories = async () => {
   return response.data;
 };
 
-export const getCategoriesServer = async () => {
+const CATEGORIES_REVALIDATE_SECONDS = 60 * 30;
+
+export const getCategoriesServerCached = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!baseUrl) {
@@ -29,7 +31,11 @@ export const getCategoriesServer = async () => {
   }
 
   const response = await fetch(`${baseUrl}transactionCategories`, {
-    cache: "no-store",
+    cache: "force-cache",
+    next: {
+      revalidate: CATEGORIES_REVALIDATE_SECONDS,
+      tags: ["categories"],
+    },
   });
 
   if (!response.ok) {
@@ -40,13 +46,19 @@ export const getCategoriesServer = async () => {
 };
 
 export const createCategory = async (payload: CreateCategoryRequest) => {
-  const response = await api.post<CategoryApi>("/transactionCategories", payload);
+  const response = await api.post<CategoryApi>(
+    "/transactionCategories",
+    payload,
+  );
 
   return response.data;
 };
 
 export const updateCategory = async (payload: UpdateCategoryRequest) => {
-  const response = await api.put<CategoryApi>("/transactionCategories", payload);
+  const response = await api.put<CategoryApi>(
+    "/transactionCategories",
+    payload,
+  );
 
   return response.data;
 };

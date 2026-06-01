@@ -16,3 +16,9 @@ export type TransactionApi = {
   createdAt: string;
   updatedAt: string;
 };
+
+import type { CategoryApi } from "@/app/categories/types";
+
+export type TransactionWithCategory = TransactionApi & {
+  category?: CategoryApi;
+};

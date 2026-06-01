@@ -23,10 +23,10 @@ import TransactionTable from "./TransactionTable";
 import { useTransactions } from "../hooks/useTransactions";
 
 // types
-import type { TransactionApi } from "../types";
+import type { TransactionWithCategory } from "../types";
 
 type TransactionsScreenProps = {
-    initialTransactions: TransactionApi[];
+    initialTransactions: TransactionWithCategory[];
 };
 
 const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) => {
@@ -51,8 +51,8 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
     );
 
     const [createOpen, setCreateOpen] = useState(false);
-    const [editingTransaction, setEditingTransaction] = useState<TransactionApi | null>(null);
-    const [deletingTransaction, setDeletingTransaction] = useState<TransactionApi | null>(null);
+    const [editingTransaction, setEditingTransaction] = useState<TransactionWithCategory | null>(null);
+    const [deletingTransaction, setDeletingTransaction] = useState<TransactionWithCategory | null>(null);
     const editingOpen = Boolean(editingTransaction);
     const deletingOpen = Boolean(deletingTransaction);
 
