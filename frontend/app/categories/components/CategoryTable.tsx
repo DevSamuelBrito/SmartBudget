@@ -8,6 +8,8 @@ import { Pencil, Trash2 } from "lucide-react";
 // ui
 import { Button } from "@/components/ui/button";
 
+import { Progress } from "@/components/ui/progress";
+
 import {
     Table,
     TableBody,
@@ -21,20 +23,27 @@ import {
 import { ThemeIcon } from "./theme-icons";
 
 // types 
-import type { CategoryApi, CategoryTheme } from "../types";
+import type { BudgetByPeriodApi, CategoryApi, CategoryTheme } from "../types";
+
+// utils
+import { formatCurrency } from "@/lib/utils/formatters";
 
 type CategoryTableProps = {
     categories: CategoryApi[];
     onEdit: (category: CategoryApi) => void;
     onDelete: (category: CategoryApi) => void;
+    onSetBudget: (category: CategoryApi) => void;
     themes: CategoryTheme[];
+    budgetsByCategoryId: Map<string, BudgetByPeriodApi>;
 };
 
 export function CategoryTable({
     categories,
     onEdit,
     onDelete,
+    onSetBudget,
     themes,
+    budgetsByCategoryId,
 }: CategoryTableProps) {
     const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
@@ -43,9 +52,23 @@ export function CategoryTable({
         return themes.find((theme) => theme.iconKey === iconKey);
     }
 
+    function getProgressClassName(status: BudgetByPeriodApi["status"]) {
+        if (status === "Exceeded" || status === 3) {
+            return "bg-red-500";
+        }
+
+        if (status === "Warning" || status === 2) {
+            return "bg-amber-500";
+        }
+
+        return "bg-emerald-500";
+    }
+
     const renderTableBody = () => {
         return categories.map((category) => {
             const theme = getTheme(category.icon);
+            const budget = budgetsByCategoryId.get(category.id);
+            const remainingAmount = budget ? budget.limitAmount - budget.spentAmount : null;
 
             return (
                 <TableRow key={category.id}>
@@ -64,7 +87,45 @@ export function CategoryTable({
                     <TableCell>{category.name}</TableCell>
 
                     <TableCell>
+                        {budget ? formatCurrency(budget.limitAmount) : "—"}
+                    </TableCell>
+
+                    <TableCell>
+                        {budget ? formatCurrency(budget.spentAmount) : "—"}
+                    </TableCell>
+
+                    <TableCell>
+                        {budget && typeof remainingAmount === "number" ? formatCurrency(remainingAmount) : "—"}
+                    </TableCell>
+
+                    <TableCell>
+                        {budget ? (
+                            <div className="min-w-42.5 space-y-1">
+                                <Progress
+                                    value={Math.min(100, Math.max(0, budget.percentage))}
+                                    className="h-3"
+                                    indicatorClassName={getProgressClassName(budget.status)}
+                                />
+                                <p className="text-xs text-muted-foreground">
+                                    {budget.percentage.toFixed(1)}%
+                                </p>
+                            </div>
+                        ) : (
+                            "—"
+                        )}
+                    </TableCell>
+
+                    <TableCell>
                         <div className="flex items-center gap-1">
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => onSetBudget(category)}
+                                aria-label={`Definir orcamento da categoria ${category.name}`}
+                            >
+                                Definir orcamento
+                            </Button>
+
                             <Button
                                 size="icon-sm"
                                 variant="ghost"
@@ -98,7 +159,11 @@ export function CategoryTable({
                         <TableRow>
                             <TableHead className="w-24">Icone</TableHead>
                             <TableHead>Nome</TableHead>
-                            <TableHead className="w-28">Ações</TableHead>
+                            <TableHead>Orcamento</TableHead>
+                            <TableHead>Gasto</TableHead>
+                            <TableHead>Restante</TableHead>
+                            <TableHead>Progresso</TableHead>
+                            <TableHead className="w-60">Ações</TableHead>
                         </TableRow>
                     </TableHeader>
 

@@ -1,7 +1,15 @@
 "use server";
 
-import { revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 export async function invalidateCategoriesCache() {
-  revalidateTag("categories");
+  revalidatePath("categories");
+}
+
+export async function invalidateBudgetsCache(period?: { month: number; year: number }) {
+  revalidatePath("budgets");
+
+  if (period) {
+    revalidatePath(`budgets-${period.year}-${period.month}`);
+  }
 }

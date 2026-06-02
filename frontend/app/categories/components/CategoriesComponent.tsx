@@ -13,26 +13,40 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
 
-// components
+import { MonthYearSelector } from "@/components/shared/month-year-selector";
+
 import { CategoryFormSheet } from "./CategoryForm";
 
 import { CategoryTable } from "./CategoryTable";
 
 import { DeleteCategorySheet } from "./DeleteCategory";
 
+import { BudgetLimitSheet } from "./BudgetLimitSheet";
+
 // hooks
 import { useCategories } from "../hooks/useCategories";
 
 //types
-import { CategoryApi } from "../types";
+import type { BudgetByPeriodApi, CategoryApi } from "../types";
 
 type CategoriesScreenProps = {
     initialCategories: CategoryApi[];
+    initialBudgets: BudgetByPeriodApi[];
+    initialMonth: number;
+    initialYear: number;
 };
 
-export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
+export function CategoriesScreen({
+    initialCategories,
+    initialBudgets,
+    initialMonth,
+    initialYear,
+}: CategoriesScreenProps) {
     const {
         categories,
+        selectedPeriod,
+        setSelectedPeriod,
+        budgetMapByCategoryId,
 
         iconThemes,
 
@@ -45,24 +59,32 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
         isDeletingCategory,
 
         handleDeleteCategory,
+        handleUpsertBudget,
+        isSavingBudget,
 
         search,
         setSearch,
     } = useCategories(
         {
             initialCategories,
+            initialBudgets,
+            initialMonth,
+            initialYear,
             onCloseCreate: () => setCreateOpen(false),
             onCloseEdit: () => setEditingCategory(null),
             onCloseDelete: () => setDeletingCategory(null),
+            onCloseBudget: () => setBudgetingCategory(null),
         }
     );
 
     const [editingCategory, setEditingCategory] = useState<CategoryApi | null>(null);
     const [deletingCategory, setDeletingCategory] = useState<CategoryApi | null>(null);
+    const [budgetingCategory, setBudgetingCategory] = useState<CategoryApi | null>(null);
 
     const [createOpen, setCreateOpen] = useState(false);
     const editingOpen = Boolean(editingCategory);
     const deletingOpen = Boolean(deletingCategory);
+    const budgetingOpen = Boolean(budgetingCategory);
 
     function closeEditingSheet(open: boolean) {
         if (!open) {
@@ -73,6 +95,12 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
     function closeDeletingSheet(open: boolean) {
         if (!open) {
             setDeletingCategory(null);
+        }
+    }
+
+    function closeBudgetSheet(open: boolean) {
+        if (!open) {
+            setBudgetingCategory(null);
         }
     }
 
@@ -102,6 +130,12 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
                     />
                 </div>
 
+                <MonthYearSelector
+                    month={selectedPeriod.month}
+                    year={selectedPeriod.year}
+                    onChange={setSelectedPeriod}
+                />
+
                 <Button onClick={() => setCreateOpen(true)}>
                     <Plus className="size-4" />
                     Criar nova categoria
@@ -114,7 +148,9 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
                         categories={categories}
                         onEdit={setEditingCategory}
                         onDelete={setDeletingCategory}
+                        onSetBudget={setBudgetingCategory}
                         themes={iconThemes}
+                        budgetsByCategoryId={budgetMapByCategoryId}
                     />
                 </CardContent>
             </Card>
@@ -149,6 +185,29 @@ export function CategoriesScreen({ initialCategories }: CategoriesScreenProps) {
                     }
 
                     handleDeleteCategory(deletingCategory.id);
+                }}
+            />
+
+            <BudgetLimitSheet
+                category={budgetingCategory ?? undefined}
+                open={budgetingOpen}
+                onOpenChange={closeBudgetSheet}
+                period={selectedPeriod}
+                currentLimitAmount={
+                    budgetingCategory
+                        ? budgetMapByCategoryId.get(budgetingCategory.id)?.limitAmount
+                        : undefined
+                }
+                isSubmitting={isSavingBudget}
+                onSubmit={(value) => {
+                    if (!budgetingCategory) {
+                        return;
+                    }
+
+                    handleUpsertBudget({
+                        category: budgetingCategory,
+                        limitAmount: value,
+                    });
                 }}
             />
         </div>
