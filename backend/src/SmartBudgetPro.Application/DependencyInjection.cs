@@ -1,5 +1,10 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using SmartBudgetPro.Application.UseCases.Budget.CreateBudget;
+using SmartBudgetPro.Application.UseCases.Budget.DeleteBudget;
+using SmartBudgetPro.Application.UseCases.Budget.GetAllBudget;
+using SmartBudgetPro.Application.UseCases.Budget.GetBudgetByID;
+using SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
@@ -41,6 +46,13 @@ public static class DependencyInjection
         services.AddScoped<CreateTransactionCategoryUseCase>();
         services.AddScoped<UpdateTransactionCategoryUseCase>();
         services.AddScoped<DeleteTransactionCategoryUseCase>();
+
+        //budget
+        services.AddScoped<GetAllBudgetUseCase>();
+        services.AddScoped<GetBudgetByIDUseCase>();
+        services.AddScoped<CreateBudgetUseCase>();
+        services.AddScoped<UpdateBudgetUseCase>();
+        services.AddScoped<DeleteBudgetUseCase>();
 
         return services;
     }
