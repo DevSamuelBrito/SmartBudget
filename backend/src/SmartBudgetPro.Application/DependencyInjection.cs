@@ -4,6 +4,7 @@ using SmartBudgetPro.Application.UseCases.Budget.CreateBudget;
 using SmartBudgetPro.Application.UseCases.Budget.DeleteBudget;
 using SmartBudgetPro.Application.UseCases.Budget.GetAllBudget;
 using SmartBudgetPro.Application.UseCases.Budget.GetBudgetByID;
+using SmartBudgetPro.Application.UseCases.Budget.GetBudgetsByPeriod;
 using SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
@@ -50,6 +51,7 @@ public static class DependencyInjection
         //budget
         services.AddScoped<GetAllBudgetUseCase>();
         services.AddScoped<GetBudgetByIDUseCase>();
+        services.AddScoped<GetBudgetsByPeriodUseCase>();
         services.AddScoped<CreateBudgetUseCase>();
         services.AddScoped<UpdateBudgetUseCase>();
         services.AddScoped<DeleteBudgetUseCase>();

@@ -3,6 +3,7 @@ using SmartBudgetPro.Application.UseCases.Budget.CreateBudget;
 using SmartBudgetPro.Application.UseCases.Budget.DeleteBudget;
 using SmartBudgetPro.Application.UseCases.Budget.GetAllBudget;
 using SmartBudgetPro.Application.UseCases.Budget.GetBudgetByID;
+using SmartBudgetPro.Application.UseCases.Budget.GetBudgetsByPeriod;
 using SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
 
 namespace SmartBudgetPro.API.Controllers;
@@ -12,6 +13,7 @@ namespace SmartBudgetPro.API.Controllers;
 public class BudgetController(
     GetAllBudgetUseCase getAllBudgetUseCase,
     GetBudgetByIDUseCase getBudgetByIDUseCase,
+    GetBudgetsByPeriodUseCase getBudgetsByPeriodUseCase,
     CreateBudgetUseCase createBudgetUseCase,
     UpdateBudgetUseCase updateBudgetUseCase,
     DeleteBudgetUseCase deleteBudgetUseCase) : ControllerBase
@@ -28,6 +30,14 @@ public class BudgetController(
     public async Task<IActionResult> GetByID(Guid id)
     {
         var output = await getBudgetByIDUseCase.ExecuteAsync(id);
+
+        return Ok(output);
+    }
+
+    [HttpGet("by-period")]
+    public async Task<IActionResult> GetByPeriod([FromQuery] int month, [FromQuery] int year)
+    {
+        var output = await getBudgetsByPeriodUseCase.ExecuteAsync(month, year);
 
         return Ok(output);
     }

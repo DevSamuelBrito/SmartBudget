@@ -2,15 +2,13 @@ using SmartBudgetPro.Domain.Budgets;
 
 namespace SmartBudgetPro.Application.Common.DTOs;
 
-public record BudgetDto(
+public record BudgetByPeriodDto(
     Guid Id,
-    Guid UserId,
     Guid TransactionCategoryId,
-    int Year,
-    int Month,
+    string CategoryName,
+    string CategoryIcon,
     decimal LimitAmount,
     decimal SpentAmount,
-    BudgetStatus Status,
-    DateTime CreatedAt,
-    DateTime UpdatedAt
+    decimal Percentage,
+    BudgetStatus Status
 );

@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SmartBudgetPro.Application.Common.DTOs;
 using SmartBudgetPro.Application.Interfaces;
 using SmartBudgetPro.Domain.Budgets;
 
@@ -9,6 +10,26 @@ public class BudgetRepository(AppDbContext context) : IBudgetRepository
     public async Task<IEnumerable<Budget>> GetAllAsync()
     {
         return await context.Budgets.ToListAsync();
+    }
+
+    public async Task<IEnumerable<BudgetByPeriodDto>> GetByPeriodAsync(int month, int year)
+    {
+        return await context.Budgets
+            .Where(b => b.Month == month && b.Year == year)
+            .Join(
+                context.TransactionCategories,
+                budget => new { budget.TransactionCategoryId, budget.UserId },
+                category => new { TransactionCategoryId = category.Id, category.UserId },
+                (budget, category) => new BudgetByPeriodDto(
+                    budget.Id,
+                    budget.TransactionCategoryId,
+                    category.Name,
+                    category.Icon,
+                    budget.LimitAmount,
+                    budget.SpentAmount,
+                    budget.LimitAmount == 0 ? 0 : (budget.SpentAmount / budget.LimitAmount) * 100m,
+                    budget.Status))
+            .ToListAsync();
     }
 
     public async Task<Budget?> GetByIdAsync(Guid budgetId)
