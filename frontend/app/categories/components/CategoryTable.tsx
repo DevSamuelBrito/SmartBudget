@@ -121,9 +121,9 @@ export function CategoryTable({
                                 size="sm"
                                 variant="outline"
                                 onClick={() => onSetBudget(category)}
-                                aria-label={`Definir orcamento da categoria ${category.name}`}
+                                aria-label={`Definir orçamento da categoria ${category.name}`}
                             >
-                                Definir orcamento
+                                Definir orçamento
                             </Button>
 
                             <Button

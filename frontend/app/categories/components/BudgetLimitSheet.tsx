@@ -1,13 +1,20 @@
 "use client";
 
+//react
 import { useMemo, useState } from "react";
+
 import type { FormEvent } from "react";
 
+//lucide icons
 import { Loader2 } from "lucide-react";
 
+//components
 import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
+
 import { Label } from "@/components/ui/label";
+
 import {
     Sheet,
     SheetContent,
@@ -17,6 +24,7 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 
+//types
 import type { CategoryApi } from "../types";
 
 type BudgetLimitSheetProps = {

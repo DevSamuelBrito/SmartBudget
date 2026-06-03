@@ -202,11 +202,11 @@ export function useCategories({
         year: selectedPeriod.year,
       });
 
-      toast.success("Orcamento salvo com sucesso!");
+      toast.success("Orçamento salvo com sucesso!");
       onCloseBudget();
     },
     onError: (error: AxiosError<{ error: string }>) => {
-      const message = error.response?.data?.error ?? "Erro ao salvar orcamento.";
+      const message = error.response?.data?.error ?? "Erro ao salvar orçamento.";
 
       toast.error(message);
     },
