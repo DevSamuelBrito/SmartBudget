@@ -35,5 +35,15 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                 .Where(transaction => transaction.Id == transactionId)
                 .ExecuteDeleteAsync();
         }
+
+        public async Task<decimal> GetTotalExpensesByCategoryAndPeriodAsync(Guid categoryId, int year, int month)
+        {
+            return await context.FinancialTransactions
+                .Where(t => t.TransactionCategoryId == categoryId
+                    && t.Type == FinancialTransactionType.Expense
+                    && t.TransactionDate.Year == year
+                    && t.TransactionDate.Month == month)
+                .SumAsync(t => t.Amount);
+        }
     }
 }

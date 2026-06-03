@@ -37,5 +37,10 @@ namespace SmartBudgetPro.Application.Interfaces
         /// </summary>
         /// <param name="transactionId">The unique identifier of the transaction.</param>
         Task DeleteAsync(Guid transactionId);
+
+        /// <summary>
+        /// Returns the sum of all expense transactions for a given category and period.
+        /// </summary>
+        Task<decimal> GetTotalExpensesByCategoryAndPeriodAsync(Guid categoryId, int year, int month);
     }
 }

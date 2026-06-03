@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using SmartBudgetPro.Application.Interfaces;
+using SmartBudgetPro.Domain.Transactions;
 
 namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction
 {
@@ -7,6 +8,7 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinanci
         IFinancialTransactionRepository financialTransactionRepository,
         IUserRepository userRepository,
         ITransactionCategoryRepository transactionCategoryRepository,
+        IBudgetRepository budgetRepository,
         IValidator<UpdateFinancialTransactionUseCaseInput> validator)
     {
         public async Task ExecuteAsync(Guid id, UpdateFinancialTransactionUseCaseInput input)
@@ -37,6 +39,11 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinanci
                     throw new InvalidOperationException("Category does not belong to this user.");
             }
 
+            // Capture old values before update
+            var oldType = financialTransaction.Type;
+            var oldCategoryId = financialTransaction.TransactionCategoryId;
+            var oldDate = financialTransaction.TransactionDate;
+
             financialTransaction.Update(
                 categoryId: input.TransactionCategoryId,
                 amount: input.Amount,
@@ -47,6 +54,38 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinanci
             );
 
             await financialTransactionRepository.UpdateAsync(financialTransaction);
+
+            // Recalculate budget for old category/period if it was an expense
+            if (oldType == FinancialTransactionType.Expense && oldCategoryId.HasValue)
+            {
+                await RecalculateBudgetAsync(input.UserId, oldCategoryId.Value, oldDate.Year, oldDate.Month);
+            }
+
+            // Recalculate budget for new category/period if it's an expense (skip if same category and period)
+            if (input.TransactionType == FinancialTransactionType.Expense && input.TransactionCategoryId.HasValue)
+            {
+                var sameCategory = oldCategoryId == input.TransactionCategoryId;
+                var samePeriod = oldDate.Year == input.TransactionDate.Year && oldDate.Month == input.TransactionDate.Month;
+
+                if (!(sameCategory && samePeriod))
+                {
+                    await RecalculateBudgetAsync(input.UserId, input.TransactionCategoryId.Value, input.TransactionDate.Year, input.TransactionDate.Month);
+                }
+            }
+        }
+
+        private async Task RecalculateBudgetAsync(Guid userId, Guid categoryId, int year, int month)
+        {
+            var budget = await budgetRepository.GetByUserCategoryAndPeriodAsync(userId, categoryId, year, month);
+
+            if (budget is null)
+                return;
+
+            var total = await financialTransactionRepository.GetTotalExpensesByCategoryAndPeriodAsync(categoryId, year, month);
+
+            budget.RecalculateFromExpenses(total);
+            
+            await budgetRepository.UpdateAsync(budget);
         }
     }
 }

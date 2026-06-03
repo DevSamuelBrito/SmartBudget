@@ -1,4 +1,5 @@
 ﻿using SmartBudgetPro.Application.Interfaces;
+using SmartBudgetPro.Domain.Transactions;
 using FluentValidation;
 using DomainFinancialTransaction = SmartBudgetPro.Domain.Transactions.FinancialTransaction;
 
@@ -8,7 +9,8 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
         IFinancialTransactionRepository transactionRepository,
         IValidator<CreateFinancialTransactionUseCaseInput> validator,
         IUserRepository userRepository,
-        ITransactionCategoryRepository transactionCategoryRepository
+        ITransactionCategoryRepository transactionCategoryRepository,
+        IBudgetRepository budgetRepository
         )
     {
         public async Task<Guid> ExecuteAsync(CreateFinancialTransactionUseCaseInput input)
@@ -44,8 +46,27 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
 
             await transactionRepository.AddAsync(transaction);
 
+            if (input.TransactionType == FinancialTransactionType.Expense && input.TransactionCategoryId.HasValue)
+            {
+                await RecalculateBudgetAsync(input.UserId, input.TransactionCategoryId.Value, input.TransactionDate.Year, input.TransactionDate.Month);
+            }
+
             return transaction.Id;
 
+        }
+
+        private async Task RecalculateBudgetAsync(Guid userId, Guid categoryId, int year, int month)
+        {
+            var budget = await budgetRepository.GetByUserCategoryAndPeriodAsync(userId, categoryId, year, month);
+
+            if (budget is null)
+                return;
+
+            var total = await transactionRepository.GetTotalExpensesByCategoryAndPeriodAsync(categoryId, year, month);
+
+            budget.RecalculateFromExpenses(total);
+            
+            await budgetRepository.UpdateAsync(budget);
         }
     }
 }
