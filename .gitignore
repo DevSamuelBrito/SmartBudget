@@ -17,3 +17,6 @@ frontend/.vercel/
 **/.env
 **/.env.*
 !.env.example
+
+# Local backend 
+backend/src/SmartBudgetPro.API/appsettings.Development.json
