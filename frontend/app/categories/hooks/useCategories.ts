@@ -37,7 +37,8 @@ import {
   invalidateCategoriesCache,
 } from "../actions/categories.actions";
 
-const MOCK_USER_ID = "1057a770-6f02-47d9-b791-b449d9e95fd3";
+//mock
+import { MOCK_USER_ID } from "@/constants/mock";
 
 type UpdateCategoryPayload = {
   id: string;
