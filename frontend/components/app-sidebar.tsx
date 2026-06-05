@@ -30,7 +30,7 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "",
+      url: "dashboard",
       icon: (
         <LayoutDashboardIcon
         />
@@ -110,7 +110,7 @@ const data = {
       ],
     },
   ],
-  
+
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
