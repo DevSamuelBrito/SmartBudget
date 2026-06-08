@@ -7,9 +7,10 @@ import { cn } from "@/lib/utils";
 type ProgressProps = React.ComponentProps<"div"> & {
   value?: number;
   indicatorClassName?: string;
+  indicatorStyle?: React.CSSProperties;
 };
 
-function Progress({ className, value = 0, indicatorClassName, ...props }: ProgressProps) {
+function Progress({ className, value = 0, indicatorClassName, indicatorStyle, ...props }: ProgressProps) {
   const safeValue = Math.max(0, Math.min(100, value));
 
   return (
@@ -25,7 +26,7 @@ function Progress({ className, value = 0, indicatorClassName, ...props }: Progre
       <div
         data-slot="progress-indicator"
         className={cn("h-full w-full bg-primary transition-transform", indicatorClassName)}
-        style={{ transform: `translateX(-${100 - safeValue}%)` }}
+        style={{ transform: `translateX(-${100 - safeValue}%)`, ...indicatorStyle }}
       />
     </div>
   );

@@ -3,6 +3,9 @@
 //next
 import { useRouter } from "next/navigation";
 
+//lucide-react
+import { ExternalLink } from "lucide-react";
+
 // Components
 import {
     Card,
@@ -12,15 +15,15 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+
 import { Progress } from "@/components/ui/progress";
 
+import { Button } from "@/components/ui/button";
 // Types
 import type { DashboardBudgetProgress } from "../types";
 
 // Utils
 import { formatCurrency } from "@/lib/utils/formatters";
-import { Button } from "@/components/ui/button";
-import { ExternalLink, Plus } from "lucide-react";
 
 type BudgetProgressCardProps = {
     budgets: DashboardBudgetProgress[];
@@ -73,15 +76,11 @@ export function BudgetProgressCard({ budgets }: BudgetProgressCardProps) {
             </CardContent>
             <CardFooter>
 
-                <Button variant="outline" className="w-full">
-                    <Plus className="size-4" />
+                <Button variant="outline" className="w-full" onClick={() => router.push("/transactions")}>
                     Gerenciar Categorias
+                    <ExternalLink className="size-4" />
                 </Button>
 
-                {/* <Button variant="outline" size="sm" onClick={() => router.push("/transactions")}>
-                    Criar Categoria
-                    <ExternalLink className="size-4" />
-                </Button> */}
             </CardFooter>
         </Card>
     );
