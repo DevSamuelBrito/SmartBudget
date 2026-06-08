@@ -4,11 +4,9 @@
 import { useRouter } from "next/navigation";
 
 // Libs
-import { ExternalLink } from "lucide-react";
+import { CircleHelp, ExternalLink } from "lucide-react";
 
 // Components
-import { Badge } from "@/components/ui/badge";
-
 import {
     Card,
     CardContent,
@@ -21,6 +19,11 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 import { Button } from "@/components/ui/button";
+
+import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/categories/components/theme-icons";
+
+//constants
+import { ICONT_THEME } from "@/app/categories/constants/icons-theme";
 
 // Types
 import type { DashboardLatestTransaction } from "../types";
@@ -37,22 +40,33 @@ export function LatestTransactionsCard({ transactions }: LatestTransactionsCardP
 
     const router = useRouter();
 
+    const visibleTransactions = transactions.slice(0, 8);
 
-    const getTypeLabel = (type: 1 | 2 | 3) => {
-        if (type === 1) return "Receita";
-        if (type === 2) return "Despesa";
-        return "Transferência";
+    const isThemeIconKey = (iconKey: string | null): iconKey is ThemeIconKey => {
+        return Boolean(iconKey && iconKey in iconMap);
+    };
+
+    const getCategoryThemeClass = (iconKey: string | null) => {
+        if (!isThemeIconKey(iconKey)) {
+            return "bg-muted text-muted-foreground";
+        }
+
+        const theme = ICONT_THEME.find((item) => item.iconKey === iconKey);
+
+        return theme ? `${theme.colorClass} text-white` : "bg-muted text-muted-foreground";
     };
 
     const getAmountColor = (type: 1 | 2 | 3) => {
         if (type === 1) return "text-emerald-500";
         if (type === 2) return "text-orange-500";
+
         return "text-sky-500";
     };
 
     const getSignedAmount = (amount: number, type: 1 | 2 | 3) => {
         if (type === 1) return `+${formatCurrency(amount)}`;
         if (type === 2) return `-${formatCurrency(amount)}`;
+
         return formatCurrency(amount);
     };
 
@@ -62,26 +76,37 @@ export function LatestTransactionsCard({ transactions }: LatestTransactionsCardP
                 <div>
                     <CardTitle>Últimas transações</CardTitle>
                     <CardDescription>Lançamentos mais recentes por Data</CardDescription>
+                    <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
+                        <span className="inline-flex items-center gap-1.5">
+                            <span className="size-2 rounded-full bg-emerald-500" />
+                            Receita
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                            <span className="size-2 rounded-full bg-orange-500" />
+                            Despesa
+                        </span>
+                    </div>
                 </div>
             </CardHeader>
 
             <CardContent className="space-y-4">
-                {transactions.slice(0, 8).map((transaction, index) => (
+                {visibleTransactions.map((transaction, index) => (
                     <div key={transaction.id}>
                         <div className="flex items-center gap-3">
+                            <div className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${getCategoryThemeClass(transaction.categoryIcon)}`}>
+                                {isThemeIconKey(transaction.categoryIcon) ? (
+                                    <ThemeIcon iconKey={transaction.categoryIcon} className="size-4" />
+                                ) : (
+                                    <CircleHelp className="size-4" />
+                                )}
+                            </div>
+
                             <div className="min-w-0 flex-1">
-                                <div className="flex flex-wrap items-center gap-2">
-                                    <p className="truncate font-medium leading-none">
-                                        {transaction.description}
-                                    </p>
-                                    {transaction.categoryName && (
-                                        <Badge variant="secondary" className="rounded-full">
-                                            {transaction.categoryName}
-                                        </Badge>
-                                    )}
-                                </div>
+                                <p className="truncate font-medium leading-none">
+                                    {transaction.description}
+                                </p>
                                 <p className="mt-1 text-xs text-muted-foreground">
-                                    {formatDate(transaction.transactionDate)} · {getTypeLabel(transaction.type)}
+                                    {formatDate(transaction.transactionDate)}
                                 </p>
                             </div>
 
@@ -90,7 +115,7 @@ export function LatestTransactionsCard({ transactions }: LatestTransactionsCardP
                             </span>
                         </div>
 
-                        {index < transactions.slice(0, 8).length - 1 && <Separator className="mt-4" />}
+                        {index < visibleTransactions.length - 1 && <Separator className="mt-4" />}
                     </div>
                 ))}
             </CardContent>
@@ -104,7 +129,7 @@ export function LatestTransactionsCard({ transactions }: LatestTransactionsCardP
             ) : (
                 <CardFooter className="justify-between gap-3">
                     <p className="text-sm text-muted-foreground">
-                        Mostrando as últimas {transactions.length} transações.
+                        Mostrando as últimas {visibleTransactions.length} transações.
                     </p>
                     <Button variant="outline" size="sm" onClick={() => router.push("/transactions")}>
                         Ver tudo
