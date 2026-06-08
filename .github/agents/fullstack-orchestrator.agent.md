@@ -14,8 +14,8 @@ Receber um requisito de funcionalidade completa e entregar a implementação pon
 
 ## Stack do Projeto
 
-- **Backend:** C# / .NET 8+ com Clean Architecture (Domain → Application → Infrastructure → API)
-- **Frontend:** Next.js 15 (App Router), React, TypeScript, TanStack Query, Tailwind CSS, shadcn/ui
+- **Backend:** C# / .NET 10+ com Clean Architecture (Domain → Application → Infrastructure → API)
+- **Frontend:** Next.js 16 (App Router), React, TypeScript, TanStack Query, Tailwind CSS, shadcn/ui
 
 ## Fluxo de Orquestração
 

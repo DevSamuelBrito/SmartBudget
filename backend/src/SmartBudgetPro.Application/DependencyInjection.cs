@@ -8,6 +8,8 @@ using SmartBudgetPro.Application.UseCases.Budget.GetBudgetsByPeriod;
 using SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardOverview;
+using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
+using SmartBudgetPro.Application.UseCases.Dashboard.SaveDashboardConfig;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
@@ -59,6 +61,8 @@ public static class DependencyInjection
 
         //dashboard
         services.AddScoped<GetDashboardOverviewUseCase>();
+        services.AddScoped<GetDashboardConfigUseCase>();
+        services.AddScoped<SaveDashboardConfigUseCase>();
 
         return services;
     }
