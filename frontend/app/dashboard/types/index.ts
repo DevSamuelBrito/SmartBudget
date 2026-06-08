@@ -73,3 +73,10 @@ export type DashboardOverviewApi = {
   budgetProgress: DashboardBudgetProgress[];
   alerts: DashboardAlert[];
 };
+
+export type DashboardConfigItem = {
+  componentKey: string;
+  order: number;
+  columns: number;
+  visible: boolean;
+};

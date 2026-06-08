@@ -1,5 +1,8 @@
 // Types
-import type { DashboardOverviewApi } from "../types";
+import type { DashboardOverviewApi, DashboardConfigItem } from "../types";
+
+// Libs
+import { api } from "@/lib/axios";
 
 type GetDashboardOverviewParams = {
   month?: number;
@@ -7,7 +10,7 @@ type GetDashboardOverviewParams = {
 };
 
 export const getDashboardOverviewServer = async (
-  params?: GetDashboardOverviewParams
+  params?: GetDashboardOverviewParams,
 ): Promise<DashboardOverviewApi> => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -31,4 +34,33 @@ export const getDashboardOverviewServer = async (
   }
 
   return (await response.json()) as DashboardOverviewApi;
+};
+
+export const getDashboardConfigServer = async (): Promise<DashboardConfigItem[]> => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!baseUrl) {
+    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
+  }
+
+  const response = await fetch(`${baseUrl}dashboard/config`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch dashboard config from server.");
+  }
+
+  return (await response.json()) as DashboardConfigItem[];
+};
+
+export const getDashboardConfig = async (): Promise<DashboardConfigItem[]> => {
+  const response = await api.get<DashboardConfigItem[]>("/dashboard/config");
+  return response.data;
+};
+
+export const saveDashboardConfig = async (
+  items: DashboardConfigItem[],
+): Promise<void> => {
+  await api.put("/dashboard/config", items);
 };

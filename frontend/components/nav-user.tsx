@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+
 import {
   Avatar,
   AvatarFallback,
@@ -20,7 +22,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon } from "lucide-react"
+import { DashboardCustomizerSheet } from "@/app/dashboard/components/DashboardCustomizerSheet"
 
 export function NavUser({
   user,
@@ -32,8 +35,11 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  
+  const [customizerOpen, setCustomizerOpen] = useState(false)
 
   return (
+    <>
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
@@ -92,6 +98,10 @@ export function NavUser({
                 />
                 Notifications
               </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => setCustomizerOpen(true)}>
+                <LayoutDashboardIcon />
+                Customizar Dashboard
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
@@ -103,5 +113,7 @@ export function NavUser({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
+    <DashboardCustomizerSheet open={customizerOpen} onOpenChange={setCustomizerOpen} />
+    </>
   )
 }

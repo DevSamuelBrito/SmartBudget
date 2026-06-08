@@ -1,0 +1,41 @@
+// Libs
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+// Services
+import {
+  getDashboardConfig,
+} from "../services/dashboard.service";
+
+// Actions
+import { saveDashboardConfigAction } from "../actions/dashboard.actions";
+
+// Types
+import type { DashboardConfigItem } from "../types";
+
+// Toast
+import { toast } from "sonner";
+
+export function useDashboardConfig(initialData?: DashboardConfigItem[]) {
+  return useQuery<DashboardConfigItem[]>({
+    queryKey: ["dashboard-config"],
+    queryFn: getDashboardConfig,
+    initialData,
+    staleTime: Infinity,
+  });
+}
+
+export function useSaveDashboardConfig(onSuccess?: () => void) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (items: DashboardConfigItem[]) => saveDashboardConfigAction(items),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["dashboard-config"] });
+      toast.success("Dashboard customizado com sucesso!");
+      onSuccess?.();
+    },
+    onError: () => {
+      toast.error("Erro ao salvar a customização do dashboard.");
+    },
+  });
+}
