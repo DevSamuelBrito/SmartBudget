@@ -1,14 +1,11 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Scalar.AspNetCore;
+using SmartBudgetPro.API.Configuration;
 using SmartBudgetPro.API.Middlewares;
 using SmartBudgetPro.Application;
 using SmartBudgetPro.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddApiDocumentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -28,8 +25,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapApiDocumentation();
 }
 
 app.UseCors("Development");

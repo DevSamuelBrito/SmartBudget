@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.DeleteTransactionCategory;
@@ -8,6 +10,7 @@ namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
     [Route("api/transactionCategories")]
+    [Authorize]
     public class TransactionCategoryController
         (
         GetAllTransactionCategoryUseCase getAllTransactionCategory,
@@ -30,7 +33,10 @@ namespace SmartBudgetPro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTransactionCategoryUseCaseInput input)
         {
-            var output = await createTransactionCategory.ExecuteAsync(input);
+            var userId = User.GetRequiredUserId();
+            var securedInput = input with { UserId = userId };
+
+            var output = await createTransactionCategory.ExecuteAsync(securedInput);
 
             return Created($"api/transactionCategories/{output.Id}", output);
         }

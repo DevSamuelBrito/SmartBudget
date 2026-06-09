@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
@@ -8,6 +10,7 @@ namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
     [Route("api/transactions")]
+    [Authorize]
     public class TransactionController
         (
             GetAllFinancialTransactionUseCase getAllTransaction,
@@ -28,7 +31,10 @@ namespace SmartBudgetPro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateFinancialTransactionUseCaseInput input)
         {
-            var output = await createTransactionUseCase.ExecuteAsync(input);
+            var userId = User.GetRequiredUserId();
+            var securedInput = input with { UserId = userId };
+
+            var output = await createTransactionUseCase.ExecuteAsync(securedInput);
 
             return Created($"/api/transactions/{output}", new { output });
         }
@@ -36,8 +42,10 @@ namespace SmartBudgetPro.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateFinancialTransactionUseCaseInput input)
         {
+            var userId = User.GetRequiredUserId();
+            var securedInput = input with { UserId = userId };
 
-            await updateFinancialTransactionUseCase.ExecuteAsync(id, input);
+            await updateFinancialTransactionUseCase.ExecuteAsync(id, securedInput);
 
             return NoContent();
         }

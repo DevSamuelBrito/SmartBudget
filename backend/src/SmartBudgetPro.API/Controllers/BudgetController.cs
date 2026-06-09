@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.UseCases.Budget.CreateBudget;
 using SmartBudgetPro.Application.UseCases.Budget.DeleteBudget;
 using SmartBudgetPro.Application.UseCases.Budget.GetAllBudget;
@@ -10,6 +12,7 @@ namespace SmartBudgetPro.API.Controllers;
 
 [ApiController]
 [Route("api/budgets")]
+[Authorize]
 public class BudgetController(
     GetAllBudgetUseCase getAllBudgetUseCase,
     GetBudgetByIDUseCase getBudgetByIDUseCase,
@@ -45,7 +48,10 @@ public class BudgetController(
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateBudgetUseCaseInput input)
     {
-        var output = await createBudgetUseCase.ExecuteAsync(input);
+        var userId = User.GetRequiredUserId();
+        var securedInput = input with { UserId = userId };
+
+        var output = await createBudgetUseCase.ExecuteAsync(securedInput);
 
         return Created($"api/budgets/{output.Id}", output);
     }
