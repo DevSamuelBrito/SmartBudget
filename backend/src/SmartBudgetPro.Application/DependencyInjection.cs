@@ -6,6 +6,7 @@ using SmartBudgetPro.Application.UseCases.Budget.GetAllBudget;
 using SmartBudgetPro.Application.UseCases.Budget.GetBudgetByID;
 using SmartBudgetPro.Application.UseCases.Budget.GetBudgetsByPeriod;
 using SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
+using SmartBudgetPro.Application.UseCases.Auth.Login;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardOverview;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
@@ -63,6 +64,9 @@ public static class DependencyInjection
         services.AddScoped<GetDashboardOverviewUseCase>();
         services.AddScoped<GetDashboardConfigUseCase>();
         services.AddScoped<SaveDashboardConfigUseCase>();
+
+        //auth
+        services.AddScoped<LoginUseCase>();
 
         return services;
     }

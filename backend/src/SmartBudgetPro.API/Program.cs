@@ -1,3 +1,6 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using SmartBudgetPro.API.Middlewares;
 using SmartBudgetPro.Application;
@@ -32,6 +35,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("Development");
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

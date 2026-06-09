@@ -26,6 +26,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
                 StatusCodes.Status400BadRequest,
                 string.Join(", ", validationEx.Errors.Select(e => e.ErrorMessage))
             ),
+            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, exception.Message),
             InvalidOperationException => (StatusCodes.Status409Conflict, exception.Message),
             ArgumentException => (StatusCodes.Status400BadRequest, exception.Message),
             _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.")

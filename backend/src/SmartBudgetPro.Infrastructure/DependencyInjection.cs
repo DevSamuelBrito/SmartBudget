@@ -13,15 +13,22 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        //persistence
         services.AddDbContext<AppDbContext>(options =>
          options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
+        // Repositories
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IFinancialTransactionRepository, FinancialTransactionRepository>();
         services.AddScoped<ITransactionCategoryRepository, TransactionCategoryRepository>();
         services.AddScoped<IBudgetRepository, BudgetRepository>();
         services.AddScoped<IUserDashboardConfigRepository, UserDashboardConfigRepository>();
+
+        // Security
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddJwtAuthentication(configuration);
+        services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
         return services;
     }
