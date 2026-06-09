@@ -3,6 +3,7 @@ import type { DashboardOverviewApi, DashboardConfigItem } from "../types";
 
 // Libs
 import { api } from "@/lib/axios";
+import { authFetch } from "@/lib/auth";
 
 type GetDashboardOverviewParams = {
   month?: number;
@@ -25,7 +26,7 @@ export const getDashboardOverviewServer = async (
 
   const url = `${baseUrl}dashboard/overview${query.toString() ? `?${query.toString()}` : ""}`;
 
-  const response = await fetch(url, {
+  const response = await authFetch(url, {
     cache: "no-store",
   });
 
@@ -36,14 +37,16 @@ export const getDashboardOverviewServer = async (
   return (await response.json()) as DashboardOverviewApi;
 };
 
-export const getDashboardConfigServer = async (): Promise<DashboardConfigItem[]> => {
+export const getDashboardConfigServer = async (): Promise<
+  DashboardConfigItem[]
+> => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!baseUrl) {
     throw new Error("NEXT_PUBLIC_API_URL is not defined.");
   }
 
-  const response = await fetch(`${baseUrl}dashboard/config`, {
+  const response = await authFetch(`${baseUrl}dashboard/config`, {
     cache: "no-store",
   });
 

@@ -1,4 +1,5 @@
 import { api } from "@/lib/axios";
+import { authFetch } from "@/lib/auth";
 
 import type { BudgetByPeriodApi, BudgetByPeriodStatus } from "../types";
 
@@ -45,7 +46,10 @@ function normalizeBudgetStatus(budget: BudgetByPeriodApi): BudgetByPeriodApi {
   };
 }
 
-export const getBudgetsByPeriod = async ({ month, year }: GetBudgetsByPeriodParams) => {
+export const getBudgetsByPeriod = async ({
+  month,
+  year,
+}: GetBudgetsByPeriodParams) => {
   const response = await api.get<BudgetByPeriodApi[]>("/budgets/by-period", {
     params: {
       month,
@@ -56,7 +60,10 @@ export const getBudgetsByPeriod = async ({ month, year }: GetBudgetsByPeriodPara
   return response.data.map(normalizeBudgetStatus);
 };
 
-export const getBudgetsByPeriodServerCached = async ({ month, year }: GetBudgetsByPeriodParams) => {
+export const getBudgetsByPeriodServerCached = async ({
+  month,
+  year,
+}: GetBudgetsByPeriodParams) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!baseUrl) {
@@ -68,13 +75,16 @@ export const getBudgetsByPeriodServerCached = async ({ month, year }: GetBudgets
     year: String(year),
   });
 
-  const response = await fetch(`${baseUrl}budgets/by-period?${query.toString()}`, {
-    cache: "force-cache",
-    next: {
-      revalidate: BUDGETS_REVALIDATE_SECONDS,
-      tags: ["budgets", `budgets-${year}-${month}`],
+  const response = await authFetch(
+    `${baseUrl}budgets/by-period?${query.toString()}`,
+    {
+      cache: "force-cache",
+      next: {
+        revalidate: BUDGETS_REVALIDATE_SECONDS,
+        tags: ["budgets", `budgets-${year}-${month}`],
+      },
     },
-  });
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch budgets from server.");
@@ -91,7 +101,10 @@ export const createBudget = async (payload: CreateBudgetRequest) => {
   return response.data;
 };
 
-export const updateBudget = async ({ id, limitAmount }: UpdateBudgetRequest) => {
+export const updateBudget = async ({
+  id,
+  limitAmount,
+}: UpdateBudgetRequest) => {
   await api.put(`/budgets/${id}`, {
     limitAmount,
   });

@@ -8,22 +8,14 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 //components
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-
-import { AppSidebar } from "@/components/app-sidebar";
-
 import { ThemeProvider } from "@/components/theme-provider";
 
-import { SiteHeader } from "@/components/site-header";
+import { NavigationProgress } from "@/components/NavigationProgress";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 //providers
 import { Providers } from "../providers/providers";
-
-import { Toaster } from "@/components/ui/sonner";
-
-import { NavigationProgress } from "@/components/NavigationProgress";
 
 
 export const metadata: Metadata = {
@@ -46,25 +38,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Suspense fallback={null}>
+              <NavigationProgress />
+            </Suspense>
             <TooltipProvider>
-              <SidebarProvider
-                style={
-                  {
-                    "--sidebar-width": "calc(var(--spacing) * 72)",
-                    "--header-height": "calc(var(--spacing) * 12)",
-                  } as React.CSSProperties
-                }
-              >
-                <Suspense fallback={null}>
-                  <NavigationProgress />
-                </Suspense>
-                <AppSidebar variant="inset" />
-                <SidebarInset>
-                  <SiteHeader />
-                  {children}
-                  <Toaster />
-                </SidebarInset>
-              </SidebarProvider>
+              {children}
             </TooltipProvider>
           </ThemeProvider>
         </Providers>

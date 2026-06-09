@@ -13,9 +13,9 @@ import {
 } from "../services/transactions.service";
 
 //types
-import type { CategoryApi } from "@/app/categories/types";
+import type { CategoryApi } from "@/app/(app)/categories/types";
 
-import { getCategories } from "@/app/categories/services/categorias.service";
+import { getCategories } from "@/app/(app)/categories/services/categorias.service";
 
 import type { TransactionWithCategory } from "../types";
 
@@ -132,7 +132,9 @@ export function useTransactions({
   });
 
   const categories = categoriesQuery.data ?? [];
-  const categoryMap = new Map(categories.map((category) => [category.id, category]));
+  const categoryMap = new Map(
+    categories.map((category) => [category.id, category]),
+  );
 
   const normalizedSearch = search.trim().toLowerCase();
 
@@ -144,23 +146,23 @@ export function useTransactions({
         : undefined,
     }))
     .filter((transaction) => {
-    if (!normalizedSearch) {
-      return true;
-    }
+      if (!normalizedSearch) {
+        return true;
+      }
 
-    const categoryName = transaction.category?.name ?? "";
+      const categoryName = transaction.category?.name ?? "";
 
-    const searchableValues = [
-      transaction.description,
-      transaction.transactionDate,
-      transaction.amount.toString(),
-      categoryName,
-    ]
-      .join(" ")
-      .toLowerCase();
+      const searchableValues = [
+        transaction.description,
+        transaction.transactionDate,
+        transaction.amount.toString(),
+        categoryName,
+      ]
+        .join(" ")
+        .toLowerCase();
 
-    return searchableValues.includes(normalizedSearch);
-  });
+      return searchableValues.includes(normalizedSearch);
+    });
 
   function handleCreateTransaction(payload: CreateTransactionPayload) {
     createTransactionMutation.mutate(payload);
@@ -187,4 +189,3 @@ export function useTransactions({
     isDeletingTransaction: deleteTransactionMutation.isPending,
   };
 }
-

@@ -10,9 +10,9 @@ import { Button } from "@/components/ui/button";
 // components
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import { ThemeIcon } from "@/app/categories/components/theme-icons";
+import { ThemeIcon } from "@/app/(app)/categories/components/theme-icons";
 
-import { ICONT_THEME } from "@/app/categories/constants/icons-theme";
+import { ICONT_THEME } from "@/app/(app)/categories/constants/icons-theme";
 
 import { RecurrenceBadge, TransactionTypeBadge } from "./transaction-badges";
 

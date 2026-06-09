@@ -1,5 +1,6 @@
 //libs
 import { api } from "@/lib/axios";
+import { authFetch } from "@/lib/auth";
 
 import type { CategoryApi } from "../types";
 
@@ -30,7 +31,7 @@ export const getCategoriesServerCached = async () => {
     throw new Error("NEXT_PUBLIC_API_URL is not defined.");
   }
 
-  const response = await fetch(`${baseUrl}transactionCategories`, {
+  const response = await authFetch(`${baseUrl}transactionCategories`, {
     cache: "force-cache",
     next: {
       revalidate: CATEGORIES_REVALIDATE_SECONDS,

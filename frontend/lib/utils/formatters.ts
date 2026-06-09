@@ -1,5 +1,5 @@
 //types
-import type { TransactionApi } from "@/app/transactions/types";
+import type { TransactionApi } from "@/app/(app)/transactions/types";
 
 export const formatDate = (value: string) =>
   new Date(value).toLocaleDateString("pt-BR");

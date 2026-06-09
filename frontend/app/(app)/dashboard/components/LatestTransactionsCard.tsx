@@ -20,10 +20,10 @@ import { Separator } from "@/components/ui/separator";
 
 import { Button } from "@/components/ui/button";
 
-import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/categories/components/theme-icons";
+import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/(app)/categories/components/theme-icons";
 
 //constants
-import { ICONT_THEME } from "@/app/categories/constants/icons-theme";
+import { ICONT_THEME } from "@/app/(app)/categories/constants/icons-theme";
 
 // Types
 import type { DashboardLatestTransaction } from "../types";

@@ -16,9 +16,9 @@ import { useForm, useWatch } from "react-hook-form";
 import { format } from "date-fns";
 
 // components
-import { ThemeIcon } from "@/app/categories/components/theme-icons";
+import { ThemeIcon } from "@/app/(app)/categories/components/theme-icons";
 
-import { ICONT_THEME } from "@/app/categories/constants/icons-theme";
+import { ICONT_THEME } from "@/app/(app)/categories/constants/icons-theme";
 
 import { Button } from "@/components/ui/button";
 
@@ -52,7 +52,7 @@ import {
 } from "@/components/ui/select";
 
 // types
-import type { CategoryApi } from "@/app/categories/types";
+import type { CategoryApi } from "@/app/(app)/categories/types";
 
 import { transactionFormSchema, type TransactionFormValues } from "../schemas/transaction.schema";
 
@@ -484,7 +484,7 @@ export function TransactionFormSheet({
                             <p className="text-sm text-destructive">{errors.transactionCategoryId.message}</p>
                         )}
                     </div>
-                    
+
                 </form>
 
                 <SheetFooter>
