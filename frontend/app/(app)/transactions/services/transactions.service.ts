@@ -1,6 +1,7 @@
 //libs
 import { api } from "@/lib/axios";
-import { authFetch } from "@/lib/auth";
+
+import { authFetch, getServerUserId } from "@/lib/auth";
 
 //types
 import type { TransactionApi } from "../types";
@@ -22,8 +23,10 @@ export const getTransactionsServer = async () => {
     throw new Error("NEXT_PUBLIC_API_URL is not defined.");
   }
 
+  const userId = await getServerUserId();
+
   const response = await authFetch(`${baseUrl}transactions`, {
-    cache: "no-store",
+    next: { tags: [`transactions-${userId}`] },
   });
 
   if (!response.ok) {

@@ -15,9 +15,9 @@ import type { DashboardConfigItem } from "../types";
 // Toast
 import { toast } from "sonner";
 
-export function useDashboardConfig(initialData?: DashboardConfigItem[]) {
+export function useDashboardConfig(initialData?: DashboardConfigItem[], userId?: string) {
   return useQuery<DashboardConfigItem[]>({
-    queryKey: ["dashboard-config"],
+    queryKey: ["dashboard-config", userId],
     queryFn: getDashboardConfig,
     initialData,
     staleTime: Infinity,

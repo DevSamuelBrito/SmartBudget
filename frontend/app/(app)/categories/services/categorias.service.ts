@@ -1,6 +1,7 @@
 //libs
 import { api } from "@/lib/axios";
-import { authFetch } from "@/lib/auth";
+
+import { authFetch, getServerUserId } from "@/lib/auth";
 
 import type { CategoryApi } from "../types";
 
@@ -22,8 +23,6 @@ export const getCategories = async () => {
   return response.data;
 };
 
-const CATEGORIES_REVALIDATE_SECONDS = 60 * 30;
-
 export const getCategoriesServerCached = async () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -31,12 +30,10 @@ export const getCategoriesServerCached = async () => {
     throw new Error("NEXT_PUBLIC_API_URL is not defined.");
   }
 
+  const userId = await getServerUserId();
+
   const response = await authFetch(`${baseUrl}transactionCategories`, {
-    cache: "force-cache",
-    next: {
-      revalidate: CATEGORIES_REVALIDATE_SECONDS,
-      tags: ["categories"],
-    },
+    next: { tags: [`categories-${userId}`] },
   });
 
   if (!response.ok) {

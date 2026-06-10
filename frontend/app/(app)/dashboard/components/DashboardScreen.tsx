@@ -23,6 +23,8 @@ import { QuickInsightsCard } from "./QuickInsightsCard";
 // Hooks
 import { useDashboardConfig } from "../hooks/useDashboardConfig";
 
+import { useAuth } from "@/contexts/auth-context";
+
 // Types
 import type { DashboardOverviewApi, DashboardConfigItem } from "../types";
 
@@ -33,7 +35,9 @@ type DashboardScreenProps = {
 
 export function DashboardScreen({ data, initialConfig }: DashboardScreenProps) {
     
-    const { data: config } = useDashboardConfig(initialConfig);
+    const { state } = useAuth();
+    const userId = state.user?.userId;
+    const { data: config } = useDashboardConfig(initialConfig, userId);
 
     const componentMap: Record<string, ReactNode> = {
         alertsCard: <AlertsCard alerts={data.alerts} />,

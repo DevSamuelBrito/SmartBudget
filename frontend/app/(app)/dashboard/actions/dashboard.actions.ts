@@ -1,6 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
+
+import { authFetch, getServerUserId } from "@/lib/auth";
 
 import type { DashboardConfigItem } from "../types";
 
@@ -11,9 +13,8 @@ export async function saveDashboardConfigAction(items: DashboardConfigItem[]) {
     throw new Error("NEXT_PUBLIC_API_URL is not defined.");
   }
 
-  const response = await fetch(`${baseUrl}dashboard/config`, {
+  const response = await authFetch(`${baseUrl}dashboard/config`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(items),
   });
 
@@ -21,5 +22,6 @@ export async function saveDashboardConfigAction(items: DashboardConfigItem[]) {
     throw new Error("Failed to save dashboard config.");
   }
 
-  revalidatePath("/dashboard");
+  const userId = await getServerUserId();
+  revalidateTag(`dashboard-config-${userId}`, "default");
 }

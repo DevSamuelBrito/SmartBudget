@@ -51,6 +51,9 @@ import {
     useSaveDashboardConfig,
 } from "../hooks/useDashboardConfig";
 
+//context
+import { useAuth } from "@/contexts/auth-context";
+
 // Types
 import type { DashboardConfigItem } from "../types";
 
@@ -146,7 +149,9 @@ export function DashboardCustomizerSheet({
     open,
     onOpenChange,
 }: DashboardCustomizerSheetProps) {
-    const { data: config } = useDashboardConfig();
+    const { state } = useAuth();
+    const userId = state.user?.userId;
+    const { data: config } = useDashboardConfig(undefined, userId);
     const saveMutation = useSaveDashboardConfig(() => onOpenChange(false));
     const [items, setItems] = useState<DashboardConfigItem[]>([]);
 

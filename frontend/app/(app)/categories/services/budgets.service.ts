@@ -1,5 +1,6 @@
 import { api } from "@/lib/axios";
-import { authFetch } from "@/lib/auth";
+
+import { authFetch, getServerUserId } from "@/lib/auth";
 
 import type { BudgetByPeriodApi, BudgetByPeriodStatus } from "../types";
 
@@ -20,8 +21,6 @@ type UpdateBudgetRequest = {
   id: string;
   limitAmount: number;
 };
-
-const BUDGETS_REVALIDATE_SECONDS = 60 * 30;
 
 function normalizeStatus(status: BudgetByPeriodStatus): BudgetByPeriodStatus {
   if (status === 1) {
@@ -75,14 +74,12 @@ export const getBudgetsByPeriodServerCached = async ({
     year: String(year),
   });
 
+  const userId = await getServerUserId();
+
   const response = await authFetch(
     `${baseUrl}budgets/by-period?${query.toString()}`,
     {
-      cache: "force-cache",
-      next: {
-        revalidate: BUDGETS_REVALIDATE_SECONDS,
-        tags: ["budgets", `budgets-${year}-${month}`],
-      },
+      next: { tags: [`budgets-${userId}`] },
     },
   );
 

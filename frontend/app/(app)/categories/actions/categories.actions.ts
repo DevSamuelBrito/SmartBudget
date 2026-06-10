@@ -1,15 +1,20 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
+
+import { getServerUserId } from "@/lib/auth";
 
 export async function invalidateCategoriesCache() {
-  revalidatePath("categories");
+  const userId = await getServerUserId();
+  revalidateTag(`categories-${userId}`, "default");
+  revalidateTag(`dashboard-overview-${userId}`, "default");
 }
 
-export async function invalidateBudgetsCache(period?: { month: number; year: number }) {
-  revalidatePath("budgets");
-
-  if (period) {
-    revalidatePath(`budgets-${period.year}-${period.month}`);
-  }
+export async function invalidateBudgetsCache(_period?: {
+  month: number;
+  year: number;
+}) {
+  const userId = await getServerUserId();
+  revalidateTag(`budgets-${userId}`, "default");
+  revalidateTag(`dashboard-overview-${userId}`, "default");
 }

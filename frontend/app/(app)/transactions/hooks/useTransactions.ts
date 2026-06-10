@@ -31,6 +31,9 @@ import type { AxiosError } from "axios";
 //hooks
 import { useAuth } from "@/contexts/auth-context";
 
+//actions
+import { invalidateTransactionsCache } from "../actions/transactions.actions";
+
 type UseTransactionsProps = {
   initialTransactions: TransactionWithCategory[];
   onCloseCreate: () => void;
@@ -54,14 +57,14 @@ export function useTransactions({
   const [search, setSearch] = useState("");
 
   const transactionsQuery = useQuery<TransactionWithCategory[]>({
-    queryKey: ["transactions"],
+    queryKey: ["transactions", userId],
     queryFn: getTransactions,
     initialData: initialTransactions,
     staleTime: Infinity,
   });
 
   const categoriesQuery = useQuery<CategoryApi[]>({
-    queryKey: ["categorias"],
+    queryKey: ["categorias", userId],
     queryFn: getCategories,
     staleTime: Infinity,
   });
@@ -80,7 +83,8 @@ export function useTransactions({
         transactionCategoryId: payload.transactionCategoryId,
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions", userId] });
+      await invalidateTransactionsCache();
 
       toast.success("Transação criada com sucesso!");
       onCloseCreate();
@@ -105,7 +109,8 @@ export function useTransactions({
         transactionCategoryId: payload.transactionCategoryId,
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions", userId] });
+      await invalidateTransactionsCache();
 
       toast.success("Transação atualizada com sucesso!");
       onCloseEdit();
@@ -121,7 +126,8 @@ export function useTransactions({
   const deleteTransactionMutation = useMutation({
     mutationFn: (transactionId: string) => deleteTransaction(transactionId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      await queryClient.invalidateQueries({ queryKey: ["transactions", userId] });
+      await invalidateTransactionsCache();
 
       toast.success("Transação excluída com sucesso!");
       onCloseDelete();

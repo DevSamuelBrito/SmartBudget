@@ -93,7 +93,7 @@ export function useCategories({
   });
 
   const categoriasQuery = useQuery<CategoryApi[]>({
-    queryKey: ["categorias"],
+    queryKey: ["categorias", userId],
     queryFn: getCategories,
     initialData: initialCategories,
     staleTime: Infinity,
@@ -102,7 +102,7 @@ export function useCategories({
   const categories = categoriasQuery.data ?? [];
 
   const budgetsQuery = useQuery<BudgetByPeriodApi[]>({
-    queryKey: ["budgets-by-period", selectedPeriod.month, selectedPeriod.year],
+    queryKey: ["budgets-by-period", userId, selectedPeriod.month, selectedPeriod.year],
     queryFn: () =>
       getBudgetsByPeriod({
         month: selectedPeriod.month,
@@ -132,7 +132,7 @@ export function useCategories({
         icon: payload.icon as CategoryApi["icon"],
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+      await queryClient.invalidateQueries({ queryKey: ["categorias", userId] });
       await invalidateCategoriesCache();
 
       toast.success("Categoria criada com sucesso!");
@@ -148,7 +148,7 @@ export function useCategories({
   const deleteCategoryMutation = useMutation({
     mutationFn: (categoryId: string) => deleteCategoryRequest(categoryId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+      await queryClient.invalidateQueries({ queryKey: ["categorias", userId] });
       await invalidateCategoriesCache();
 
       toast.success("Categoria excluida com sucesso!");
@@ -164,7 +164,7 @@ export function useCategories({
   const updateCategoryMutation = useMutation({
     mutationFn: (payload: UpdateCategoryPayload) => updateCategoryRequest(payload),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["categorias"] });
+      await queryClient.invalidateQueries({ queryKey: ["categorias", userId] });
       await invalidateCategoriesCache();
 
       toast.success("Categoria atualizada com sucesso!");
@@ -200,7 +200,7 @@ export function useCategories({
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["budgets-by-period", selectedPeriod.month, selectedPeriod.year],
+        queryKey: ["budgets-by-period", userId, selectedPeriod.month, selectedPeriod.year],
       });
       await invalidateBudgetsCache({
         month: selectedPeriod.month,

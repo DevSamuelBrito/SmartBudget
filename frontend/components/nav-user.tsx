@@ -25,6 +25,8 @@ import {
 import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon } from "lucide-react"
 import { DashboardCustomizerSheet } from "@/app/(app)/dashboard/components/DashboardCustomizerSheet"
 
+import { useQueryClient } from "@tanstack/react-query"
+
 import { useAuth } from "@/contexts/auth-context"
 
 import { logoutAction } from "@/app/actions/auth-actions"
@@ -39,8 +41,10 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  
+
   const { dispatch } = useAuth()
+  
+  const queryClient = useQueryClient()
 
   const [customizerOpen, setCustomizerOpen] = useState(false)
 
@@ -49,6 +53,7 @@ export function NavUser({
   const handleLogout = async () => {
     setIsLoggingOut(true)
     dispatch({ type: "LOGOUT" })
+    queryClient.clear()
     await logoutAction()
   }
 
