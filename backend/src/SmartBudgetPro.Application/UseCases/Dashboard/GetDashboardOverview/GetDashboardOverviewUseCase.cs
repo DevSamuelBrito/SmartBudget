@@ -27,16 +27,12 @@ public class GetDashboardOverviewUseCase(
         if (input.HistoryMonths < 1 || input.HistoryMonths > 36)
             throw new ArgumentOutOfRangeException(nameof(input.HistoryMonths), "HistoryMonths must be between 1 and 36.");
 
-        var allTransactions = (await financialTransactionRepository.GetAllAsync()).ToList();
-        var allCategories = (await transactionCategoryRepository.GetAllAsync()).ToList();
-        var allBudgets = (await budgetRepository.GetAllAsync()).ToList();
+        if (!input.UserId.HasValue)
+            throw new UnauthorizedAccessException("UserId is required.");
 
-        if (input.UserId.HasValue)
-        {
-            allTransactions = allTransactions.Where(t => t.UserId == input.UserId.Value).ToList();
-            allCategories = allCategories.Where(c => c.UserId == input.UserId.Value).ToList();
-            allBudgets = allBudgets.Where(b => b.UserId == input.UserId.Value).ToList();
-        }
+        var allTransactions = (await financialTransactionRepository.GetByUserIdAsync(input.UserId.Value)).ToList();
+        var allCategories = (await transactionCategoryRepository.GetByUserIdAsync(input.UserId.Value)).ToList();
+        var allBudgets = (await budgetRepository.GetByUserIdAsync(input.UserId.Value)).ToList();
 
         var categoryById = allCategories.ToDictionary(category => category.Id, category => category);
 

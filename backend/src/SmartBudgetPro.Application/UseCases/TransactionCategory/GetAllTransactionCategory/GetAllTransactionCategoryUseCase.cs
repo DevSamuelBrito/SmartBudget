@@ -5,9 +5,9 @@ namespace SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCatego
 {
     public class GetAllTransactionCategoryUseCase(ITransactionCategoryRepository transactionCategoryRepository)
     {
-        public async Task<IEnumerable<TransactionCategoryDto>> ExecuteAsync()
+        public async Task<IEnumerable<TransactionCategoryDto>> ExecuteAsync(Guid userId)
         {
-            var categories = await transactionCategoryRepository.GetAllAsync();
+            var categories = await transactionCategoryRepository.GetByUserIdAsync(userId);
             return categories.Select(c => new TransactionCategoryDto(
                 c.Id,
                 c.UserId,

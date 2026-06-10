@@ -23,7 +23,8 @@ namespace SmartBudgetPro.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var output = await getAllTransaction.ExecuteAsync();
+            var userId = User.GetRequiredUserId();
+            var output = await getAllTransaction.ExecuteAsync(userId);
 
             return Ok(output);
         }
@@ -53,7 +54,8 @@ namespace SmartBudgetPro.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
-            await deleteFinancialTransactionUseCase.ExecuteAsync(id);
+            var userId = User.GetRequiredUserId();
+            await deleteFinancialTransactionUseCase.ExecuteAsync(userId, id);
 
             return NoContent();
         }

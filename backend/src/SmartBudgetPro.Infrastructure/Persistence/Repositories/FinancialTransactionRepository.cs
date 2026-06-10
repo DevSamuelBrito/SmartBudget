@@ -18,6 +18,13 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
             return await context.FinancialTransactions.ToListAsync();
         }
 
+        public async Task<IEnumerable<FinancialTransaction>> GetByUserIdAsync(Guid userId)
+        {
+            return await context.FinancialTransactions
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
+        }
+
         public async Task<FinancialTransaction?> GetByIdAsync(Guid transactionId)
         {
             return await context.FinancialTransactions.FindAsync(transactionId);

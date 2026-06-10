@@ -5,9 +5,9 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction
 {
     public class GetAllFinancialTransactionUseCase (IFinancialTransactionRepository transactionRepository)
     {
-        public async Task<IEnumerable<FinancialTransactionDTO>> ExecuteAsync()
+        public async Task<IEnumerable<FinancialTransactionDTO>> ExecuteAsync(Guid userId)
         {
-            var transactions = await transactionRepository.GetAllAsync();
+            var transactions = await transactionRepository.GetByUserIdAsync(userId);
 
             return transactions.Select(t => new FinancialTransactionDTO(
                 t.Id,

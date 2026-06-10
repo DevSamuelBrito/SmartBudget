@@ -5,9 +5,9 @@ namespace SmartBudgetPro.Application.UseCases.Budget.GetAllBudget;
 
 public class GetAllBudgetUseCase(IBudgetRepository budgetRepository)
 {
-    public async Task<IEnumerable<BudgetDto>> ExecuteAsync()
+    public async Task<IEnumerable<BudgetDto>> ExecuteAsync(Guid userId)
     {
-        var budgets = await budgetRepository.GetAllAsync();
+        var budgets = await budgetRepository.GetByUserIdAsync(userId);
 
         return budgets.Select(b => new BudgetDto(
             b.Id,

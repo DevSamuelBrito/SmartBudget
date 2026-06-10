@@ -24,7 +24,8 @@ public class BudgetController(
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var output = await getAllBudgetUseCase.ExecuteAsync();
+        var userId = User.GetRequiredUserId();
+        var output = await getAllBudgetUseCase.ExecuteAsync(userId);
 
         return Ok(output);
     }
@@ -32,7 +33,8 @@ public class BudgetController(
     [HttpGet("{id}")]
     public async Task<IActionResult> GetByID(Guid id)
     {
-        var output = await getBudgetByIDUseCase.ExecuteAsync(id);
+        var userId = User.GetRequiredUserId();
+        var output = await getBudgetByIDUseCase.ExecuteAsync(userId, id);
 
         return Ok(output);
     }
@@ -40,7 +42,8 @@ public class BudgetController(
     [HttpGet("by-period")]
     public async Task<IActionResult> GetByPeriod([FromQuery] int month, [FromQuery] int year)
     {
-        var output = await getBudgetsByPeriodUseCase.ExecuteAsync(month, year);
+        var userId = User.GetRequiredUserId();
+        var output = await getBudgetsByPeriodUseCase.ExecuteAsync(userId, month, year);
 
         return Ok(output);
     }
@@ -59,7 +62,8 @@ public class BudgetController(
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateBudgetUseCaseInput input)
     {
-        await updateBudgetUseCase.ExecuteAsync(id, input);
+        var userId = User.GetRequiredUserId();
+        await updateBudgetUseCase.ExecuteAsync(userId, id, input);
 
         return NoContent();
     }
@@ -67,7 +71,8 @@ public class BudgetController(
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        await deleteBudgetUseCase.ExecuteAsync(id);
+        var userId = User.GetRequiredUserId();
+        await deleteBudgetUseCase.ExecuteAsync(userId, id);
 
         return NoContent();
     }

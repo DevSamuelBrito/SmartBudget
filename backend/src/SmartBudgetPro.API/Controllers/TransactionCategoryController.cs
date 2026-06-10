@@ -25,7 +25,8 @@ namespace SmartBudgetPro.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var output = await getAllTransactionCategory.ExecuteAsync();
+            var userId = User.GetRequiredUserId();
+            var output = await getAllTransactionCategory.ExecuteAsync(userId);
 
             return Ok(output);
         }
@@ -44,7 +45,8 @@ namespace SmartBudgetPro.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTransactionCategoryUseCaseInput input)
         {
-            await updateTransactionCategory.ExecuteAsync(input);
+            var userId = User.GetRequiredUserId();
+            await updateTransactionCategory.ExecuteAsync(userId, input);
 
             return Ok();
 
@@ -53,12 +55,13 @@ namespace SmartBudgetPro.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var userId = User.GetRequiredUserId();
             var input = new DeleteTransactionCategoryUseCaseInput
             {
                 id = id
             };
 
-            await deleteTransactionCategoryUseCase.ExecuteAsync(input);
+            await deleteTransactionCategoryUseCase.ExecuteAsync(userId, input);
 
             return NoContent();
         }

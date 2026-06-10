@@ -12,10 +12,37 @@ public class BudgetRepository(AppDbContext context) : IBudgetRepository
         return await context.Budgets.ToListAsync();
     }
 
+    public async Task<IEnumerable<Budget>> GetByUserIdAsync(Guid userId)
+    {
+        return await context.Budgets
+            .Where(b => b.UserId == userId)
+            .ToListAsync();
+    }
+
     public async Task<IEnumerable<BudgetByPeriodDto>> GetByPeriodAsync(int month, int year)
     {
         return await context.Budgets
             .Where(b => b.Month == month && b.Year == year)
+            .Join(
+                context.TransactionCategories,
+                budget => new { budget.TransactionCategoryId, budget.UserId },
+                category => new { TransactionCategoryId = category.Id, category.UserId },
+                (budget, category) => new BudgetByPeriodDto(
+                    budget.Id,
+                    budget.TransactionCategoryId,
+                    category.Name,
+                    category.Icon,
+                    budget.LimitAmount,
+                    budget.SpentAmount,
+                    budget.LimitAmount == 0 ? 0 : (budget.SpentAmount / budget.LimitAmount) * 100m,
+                    budget.Status))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<BudgetByPeriodDto>> GetByPeriodAndUserAsync(Guid userId, int month, int year)
+    {
+        return await context.Budgets
+            .Where(b => b.Month == month && b.Year == year && b.UserId == userId)
             .Join(
                 context.TransactionCategories,
                 budget => new { budget.TransactionCategoryId, budget.UserId },

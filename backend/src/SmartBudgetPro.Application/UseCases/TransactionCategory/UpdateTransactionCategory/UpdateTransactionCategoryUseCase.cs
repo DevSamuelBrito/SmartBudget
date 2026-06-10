@@ -4,12 +4,15 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransact
 {
     public class UpdateTransactionCategoryUseCase(ITransactionCategoryRepository transactionCategoryRepository)
     {
-        public async Task ExecuteAsync(UpdateTransactionCategoryUseCaseInput input)
+        public async Task ExecuteAsync(Guid userId, UpdateTransactionCategoryUseCaseInput input)
         {
             var category = await transactionCategoryRepository.GetByIdAsync(input.Id);
 
             if (category == null)
                 throw new InvalidOperationException("Transaction category not found.");
+
+            if (category.UserId != userId)
+                throw new UnauthorizedAccessException("This category does not belong to the authenticated user.");
 
             var existingCategory = await transactionCategoryRepository.GetByNameAsync(category.UserId, input.Name);
 

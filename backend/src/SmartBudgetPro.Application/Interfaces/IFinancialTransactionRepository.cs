@@ -14,6 +14,13 @@ namespace SmartBudgetPro.Application.Interfaces
         Task<IEnumerable<FinancialTransaction>> GetAllAsync();
 
         /// <summary>
+        /// Retrieves all financial transactions for a specific user.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user.</param>
+        /// <returns>A collection containing the user's financial transactions.</returns>
+        Task<IEnumerable<FinancialTransaction>> GetByUserIdAsync(Guid userId);
+
+        /// <summary>
         /// Retrieves a financial transaction by its identifier.
         /// </summary>
         /// <param name="transactionId">The unique identifier of the transaction.</param>
