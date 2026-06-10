@@ -1,5 +1,5 @@
 //types
-import { CategoryTheme } from "../types";
+import type { CategoryTheme } from "../types";
 
 export const ICONT_THEME: CategoryTheme[] = [
   {

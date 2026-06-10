@@ -19,6 +19,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 
 import { Button } from "@/components/ui/button";
+
 // Types
 import type { DashboardBudgetProgress } from "../types";
 
@@ -30,8 +31,14 @@ type BudgetProgressCardProps = {
 };
 
 function getStatusColor(status: DashboardBudgetProgress["status"], percentage: number) {
-    if (status === "Exceeded" || status === 3 || percentage >= 100) return "bg-rose-500";
-    if (status === "Warning" || status === 2 || percentage >= 80) return "bg-amber-500";
+    if (status === "Exceeded" || status === 3 || percentage >= 100) {
+        return "bg-rose-500";
+    }
+
+    if (status === "Warning" || status === 2 || percentage >= 80) {
+        return "bg-amber-500";
+    }
+
     return "bg-emerald-500";
 }
 

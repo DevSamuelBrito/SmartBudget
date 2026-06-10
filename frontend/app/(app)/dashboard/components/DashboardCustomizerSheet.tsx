@@ -1,7 +1,7 @@
 "use client";
 
 // React
-import { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 
 // Libs
 import {
@@ -24,6 +24,13 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
+import {
+    GripVerticalIcon,
+    Columns2Icon,
+    RectangleHorizontalIcon,
+    InfoIcon,
+} from "lucide-react";
+
 // Components
 import {
     Sheet,
@@ -37,13 +44,6 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { Checkbox } from "@/components/ui/checkbox";
-
-import {
-    GripVerticalIcon,
-    Columns2Icon,
-    RectangleHorizontalIcon,
-    InfoIcon,
-} from "lucide-react";
 
 // Hooks
 import {
@@ -153,13 +153,14 @@ export function DashboardCustomizerSheet({
     const userId = state.user?.userId;
     const { data: config } = useDashboardConfig(undefined, userId);
     const saveMutation = useSaveDashboardConfig(() => onOpenChange(false));
-    const [items, setItems] = useState<DashboardConfigItem[]>([]);
+    const [draftItems, setDraftItems] = useState<DashboardConfigItem[] | null>(null);
 
-    useEffect(() => {
-        if (config) {
-            setItems([...config].sort((a, b) => a.order - b.order));
-        }
-    }, [config]);
+    const sortedConfig = useMemo(
+        () => (config ? [...config].sort((a, b) => a.order - b.order) : []),
+        [config],
+    );
+
+    const items = draftItems ?? sortedConfig;
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -170,31 +171,40 @@ export function DashboardCustomizerSheet({
 
     function handleDragEnd(event: DragEndEvent) {
         const { active, over } = event;
-        if (!over || active.id === over.id) return;
 
-        setItems((prev) => {
-            const oldIndex = prev.findIndex((i) => i.componentKey === active.id);
-            const newIndex = prev.findIndex((i) => i.componentKey === over.id);
-            return arrayMove(prev, oldIndex, newIndex);
+        if (!over || active.id === over.id) {
+            return;
+        }
+
+        setDraftItems((prev) => {
+            const base = prev ?? sortedConfig;
+            const oldIndex = base.findIndex((i) => i.componentKey === active.id);
+            const newIndex = base.findIndex((i) => i.componentKey === over.id);
+
+            return arrayMove(base, oldIndex, newIndex);
         });
     }
 
     function handleToggleVisible(key: string) {
-        setItems((prev) =>
-            prev.map((i) =>
+        setDraftItems((prev) => {
+            const base = prev ?? sortedConfig;
+
+            return base.map((i) =>
                 i.componentKey === key ? { ...i, visible: !i.visible } : i,
-            ),
-        );
+            );
+        });
     }
 
     function handleToggleColumns(key: string) {
-        setItems((prev) =>
-            prev.map((i) =>
+        setDraftItems((prev) => {
+            const base = prev ?? sortedConfig;
+
+            return base.map((i) =>
                 i.componentKey === key
                     ? { ...i, columns: i.columns === 1 ? 2 : 1 }
                     : i,
-            ),
-        );
+            );
+        });
     }
 
     function handleSave() {
@@ -202,6 +212,7 @@ export function DashboardCustomizerSheet({
             ...item,
             order: index,
         }));
+
         saveMutation.mutate(payload);
     }
 

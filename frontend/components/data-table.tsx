@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+
 import {
   closestCenter,
   DndContext,
@@ -13,13 +14,18 @@ import {
   type UniqueIdentifier,
 } from "@dnd-kit/core"
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
+
 import {
   arrayMove,
   SortableContext,
   useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable"
+
 import { CSS } from "@dnd-kit/utilities"
+
+import { GripVerticalIcon, CircleCheckIcon, LoaderIcon, EllipsisVerticalIcon, Columns3Icon, ChevronDownIcon, PlusIcon, ChevronsLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronsRightIcon, TrendingUpIcon } from "lucide-react"
+
 import {
   flexRender,
   getCoreRowModel,
@@ -36,12 +42,17 @@ import {
   type VisibilityState,
 } from "@tanstack/react-table"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+
 import { toast } from "sonner"
+
 import { z } from "zod"
 
 import { useIsMobile } from "@/hooks/use-mobile"
+
 import { Badge } from "@/components/ui/badge"
+
 import { Button } from "@/components/ui/button"
+
 import {
   ChartContainer,
   ChartTooltip,
@@ -49,6 +60,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import { Checkbox } from "@/components/ui/checkbox"
+
 import {
   Drawer,
   DrawerClose,
@@ -59,6 +71,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -67,8 +80,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+
 import { Input } from "@/components/ui/input"
+
 import { Label } from "@/components/ui/label"
+
 import {
   Select,
   SelectContent,
@@ -77,7 +93,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+
 import { Separator } from "@/components/ui/separator"
+
 import {
   Table,
   TableBody,
@@ -86,13 +104,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { GripVerticalIcon, CircleCheckIcon, LoaderIcon, EllipsisVerticalIcon, Columns3Icon, ChevronDownIcon, PlusIcon, ChevronsLeftIcon, ChevronLeftIcon, ChevronRightIcon, ChevronsRightIcon, TrendingUpIcon } from "lucide-react"
+
 
 export const schema = z.object({
   id: z.number(),
@@ -336,18 +355,25 @@ export function DataTable({
   "use no memo"
 
   const [data, setData] = React.useState(() => initialData)
+
   const [rowSelection, setRowSelection] = React.useState({})
+
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
+
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
+
   const [sorting, setSorting] = React.useState<SortingState>([])
+
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
     pageSize: 10,
   })
+
   const sortableId = React.useId()
+
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
     useSensor(TouchSensor, {}),
@@ -385,11 +411,15 @@ export function DataTable({
   })
 
   function handleDragEnd(event: DragEndEvent) {
+
     const { active, over } = event
+
     if (active && over && active.id !== over.id) {
+
       setData((data) => {
         const oldIndex = dataIds.indexOf(active.id)
         const newIndex = dataIds.indexOf(over.id)
+        
         return arrayMove(data, oldIndex, newIndex)
       })
     }

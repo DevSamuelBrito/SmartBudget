@@ -1,3 +1,6 @@
+//react
+import type React from "react";
+
 //lucide react
 import {
     BusFront,
@@ -9,9 +12,6 @@ import {
     ShoppingBasket,
     Wifi,
 } from "lucide-react";
-
-//react
-import type React from "react";
 
 type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
@@ -35,5 +35,6 @@ type ThemeIconProps = {
 
 export function ThemeIcon({ iconKey, className }: ThemeIconProps) {
     const Icon = iconMap[iconKey];
+
     return <Icon className={className} />;
 }

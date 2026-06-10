@@ -2,6 +2,10 @@
 
 import { useState } from "react"
 
+import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon } from "lucide-react"
+
+import { useQueryClient } from "@tanstack/react-query"
+
 import {
   Avatar,
   AvatarFallback,
@@ -22,10 +26,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon } from "lucide-react"
 import { DashboardCustomizerSheet } from "@/app/(app)/dashboard/components/DashboardCustomizerSheet"
 
-import { useQueryClient } from "@tanstack/react-query"
 
 import { useAuth } from "@/contexts/auth-context"
 

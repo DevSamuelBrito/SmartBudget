@@ -3,6 +3,15 @@
 // react
 import { useCallback, useEffect } from "react";
 
+// RHF
+import { useForm, useWatch } from "react-hook-form";
+
+// zod
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// icons
+import { Loader2 } from "lucide-react";
+
 // ui
 import { Button } from "@/components/ui/button";
 
@@ -22,21 +31,10 @@ import {
 // components
 import { ThemeIcon } from "./theme-icons";
 
-//icons
-import { Loader2 } from "lucide-react";
-
-//RHF
-import { useForm, useWatch } from "react-hook-form";
-
-//zod
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { categoryFormSchema } from "../schemas/category.schema";
 
-// types 
+// types
 import type { CategoryApi, CategoryFormValues, CategoryTheme } from "../types";
-
-
 
 type CategoryFormSheetProps = {
     open: boolean;
@@ -90,8 +88,9 @@ export function CategoryFormSheet({
 
     useEffect(() => {
         if (!open) {
-            resetForm()
-            return
+            resetForm();
+
+            return;
         }
 
         resetForm(category);
@@ -102,7 +101,6 @@ export function CategoryFormSheet({
             name: values.name.trim(),
             icon: values.icon,
         });
-
     }
 
     const title = mode === "create" ? "Criar categoria" : "Renomear categoria";

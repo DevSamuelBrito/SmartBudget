@@ -23,5 +23,6 @@ export async function saveDashboardConfigAction(items: DashboardConfigItem[]) {
   }
 
   const userId = await getServerUserId();
+
   revalidateTag(`dashboard-config-${userId}`, "default");
 }

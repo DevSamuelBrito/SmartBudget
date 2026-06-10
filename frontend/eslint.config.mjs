@@ -1,10 +1,12 @@
+import { createRequire } from "module";
+
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
-import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
 const tseslint = require("typescript-eslint");
+
 const noRestrictedTypesRule = tseslint.plugin.rules["no-restricted-types"];
 
 const banTypesCompatRule = {
@@ -197,6 +199,13 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/no-var-requires": "off",
     },
   },
+  {
+    files: ["components/data-table.tsx"],
+    rules: {
+      "react-hooks/incompatible-library": "off",
+    },
+  },
+
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

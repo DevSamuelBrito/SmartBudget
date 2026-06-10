@@ -4,6 +4,8 @@
 import * as React from "react"
 
 //components
+import { LayoutDashboardIcon, CameraIcon, FileTextIcon, CommandIcon, ArrowLeftRight, Tags } from "lucide-react"
+
 import { NavMain } from "@/components/nav-main"
 
 import { NavUser } from "@/components/nav-user"
@@ -19,7 +21,6 @@ import {
 } from "@/components/ui/sidebar"
 
 //icons
-import { LayoutDashboardIcon, CameraIcon, FileTextIcon, CommandIcon, ArrowLeftRight, Tags } from "lucide-react"
 
 const data = {
   user: {

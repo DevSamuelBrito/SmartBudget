@@ -64,7 +64,9 @@ export const getDashboardConfigServer = async (): Promise<
 
 export const getDashboardConfig = async (): Promise<DashboardConfigItem[]> => {
   const response = await api.get<DashboardConfigItem[]>("/dashboard/config");
-  return response.data;
+
+  
+return response.data;
 };
 
 export const saveDashboardConfig = async (

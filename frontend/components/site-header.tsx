@@ -4,10 +4,11 @@
 import { useSyncExternalStore } from "react"
 
 //lucide
+import { usePathname } from "next/navigation"
+
 import { MoonStar, SunMedium } from "lucide-react"
 
 //next
-import { usePathname } from "next/navigation"
 
 //next
 import { useTheme } from "next-themes"
@@ -25,6 +26,7 @@ export function SiteHeader() {
     () => true,
     () => false
   )
+
   const pathname = usePathname()
 
   const { resolvedTheme, theme, setTheme } = useTheme()

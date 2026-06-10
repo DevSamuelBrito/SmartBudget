@@ -24,7 +24,9 @@ export default async function RootLayout({
     if (!token) {
         redirect("/login");
     }
-    return (
+
+    
+return (
         <SidebarProvider
             style={
                 {

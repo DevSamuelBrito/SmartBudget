@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 // zod
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -99,16 +99,31 @@ export function TransactionFormSheet({
 }: TransactionFormSheetProps) {
     "use no memo";
 
+    const formValues = useMemo<TransactionFormValues>(() => {
+        if (!open || !transaction) {
+            return defaultTransactionValues;
+        }
+
+        return {
+            amount: transaction.amount,
+            transactionDate: transaction.transactionDate.slice(0, 10),
+            transactionType: transaction.type,
+            recurrence: transaction.recurrence,
+            description: transaction.description,
+            transactionCategoryId: transaction.type === 3 ? null : transaction.transactionCategoryId,
+        };
+    }, [open, transaction]);
+
     const {
         register,
         handleSubmit,
         control,
         setValue,
-        reset,
         formState: { errors },
     } = useForm<TransactionFormValues>({
         resolver: zodResolver(transactionFormSchema),
         defaultValues: defaultTransactionValues,
+        values: formValues,
     });
 
     const transactionCategoryId = useWatch({ control, name: "transactionCategoryId" });
@@ -156,60 +171,12 @@ export function TransactionFormSheet({
         );
     }, [categories, categoryQuery]);
 
-    const resetForm = useCallback(
-        (nextTransaction?: TransactionApi) => {
-            if (nextTransaction) {
-                const dateStr = nextTransaction.transactionDate.slice(0, 10);
-                reset({
-                    amount: nextTransaction.amount,
-                    transactionDate: dateStr,
-                    transactionType: nextTransaction.type,
-                    recurrence: nextTransaction.recurrence,
-                    description: nextTransaction.description,
-                    transactionCategoryId: nextTransaction.transactionCategoryId,
-                });
-                const cat = categories.find((c) => c.id === nextTransaction.transactionCategoryId);
-                setCategoryQuery(cat?.name ?? "");
-            } else {
-                reset(defaultTransactionValues);
-                setCategoryQuery("");
-            }
-            setCategoryOpen(false);
-            setDateOpen(false);
-        },
-        [reset, categories],
-    );
-
-    useEffect(() => {
-        if (!open) {
-            resetForm();
-            return;
-        }
-
-        resetForm(transaction);
-    }, [open, transaction, resetForm]);
-
-    useEffect(() => {
-        if (selectedCategory) {
-            setCategoryQuery(selectedCategory.name);
-        }
-    }, [selectedCategory]);
-
-    useEffect(() => {
-        if (!isTransferTransaction) {
-            return;
-        }
-
-        setValue("transactionCategoryId", null, {
-            shouldValidate: true,
-            shouldDirty: true,
-        });
-        setCategoryQuery("");
-        setCategoryOpen(false);
-    }, [isTransferTransaction, setValue]);
+    const displayedCategoryQuery =
+        categoryQuery || (isTransferTransaction ? "" : (selectedCategory?.name ?? ""));
 
     function submitForm(values: TransactionFormValues) {
         const [year, month, day] = values.transactionDate.split("-").map(Number);
+
         const transactionDate = new Date(Date.UTC(year, month - 1, day))
             .toISOString()
             .replace(".000Z", "Z");
@@ -249,7 +216,9 @@ export function TransactionFormSheet({
                 }
 
                 if (!nextOpen) {
-                    resetForm();
+                    setCategoryQuery("");
+                    setCategoryOpen(false);
+                    setDateOpen(false);
                 }
 
                 onOpenChange(nextOpen);
@@ -312,6 +281,7 @@ export function TransactionFormSheet({
                                                 shouldDirty: true,
                                             });
                                             setDateOpen(false);
+
                                             return;
                                         }
 
@@ -339,10 +309,21 @@ export function TransactionFormSheet({
                             <Select
                                 value={String(transactionType)}
                                 onValueChange={(value) => {
-                                    setValue("transactionType", Number(value) as TransactionFormValues["transactionType"], {
+                                    const nextType = Number(value) as TransactionFormValues["transactionType"];
+
+                                    setValue("transactionType", nextType, {
                                         shouldValidate: true,
                                         shouldDirty: true,
                                     });
+
+                                    if (nextType === 3) {
+                                        setValue("transactionCategoryId", null, {
+                                            shouldValidate: true,
+                                            shouldDirty: true,
+                                        });
+                                        setCategoryQuery("");
+                                        setCategoryOpen(false);
+                                    }
                                 }}
                                 disabled={isSubmitting}
                             >
@@ -425,7 +406,7 @@ export function TransactionFormSheet({
                             <Input
                                 id="transaction-category"
                                 placeholder={isTransferTransaction ? "Categoria indisponível para transferência" : "Selecione uma categoria"}
-                                value={categoryQuery}
+                                value={displayedCategoryQuery}
                                 onFocus={() => {
                                     if (!isTransferTransaction) {
                                         setCategoryOpen(true);
@@ -433,6 +414,7 @@ export function TransactionFormSheet({
                                 }}
                                 onChange={(event) => {
                                     setCategoryQuery(event.target.value);
+
                                     if (!isTransferTransaction) {
                                         setCategoryOpen(true);
                                         setValue("transactionCategoryId", null, {

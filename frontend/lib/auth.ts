@@ -28,6 +28,7 @@ export const authFetch = async (
   const token = cookieStore.get("token")?.value;
 
   const headers = new Headers(init?.headers);
+
   headers.set("Content-Type", "application/json");
 
   if (token) {

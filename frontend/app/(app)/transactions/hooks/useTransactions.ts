@@ -1,10 +1,15 @@
 //react query
+import { useState } from "react";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // react
-import { useState } from "react";
 
 //services
+import { toast } from "sonner";
+
+import type { AxiosError } from "axios";
+
 import {
   getTransactions,
   createTransaction,
@@ -23,10 +28,8 @@ import type { TransactionWithCategory } from "../types";
 import type { TransactionFormValues } from "../schemas/transaction.schema";
 
 //toast
-import { toast } from "sonner";
 
 //axios
-import type { AxiosError } from "axios";
 
 //hooks
 import { useAuth } from "@/contexts/auth-context";
@@ -141,6 +144,7 @@ export function useTransactions({
   });
 
   const categories = categoriesQuery.data ?? [];
+
   const categoryMap = new Map(
     categories.map((category) => [category.id, category]),
   );

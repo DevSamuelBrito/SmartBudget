@@ -39,10 +39,12 @@ const PIE_COLORS = [
 export function CategoryPieChart({ data }: CategoryPieChartProps) {
     const chartConfig = data.reduce<ChartConfig>((acc, item, index) => {
         const key = item.transactionCategoryId ?? `uncategorized-${index}`;
+
         acc[key] = {
             label: item.categoryName,
             color: PIE_COLORS[index % PIE_COLORS.length],
         };
+
         return acc;
     }, {});
 
@@ -72,7 +74,7 @@ export function CategoryPieChart({ data }: CategoryPieChartProps) {
                             outerRadius={100}
                             paddingAngle={2}
                         >
-                            {chartData.map((entry, index) => (
+                            {chartData.map((entry) => (
                                 <Cell key={entry.name} fill={entry.fill} />
                             ))}
                         </Pie>

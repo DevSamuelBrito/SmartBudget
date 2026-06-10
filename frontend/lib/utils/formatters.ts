@@ -15,7 +15,9 @@ export const formatTransactionType = (value: TransactionApi["type"]) => {
     2: "Despesa",
     3: "Transferência",
   };
-  return map[value];
+
+  
+return map[value];
 };
 
 export const formatRecurrence = (value: TransactionApi["recurrence"]) => {
@@ -23,5 +25,7 @@ export const formatRecurrence = (value: TransactionApi["recurrence"]) => {
     0: "Única",
     1: "Recorrente",
   };
-  return map[value];
+
+  
+return map[value];
 };

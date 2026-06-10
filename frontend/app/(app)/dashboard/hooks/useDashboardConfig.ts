@@ -2,6 +2,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // Services
+import { toast } from "sonner";
+
 import {
   getDashboardConfig,
 } from "../services/dashboard.service";
@@ -13,7 +15,6 @@ import { saveDashboardConfigAction } from "../actions/dashboard.actions";
 import type { DashboardConfigItem } from "../types";
 
 // Toast
-import { toast } from "sonner";
 
 export function useDashboardConfig(initialData?: DashboardConfigItem[], userId?: string) {
   return useQuery<DashboardConfigItem[]>({

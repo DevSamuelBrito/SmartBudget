@@ -1,13 +1,6 @@
 "use client"
 
 //componentes
-import {
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
 
 //next
 import Link from "next/link"
@@ -16,6 +9,14 @@ import { usePathname } from "next/navigation"
 
 //icons
 import { CirclePlusIcon } from "lucide-react"
+
+import {
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "@/components/ui/sidebar"
 
 export function NavMain({
   items,

@@ -80,6 +80,7 @@ export function DashboardScreen({ data, initialConfig }: DashboardScreenProps) {
                 <section className="grid gap-4 xl:grid-cols-2">
                     {visibleItems.map((item) => {
                         const component = componentMap[item.componentKey];
+
                         if (!component) return null;
 
                         return (

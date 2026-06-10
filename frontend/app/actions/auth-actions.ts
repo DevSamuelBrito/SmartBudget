@@ -58,9 +58,9 @@ const normalizeLoginResponse = (payload: unknown): LoginResponse => {
   };
 };
 
-type ActionResult<T = undefined> =
-  | ({ success: true } & (T extends undefined ? {} : { user: T }))
-  | { success: false; error: string };
+type ActionResult<T = undefined> = T extends undefined
+  ? { success: true } | { success: false; error: string }
+  : { success: true; user: T } | { success: false; error: string };
 
 export async function loginAction(
   input: LoginInput,
@@ -79,8 +79,10 @@ export async function loginAction(
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
+
       const message =
         errorData?.detail || errorData?.message || "E-mail ou senha inválidos.";
+
       return { success: false, error: message };
     }
 
@@ -134,8 +136,10 @@ export async function registerAction(
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => null);
+
       const message =
         errorData?.detail || errorData?.message || "Erro ao criar conta.";
+
       return { success: false, error: message };
     }
 

@@ -202,10 +202,7 @@ export function useCategories({
       await queryClient.invalidateQueries({
         queryKey: ["budgets-by-period", userId, selectedPeriod.month, selectedPeriod.year],
       });
-      await invalidateBudgetsCache({
-        month: selectedPeriod.month,
-        year: selectedPeriod.year,
-      });
+      await invalidateBudgetsCache();
 
       toast.success("Orçamento salvo com sucesso!");
       onCloseBudget();
