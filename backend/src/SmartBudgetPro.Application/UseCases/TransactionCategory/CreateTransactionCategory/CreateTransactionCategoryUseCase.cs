@@ -19,7 +19,7 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
             if (existingCategory is not null)
                 throw new InvalidOperationException("A category with the same name already exists for this user.");
 
-            var category = DomainCategory.Create(input.UserId, input.Name);
+            var category = DomainCategory.Create(input.UserId, input.Name, input.Icon);
 
             await transactionCategoryRepository.AddAsync(category);
 
@@ -27,6 +27,7 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
                 category.Id,
                 category.UserId,
                 category.Name,
+                category.Icon,
                 category.CreatedAt,
                 category.UpdatedAt);
         }

@@ -1,6 +1,16 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using SmartBudgetPro.Application.UseCases.Budget.CreateBudget;
+using SmartBudgetPro.Application.UseCases.Budget.DeleteBudget;
+using SmartBudgetPro.Application.UseCases.Budget.GetAllBudget;
+using SmartBudgetPro.Application.UseCases.Budget.GetBudgetByID;
+using SmartBudgetPro.Application.UseCases.Budget.GetBudgetsByPeriod;
+using SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
+using SmartBudgetPro.Application.UseCases.Auth.Login;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
+using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardOverview;
+using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
+using SmartBudgetPro.Application.UseCases.Dashboard.SaveDashboardConfig;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
@@ -41,6 +51,22 @@ public static class DependencyInjection
         services.AddScoped<CreateTransactionCategoryUseCase>();
         services.AddScoped<UpdateTransactionCategoryUseCase>();
         services.AddScoped<DeleteTransactionCategoryUseCase>();
+
+        //budget
+        services.AddScoped<GetAllBudgetUseCase>();
+        services.AddScoped<GetBudgetByIDUseCase>();
+        services.AddScoped<GetBudgetsByPeriodUseCase>();
+        services.AddScoped<CreateBudgetUseCase>();
+        services.AddScoped<UpdateBudgetUseCase>();
+        services.AddScoped<DeleteBudgetUseCase>();
+
+        //dashboard
+        services.AddScoped<GetDashboardOverviewUseCase>();
+        services.AddScoped<GetDashboardConfigUseCase>();
+        services.AddScoped<SaveDashboardConfigUseCase>();
+
+        //auth
+        services.AddScoped<LoginUseCase>();
 
         return services;
     }

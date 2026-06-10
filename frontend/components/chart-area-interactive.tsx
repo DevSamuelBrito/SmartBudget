@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -154,14 +155,18 @@ export function ChartAreaInteractive() {
     const date = new Date(item.date)
     const referenceDate = new Date("2024-06-30")
     let daysToSubtract = 90
+
     if (timeRange === "30d") {
       daysToSubtract = 30
     } else if (timeRange === "7d") {
       daysToSubtract = 7
     }
+
     const startDate = new Date(referenceDate)
+
     startDate.setDate(startDate.getDate() - daysToSubtract)
-    return date >= startDate
+    
+return date >= startDate
   })
 
   return (
@@ -249,7 +254,9 @@ export function ChartAreaInteractive() {
               minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value)
-                return date.toLocaleDateString("en-US", {
+
+                
+return date.toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
                 })

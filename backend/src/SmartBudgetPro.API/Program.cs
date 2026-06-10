@@ -1,26 +1,39 @@
-using Scalar.AspNetCore;
+using SmartBudgetPro.API.Configuration;
 using SmartBudgetPro.API.Middlewares;
 using SmartBudgetPro.Application;
 using SmartBudgetPro.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddApiDocumentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddControllers(); 
+builder.Services.AddControllers();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Development", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapApiDocumentation();
 }
 
+app.UseCors("Development");
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run();

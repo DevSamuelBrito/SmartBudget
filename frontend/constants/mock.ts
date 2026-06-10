@@ -1,0 +1,1 @@
+export const MOCK_USER_ID = "1e89b344-fad8-4bf7-aeb7-39e8100ddb80";

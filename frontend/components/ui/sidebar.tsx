@@ -1,8 +1,11 @@
 "use client"
 
 import * as React from "react"
+
 import { cva, type VariantProps } from "class-variance-authority"
 import { Slot } from "radix-ui"
+
+import { PanelLeftIcon } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -22,7 +25,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { PanelLeftIcon } from "lucide-react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -45,6 +47,7 @@ const SidebarContext = React.createContext<SidebarContextProps | null>(null)
 
 function useSidebar() {
   const context = React.useContext(SidebarContext)
+
   if (!context) {
     throw new Error("useSidebar must be used within a SidebarProvider.")
   }
@@ -72,9 +75,11 @@ function SidebarProvider({
   // We use openProp and setOpenProp for control from outside the component.
   const [_open, _setOpen] = React.useState(defaultOpen)
   const open = openProp ?? _open
+
   const setOpen = React.useCallback(
     (value: boolean | ((value: boolean) => boolean)) => {
       const openState = typeof value === "function" ? value(open) : value
+
       if (setOpenProp) {
         setOpenProp(openState)
       } else {
@@ -105,7 +110,8 @@ function SidebarProvider({
     }
 
     window.addEventListener("keydown", handleKeyDown)
-    return () => window.removeEventListener("keydown", handleKeyDown)
+    
+return () => window.removeEventListener("keydown", handleKeyDown)
   }, [toggleSidebar])
 
   // We add a state so that we can do data-state="expanded" or "collapsed".
@@ -230,6 +236,7 @@ function Sidebar({
         data-side={side}
         className={cn(
           "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] md:flex",
+
           // Adjust the padding for floating and inset variants.
           variant === "floating" || variant === "inset"
             ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"

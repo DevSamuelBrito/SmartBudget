@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.DeleteTransactionCategory;
@@ -8,6 +10,7 @@ namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
     [Route("api/transactionCategories")]
+    [Authorize]
     public class TransactionCategoryController
         (
         GetAllTransactionCategoryUseCase getAllTransactionCategory,
@@ -22,7 +25,8 @@ namespace SmartBudgetPro.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var output = await getAllTransactionCategory.ExecuteAsync();
+            var userId = User.GetRequiredUserId();
+            var output = await getAllTransactionCategory.ExecuteAsync(userId);
 
             return Ok(output);
         }
@@ -30,7 +34,10 @@ namespace SmartBudgetPro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTransactionCategoryUseCaseInput input)
         {
-            var output = await createTransactionCategory.ExecuteAsync(input);
+            var userId = User.GetRequiredUserId();
+            var securedInput = input with { UserId = userId };
+
+            var output = await createTransactionCategory.ExecuteAsync(securedInput);
 
             return Created($"api/transactionCategories/{output.Id}", output);
         }
@@ -38,7 +45,8 @@ namespace SmartBudgetPro.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTransactionCategoryUseCaseInput input)
         {
-            await updateTransactionCategory.ExecuteAsync(input);
+            var userId = User.GetRequiredUserId();
+            await updateTransactionCategory.ExecuteAsync(userId, input);
 
             return Ok();
 
@@ -47,12 +55,13 @@ namespace SmartBudgetPro.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var userId = User.GetRequiredUserId();
             var input = new DeleteTransactionCategoryUseCaseInput
             {
                 id = id
             };
 
-            await deleteTransactionCategoryUseCase.ExecuteAsync(input);
+            await deleteTransactionCategoryUseCase.ExecuteAsync(userId, input);
 
             return NoContent();
         }
