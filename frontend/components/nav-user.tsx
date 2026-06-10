@@ -25,6 +25,10 @@ import {
 import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon } from "lucide-react"
 import { DashboardCustomizerSheet } from "@/app/(app)/dashboard/components/DashboardCustomizerSheet"
 
+import { useAuth } from "@/contexts/auth-context"
+
+import { logoutAction } from "@/app/actions/auth-actions"
+
 export function NavUser({
   user,
 }: {
@@ -35,8 +39,18 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  
+  const { dispatch } = useAuth()
 
   const [customizerOpen, setCustomizerOpen] = useState(false)
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    dispatch({ type: "LOGOUT" })
+    await logoutAction()
+  }
 
   return (
     <>
@@ -104,10 +118,10 @@ export function NavUser({
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onSelect={handleLogout} disabled={isLoggingOut}>
                 <LogOutIcon
                 />
-                Log out
+                {isLoggingOut ? "Logging out..." : "Log out"}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

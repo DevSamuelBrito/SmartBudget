@@ -1,10 +1,23 @@
-//react
-import type { ReactNode } from "react";
+//next
+import { cookies } from "next/headers";
 
-type AuthLayoutProps = {
-	children: ReactNode;
-};
+import { redirect } from "next/navigation";
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
-	return <section className="min-h-svh bg-muted/20">{children}</section>;
+export default async function AuthLayout({
+	children,
+}: Readonly<{
+	children: React.ReactNode;
+}>) {
+	const cookieStore = await cookies();
+	const token = cookieStore.get("token");
+
+	if (token) {
+		redirect("/dashboard");
+	}
+
+	return (
+		<div>
+			{children}
+		</div>
+	);
 }

@@ -10,6 +10,9 @@ import { toast } from "sonner";
 //react query
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+//hooks
+import { useAuth } from "@/contexts/auth-context";
+
 // icons
 import { ICONT_THEME } from "../constants/icons-theme";
 
@@ -36,9 +39,6 @@ import {
   invalidateBudgetsCache,
   invalidateCategoriesCache,
 } from "../actions/categories.actions";
-
-//mock
-import { MOCK_USER_ID } from "@/constants/mock";
 
 type UpdateCategoryPayload = {
   id: string;
@@ -77,6 +77,10 @@ export function useCategories({
   onCloseDelete,
   onCloseBudget,
 }: UseCategoriesProps) {
+
+  const { state } = useAuth();
+  const userId = state.user?.userId ?? "";
+
   const iconThemes = ICONT_THEME;
 
   const queryClient = useQueryClient();
@@ -123,7 +127,7 @@ export function useCategories({
   const createCategoryMutation = useMutation({
     mutationFn: (payload: CategoryFormValues) =>
       createCategoryRequest({
-        userId: MOCK_USER_ID,
+        userId,
         name: payload.name,
         icon: payload.icon as CategoryApi["icon"],
       }),
@@ -187,7 +191,7 @@ export function useCategories({
       }
 
       await createBudgetRequest({
-        userId: MOCK_USER_ID,
+        userId,
         transactionCategoryId: category.id,
         month: selectedPeriod.month,
         year: selectedPeriod.year,

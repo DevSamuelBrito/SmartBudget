@@ -1,25 +1,63 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+
+import { useAuth } from "@/contexts/auth-context";
+
+import { loginAction } from "@/app/actions/auth-actions";
+
+import {
+  loginSchema,
+  type LoginFormValues,
+} from "@/app/(auth)/login/login-schema";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
+  const { dispatch } = useAuth();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const onSubmit = async (data: LoginFormValues) => {
+    const result = await loginAction(data);
+
+    if (result.success) {
+      dispatch({ type: "LOGIN", payload: result.user });
+      router.push("/dashboard");
+    } else {
+      toast.error(result.error);
+    }
+  };
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -33,8 +71,11 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
+                  {...register("email")}
                 />
+                {errors.email && (
+                  <p className="text-sm text-destructive">{errors.email.message}</p>
+                )}
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -46,10 +87,19 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  {...register("password")}
+                />
+                {errors.password && (
+                  <p className="text-sm text-destructive">{errors.password.message}</p>
+                )}
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Logging in..." : "Login"}
+                </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with

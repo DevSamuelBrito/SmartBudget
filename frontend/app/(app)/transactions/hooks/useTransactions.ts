@@ -28,8 +28,8 @@ import { toast } from "sonner";
 //axios
 import type { AxiosError } from "axios";
 
-//mock
-import { MOCK_USER_ID } from "@/constants/mock";
+//hooks
+import { useAuth } from "@/contexts/auth-context";
 
 type UseTransactionsProps = {
   initialTransactions: TransactionWithCategory[];
@@ -48,6 +48,9 @@ export function useTransactions({
   onCloseEdit,
   onCloseDelete,
 }: UseTransactionsProps) {
+  const { state } = useAuth();
+  const userId = state.user?.userId ?? "";
+
   const [search, setSearch] = useState("");
 
   const transactionsQuery = useQuery<TransactionWithCategory[]>({
@@ -68,7 +71,7 @@ export function useTransactions({
   const createTransactionMutation = useMutation({
     mutationFn: (payload: CreateTransactionPayload) =>
       createTransaction({
-        userId: MOCK_USER_ID,
+        userId,
         amount: payload.amount,
         transactionDate: payload.transactionDate,
         transactionType: payload.transactionType,
@@ -93,7 +96,7 @@ export function useTransactions({
     mutationFn: (payload: UpdateTransactionPayload) =>
       updateTransaction({
         id: payload.id,
-        userId: MOCK_USER_ID,
+        userId,
         amount: payload.amount,
         transactionDate: payload.transactionDate,
         transactionType: payload.transactionType,

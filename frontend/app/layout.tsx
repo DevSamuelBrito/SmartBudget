@@ -14,6 +14,10 @@ import { NavigationProgress } from "@/components/NavigationProgress";
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 
+import { Toaster } from "@/components/ui/sonner";
+
+import { AuthProvider } from "@/contexts/auth-context";
+
 //providers
 import { Providers } from "../providers/providers";
 
@@ -41,9 +45,12 @@ export default function RootLayout({
             <Suspense fallback={null}>
               <NavigationProgress />
             </Suspense>
-            <TooltipProvider>
-              {children}
-            </TooltipProvider>
+            <AuthProvider>
+              <TooltipProvider>
+                {children}
+              </TooltipProvider>
+              <Toaster />
+            </AuthProvider>
           </ThemeProvider>
         </Providers>
       </body>

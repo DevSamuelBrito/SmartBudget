@@ -29,6 +29,19 @@ public static class AuthenticationExtensions
                             Encoding.UTF8.GetBytes(jwtKey)),
                         ClockSkew = TimeSpan.Zero
                     };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Cookies.TryGetValue("token", out var token))
+                        {
+                            context.Token = token;
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
         services.AddAuthorization();
