@@ -46,6 +46,13 @@ namespace SmartBudgetPro.Application.Interfaces
         Task DeleteAsync(Guid transactionId);
 
         /// <summary>
+        /// Checks if there is at least one financial transaction linked to a category.
+        /// </summary>
+        /// <param name="categoryId">The unique identifier of the category.</param>
+        /// <returns><c>true</c> if at least one linked transaction exists; otherwise, <c>false</c>.</returns>
+        Task<bool> ExistsTransactionByCategoryAsync(Guid categoryId);
+
+        /// <summary>
         /// Returns the sum of all expense transactions for a given category and period.
         /// </summary>
         Task<decimal> GetTotalExpensesByCategoryAndPeriodAsync(Guid categoryId, int year, int month);
