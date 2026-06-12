@@ -1,3 +1,5 @@
+using SmartBudgetPro.Shared.Exceptions;
+
 namespace SmartBudgetPro.Domain.Dashboard;
 
 public class UserDashboardConfig
@@ -16,10 +18,10 @@ public class UserDashboardConfig
     private UserDashboardConfig(Guid userId, string componentKey, int order, int columns, bool visible)
     {
         if (userId == Guid.Empty)
-            throw new ArgumentException("Invalid userId.", nameof(userId));
+            throw new BusinessBadRequestException("Invalid userId.");
 
         if (string.IsNullOrWhiteSpace(componentKey))
-            throw new ArgumentException("ComponentKey is required.", nameof(componentKey));
+            throw new BusinessBadRequestException("ComponentKey is required.");
 
         if (columns is not (1 or 2))
             throw new ArgumentOutOfRangeException(nameof(columns), "Columns must be 1 or 2.");

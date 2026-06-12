@@ -1,4 +1,5 @@
 ﻿using SmartBudgetPro.Application.Common.DTOs;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 using DomainCategory = SmartBudgetPro.Domain.Transactions.TransactionCategory;
 
@@ -12,12 +13,12 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
             var user = await userRepository.GetByIdAsync(input.UserId);
 
             if (user is null)
-                throw new InvalidOperationException("User not found.");
+                throw new UserNotFoundException();
 
             var existingCategory = await transactionCategoryRepository.GetByNameAsync(input.UserId, input.Name);
 
             if (existingCategory is not null)
-                throw new InvalidOperationException("A category with the same name already exists for this user.");
+                throw new TransactionCategoryAlreadyExistsException();
 
             var category = DomainCategory.Create(input.UserId, input.Name, input.Icon);
 

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 using SmartBudgetPro.Domain.Transactions;
 
@@ -18,25 +19,25 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinanci
             var financialTransaction = await financialTransactionRepository.GetByIdAsync(id);
 
             if (financialTransaction is null)
-                throw new InvalidOperationException("Financial transaction not found.");
+                throw new FinancialTransactionNotFoundException();
 
             var user = await userRepository.GetByIdAsync(input.UserId);
 
             if (user is null)
-                throw new InvalidOperationException("User not found.");
+                throw new UserNotFoundException();
 
             if (financialTransaction.UserId != input.UserId)
-                throw new InvalidOperationException("This transaction does not belong to this user.");
+                throw new FinancialTransactionOwnershipException();
 
             if (input.TransactionCategoryId.HasValue)
             {
                 var category = await transactionCategoryRepository.GetByIdAsync(input.TransactionCategoryId.Value);
 
                 if (category is null)
-                    throw new InvalidOperationException("Category not found.");
+                    throw new CategoryNotFoundException();
 
                 if (category.UserId != input.UserId)
-                    throw new InvalidOperationException("Category does not belong to this user.");
+                    throw new CategoryOwnershipException();
             }
 
             // Capture old values before update

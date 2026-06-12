@@ -1,4 +1,5 @@
 using FluentValidation;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.Auth.Login;
@@ -17,10 +18,10 @@ public class LoginUseCase(
         var user = await userRepository.GetByEmailAsync(normalizedEmail);
 
         if (user is null)
-            throw new UnauthorizedAccessException("Invalid email or password.");
+            throw new InvalidCredentialsException();
 
         if (!passwordHasher.Verify(input.Password, user.PasswordHash))
-            throw new UnauthorizedAccessException("Invalid email or password.");
+            throw new InvalidCredentialsException();
 
         var tokenResult = jwtTokenGenerator.Generate(user.Id, user.Email, user.Name);
 

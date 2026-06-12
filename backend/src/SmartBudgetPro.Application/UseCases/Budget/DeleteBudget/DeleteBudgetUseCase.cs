@@ -1,3 +1,4 @@
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.Budget.DeleteBudget;
@@ -9,10 +10,10 @@ public class DeleteBudgetUseCase(IBudgetRepository budgetRepository)
         var budget = await budgetRepository.GetByIdAsync(budgetId);
 
         if (budget is null)
-            throw new InvalidOperationException("Budget not found.");
+            throw new BudgetNotFoundException();
 
         if (budget.UserId != userId)
-            throw new UnauthorizedAccessException("This budget does not belong to the authenticated user.");
+            throw new BudgetOwnershipException();
 
         await budgetRepository.DeleteAsync(budgetId);
     }

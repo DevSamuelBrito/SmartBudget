@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../SmartBudgetPro.Infrastructure/SmartBudgetPro.Infrastructure.csproj" />
+    <ProjectReference Include="../SmartBudgetPro.Shared/SmartBudgetPro.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

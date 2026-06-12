@@ -1,3 +1,4 @@
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.User.UpdateUser;
@@ -9,7 +10,7 @@ public class UpdateUserUseCase(IUserRepository userRepository)
         var user = await userRepository.GetByIdAsync(userId);
 
         if (user == null)
-            throw new InvalidOperationException("User not found.");
+            throw new UserNotFoundException();
 
         user.Update(input.Name, input.Email);
 

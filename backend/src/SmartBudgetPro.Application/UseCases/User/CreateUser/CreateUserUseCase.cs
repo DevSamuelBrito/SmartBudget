@@ -1,4 +1,5 @@
 using SmartBudgetPro.Application.Common;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 using DomainUser = SmartBudgetPro.Domain.Users.User;
 
@@ -11,7 +12,7 @@ public class CreateUserUseCase(IUserRepository userRepository, IPasswordHasher p
         var existingUser = await userRepository.GetByEmailAsync(input.Email);
 
         if (existingUser != null)
-            throw new InvalidOperationException("A user with the same email already exists.");
+            throw new UserAlreadyExistsException();
 
         var passwordHash = passwordHasher.Hash(input.Password);
 

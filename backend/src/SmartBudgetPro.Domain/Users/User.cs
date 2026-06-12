@@ -1,4 +1,6 @@
-﻿namespace SmartBudgetPro.Domain.Users;
+﻿using SmartBudgetPro.Shared.Exceptions;
+
+namespace SmartBudgetPro.Domain.Users;
 
 public class User
 {
@@ -50,12 +52,12 @@ public class User
     private static string ValidateAndNormalizeName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Name is required.", nameof(name));
+            throw new BusinessBadRequestException("Name is required.");
 
         var normalized = name.Trim();
 
         if (normalized.Length > MaxNameLength)
-            throw new ArgumentException($"Name must have at most {MaxNameLength} characters.", nameof(name));
+            throw new BusinessBadRequestException($"Name must have at most {MaxNameLength} characters.");
 
         return normalized;
     }
@@ -63,12 +65,12 @@ public class User
     private static string ValidateAndNormalizeEmail(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
-            throw new ArgumentException("Email is required.", nameof(email));
+            throw new BusinessBadRequestException("Email is required.");
 
         var normalized = email.Trim();
 
         if (normalized.Length > MaxEmailLength)
-            throw new ArgumentException($"Email must have at most {MaxEmailLength} characters.", nameof(email));
+            throw new BusinessBadRequestException($"Email must have at most {MaxEmailLength} characters.");
 
         return normalized;
     }
@@ -76,12 +78,12 @@ public class User
     private static string ValidatePasswordHash(string passwordHash)
     {
         if (string.IsNullOrWhiteSpace(passwordHash))
-            throw new ArgumentException("Password hash is required.", nameof(passwordHash));
+            throw new BusinessBadRequestException("Password hash is required.");
 
         var normalized = passwordHash.Trim();
 
         if (normalized.Length > MaxPasswordHashLength)
-            throw new ArgumentException($"Password hash must have at most {MaxPasswordHashLength} characters.", nameof(passwordHash));
+            throw new BusinessBadRequestException($"Password hash must have at most {MaxPasswordHashLength} characters.");
 
         return normalized;
     }

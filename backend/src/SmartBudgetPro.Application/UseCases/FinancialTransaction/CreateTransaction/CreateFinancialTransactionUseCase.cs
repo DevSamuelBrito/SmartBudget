@@ -1,4 +1,5 @@
 ﻿using SmartBudgetPro.Application.Interfaces;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Domain.Transactions;
 using FluentValidation;
 using DomainFinancialTransaction = SmartBudgetPro.Domain.Transactions.FinancialTransaction;
@@ -21,17 +22,17 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
             var user = await userRepository.GetByIdAsync(input.UserId);
 
             if (user is null)
-                throw new InvalidOperationException("User not found.");
+                throw new UserNotFoundException();
 
             if (input.TransactionCategoryId.HasValue)
             {
                 var category = await transactionCategoryRepository.GetByIdAsync(input.TransactionCategoryId.Value);
 
                 if (category is null)
-                    throw new InvalidOperationException("Category not found.");
+                    throw new CategoryNotFoundException();
 
                 if (category.UserId != input.UserId)
-                    throw new InvalidOperationException("Category does not belong to this user.");
+                    throw new CategoryOwnershipException();
             }
 
             var transaction = DomainFinancialTransaction.Create(

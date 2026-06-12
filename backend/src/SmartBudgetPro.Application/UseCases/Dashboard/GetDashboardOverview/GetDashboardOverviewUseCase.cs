@@ -1,3 +1,4 @@
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 using SmartBudgetPro.Domain.Budgets;
 using SmartBudgetPro.Domain.Transactions;
@@ -16,19 +17,19 @@ public class GetDashboardOverviewUseCase(
         var targetYear = input.Year ?? now.Year;
 
         if (targetMonth is < 1 or > 12)
-            throw new ArgumentOutOfRangeException(nameof(input.Month), "Month must be between 1 and 12.");
+            throw new InvalidDashboardParameterException("Month must be between 1 and 12.");
 
         if (targetYear is < 2000 or > 2100)
-            throw new ArgumentOutOfRangeException(nameof(input.Year), "Year is out of supported range.");
+            throw new InvalidDashboardParameterException("Year is out of supported range.");
 
         if (input.LatestTransactionsCount < 1 || input.LatestTransactionsCount > 100)
-            throw new ArgumentOutOfRangeException(nameof(input.LatestTransactionsCount), "LatestTransactionsCount must be between 1 and 100.");
+            throw new InvalidDashboardParameterException("LatestTransactionsCount must be between 1 and 100.");
 
         if (input.HistoryMonths < 1 || input.HistoryMonths > 36)
-            throw new ArgumentOutOfRangeException(nameof(input.HistoryMonths), "HistoryMonths must be between 1 and 36.");
+            throw new InvalidDashboardParameterException("HistoryMonths must be between 1 and 36.");
 
         if (!input.UserId.HasValue)
-            throw new UnauthorizedAccessException("UserId is required.");
+            throw new MissingUserContextException();
 
         var allTransactions = (await financialTransactionRepository.GetByUserIdAsync(input.UserId.Value)).ToList();
         var allCategories = (await transactionCategoryRepository.GetByUserIdAsync(input.UserId.Value)).ToList();

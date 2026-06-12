@@ -1,3 +1,4 @@
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 using SmartBudgetPro.Domain.Transactions;
 
@@ -12,10 +13,10 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinanci
             var transaction = await financialTransactionRepository.GetByIdAsync(transactionId);
 
             if (transaction is null)
-                throw new InvalidOperationException("Financial transaction not found.");
+                throw new FinancialTransactionNotFoundException();
 
             if (transaction.UserId != userId)
-                throw new UnauthorizedAccessException("This transaction does not belong to the authenticated user.");
+                throw new FinancialTransactionOwnershipException("This transaction does not belong to the authenticated user.");
 
             var wasExpense = transaction.Type == FinancialTransactionType.Expense;
             var categoryId = transaction.TransactionCategoryId;
