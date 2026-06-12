@@ -21,6 +21,20 @@ namespace SmartBudgetPro.Application.Interfaces
         Task<IEnumerable<FinancialTransaction>> GetByUserIdAsync(Guid userId);
 
         /// <summary>
+        /// Retrieves a page of financial transactions for a specific user.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user.</param>
+        /// <param name="skip">How many records to skip.</param>
+        /// <param name="take">How many records to take.</param>
+        Task<IEnumerable<FinancialTransaction>> GetByUserIdPagedAsync(Guid userId, int skip, int take);
+
+        /// <summary>
+        /// Counts all financial transactions for a specific user.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user.</param>
+        Task<int> CountByUserIdAsync(Guid userId);
+
+        /// <summary>
         /// Retrieves a financial transaction by its identifier.
         /// </summary>
         /// <param name="transactionId">The unique identifier of the transaction.</param>

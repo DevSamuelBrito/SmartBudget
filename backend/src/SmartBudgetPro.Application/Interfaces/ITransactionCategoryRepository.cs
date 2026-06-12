@@ -6,6 +6,8 @@ public interface ITransactionCategoryRepository
 {
     Task<TransactionCategory?> GetByIdAsync(Guid categoryId);
     Task<IEnumerable<TransactionCategory>> GetByUserIdAsync(Guid userId);
+    Task<IEnumerable<TransactionCategory>> GetByUserIdPagedAsync(Guid userId, int skip, int take);
+    Task<int> CountByUserIdAsync(Guid userId);
     Task<TransactionCategory?> GetByNameAsync(Guid userId, string name);
     Task<IEnumerable<TransactionCategory>> GetAllAsync();
     Task AddAsync(TransactionCategory category);

@@ -25,6 +25,24 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<FinancialTransaction>> GetByUserIdPagedAsync(Guid userId, int skip, int take)
+        {
+            return await context.FinancialTransactions
+                .Where(t => t.UserId == userId)
+                .OrderByDescending(t => t.TransactionDate)
+                .ThenByDescending(t => t.CreatedAt)
+                .ThenByDescending(t => t.Id)
+                .Skip(skip)
+                .Take(take)
+                .ToListAsync();
+        }
+
+        public async Task<int> CountByUserIdAsync(Guid userId)
+        {
+            return await context.FinancialTransactions
+                .CountAsync(t => t.UserId == userId);
+        }
+
         public async Task<FinancialTransaction?> GetByIdAsync(Guid transactionId)
         {
             return await context.FinancialTransactions.FindAsync(transactionId);
