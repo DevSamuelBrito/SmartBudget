@@ -43,6 +43,12 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                 .ExecuteDeleteAsync();
         }
 
+        public async Task<bool> ExistsTransactionByCategoryAsync(Guid categoryId)
+        {
+            return await context.FinancialTransactions
+                .AnyAsync(transaction => transaction.TransactionCategoryId == categoryId);
+        }
+
         public async Task<decimal> GetTotalExpensesByCategoryAndPeriodAsync(Guid categoryId, int year, int month)
         {
             return await context.FinancialTransactions
