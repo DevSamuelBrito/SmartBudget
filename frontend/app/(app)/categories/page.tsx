@@ -1,5 +1,5 @@
 // apis
-import { getCategoriesServerCached } from "./services/categorias.service";
+import { getCategoriesServer } from "./services/categorias.service";
 
 import { getBudgetsByPeriodServerCached } from "./services/budgets.service";
 
@@ -12,7 +12,7 @@ export default async function CategoriesPage() {
     const initialYear = now.getFullYear();
 
     const [initialCategories, initialBudgets] = await Promise.all([
-        getCategoriesServerCached(),
+        getCategoriesServer({ page: 1, pageSize: 10 }),
         getBudgetsByPeriodServerCached({
             month: initialMonth,
             year: initialYear,

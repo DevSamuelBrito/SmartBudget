@@ -23,10 +23,11 @@ namespace SmartBudgetPro.API.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] GetAllTransactionCategoryUseCaseInput input)
         {
             var userId = User.GetRequiredUserId();
-            var output = await getAllTransactionCategory.ExecuteAsync(userId);
+            var securedInput = input with { UserId = userId };
+            var output = await getAllTransactionCategory.ExecuteAsync(securedInput);
 
             return Ok(output);
         }
