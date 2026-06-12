@@ -2,6 +2,10 @@
 
 import { cookies } from "next/headers";
 
+type ProblemDetailsPayload = {
+  detail?: string;
+};
+
 export const getServerUserId = async (): Promise<string> => {
   const cookieStore = await cookies();
   const raw = cookieStore.get("user-data")?.value;
@@ -35,8 +39,23 @@ export const authFetch = async (
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  return fetch(input, {
+  const response = await fetch(input, {
     ...init,
     headers,
   });
+
+  if (!response.ok) {
+    const problemDetails = (await response
+      .clone()
+      .json()
+      .catch(() => null)) as ProblemDetailsPayload | null;
+
+    const detailMessage =
+      problemDetails?.detail ??
+      `Request failed with status ${response.status}.`;
+
+    throw new Error(detailMessage);
+  }
+
+  return response;
 };

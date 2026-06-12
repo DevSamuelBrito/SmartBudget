@@ -1,41 +1,33 @@
-//react query
+// React
 import { useState } from "react";
 
+// react-query
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-// react
-
-//services
+// Libs
 import { toast } from "sonner";
 
-import type { AxiosError } from "axios";
-
-import {
-  getTransactions,
-  createTransaction,
-  updateTransaction,
-  deleteTransaction,
-} from "../services/transactions.service";
-
-//types
-import type { CategoryApi } from "@/app/(app)/categories/types";
-
-import { getCategories } from "@/app/(app)/categories/services/categorias.service";
-
-import type { TransactionWithCategory } from "../types";
-
-//schema
-import type { TransactionFormValues } from "../schemas/transaction.schema";
-
-//toast
-
-//axios
-
-//hooks
+// Hooks
 import { useAuth } from "@/contexts/auth-context";
 
-//actions
+// APIs / Services
+import { getCategories } from "@/app/(app)/categories/services/categorias.service";
+
 import { invalidateTransactionsCache } from "../actions/transactions.actions";
+
+import {
+  createTransaction,
+  deleteTransaction,
+  getTransactions,
+  updateTransaction,
+} from "../services/transactions.service";
+
+// Types
+import type { CategoryApi } from "@/app/(app)/categories/types";
+
+import type { TransactionFormValues } from "../schemas/transaction.schema";
+
+import type { TransactionWithCategory } from "../types";
 
 type UseTransactionsProps = {
   initialTransactions: TransactionWithCategory[];
@@ -86,16 +78,16 @@ export function useTransactions({
         transactionCategoryId: payload.transactionCategoryId,
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["transactions", userId] });
+      await queryClient.invalidateQueries({
+        queryKey: ["transactions", userId],
+      });
       await invalidateTransactionsCache();
 
       toast.success("Transação criada com sucesso!");
       onCloseCreate();
     },
-    onError: (error: AxiosError<{ error: string }>) => {
-      const message = error.response?.data?.error ?? "Erro ao criar transação.";
-
-      toast.error(message);
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 
@@ -112,34 +104,32 @@ export function useTransactions({
         transactionCategoryId: payload.transactionCategoryId,
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["transactions", userId] });
+      await queryClient.invalidateQueries({
+        queryKey: ["transactions", userId],
+      });
       await invalidateTransactionsCache();
 
       toast.success("Transação atualizada com sucesso!");
       onCloseEdit();
     },
-    onError: (error: AxiosError<{ error: string }>) => {
-      const message =
-        error.response?.data?.error ?? "Erro ao atualizar transação.";
-
-      toast.error(message);
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 
   const deleteTransactionMutation = useMutation({
     mutationFn: (transactionId: string) => deleteTransaction(transactionId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["transactions", userId] });
+      await queryClient.invalidateQueries({
+        queryKey: ["transactions", userId],
+      });
       await invalidateTransactionsCache();
 
       toast.success("Transação excluída com sucesso!");
       onCloseDelete();
     },
-    onError: (error: AxiosError<{ error: string }>) => {
-      const message =
-        error.response?.data?.error ?? "Erro ao excluir transação.";
-
-      toast.error(message);
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 

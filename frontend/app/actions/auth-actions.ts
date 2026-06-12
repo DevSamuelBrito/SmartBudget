@@ -31,6 +31,10 @@ interface AuthUser {
   email: string;
 }
 
+interface ProblemDetailsPayload {
+  detail?: string;
+}
+
 const getApiBaseUrl = () => {
   const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -78,10 +82,11 @@ export async function loginAction(
     );
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
+      const errorData = (await response
+        .json()
+        .catch(() => null)) as ProblemDetailsPayload | null;
 
-      const message =
-        errorData?.detail || errorData?.message || "E-mail ou senha inválidos.";
+      const message = errorData?.detail ?? "E-mail ou senha inválidos.";
 
       return { success: false, error: message };
     }
@@ -135,10 +140,11 @@ export async function registerAction(
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
+      const errorData = (await response
+        .json()
+        .catch(() => null)) as ProblemDetailsPayload | null;
 
-      const message =
-        errorData?.detail || errorData?.message || "Erro ao criar conta.";
+      const message = errorData?.detail ?? "Erro ao criar conta.";
 
       return { success: false, error: message };
     }

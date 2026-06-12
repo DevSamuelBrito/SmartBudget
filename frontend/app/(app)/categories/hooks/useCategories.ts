@@ -1,34 +1,21 @@
-// react
+// React
 import { useMemo, useState } from "react";
 
-//axios
-import type { AxiosError } from "axios";
-
-//toast
-import { toast } from "sonner";
-
-//react query
+// react-query
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-//hooks
+// Libs
+import { toast } from "sonner";
+
+// Hooks
 import { useAuth } from "@/contexts/auth-context";
 
-// icons
-import { ICONT_THEME } from "../constants/icons-theme";
-
-import type {
-  BudgetByPeriodApi,
-  CategoryApi,
-  CategoryFormValues,
-} from "../types";
-
-//services
+// APIs / Services
 import {
-  getCategories,
-  createCategory as createCategoryRequest,
-  updateCategory as updateCategoryRequest,
-  deleteCategory as deleteCategoryRequest,
-} from "../services/categorias.service";
+  invalidateBudgetsCache,
+  invalidateCategoriesCache,
+} from "../actions/categories.actions";
+
 import {
   createBudget as createBudgetRequest,
   getBudgetsByPeriod,
@@ -36,9 +23,21 @@ import {
 } from "../services/budgets.service";
 
 import {
-  invalidateBudgetsCache,
-  invalidateCategoriesCache,
-} from "../actions/categories.actions";
+  createCategory as createCategoryRequest,
+  deleteCategory as deleteCategoryRequest,
+  getCategories,
+  updateCategory as updateCategoryRequest,
+} from "../services/categorias.service";
+
+// Types
+import type {
+  BudgetByPeriodApi,
+  CategoryApi,
+  CategoryFormValues,
+} from "../types";
+
+// Constants
+import { ICONT_THEME } from "../constants/icons-theme";
 
 type UpdateCategoryPayload = {
   id: string;
@@ -77,7 +76,6 @@ export function useCategories({
   onCloseDelete,
   onCloseBudget,
 }: UseCategoriesProps) {
-
   const { state } = useAuth();
   const userId = state.user?.userId ?? "";
 
@@ -102,14 +100,20 @@ export function useCategories({
   const categories = categoriasQuery.data ?? [];
 
   const budgetsQuery = useQuery<BudgetByPeriodApi[]>({
-    queryKey: ["budgets-by-period", userId, selectedPeriod.month, selectedPeriod.year],
+    queryKey: [
+      "budgets-by-period",
+      userId,
+      selectedPeriod.month,
+      selectedPeriod.year,
+    ],
     queryFn: () =>
       getBudgetsByPeriod({
         month: selectedPeriod.month,
         year: selectedPeriod.year,
       }),
     initialData:
-      selectedPeriod.month === initialMonth && selectedPeriod.year === initialYear
+      selectedPeriod.month === initialMonth &&
+      selectedPeriod.year === initialYear
         ? initialBudgets
         : undefined,
   });
@@ -138,10 +142,8 @@ export function useCategories({
       toast.success("Categoria criada com sucesso!");
       onCloseCreate();
     },
-    onError: (error: AxiosError<{ error: string }>) => {
-      const message = error.response?.data?.error ?? "Erro ao criar categoria.";
-
-      toast.error(message);
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 
@@ -154,15 +156,14 @@ export function useCategories({
       toast.success("Categoria excluida com sucesso!");
       onCloseDelete();
     },
-    onError: (error: AxiosError<{ error: string }>) => {
-      const message = error.response?.data?.error ?? "Erro ao excluir categoria.";
-
-      toast.error(message);
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 
   const updateCategoryMutation = useMutation({
-    mutationFn: (payload: UpdateCategoryPayload) => updateCategoryRequest(payload),
+    mutationFn: (payload: UpdateCategoryPayload) =>
+      updateCategoryRequest(payload),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["categorias", userId] });
       await invalidateCategoriesCache();
@@ -170,10 +171,8 @@ export function useCategories({
       toast.success("Categoria atualizada com sucesso!");
       onCloseEdit();
     },
-    onError: (error: AxiosError<{ error: string }>) => {
-      const message = error.response?.data?.error ?? "Erro ao atualizar categoria.";
-
-      toast.error(message);
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 
@@ -200,17 +199,20 @@ export function useCategories({
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["budgets-by-period", userId, selectedPeriod.month, selectedPeriod.year],
+        queryKey: [
+          "budgets-by-period",
+          userId,
+          selectedPeriod.month,
+          selectedPeriod.year,
+        ],
       });
       await invalidateBudgetsCache();
 
       toast.success("Orçamento salvo com sucesso!");
       onCloseBudget();
     },
-    onError: (error: AxiosError<{ error: string }>) => {
-      const message = error.response?.data?.error ?? "Erro ao salvar orçamento.";
-
-      toast.error(message);
+    onError: (error: Error) => {
+      toast.error(error.message);
     },
   });
 

@@ -1,9 +1,9 @@
 import axios, { type AxiosError } from "axios";
 
 type ApiErrorPayload = {
+  detail?: string;
   error?: string;
   message?: string;
-  detail?: string;
 };
 
 export const api = axios.create({
@@ -15,9 +15,9 @@ api.interceptors.response.use(
   (response) => response,
   (error: AxiosError<ApiErrorPayload>) => {
     const apiMessage =
+      error.response?.data?.detail ??
       error.response?.data?.error ??
-      error.response?.data?.message ??
-      error.response?.data?.detail;
+      error.response?.data?.message;
 
     if (apiMessage) {
       error.message = apiMessage;
