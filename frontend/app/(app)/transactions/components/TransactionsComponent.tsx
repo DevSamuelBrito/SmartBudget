@@ -13,6 +13,15 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
 
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
+
 import { TransactionFormSheet } from "./TransactionFormSheet";
 
 import { DeleteTransactionSheet } from "./DeleteTransaction";
@@ -23,15 +32,22 @@ import TransactionTable from "./TransactionTable";
 import { useTransactions } from "../hooks/useTransactions";
 
 // types
-import type { TransactionWithCategory } from "../types";
+import type { PagedResult } from "@/types/pagination";
+
+import type { TransactionApi, TransactionWithCategory } from "../types";
 
 type TransactionsScreenProps = {
-    initialTransactions: TransactionWithCategory[];
+    initialTransactions: PagedResult<TransactionApi>;
 };
 
 const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) => {
     const {
         transactions,
+        page,
+        setPage,
+        totalPages,
+        hasNextPage,
+        hasPreviousPage,
         categories,
         handleCreateTransaction,
         handleUpdateTransaction,
@@ -79,6 +95,18 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
         });
     }
 
+    const pageCount = Math.max(1, totalPages);
+
+    const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
+
+    function handlePageChange(nextPage: number) {
+        if (nextPage < 1 || nextPage > pageCount || nextPage === page) {
+            return;
+        }
+
+        setPage(nextPage);
+    }
+
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -105,6 +133,51 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                         onEdit={setEditingTransaction}
                         onDelete={setDeletingTransaction}
                     />
+
+                    <Pagination className="mt-4">
+                        <PaginationContent>
+                            <PaginationItem>
+                                <PaginationPrevious
+                                    href="#"
+                                    text="Anterior"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        handlePageChange(page - 1);
+                                    }}
+                                    aria-disabled={!hasPreviousPage}
+                                    className={!hasPreviousPage ? "pointer-events-none opacity-50" : undefined}
+                                />
+                            </PaginationItem>
+
+                            {pages.map((pageNumber) => (
+                                <PaginationItem key={pageNumber}>
+                                    <PaginationLink
+                                        href="#"
+                                        isActive={pageNumber === page}
+                                        onClick={(event) => {
+                                            event.preventDefault();
+                                            handlePageChange(pageNumber);
+                                        }}
+                                    >
+                                        {pageNumber}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            ))}
+
+                            <PaginationItem>
+                                <PaginationNext
+                                    href="#"
+                                    text="Próximo"
+                                    onClick={(event) => {
+                                        event.preventDefault();
+                                        handlePageChange(page + 1);
+                                    }}
+                                    aria-disabled={!hasNextPage}
+                                    className={!hasNextPage ? "pointer-events-none opacity-50" : undefined}
+                                />
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
                 </CardContent>
             </Card>
 

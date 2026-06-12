@@ -3,6 +3,8 @@ import { api } from "@/lib/axios";
 
 import { authFetch, getServerUserId } from "@/lib/auth";
 
+import type { PagedResult, PaginationParams } from "@/types/pagination";
+
 //types
 import type { TransactionApi } from "../types";
 
@@ -16,7 +18,10 @@ export type CreateTransactionRequest = {
   transactionCategoryId: string | null;
 };
 
-export const getTransactionsServer = async () => {
+export const getTransactionsServer = async ({
+  page = 1,
+  pageSize = 10,
+}: PaginationParams = {}) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!baseUrl) {
@@ -25,7 +30,12 @@ export const getTransactionsServer = async () => {
 
   const userId = await getServerUserId();
 
-  const response = await authFetch(`${baseUrl}transactions`, {
+  const query = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+  });
+
+  const response = await authFetch(`${baseUrl}transactions?${query.toString()}`, {
     next: { tags: [`transactions-${userId}`] },
   });
 
@@ -33,11 +43,16 @@ export const getTransactionsServer = async () => {
     throw new Error("Failed to fetch transactions from server.");
   }
 
-  return (await response.json()) as TransactionApi[];
+  return (await response.json()) as PagedResult<TransactionApi>;
 };
 
-export const getTransactions = async () => {
-  const response = await api.get<TransactionApi[]>("/transactions");
+export const getTransactions = async ({
+  page = 1,
+  pageSize = 10,
+}: PaginationParams = {}) => {
+  const response = await api.get<PagedResult<TransactionApi>>("/transactions", {
+    params: { page, pageSize },
+  });
 
   return response.data;
 };

@@ -3,6 +3,9 @@ import { api } from "@/lib/axios";
 
 import { authFetch, getServerUserId } from "@/lib/auth";
 
+//types
+import type { PagedResult, PaginationParams } from "@/types/pagination";
+
 import type { CategoryApi } from "../types";
 
 type CreateCategoryRequest = {
@@ -17,13 +20,21 @@ type UpdateCategoryRequest = {
   icon: CategoryApi["icon"];
 };
 
-export const getCategories = async () => {
-  const response = await api.get<CategoryApi[]>("/transactionCategories");
+export const getCategories = async ({
+  page = 1,
+  pageSize = 10,
+}: PaginationParams = {}) => {
+  const response = await api.get<PagedResult<CategoryApi>>("/transactionCategories", {
+    params: { page, pageSize },
+  });
 
   return response.data;
 };
 
-export const getCategoriesServerCached = async () => {
+export const getCategoriesServer = async ({
+  page = 1,
+  pageSize = 10,
+}: PaginationParams = {}) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!baseUrl) {
@@ -32,7 +43,12 @@ export const getCategoriesServerCached = async () => {
 
   const userId = await getServerUserId();
 
-  const response = await authFetch(`${baseUrl}transactionCategories`, {
+  const query = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+  });
+
+  const response = await authFetch(`${baseUrl}transactionCategories?${query.toString()}`, {
     next: { tags: [`categories-${userId}`] },
   });
 
@@ -40,7 +56,20 @@ export const getCategoriesServerCached = async () => {
     throw new Error("Failed to fetch categories from server.");
   }
 
-  return (await response.json()) as CategoryApi[];
+  return (await response.json()) as PagedResult<CategoryApi>;
+};
+
+export const getCategoriesServerCached = async ({
+  page = 1,
+  pageSize = 10,
+}: PaginationParams = {}) => {
+  return getCategoriesServer({ page, pageSize });
+};
+
+export const getCategoryOptions = async () => {
+  const pagedCategories = await getCategories({ page: 1, pageSize: 100 });
+
+  return pagedCategories.items;
 };
 
 export const createCategory = async (payload: CreateCategoryRequest) => {

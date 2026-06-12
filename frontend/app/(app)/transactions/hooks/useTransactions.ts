@@ -1,5 +1,5 @@
 // React
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 // react-query
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,8 +10,9 @@ import { toast } from "sonner";
 // Hooks
 import { useAuth } from "@/contexts/auth-context";
 
+
 // APIs / Services
-import { getCategories } from "@/app/(app)/categories/services/categorias.service";
+import { getCategoryOptions } from "@/app/(app)/categories/services/categorias.service";
 
 import { invalidateTransactionsCache } from "../actions/transactions.actions";
 
@@ -27,10 +28,12 @@ import type { CategoryApi } from "@/app/(app)/categories/types";
 
 import type { TransactionFormValues } from "../schemas/transaction.schema";
 
-import type { TransactionWithCategory } from "../types";
+import type { PagedResult } from "@/types/pagination";
+
+import type { TransactionApi } from "../types";
 
 type UseTransactionsProps = {
-  initialTransactions: TransactionWithCategory[];
+  initialTransactions: PagedResult<TransactionApi>;
   onCloseCreate: () => void;
   onCloseEdit: () => void;
   onCloseDelete: () => void;
@@ -48,19 +51,22 @@ export function useTransactions({
 }: UseTransactionsProps) {
   const { state } = useAuth();
   const userId = state.user?.userId ?? "";
+  const pageSize = 10;
+
+  const [page, setPage] = useState(1);
 
   const [search, setSearch] = useState("");
 
-  const transactionsQuery = useQuery<TransactionWithCategory[]>({
-    queryKey: ["transactions", userId],
-    queryFn: getTransactions,
-    initialData: initialTransactions,
+  const transactionsQuery = useQuery<PagedResult<TransactionApi>>({
+    queryKey: ["transactions", userId, { page, pageSize }],
+    queryFn: () => getTransactions({ page, pageSize }),
+    initialData: page === 1 ? initialTransactions : undefined,
     staleTime: Infinity,
   });
 
   const categoriesQuery = useQuery<CategoryApi[]>({
-    queryKey: ["categorias", userId],
-    queryFn: getCategories,
+    queryKey: ["categories-options", userId],
+    queryFn: getCategoryOptions,
     staleTime: Infinity,
   });
 
@@ -133,15 +139,16 @@ export function useTransactions({
     },
   });
 
-  const categories = categoriesQuery.data ?? [];
+  const categories = useMemo(() => categoriesQuery.data ?? [], [categoriesQuery.data]);
 
-  const categoryMap = new Map(
-    categories.map((category) => [category.id, category]),
+  const categoryMap = useMemo(
+    () => new Map(categories.map((category) => [category.id, category])),
+    [categories],
   );
 
   const normalizedSearch = search.trim().toLowerCase();
 
-  const transactions = (transactionsQuery.data ?? [])
+  const transactions = (transactionsQuery.data?.items ?? [])
     .map((transaction) => ({
       ...transaction,
       category: transaction.transactionCategoryId
@@ -181,6 +188,11 @@ export function useTransactions({
 
   return {
     transactions,
+    page,
+    setPage,
+    totalPages: transactionsQuery.data?.totalPages ?? 0,
+    hasNextPage: transactionsQuery.data?.hasNextPage ?? false,
+    hasPreviousPage: transactionsQuery.data?.hasPreviousPage ?? false,
     categories,
     search,
     setSearch,

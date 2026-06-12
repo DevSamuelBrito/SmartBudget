@@ -36,6 +36,8 @@ import type {
   CategoryFormValues,
 } from "../types";
 
+import type { PagedResult } from "@/types/pagination";
+
 // Constants
 import { ICONT_THEME } from "../constants/icons-theme";
 
@@ -56,7 +58,7 @@ type UpsertBudgetPayload = {
 };
 
 type UseCategoriesProps = {
-  initialCategories: CategoryApi[];
+  initialCategories: PagedResult<CategoryApi>;
   initialBudgets: BudgetByPeriodApi[];
   initialMonth: number;
   initialYear: number;
@@ -78,10 +80,13 @@ export function useCategories({
 }: UseCategoriesProps) {
   const { state } = useAuth();
   const userId = state.user?.userId ?? "";
+  const pageSize = 10;
 
   const iconThemes = ICONT_THEME;
 
   const queryClient = useQueryClient();
+
+  const [page, setPage] = useState(1);
 
   const [search, setSearch] = useState("");
 
@@ -90,14 +95,15 @@ export function useCategories({
     year: initialYear,
   });
 
-  const categoriasQuery = useQuery<CategoryApi[]>({
-    queryKey: ["categorias", userId],
-    queryFn: getCategories,
-    initialData: initialCategories,
+  const categoriesQuery = useQuery<PagedResult<CategoryApi>>({
+    queryKey: ["categories", userId, { page, pageSize }],
+    queryFn: () => getCategories({ page, pageSize }),
+    initialData: page === 1 ? initialCategories : undefined,
     staleTime: Infinity,
   });
 
-  const categories = categoriasQuery.data ?? [];
+  const pagedCategories = categoriesQuery.data;
+  const categories = pagedCategories?.items ?? [];
 
   const budgetsQuery = useQuery<BudgetByPeriodApi[]>({
     queryKey: [
@@ -136,7 +142,7 @@ export function useCategories({
         icon: payload.icon as CategoryApi["icon"],
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["categorias", userId] });
+      await queryClient.invalidateQueries({ queryKey: ["categories", userId] });
       await invalidateCategoriesCache();
 
       toast.success("Categoria criada com sucesso!");
@@ -150,7 +156,7 @@ export function useCategories({
   const deleteCategoryMutation = useMutation({
     mutationFn: (categoryId: string) => deleteCategoryRequest(categoryId),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["categorias", userId] });
+      await queryClient.invalidateQueries({ queryKey: ["categories", userId] });
       await invalidateCategoriesCache();
 
       toast.success("Categoria excluida com sucesso!");
@@ -165,7 +171,7 @@ export function useCategories({
     mutationFn: (payload: UpdateCategoryPayload) =>
       updateCategoryRequest(payload),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["categorias", userId] });
+      await queryClient.invalidateQueries({ queryKey: ["categories", userId] });
       await invalidateCategoriesCache();
 
       toast.success("Categoria atualizada com sucesso!");
@@ -252,6 +258,11 @@ export function useCategories({
 
   return {
     categories: filteredCategories,
+    page,
+    setPage,
+    totalPages: pagedCategories?.totalPages ?? 0,
+    hasNextPage: pagedCategories?.hasNextPage ?? false,
+    hasPreviousPage: pagedCategories?.hasPreviousPage ?? false,
     selectedPeriod,
     setSelectedPeriod,
     budgetMapByCategoryId,
