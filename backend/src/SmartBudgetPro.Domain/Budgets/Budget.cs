@@ -1,3 +1,5 @@
+using SmartBudgetPro.Shared.Exceptions;
+
 namespace SmartBudgetPro.Domain.Budgets;
 
 public class Budget
@@ -18,10 +20,10 @@ public class Budget
     private Budget(Guid userId, Guid transactionCategoryId, int year, int month, decimal limitAmount)
     {
         if (userId == Guid.Empty)
-            throw new ArgumentException("Invalid userId.", nameof(userId));
+            throw new BusinessBadRequestException("Invalid userId.");
 
         if (transactionCategoryId == Guid.Empty)
-            throw new ArgumentException("Invalid category id.", nameof(transactionCategoryId));
+            throw new BusinessBadRequestException("Invalid category id.");
 
         if (year < 2000 || year > 2100)
             throw new ArgumentOutOfRangeException(nameof(year), "Year is out of supported range.");
@@ -30,9 +32,8 @@ public class Budget
             throw new ArgumentOutOfRangeException(nameof(month), "Month must be between 1 and 12.");
 
         if (limitAmount <= 0)
-            throw new ArgumentException("Budget limit must be greater than zero.", nameof(limitAmount));
-
-        Id = Guid.NewGuid();
+            throw new BusinessBadRequestException("Budget limit must be greater than zero.");
+            
         UserId = userId;
         TransactionCategoryId = transactionCategoryId;
         Year = year;
@@ -57,7 +58,7 @@ public class Budget
     public void UpdateLimit(decimal newLimitAmount)
     {
         if (newLimitAmount <= 0)
-            throw new ArgumentException("Budget limit must be greater than zero.", nameof(newLimitAmount));
+            throw new BusinessBadRequestException("Budget limit must be greater than zero.");
 
         LimitAmount = newLimitAmount;
         RecalculateStatus();
@@ -67,7 +68,7 @@ public class Budget
     public void RecalculateFromExpenses(decimal totalExpenseAmount)
     {
         if (totalExpenseAmount < 0)
-            throw new ArgumentException("Spent amount cannot be negative.", nameof(totalExpenseAmount));
+            throw new BusinessBadRequestException("Spent amount cannot be negative.");
 
         SpentAmount = totalExpenseAmount;
         RecalculateStatus();

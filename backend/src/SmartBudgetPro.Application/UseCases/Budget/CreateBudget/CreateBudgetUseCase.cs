@@ -1,5 +1,6 @@
 using FluentValidation;
 using SmartBudgetPro.Application.Common.DTOs;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 using DomainBudget = SmartBudgetPro.Domain.Budgets.Budget;
 
@@ -18,15 +19,15 @@ public class CreateBudgetUseCase(
         var user = await userRepository.GetByIdAsync(input.UserId);
 
         if (user is null)
-            throw new InvalidOperationException("User not found.");
+            throw new UserNotFoundException();
 
         var category = await transactionCategoryRepository.GetByIdAsync(input.TransactionCategoryId);
 
         if (category is null)
-            throw new InvalidOperationException("Category not found.");
+            throw new CategoryNotFoundException();
 
         if (category.UserId != input.UserId)
-            throw new InvalidOperationException("Category does not belong to this user.");
+            throw new CategoryOwnershipException();
 
         var existingBudget = await budgetRepository.GetByUserCategoryAndPeriodAsync(
             input.UserId,
@@ -35,7 +36,7 @@ public class CreateBudgetUseCase(
             input.Month);
 
         if (existingBudget is not null)
-            throw new InvalidOperationException("A budget already exists for this category and period.");
+            throw new BudgetAlreadyExistsException();
 
         var budget = DomainBudget.Create(
             input.UserId,

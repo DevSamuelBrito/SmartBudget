@@ -1,3 +1,5 @@
+using SmartBudgetPro.Shared.Exceptions;
+
 namespace SmartBudgetPro.Domain.Transactions;
 
 public class TransactionCategory
@@ -17,18 +19,18 @@ public class TransactionCategory
     private TransactionCategory(Guid userId, string name, string icon)
     {
         if (userId == Guid.Empty)
-            throw new ArgumentException("Invalid userId.", nameof(userId));
+            throw new BusinessBadRequestException("Invalid userId.");
 
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Category name is required.", nameof(name));
+            throw new BusinessBadRequestException("Category name is required.");
 
         if (name.Trim().Length > MaxNameLength)
-            throw new ArgumentException($"Category name must have at most {MaxNameLength} characters.", nameof(name));
+            throw new BusinessBadRequestException($"Category name must have at most {MaxNameLength} characters.");
 
         var normalizedIcon = string.IsNullOrWhiteSpace(icon) ? string.Empty : icon.Trim();
 
         if (normalizedIcon.Length > MaxIconLength)
-            throw new ArgumentException($"Icon must have at most {MaxIconLength} characters.", nameof(icon));
+            throw new BusinessBadRequestException($"Icon must have at most {MaxIconLength} characters.");
 
 
         Id = Guid.NewGuid();
@@ -47,10 +49,10 @@ public class TransactionCategory
     public void Rename(string newName)
     {
         if (string.IsNullOrWhiteSpace(newName))
-            throw new ArgumentException($"Category name is required. Received '{newName}'");
+            throw new BusinessBadRequestException($"Category name is required. Received '{newName}'");
 
         if (newName.Trim().Length > MaxNameLength)
-            throw new ArgumentException($"Category name must have at most {MaxNameLength} characters.");
+            throw new BusinessBadRequestException($"Category name must have at most {MaxNameLength} characters.");
 
         Name = newName.Trim();
         UpdatedAt = DateTime.UtcNow;
@@ -61,7 +63,7 @@ public class TransactionCategory
         var normalizedIcon = string.IsNullOrWhiteSpace(newIcon) ? string.Empty : newIcon.Trim();
 
         if (normalizedIcon.Length > MaxIconLength)
-            throw new ArgumentException($"Icon must have at most {MaxIconLength} characters.");
+            throw new BusinessBadRequestException($"Icon must have at most {MaxIconLength} characters.");
 
         Icon = normalizedIcon;
         UpdatedAt = DateTime.UtcNow;

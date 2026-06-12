@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using SmartBudgetPro.Shared.Exceptions;
 
 namespace SmartBudgetPro.API.Middlewares;
 
@@ -27,17 +28,7 @@ public class ExceptionHandlingMiddleware(
         Exception exception,
         IProblemDetailsService problemDetailsService)
     {
-        var (statusCode, message) = exception switch
-        {
-            ValidationException validationEx => (
-                StatusCodes.Status400BadRequest,
-                string.Join(", ", validationEx.Errors.Select(e => e.ErrorMessage))
-            ),
-            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, exception.Message),
-            InvalidOperationException => (StatusCodes.Status409Conflict, exception.Message),
-            ArgumentException => (StatusCodes.Status400BadRequest, exception.Message),
-            _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.")
-        };
+        var (statusCode, message) = MapException(exception);
 
         var problemDetails = new ProblemDetails
         {
@@ -62,5 +53,21 @@ public class ExceptionHandlingMiddleware(
             context.Response.ContentType = "application/problem+json";
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
+    }
+
+    private static (int StatusCode, string Message) MapException(Exception exception)
+    {
+        return exception switch
+        {
+            BusinessException businessEx => (businessEx.StatusCode, businessEx.Message),
+            ValidationException validationEx => (
+                StatusCodes.Status400BadRequest,
+                string.Join(", ", validationEx.Errors.Select(e => e.ErrorMessage))
+            ),
+            UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, exception.Message),
+            InvalidOperationException => (StatusCodes.Status409Conflict, exception.Message),
+            ArgumentException => (StatusCodes.Status400BadRequest, exception.Message),
+            _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred.")
+        };
     }
 }

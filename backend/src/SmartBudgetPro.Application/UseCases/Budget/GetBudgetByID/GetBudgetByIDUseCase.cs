@@ -1,4 +1,5 @@
 using SmartBudgetPro.Application.Common.DTOs;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.Budget.GetBudgetByID;
@@ -10,10 +11,10 @@ public class GetBudgetByIDUseCase(IBudgetRepository budgetRepository)
         var budget = await budgetRepository.GetByIdAsync(budgetId);
 
         if (budget is null)
-            throw new InvalidOperationException("Budget not found.");
+            throw new BudgetNotFoundException();
 
         if (budget.UserId != userId)
-            throw new UnauthorizedAccessException("This budget does not belong to the authenticated user.");
+            throw new BudgetOwnershipException();
 
         return new BudgetDto(
             budget.Id,

@@ -1,4 +1,5 @@
-﻿using SmartBudgetPro.Application.Interfaces;
+﻿using SmartBudgetPro.Application.Exceptions;
+using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.TransactionCategory.DeleteTransactionCategory
 {
@@ -11,16 +12,16 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.DeleteTransact
             var category = await transactionCategoryRepository.GetByIdAsync(input.id);
 
             if (category is null)
-                throw new InvalidOperationException("Transaction category not found.");
+                throw new TransactionCategoryNotFoundException();
 
             if (category.UserId != userId)
-                throw new UnauthorizedAccessException("This category does not belong to the authenticated user.");
+                throw new CategoryOwnershipException("This category does not belong to the authenticated user.");
 
             var hasLinkedTransactions = await financialTransactionRepository
                 .ExistsTransactionByCategoryAsync(input.id);
 
             if (hasLinkedTransactions)
-                throw new InvalidOperationException("Esta categoria não pode ser excluída pois possui transações vinculadas. Remova ou reatribua as transações antes de excluir a categoria.");
+                throw new TransactionCategoryHasLinkedTransactionsException();
 
             await transactionCategoryRepository.DeleteAsync(input.id);
         }

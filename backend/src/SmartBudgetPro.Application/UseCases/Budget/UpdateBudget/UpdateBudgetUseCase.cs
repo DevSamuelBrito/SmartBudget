@@ -1,4 +1,5 @@
 using FluentValidation;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
@@ -14,10 +15,10 @@ public class UpdateBudgetUseCase(
         var budget = await budgetRepository.GetByIdAsync(id);
 
         if (budget is null)
-            throw new InvalidOperationException("Budget not found.");
+            throw new BudgetNotFoundException();
 
         if (budget.UserId != userId)
-            throw new UnauthorizedAccessException("This budget does not belong to the authenticated user.");
+            throw new BudgetOwnershipException();
 
         budget.UpdateLimit(input.LimitAmount);
 

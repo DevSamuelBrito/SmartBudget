@@ -1,4 +1,5 @@
-﻿using SmartBudgetPro.Application.Interfaces;
+﻿using SmartBudgetPro.Application.Exceptions;
+using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransactionCategory
 {
@@ -9,15 +10,15 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransact
             var category = await transactionCategoryRepository.GetByIdAsync(input.Id);
 
             if (category == null)
-                throw new InvalidOperationException("Transaction category not found.");
+                throw new TransactionCategoryNotFoundException();
 
             if (category.UserId != userId)
-                throw new UnauthorizedAccessException("This category does not belong to the authenticated user.");
+                throw new CategoryOwnershipException("This category does not belong to the authenticated user.");
 
             var existingCategory = await transactionCategoryRepository.GetByNameAsync(category.UserId, input.Name);
 
             if (existingCategory is not null && existingCategory.Id != input.Id)
-                throw new InvalidOperationException("A category with the same name already exists for this user.");
+                throw new TransactionCategoryAlreadyExistsException();
 
 
             category.Rename(input.Name);
