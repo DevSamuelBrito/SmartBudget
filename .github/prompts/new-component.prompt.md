@@ -100,7 +100,10 @@ Input.displayName = "Input"
 ```typescript
 "use client"
 
+//react
 import { useState } from "react"
+
+//react-query
 import { useQuery } from "@tanstack/react-query"
 
 export function DataTable({ endpoint }: { endpoint: string }) {
@@ -142,8 +145,14 @@ Follow this order in all components:
 5. Types/interfaces
 
 ```typescript
+
+//react
 import * as React from "react";
+
+//utils
 import { cn } from "@/lib/utils";
+
+//components
 import { Button } from "@/components/ui/button";
 
 interface MyComponentProps extends React.ComponentProps<"div"> {
