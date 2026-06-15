@@ -365,7 +365,11 @@ export interface CreateBudgetInput {
 **File**: `frontend/lib/services/budget-service.ts`
 
 ```typescript
+
+//axios 
 import { api } from "@/lib/axios";
+
+//types
 import { Budget, CreateBudgetInput } from "@/types/budget";
 
 export const budgetService = {
@@ -401,9 +405,16 @@ export const budgetService = {
 ```typescript
 "use client";
 
+//react-query
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+//services
 import { budgetService } from "@/lib/services/budget-service";
+
+//types
 import { Budget, CreateBudgetInput } from "@/types/budget";
+
+//toast
 import { toast } from "sonner";
 
 export function useBudgets() {
@@ -475,12 +486,22 @@ export function useDeleteBudget(id: string) {
 ```typescript
 "use client"
 
+//react-hook-form
 import { useForm } from "react-hook-form"
+
+//zod
 import { zodResolver } from "@hookform/resolvers/zod"
+
 import { z } from "zod"
+
+//components
 import { Button } from "@/components/ui/button"
+
 import { Input } from "@/components/ui/input"
+
 import { Label } from "@/components/ui/label"
+
+//hooks
 import { useCreateBudget } from "@/hooks/use-budgets"
 
 const budgetFormSchema = z.object({
@@ -545,8 +566,11 @@ export function BudgetForm({ onSuccess }: BudgetFormProps) {
 **File**: `frontend/app/(app)/budgets/page.tsx`
 
 ```typescript
+//components
 import { BudgetForm } from "@/components/budget-form"
+
 import { BudgetList } from "@/components/budget-list"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function BudgetsPage() {
@@ -588,8 +612,12 @@ export default function BudgetsPage() {
 ```typescript
 "use client"
 
+//hooks
 import { useBudgets } from "@/hooks/use-budgets"
+
+//components
 import { BudgetCard } from "@/components/budget-card"
+
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function BudgetList() {
@@ -624,10 +652,17 @@ export function BudgetList() {
 ```typescript
 "use client"
 
+//types
 import { Budget } from "@/types/budget"
+
+//components
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+
 import { Button } from "@/components/ui/button"
+
 import { Badge } from "@/components/ui/badge"
+
+//hooks
 import { useDeleteBudget } from "@/hooks/use-budgets"
 
 interface BudgetCardProps {

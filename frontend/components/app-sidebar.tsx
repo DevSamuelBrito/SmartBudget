@@ -23,11 +23,6 @@ import {
 //icons
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -44,7 +39,7 @@ const data = {
         <ArrowLeftRight
         />
       ),
-    },
+    }, 
     {
       title: "Categorias",
       url: "categories",
@@ -114,7 +109,18 @@ const data = {
 
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+type SidebarUser = {
+  name: string
+  email: string
+  avatar?: string
+}
+
+export function AppSidebar({
+  user,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  user: SidebarUser
+}) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -136,7 +142,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser
+          user={{
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar ?? "/avatars/shadcn.jpg",
+          }}
+        />
       </SidebarFooter>
     </Sidebar>
   )

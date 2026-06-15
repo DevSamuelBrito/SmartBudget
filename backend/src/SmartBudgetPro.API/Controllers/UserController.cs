@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartBudgetPro.API.Extensions;
+using SmartBudgetPro.Application.UseCases.User.ChangeUserPassword;
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
 using SmartBudgetPro.Application.UseCases.User.DeleteUser;
 using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
 using SmartBudgetPro.Application.UseCases.User.GetUserByID;
 using SmartBudgetPro.Application.UseCases.User.UpdateUser;
+using SmartBudgetPro.Application.UseCases.User.UpdateUserProfile;
 
 namespace SmartBudgetPro.API.Controllers
 {
@@ -18,7 +20,9 @@ namespace SmartBudgetPro.API.Controllers
         GetUserByIDUseCase getUserByIDUseCase,
         CreateUserUseCase createUserUseCase,
         UpdateUserUseCase updateUserUseCase,
-        DeleteUserUseCase deleteUserUseCase
+        DeleteUserUseCase deleteUserUseCase,
+        UpdateUserProfileUseCase updateUserProfileUseCase,
+        ChangeUserPasswordUseCase changeUserPasswordUseCase
     ) : ControllerBase
     {
 
@@ -37,6 +41,26 @@ namespace SmartBudgetPro.API.Controllers
             var output = await getUserByIDUseCase.ExecuteAsync(userId);
 
             return Ok(output);
+        }
+
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileUseCaseInput input)
+        {
+            var userId = User.GetRequiredUserId();
+
+            await updateUserProfileUseCase.ExecuteAsync(userId, input);
+
+            return NoContent();
+        }
+
+        [HttpPut("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangeUserPasswordUseCaseInput input)
+        {
+            var userId = User.GetRequiredUserId();
+
+            await changeUserPasswordUseCase.ExecuteAsync(userId, input);
+
+            return NoContent();
         }
 
         [AllowAnonymous]
