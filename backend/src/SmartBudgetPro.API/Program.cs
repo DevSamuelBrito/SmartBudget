@@ -2,12 +2,14 @@ using SmartBudgetPro.API.Configuration;
 using SmartBudgetPro.API.Middlewares;
 using SmartBudgetPro.Application;
 using SmartBudgetPro.Infrastructure;
+using SmartBudgetPro.Infrastructure.Jobs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApiDocumentation();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddHostedService<RecurringTransactionJob>();
 
 builder.Services.AddControllers();
 builder.Services.AddProblemDetails();
