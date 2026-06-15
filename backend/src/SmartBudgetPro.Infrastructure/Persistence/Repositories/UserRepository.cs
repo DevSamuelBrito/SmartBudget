@@ -42,6 +42,15 @@ public class UserRepository(AppDbContext context) : IUserRepository
             .FirstOrDefaultAsync(u => EF.Functions.ILike(u.Email, normalizedEmail));
     }
 
+    public async Task<bool> EmailExistsAsync(string email, Guid? excludeUserId = null)
+    {
+        var normalizedEmail = email.Trim();
+
+        return await context.Users.AnyAsync(u =>
+            EF.Functions.ILike(u.Email, normalizedEmail) &&
+            (!excludeUserId.HasValue || u.Id != excludeUserId.Value));
+    }
+
     public async Task<User?> GetByIdAsync(Guid userId)
     {
         return await context.Users.FindAsync(userId);
