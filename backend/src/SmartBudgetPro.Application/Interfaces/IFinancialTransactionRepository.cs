@@ -14,6 +14,12 @@ namespace SmartBudgetPro.Application.Interfaces
         Task<IEnumerable<FinancialTransaction>> GetAllAsync();
 
         /// <summary>
+        /// Retrieves all user-created monthly recurring transactions.
+        /// </summary>
+        /// <returns>A collection containing monthly recurring source transactions.</returns>
+        Task<IEnumerable<FinancialTransaction>> GetAllMonthlyRecurringAsync();
+
+        /// <summary>
         /// Retrieves all financial transactions for a specific user.
         /// </summary>
         /// <param name="userId">The unique identifier of the user.</param>
@@ -40,6 +46,15 @@ namespace SmartBudgetPro.Application.Interfaces
         /// <param name="transactionId">The unique identifier of the transaction.</param>
         /// <returns>The transaction if found; otherwise, <c>null</c>.</returns>
         Task<FinancialTransaction?> GetByIdAsync(Guid transactionId);
+
+        /// <summary>
+        /// Checks whether an auto-generated occurrence already exists for the specified origin transaction in a given month.
+        /// </summary>
+        /// <param name="originTransactionId">The unique identifier of the source recurring transaction.</param>
+        /// <param name="year">The target year.</param>
+        /// <param name="month">The target month.</param>
+        /// <returns><c>true</c> if an occurrence exists; otherwise, <c>false</c>.</returns>
+        Task<bool> ExistsOccurrenceForMonthAsync(Guid originTransactionId, int year, int month);
 
         /// <summary>
         /// Adds a new financial transaction.
