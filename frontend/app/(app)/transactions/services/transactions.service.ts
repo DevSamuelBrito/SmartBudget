@@ -3,6 +3,8 @@ import { api } from "@/lib/axios";
 
 import { authFetch, getServerUserId } from "@/lib/auth";
 
+import { getServerApiBaseUrl } from "@/lib/server-api";
+
 import type { PagedResult, PaginationParams } from "@/types/pagination";
 
 //types
@@ -22,11 +24,7 @@ export const getTransactionsServer = async ({
   page = 1,
   pageSize = 10,
 }: PaginationParams = {}) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
-  }
+  const baseUrl = getServerApiBaseUrl();
 
   const userId = await getServerUserId();
 
@@ -35,9 +33,12 @@ export const getTransactionsServer = async ({
     pageSize: pageSize.toString(),
   });
 
-  const response = await authFetch(`${baseUrl}transactions?${query.toString()}`, {
-    next: { tags: [`transactions-${userId}`] },
-  });
+  const response = await authFetch(
+    `${baseUrl}transactions?${query.toString()}`,
+    {
+      next: { tags: [`transactions-${userId}`] },
+    },
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch transactions from server.");

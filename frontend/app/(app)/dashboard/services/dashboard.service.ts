@@ -6,6 +6,8 @@ import { api } from "@/lib/axios";
 
 import { authFetch, getServerUserId } from "@/lib/auth";
 
+import { getServerApiBaseUrl } from "@/lib/server-api";
+
 type GetDashboardOverviewParams = {
   month?: number;
   year?: number;
@@ -14,11 +16,7 @@ type GetDashboardOverviewParams = {
 export const getDashboardOverviewServer = async (
   params?: GetDashboardOverviewParams,
 ): Promise<DashboardOverviewApi> => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
-  }
+  const baseUrl = getServerApiBaseUrl();
 
   const query = new URLSearchParams();
 
@@ -43,11 +41,7 @@ export const getDashboardOverviewServer = async (
 export const getDashboardConfigServer = async (): Promise<
   DashboardConfigItem[]
 > => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
-  }
+  const baseUrl = getServerApiBaseUrl();
 
   const userId = await getServerUserId();
 
@@ -65,8 +59,7 @@ export const getDashboardConfigServer = async (): Promise<
 export const getDashboardConfig = async (): Promise<DashboardConfigItem[]> => {
   const response = await api.get<DashboardConfigItem[]>("/dashboard/config");
 
-  
-return response.data;
+  return response.data;
 };
 
 export const saveDashboardConfig = async (

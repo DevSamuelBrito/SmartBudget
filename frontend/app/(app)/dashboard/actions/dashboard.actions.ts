@@ -4,14 +4,12 @@ import { revalidateTag } from "next/cache";
 
 import { authFetch, getServerUserId } from "@/lib/auth";
 
+import { getServerApiBaseUrl } from "@/lib/server-api";
+
 import type { DashboardConfigItem } from "../types";
 
 export async function saveDashboardConfigAction(items: DashboardConfigItem[]) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
-  }
+  const baseUrl = getServerApiBaseUrl();
 
   const response = await authFetch(`${baseUrl}dashboard/config`, {
     method: "PUT",
