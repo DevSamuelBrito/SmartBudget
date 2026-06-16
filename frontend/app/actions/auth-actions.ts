@@ -66,7 +66,7 @@ export async function loginAction(
   try {
     const apiBaseUrl = getApiBaseUrl();
 
-    const response = await fetch(`${apiBaseUrl}/auth/login`, {
+    const response = await fetch(`${apiBaseUrl}auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),
@@ -124,7 +124,7 @@ export async function registerAction(
   try {
     const apiBaseUrl = getApiBaseUrl();
 
-    const response = await fetch(`${apiBaseUrl}/users`, {
+    const response = await fetch(`${apiBaseUrl}users`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(input),

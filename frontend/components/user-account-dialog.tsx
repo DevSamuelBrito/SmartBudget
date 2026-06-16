@@ -50,6 +50,9 @@ import {
 //context
 import { useAuth } from "@/contexts/auth-context"
 
+//libs
+import { setClientUserDataCookie } from "@/lib/client-auth"
+
 
 //hooks
 import {
@@ -133,14 +136,18 @@ export function UserAccountDialog({
             const userId = authUser?.userId
 
             if (userId) {
+                const nextProfile = {
+                    userId,
+                    name: values.name,
+                    email: values.email,
+                }
+
                 dispatch({
                     type: "LOGIN",
-                    payload: {
-                        userId,
-                        name: values.name,
-                        email: values.email,
-                    },
+                    payload: nextProfile,
                 })
+
+                setClientUserDataCookie(nextProfile)
             }
 
             toast.success("Informações atualizadas com sucesso!")
