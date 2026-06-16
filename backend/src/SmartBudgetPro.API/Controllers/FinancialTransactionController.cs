@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
@@ -9,7 +10,8 @@ using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
 namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
-    [Route("api/transactions")]
+    [ApiVersion("1.0")]
+    [Route("transactions")]
     [Authorize]
     public class TransactionController
         (
@@ -38,7 +40,7 @@ namespace SmartBudgetPro.API.Controllers
 
             var output = await createTransactionUseCase.ExecuteAsync(securedInput);
 
-            return Created($"/api/transactions/{output}", new { output });
+            return Created($"/api/v1/transactions/{output}", new { output });
         }
 
         [HttpPut("{id}")]

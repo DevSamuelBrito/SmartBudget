@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory;
@@ -9,7 +10,8 @@ using SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransactionC
 namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
-    [Route("api/transactionCategories")]
+    [ApiVersion("1.0")]
+    [Route("transactionCategories")]
     [Authorize]
     public class TransactionCategoryController
         (
@@ -40,7 +42,7 @@ namespace SmartBudgetPro.API.Controllers
 
             var output = await createTransactionCategory.ExecuteAsync(securedInput);
 
-            return Created($"api/transactionCategories/{output.Id}", output);
+            return Created($"/api/v1/transactionCategories/{output.Id}", output);
         }
 
         [HttpPut]

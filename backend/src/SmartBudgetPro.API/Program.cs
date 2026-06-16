@@ -11,7 +11,8 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddHostedService<RecurringTransactionJob>();
 
-builder.Services.AddControllers();
+builder.Services.AddApiVersioningSupport();
+builder.Services.AddControllers(options => options.AddVersionedApiConvention());
 builder.Services.AddProblemDetails();
 
 builder.Services.AddCors(options =>

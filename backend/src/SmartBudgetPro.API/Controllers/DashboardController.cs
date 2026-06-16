@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardOverview;
@@ -8,7 +9,8 @@ using SmartBudgetPro.Application.UseCases.Dashboard.SaveDashboardConfig;
 namespace SmartBudgetPro.API.Controllers;
 
 [ApiController]
-[Route("api/dashboard")]
+[ApiVersion("1.0")]
+[Route("dashboard")]
 [Authorize]
 public class DashboardController(
     GetDashboardOverviewUseCase getDashboardOverviewUseCase,
