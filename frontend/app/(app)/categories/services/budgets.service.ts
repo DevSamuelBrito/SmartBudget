@@ -2,6 +2,8 @@ import { api } from "@/lib/axios";
 
 import { authFetch, getServerUserId } from "@/lib/auth";
 
+import { getServerApiBaseUrl } from "@/lib/server-api";
+
 import type { BudgetByPeriodApi, BudgetByPeriodStatus } from "../types";
 
 type GetBudgetsByPeriodParams = {
@@ -63,11 +65,7 @@ export const getBudgetsByPeriodServerCached = async ({
   month,
   year,
 }: GetBudgetsByPeriodParams) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
-  }
+  const baseUrl = getServerApiBaseUrl();
 
   const query = new URLSearchParams({
     month: String(month),

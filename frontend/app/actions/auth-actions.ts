@@ -5,6 +5,8 @@ import { cookies } from "next/headers";
 
 import { redirect } from "next/navigation";
 
+import { getServerApiBaseUrl } from "@/lib/server-api";
+
 interface LoginInput {
   email: string;
   password: string;
@@ -36,15 +38,7 @@ interface ProblemDetailsPayload {
 }
 
 const getApiBaseUrl = () => {
-  const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!rawBaseUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
-  }
-
-  const baseUrl = rawBaseUrl.replace(/\/+$/, "");
-
-  return baseUrl.endsWith("/api") ? baseUrl : `${baseUrl}/api`;
+  return getServerApiBaseUrl();
 };
 
 const normalizeLoginResponse = (payload: unknown): LoginResponse => {
@@ -72,14 +66,11 @@ export async function loginAction(
   try {
     const apiBaseUrl = getApiBaseUrl();
 
-    const response = await fetch(
-      `${apiBaseUrl}/auth/login`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
-      },
-    );
+    const response = await fetch(`${apiBaseUrl}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
 
     if (!response.ok) {
       const errorData = (await response

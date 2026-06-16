@@ -3,6 +3,8 @@ import { api } from "@/lib/axios";
 
 import { authFetch, getServerUserId } from "@/lib/auth";
 
+import { getServerApiBaseUrl } from "@/lib/server-api";
+
 //types
 import type { PagedResult, PaginationParams } from "@/types/pagination";
 
@@ -24,9 +26,12 @@ export const getCategories = async ({
   page = 1,
   pageSize = 10,
 }: PaginationParams = {}) => {
-  const response = await api.get<PagedResult<CategoryApi>>("/transactionCategories", {
-    params: { page, pageSize },
-  });
+  const response = await api.get<PagedResult<CategoryApi>>(
+    "/transactionCategories",
+    {
+      params: { page, pageSize },
+    },
+  );
 
   return response.data;
 };
@@ -35,11 +40,7 @@ export const getCategoriesServer = async ({
   page = 1,
   pageSize = 10,
 }: PaginationParams = {}) => {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_API_URL is not defined.");
-  }
+  const baseUrl = getServerApiBaseUrl();
 
   const userId = await getServerUserId();
 
@@ -48,9 +49,12 @@ export const getCategoriesServer = async ({
     pageSize: pageSize.toString(),
   });
 
-  const response = await authFetch(`${baseUrl}transactionCategories?${query.toString()}`, {
-    next: { tags: [`categories-${userId}`] },
-  });
+  const response = await authFetch(
+    `${baseUrl}transactionCategories?${query.toString()}`,
+    {
+      next: { tags: [`categories-${userId}`] },
+    },
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch categories from server.");
