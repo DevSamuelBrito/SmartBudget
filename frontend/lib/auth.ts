@@ -1,6 +1,10 @@
-'use server';
+"use server";
 
+//next
 import { cookies } from "next/headers";
+
+//jose
+import { decodeJwt } from "jose";
 
 type ProblemDetailsPayload = {
   detail?: string;
@@ -8,26 +12,26 @@ type ProblemDetailsPayload = {
 
 export const getServerUserId = async (): Promise<string> => {
   const cookieStore = await cookies();
-  const raw = cookieStore.get("user-data")?.value;
+  const token = cookieStore.get("token")?.value;
 
-  if (!raw) {
-    throw new Error("user-data cookie not found.");
+  if (!token) {
+    throw new Error("Token not found.");
   }
 
-  const parsed = JSON.parse(decodeURIComponent(raw)) as { userId?: string };
+  const payload = decodeJwt(token);
+  const userId = payload.sub;
 
-  if (!parsed.userId) {
-    throw new Error("userId not found in user-data cookie.");
+  if (!userId) {
+    throw new Error("userId not found in token.");
   }
 
-  return parsed.userId;
+  return userId;
 };
 
 export const authFetch = async (
   input: RequestInfo | URL,
   init?: RequestInit,
 ): Promise<Response> => {
-
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 

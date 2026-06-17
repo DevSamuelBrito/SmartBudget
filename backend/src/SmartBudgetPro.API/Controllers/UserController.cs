@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.UseCases.User.ChangeUserPassword;
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
@@ -12,7 +13,8 @@ using SmartBudgetPro.Application.UseCases.User.UpdateUserProfile;
 namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
-    [Route("api/users")]
+    [ApiVersion("1.0")]
+    [Route("users")]
     [Authorize]
     public class UserController
     (
@@ -69,7 +71,7 @@ namespace SmartBudgetPro.API.Controllers
         {
             var output = await createUserUseCase.ExecuteAsync(input);
 
-            return Created($"api/users/{output.Id}", output);
+            return CreatedAtAction(nameof(GetByID), new { id = output.Id }, output);
         }
 
         [HttpPut("{id}")]
