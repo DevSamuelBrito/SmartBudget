@@ -62,6 +62,7 @@ const COMPONENT_LABELS: Record<string, string> = {
     quickInsightsCard: "Insights Rápidos",
     latestTransactionsCard: "Últimas Transações",
     budgetProgressCard: "Progresso de Orçamentos",
+    financialRiskCard: "Risco Financeiro",
     balanceEvolutionChart: "Evolução do Saldo",
     incomeExpenseBarChart: "Receitas vs Despesas",
     categoryDistributionFlipCard: "Distribuição por Categoria",
