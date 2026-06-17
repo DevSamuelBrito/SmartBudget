@@ -9,6 +9,7 @@ public record GetDashboardOverviewUseCaseOutput(
     DashboardKpisDto Kpis,
     decimal DailyAverageIncome,
     decimal DailyAverageExpense,
+    DashboardFinancialRiskDto FinancialRisk,
     IReadOnlyList<DashboardLatestTransactionDto> LatestTransactions,
     IReadOnlyList<DashboardCategoryExpenseDto> CategoryExpenses,
     IReadOnlyList<DashboardCategoryExpenseDto> CategoryExpensePie,
@@ -77,4 +78,11 @@ public record DashboardAlertDto(
     decimal Percentage,
     BudgetStatus Status,
     string Message
+);
+
+public record DashboardFinancialRiskDto(
+    decimal AverageIncome,
+    decimal FixedExpenses,
+    decimal Percentage,
+    string Status
 );

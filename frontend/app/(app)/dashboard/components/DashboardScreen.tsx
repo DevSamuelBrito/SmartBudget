@@ -16,6 +16,8 @@ import { BalanceEvolutionChart } from "./BalanceEvolutionChart";
 
 import { BudgetProgressCard } from "./BudgetProgressCard";
 
+import { FinancialRiskCard } from "./FinancialRiskCard";
+
 import { AlertsCard } from "./AlertsCard";
 
 import { QuickInsightsCard } from "./QuickInsightsCard";
@@ -51,6 +53,7 @@ export function DashboardScreen({ data, initialConfig }: DashboardScreenProps) {
             <LatestTransactionsCard transactions={data.latestTransactions} />
         ),
         budgetProgressCard: <BudgetProgressCard budgets={data.budgetProgress} />,
+        financialRiskCard: <FinancialRiskCard financialRisk={data.financialRisk} />,
         balanceEvolutionChart: <BalanceEvolutionChart data={data.balanceEvolution} />,
         incomeExpenseBarChart: (
             <IncomeExpenseBarChart data={data.incomeVsExpenseByMonth} />
@@ -68,7 +71,7 @@ export function DashboardScreen({ data, initialConfig }: DashboardScreenProps) {
         .sort((a, b) => a.order - b.order);
 
     return (
-        <div className="relative min-h-[calc(100vh-var(--header-height))] overflow-hidden bg-gradient-to-br from-background via-background to-muted/30">
+        <div className="relative min-h-[calc(100vh-var(--header-height))] overflow-hidden bg-linear-to-br from-background via-background to-muted/30">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.12),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_32%)]" />
 
             <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 lg:px-6">

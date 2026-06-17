@@ -60,6 +60,30 @@ public class GetDashboardOverviewUseCase(
             .Where(t => t.Type == FinancialTransactionType.Expense)
             .Sum(t => t.Amount);
 
+        var financialRiskIncomeStart = periodStart.AddMonths(-2); 
+        var financialRiskIncomeEndExclusive = periodStart.AddMonths(1); 
+
+        var averageIncome = allTransactions
+            .Where(t => t.Type == FinancialTransactionType.Income)
+            .Where(t => t.TransactionDate >= financialRiskIncomeStart && t.TransactionDate < financialRiskIncomeEndExclusive)
+            .Sum(t => t.Amount) / 3m;
+
+        var fixedExpenses = allTransactions
+            .Where(t => t.Type == FinancialTransactionType.Expense)
+            .Where(t => t.Recurrence == RecurrenceType.Monthly)
+            .Where(t => t.TransactionDate.Year == targetYear && t.TransactionDate.Month == targetMonth)
+            .Sum(t => t.Amount);
+
+        var financialRiskPercentage = averageIncome == 0m
+            ? 0m
+            : (fixedExpenses / averageIncome) * 100m;
+
+        var financialRiskStatus = averageIncome == 0m
+            ? "NoData"
+            : financialRiskPercentage > 70m
+                ? "FinancialRisk"
+                : "Ok";
+
         var latestTransactions = allTransactions
             .OrderByDescending(t => t.TransactionDate)
             .ThenByDescending(t => t.CreatedAt)
@@ -213,6 +237,11 @@ public class GetDashboardOverviewUseCase(
                 MonthlySavings: monthIncome - monthExpense),
             DailyAverageIncome: monthIncome / daysDivisor,
             DailyAverageExpense: monthExpense / daysDivisor,
+            FinancialRisk: new DashboardFinancialRiskDto(
+                averageIncome,
+                fixedExpenses,
+                financialRiskPercentage,
+                financialRiskStatus),
             LatestTransactions: latestTransactions,
             CategoryExpenses: categoryExpenses,
             CategoryExpensePie: categoryExpenses,

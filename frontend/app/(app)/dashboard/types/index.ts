@@ -59,12 +59,20 @@ export type DashboardAlert = {
   message: string;
 };
 
+export type DashboardFinancialRisk = {
+  averageIncome: number;
+  fixedExpenses: number;
+  percentage: number;
+  status: "Ok" | "Warning" | "Risk" | "NoData" | "FinancialRisk";
+};
+
 export type DashboardOverviewApi = {
   month: number;
   year: number;
   kpis: DashboardKpis;
   dailyAverageIncome: number;
   dailyAverageExpense: number;
+  financialRisk: DashboardFinancialRisk;
   latestTransactions: DashboardLatestTransaction[];
   categoryExpenses: DashboardCategoryExpense[];
   categoryExpensePie: DashboardCategoryExpense[];
