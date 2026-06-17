@@ -13,6 +13,7 @@ public class GetDashboardConfigUseCase(IUserDashboardConfigRepository repository
         new("balanceEvolutionChart", 4, 2, true),
         new("incomeExpenseBarChart", 5, 1, true),
         new("categoryDistributionFlipCard", 6, 1, true),
+        new("financialRiskCard", 7, 2, true),
     ];
 
     public async Task<IEnumerable<DashboardConfigItemOutput>> ExecuteAsync(GetDashboardConfigUseCaseInput input)
