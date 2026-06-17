@@ -1,14 +1,17 @@
 "use client";
 
+// React
+import type { ComponentProps } from "react";
+
+// Next
 import { useRouter } from "next/navigation";
 
-import Link from "next/link";
-
-import { useForm } from "react-hook-form";
+// external
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { cn } from "@/lib/utils";
+// components
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -20,19 +23,20 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
+// contexts
 import { useAuth } from "@/contexts/auth-context";
 
+// actions
 import { loginAction } from "@/app/actions/auth-actions";
 
-import {
-  loginSchema,
-  type LoginFormValues,
-} from "@/app/(auth)/login/login-schema";
+// schemas
+import { loginSchema, type LoginFormValues } from "../schemas/login-schema";
 
-export function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+type LoginFormSideProps = {
+  onSignUpClick: () => void;
+} & ComponentProps<"div">;
+
+export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormSideProps) {
   const router = useRouter();
   const { dispatch } = useAuth();
 
@@ -50,15 +54,17 @@ export function LoginForm({
     if (result.success) {
       dispatch({ type: "LOGIN", payload: result.user });
       router.push("/dashboard");
-    } else {
-      toast.error(result.error);
+
+      return;
     }
+
+    toast.error(result.error);
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card className="overflow-hidden p-0">
-        <CardContent className="grid p-0 md:grid-cols-2">
+    <div className={className} {...props}>
+      <Card className="h-full overflow-hidden p-0">
+        <CardContent className="grid h-full p-0 md:grid-cols-2">
           <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
@@ -82,10 +88,7 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto text-sm underline-offset-2 hover:underline"
-                  >
+                  <a href="#" className="ml-auto text-sm underline-offset-2 hover:underline">
                     Forgot your password?
                   </a>
                 </div>
@@ -136,10 +139,14 @@ export function LoginForm({
                 </Button>
               </Field>
               <FieldDescription className="text-center">
-                Don&apos;t have an account?
-                <Link href="/dashboard">
+                Don&apos;t have an account?{" "}
+                <button
+                  type="button"
+                  className="bg-transparent p-0 text-sm font-normal text-primary underline-offset-2 hover:underline"
+                  onClick={onSignUpClick}
+                >
                   Sign up
-                </Link>
+                </button>
               </FieldDescription>
             </FieldGroup>
           </form>
@@ -152,10 +159,6 @@ export function LoginForm({
           </div>
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </FieldDescription>
     </div>
-  )
+  );
 }
