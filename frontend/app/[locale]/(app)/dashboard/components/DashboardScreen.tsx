@@ -22,6 +22,8 @@ import { AlertsCard } from "./AlertsCard";
 
 import { QuickInsightsCard } from "./QuickInsightsCard";
 
+import { ExpenseEvolutionChart } from "./ExpenseEvolutionChart";
+
 // Hooks
 import { useDashboardConfig } from "../hooks/useDashboardConfig";
 
@@ -30,15 +32,18 @@ import { useAuth } from "@/contexts/auth-context";
 // Types
 import type { DashboardOverviewApi, DashboardConfigItem } from "../types";
 
+export const PREMIUM_COMPONENT_KEYS: string[] = ["expenseEvolutionChart"];
+
 type DashboardScreenProps = {
     data: DashboardOverviewApi;
     initialConfig: DashboardConfigItem[];
 };
 
 export function DashboardScreen({ data, initialConfig }: DashboardScreenProps) {
-    
+
     const { state } = useAuth();
     const userId = state.user?.userId;
+    const isPremiumUser = state.user?.isPremium ?? false;
     const { data: config } = useDashboardConfig(initialConfig, userId);
 
     const componentMap: Record<string, ReactNode> = {
@@ -64,10 +69,14 @@ export function DashboardScreen({ data, initialConfig }: DashboardScreenProps) {
                 categoryExpenses={data.categoryExpenses}
             />
         ),
+        expenseEvolutionChart: (
+            <ExpenseEvolutionChart data={data.expenseEvolutionByMonth} />
+        ),
     };
 
     const visibleItems = (config ?? [])
         .filter((item) => item.visible)
+        .filter((item) => isPremiumUser || !PREMIUM_COMPONENT_KEYS.includes(item.componentKey))
         .sort((a, b) => a.order - b.order);
 
     return (

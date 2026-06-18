@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 // i18n
 import { useTranslations } from "next-intl";
@@ -13,7 +13,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // icons
-import { Loader2 } from "lucide-react";
+import { Loader2, Lock } from "lucide-react";
 
 // ui
 import { Button } from "@/components/ui/button";
@@ -34,7 +34,14 @@ import {
 // components
 import { ThemeIcon } from "./theme-icons";
 
+import { PREMIUM_ICON_KEYS } from "./theme-icons";
+
+import { PremiumUpgradeDialog } from "@/components/shared/premium-upgrade-dialog";
+
 import { categoryFormSchema } from "../schemas/category.schema";
+
+// hooks
+import { useAuth } from "@/contexts/auth-context";
 
 // types
 import type { CategoryApi, CategoryFormValues, CategoryTheme } from "../types";
@@ -61,6 +68,10 @@ export function CategoryFormSheet({
     "use no memo"
 
     const t = useTranslations("categories");
+    const { state } = useAuth();
+    const isPremiumUser = state.user?.isPremium ?? false;
+
+    const [premiumDialogOpen, setPremiumDialogOpen] = useState(false);
     const defaultIcon = category?.icon ?? themes[0]?.iconKey ?? "";
 
     const {
@@ -107,6 +118,16 @@ export function CategoryFormSheet({
         });
     }
 
+    function handleIconClick(theme: CategoryTheme) {
+        if (theme.isPremium && !isPremiumUser) {
+            setPremiumDialogOpen(true);
+            
+            return;
+        }
+
+        setValue("icon", theme.iconKey, { shouldValidate: true, shouldDirty: true });
+    }
+
     const title = mode === "create" ? t("form.createTitle") : t("form.editTitle");
 
     const description =
@@ -115,86 +136,105 @@ export function CategoryFormSheet({
             : t("form.editDescription");
 
     return (
-        <Sheet
-            open={open}
-            onOpenChange={(nextOpen) => {
-                if (isSubmitting && !nextOpen) {
-                    return;
-                }
+        <>
+            <Sheet
+                open={open}
+                onOpenChange={(nextOpen) => {
+                    if (isSubmitting && !nextOpen) {
+                        return;
+                    }
 
-                if (!nextOpen && mode === "create") {
-                    resetForm();
-                }
+                    if (!nextOpen && mode === "create") {
+                        resetForm();
+                    }
 
-                onOpenChange(nextOpen);
-            }}
-        >
-            <SheetContent side="right" className="sm:max-w-md" closeButtonDisabled={isSubmitting}>
-                <SheetHeader>
-                    <SheetTitle>{title}</SheetTitle>
-                    <SheetDescription>{description}</SheetDescription>
-                </SheetHeader>
+                    onOpenChange(nextOpen);
+                }}
+            >
+                <SheetContent side="right" className="sm:max-w-md" closeButtonDisabled={isSubmitting}>
+                    <SheetHeader>
+                        <SheetTitle>{title}</SheetTitle>
+                        <SheetDescription>{description}</SheetDescription>
+                    </SheetHeader>
 
-                <form id="category-form" className="space-y-4 px-4" onSubmit={handleSubmit(submitForm)}>
-                    <div className="space-y-2">
-                        <Label htmlFor="category-name">{t("form.nameLabel")}</Label>
-                        <Input
-                            id="category-name"
-                            placeholder={t("form.namePlaceholder")}
-                            {...register("name")}
-                            disabled={isSubmitting}
-                        />
-                        {errors.name && (
-                            <p className="text-sm text-destructive">{errors.name.message}</p>
-                        )}
-                    </div>
-
-                    <div className="space-y-2">
-                        <Label>{t("form.iconsLabel")}</Label>
-                        <input type="hidden" {...register("icon")} />
-                        <div className="grid grid-cols-4 gap-2">
-                            {themes.map((theme) => (
-                                <button
-                                    key={theme.id}
-                                    type="button"
-                                    onClick={() => setValue("icon", theme.iconKey, { shouldValidate: true, shouldDirty: true })}
-                                    className="transition"
-                                    aria-label={t("form.selectThemeAriaLabel", { label: theme.label })}
-                                    disabled={isSubmitting}
-                                >
-                                    <div
-                                        className={`flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
-                                            } ${theme.colorClass}`}
-                                    >
-                                        <ThemeIcon iconKey={theme.iconKey} className="size-5" />
-                                    </div>
-                                </button>
-                            ))}
+                    <form id="category-form" className="space-y-4 px-4" onSubmit={handleSubmit(submitForm)}>
+                        <div className="space-y-2">
+                            <Label htmlFor="category-name">{t("form.nameLabel")}</Label>
+                            <Input
+                                id="category-name"
+                                placeholder={t("form.namePlaceholder")}
+                                {...register("name")}
+                                disabled={isSubmitting}
+                            />
+                            {errors.name && (
+                                <p className="text-sm text-destructive">{errors.name.message}</p>
+                            )}
                         </div>
-                        {errors.icon && (
-                            <p className="text-sm text-destructive">{errors.icon.message}</p>
-                        )}
-                    </div>
-                </form>
 
-                <SheetFooter>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => onOpenChange(false)}
-                        disabled={isSubmitting}>
-                        {t("form.cancel")}
-                    </Button>
-                    <Button
-                        form="category-form"
-                        type="submit"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting && <Loader2 className="animate-spin size-4 text-muted-foreground" />}
-                        {t("form.save")}
-                    </Button>
-                </SheetFooter>
-            </SheetContent>
-        </Sheet>
+                        <div className="space-y-2">
+                            <Label>{t("form.iconsLabel")}</Label>
+                            <input type="hidden" {...register("icon")} />
+                            <div className="grid grid-cols-4 gap-2">
+                                {themes.map((theme) => {
+                                    const isLocked = theme.isPremium && !isPremiumUser;
+
+                                    return (
+                                        <button
+                                            key={theme.id}
+                                            type="button"
+                                            onClick={() => handleIconClick(theme)}
+                                            className="transition"
+                                            aria-label={t("form.selectThemeAriaLabel", { label: theme.label })}
+                                            disabled={isSubmitting}
+                                        >
+                                            <div
+                                                className={`relative flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
+                                                    } ${theme.colorClass} ${isLocked ? "opacity-60" : ""}`}
+                                            >
+                                                <ThemeIcon iconKey={theme.iconKey} className="size-5" />
+                                                {isLocked && (
+                                                    <span className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/40">
+                                                        <Lock className="size-4 text-white" />
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            {errors.icon && (
+                                <p className="text-sm text-destructive">{errors.icon.message}</p>
+                            )}
+                        </div>
+                    </form>
+
+                    <SheetFooter>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => onOpenChange(false)}
+                            disabled={isSubmitting}>
+                            {t("form.cancel")}
+                        </Button>
+                        <Button
+                            form="category-form"
+                            type="submit"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting && <Loader2 className="animate-spin size-4 text-muted-foreground" />}
+                            {t("form.save")}
+                        </Button>
+                    </SheetFooter>
+                </SheetContent>
+            </Sheet>
+
+            <PremiumUpgradeDialog
+                open={premiumDialogOpen}
+                onOpenChange={setPremiumDialogOpen}
+                variant="iconGate"
+            />
+        </>
     );
 }
+
+export { PREMIUM_ICON_KEYS };

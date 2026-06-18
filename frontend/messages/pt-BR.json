@@ -78,6 +78,11 @@
         "pieToggleLabel": "Mostrar gasto por categoria",
         "listToggleLabel": "Mostrar despesas em pizza"
       },
+      "expenseEvolution": {
+        "title": "Evolução de despesas",
+        "description": "Despesas mensais dos últimos 6 meses",
+        "expense": "Despesas"
+      },
       "financialRisk": {
         "title": "Risco financeiro",
         "description": "Gastos fixos sobre a renda média dos últimos 3 meses",
@@ -115,8 +120,24 @@
         "financialRiskCard": "Risco financeiro",
         "balanceEvolutionChart": "Evolução de saldo",
         "incomeExpenseBarChart": "Receitas x Despesas",
-        "categoryDistributionFlipCard": "Distribuição por categoria"
-      }
+        "categoryDistributionFlipCard": "Distribuição por categoria",
+        "expenseEvolutionChart": "Evolução de despesas"
+      },
+      "premiumBadge": "Premium"
+    }
+  },
+  "premium": {
+    "iconGate": {
+      "title": "Ícone premium",
+      "description": "Este ícone é exclusivo para assinantes do plano Premium. Faça o upgrade para acessar todos os ícones premium e recursos avançados.",
+      "close": "Fechar",
+      "seePlans": "Ver planos"
+    },
+    "componentGate": {
+      "title": "Componente premium",
+      "description": "Este componente do dashboard é exclusivo para assinantes do plano Premium. Faça o upgrade para desbloqueá-lo e acessar todos os recursos avançados.",
+      "close": "Fechar",
+      "seePlans": "Ver planos"
     }
   },
   "transactions": {

@@ -32,6 +32,12 @@ export type DashboardIncomeExpenseByMonth = {
   expense: number;
 };
 
+export type DashboardExpenseByMonth = {
+  year: number;
+  month: number;
+  expense: number;
+};
+
 export type DashboardBalanceEvolutionPoint = {
   date: string;
   balance: number;
@@ -80,6 +86,7 @@ export type DashboardOverviewApi = {
   balanceEvolution: DashboardBalanceEvolutionPoint[];
   budgetProgress: DashboardBudgetProgress[];
   alerts: DashboardAlert[];
+  expenseEvolutionByMonth: DashboardExpenseByMonth[];
 };
 
 export type DashboardConfigItem = {

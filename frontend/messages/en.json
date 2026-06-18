@@ -69,6 +69,11 @@
           "dec": "Dec"
         }
       },
+      "expenseEvolution": {
+        "title": "Expense evolution",
+        "description": "Monthly expenses over the last 6 months",
+        "expense": "Expenses"
+      },
       "categoryDistribution": {
         "title": "Expenses by category",
         "pieDescription": "Pie distribution",
@@ -115,8 +120,24 @@
         "financialRiskCard": "Financial risk",
         "balanceEvolutionChart": "Balance evolution",
         "incomeExpenseBarChart": "Income vs expenses",
-        "categoryDistributionFlipCard": "Category distribution"
-      }
+        "categoryDistributionFlipCard": "Category distribution",
+        "expenseEvolutionChart": "Expense evolution"
+      },
+      "premiumBadge": "Premium"
+    }
+  },
+  "premium": {
+    "iconGate": {
+      "title": "Premium icon",
+      "description": "This icon is exclusive to Premium plan subscribers. Upgrade to access all premium icons and advanced features.",
+      "close": "Close",
+      "seePlans": "See plans"
+    },
+    "componentGate": {
+      "title": "Premium component",
+      "description": "This dashboard component is exclusive to Premium plan subscribers. Upgrade to unlock it and access all advanced features.",
+      "close": "Close",
+      "seePlans": "See plans"
     }
   },
   "transactions": {

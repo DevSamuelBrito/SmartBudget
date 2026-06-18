@@ -11,6 +11,14 @@ import {
     Lightbulb,
     ShoppingBasket,
     Wifi,
+    Plane,
+    Gem,
+    Trophy,
+    Crown,
+    Rocket,
+    Sparkles,
+    Star,
+    Zap,
 } from "lucide-react";
 
 type IconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -24,9 +32,28 @@ export const iconMap = {
     HeartPulse,
     Cross,
     Gamepad2,
+    Plane,
+    Gem,
+    Trophy,
+    Crown,
+    Rocket,
+    Sparkles,
+    Star,
+    Zap,
 } satisfies Record<string, IconComponent>;
 
 export type ThemeIconKey = keyof typeof iconMap;
+
+export const PREMIUM_ICON_KEYS: ThemeIconKey[] = [
+    "Plane",
+    "Gem",
+    "Trophy",
+    "Crown",
+    "Rocket",
+    "Sparkles",
+    "Star",
+    "Zap",
+];
 
 type ThemeIconProps = {
     iconKey: ThemeIconKey;

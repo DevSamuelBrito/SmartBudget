@@ -22,6 +22,7 @@ export type CategoryTheme = {
   label: string;
   colorClass: string;
   iconKey: ThemeIconKey;
+  isPremium?: boolean;
 };
 
 export type BudgetByPeriodStatus = "Ok" | "Warning" | "Exceeded" | 1 | 2 | 3;
