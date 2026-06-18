@@ -12,9 +12,11 @@ public class UpgradeUserToPremiumUseCase(IUserRepository userRepository)
         if (user is null)
             throw new UserNotFoundException();
 
-        user.UpgradeToPremium();
-
-        await userRepository.UpdateAsync(user);
+        if (!user.IsPremium)
+        {
+            user.UpgradeToPremium();
+            await userRepository.UpdateAsync(user);
+        }
 
         return new UpgradeUserToPremiumUseCaseOutput(user.Id, user.Name, user.Email, user.IsPremium);
     }
