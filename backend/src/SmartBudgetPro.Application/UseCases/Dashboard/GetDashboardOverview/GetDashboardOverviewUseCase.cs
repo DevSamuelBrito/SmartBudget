@@ -225,6 +225,18 @@ public class GetDashboardOverviewUseCase(
             })
             .ToList();
 
+        const int expenseEvolutionMonths = 6;
+        var expenseEvolutionByMonth = new List<DashboardExpenseByMonthDto>(expenseEvolutionMonths);
+        for (var i = expenseEvolutionMonths - 1; i >= 0; i--)
+        {
+            var monthDate = periodStart.AddMonths(-i);
+            var hasBucket = monthBuckets.TryGetValue((monthDate.Year, monthDate.Month), out var bucket);
+            expenseEvolutionByMonth.Add(new DashboardExpenseByMonthDto(
+                monthDate.Year,
+                monthDate.Month,
+                hasBucket ? bucket!.Expense : 0m));
+        }
+
         var daysDivisor = GetAverageDaysDivisor(targetYear, targetMonth, now);
 
         return new GetDashboardOverviewUseCaseOutput(
@@ -248,7 +260,8 @@ public class GetDashboardOverviewUseCase(
             IncomeVsExpenseByMonth: incomeVsExpenseByMonth,
             BalanceEvolution: balanceEvolution,
             BudgetProgress: budgetProgress,
-            Alerts: alerts);
+            Alerts: alerts,
+            ExpenseEvolutionByMonth: expenseEvolutionByMonth);
     }
 
     private static decimal ToSignedAmount(SmartBudgetPro.Domain.Transactions.FinancialTransaction transaction)
