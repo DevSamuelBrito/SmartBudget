@@ -3,8 +3,11 @@
 //react
 import * as React from "react"
 
+// i18n
+import { useTranslations } from "next-intl"
+
 //components
-import { LayoutDashboardIcon, CameraIcon, FileTextIcon, CommandIcon, ArrowLeftRight, Tags } from "lucide-react"
+import { LayoutDashboardIcon, CommandIcon, ArrowLeftRight, Tags } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 
@@ -20,95 +23,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-//icons
-
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "dashboard",
-      icon: (
-        <LayoutDashboardIcon
-        />
-      ),
-    },
-    {
-      title: "Transações",
-      url: "transactions",
-      icon: (
-        <ArrowLeftRight
-        />
-      ),
-    }, 
-    {
-      title: "Categorias",
-      url: "categories",
-      icon: (
-        <Tags
-        />
-      ),
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: (
-        <CameraIcon
-        />
-      ),
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: (
-        <FileTextIcon
-        />
-      ),
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: (
-        <FileTextIcon
-        />
-      ),
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
-
-}
-
 type SidebarUser = {
   name: string
   email: string
@@ -121,6 +35,26 @@ export function AppSidebar({
 }: React.ComponentProps<typeof Sidebar> & {
   user: SidebarUser
 }) {
+  const t = useTranslations("nav")
+
+  const navMain = [
+    {
+      title: t("dashboard"),
+      url: "dashboard",
+      icon: <LayoutDashboardIcon />,
+    },
+    {
+      title: t("transactions"),
+      url: "transactions",
+      icon: <ArrowLeftRight />,
+    },
+    {
+      title: t("categories"),
+      url: "categories",
+      icon: <Tags />,
+    },
+  ]
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -139,7 +73,7 @@ export function AppSidebar({
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser

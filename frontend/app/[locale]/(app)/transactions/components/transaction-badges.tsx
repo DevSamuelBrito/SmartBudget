@@ -1,3 +1,8 @@
+"use client";
+
+// i18n
+import { useTranslations } from "next-intl";
+
 //components
 import { Badge } from "@/components/ui/badge";
 
@@ -13,43 +18,33 @@ type RecurrenceBadgeProps = {
   recurrence: RecurrenceType;
 };
 
-const transactionTypeConfig: Record<
-  TransactionType,
-  { label: string; className: string }
-> = {
-  receita: {
-    label: "Receita",
-    className: "bg-emerald-100 text-emerald-800 hover:bg-emerald-100",
-  },
-  despesa: {
-    label: "Despesa",
-    className: "bg-rose-100 text-rose-800 hover:bg-rose-100",
-  },
-  transferencia: {
-    label: "Transferência",
-    className: "bg-sky-100 text-sky-800 hover:bg-sky-100",
-  },
+const transactionTypeClassName: Record<TransactionType, string> = {
+  receita: "bg-emerald-100 text-emerald-800 hover:bg-emerald-100",
+  despesa: "bg-rose-100 text-rose-800 hover:bg-rose-100",
+  transferencia: "bg-sky-100 text-sky-800 hover:bg-sky-100",
 };
 
-const recurrenceConfig: Record<RecurrenceType, { label: string; className: string }> = {
-  unica: {
-    label: "Única",
-    className: "bg-zinc-100 text-zinc-800 hover:bg-zinc-100",
-  },
-  recorrente: {
-    label: "Recorrente",
-    className: "bg-amber-100 text-amber-800 hover:bg-amber-100",
-  },
+const recurrenceClassName: Record<RecurrenceType, string> = {
+  unica: "bg-zinc-100 text-zinc-800 hover:bg-zinc-100",
+  recorrente: "bg-amber-100 text-amber-800 hover:bg-amber-100",
 };
 
 export function TransactionTypeBadge({ type }: TransactionTypeBadgeProps) {
-  const config = transactionTypeConfig[type];
+  const t = useTranslations("transactions.types");
 
-  return <Badge className={config.className}>{config.label}</Badge>;
+  return (
+    <Badge className={transactionTypeClassName[type]}>
+      {t(type)}
+    </Badge>
+  );
 }
 
 export function RecurrenceBadge({ recurrence }: RecurrenceBadgeProps) {
-  const config = recurrenceConfig[recurrence];
+  const t = useTranslations("transactions.recurrence");
 
-  return <Badge className={config.className}>{config.label}</Badge>;
+  return (
+    <Badge className={recurrenceClassName[recurrence]}>
+      {t(recurrence)}
+    </Badge>
+  );
 }

@@ -3,6 +3,9 @@
 // react
 import { useState } from "react";
 
+// i18n
+import { useTranslations } from "next-intl";
+
 // libs
 import { Plus, Search } from "lucide-react";
 
@@ -95,6 +98,8 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
         });
     }
 
+    const t = useTranslations("transactions");
+
     const pageCount = Math.max(1, totalPages);
 
     const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
@@ -115,14 +120,14 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                     <Input
                         value={search}
                         onChange={(event) => setSearch(event.target.value)}
-                        placeholder="Buscar transação por descrição"
+                        placeholder={t("searchPlaceholder")}
                         className="pl-8"
                     />
                 </div>
 
                 <Button onClick={() => setCreateOpen(true)}>
                     <Plus className="size-4" />
-                    Adicionar nova Transação
+                    {t("createButton")}
                 </Button>
             </div>
 
@@ -139,7 +144,7 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                             <PaginationItem>
                                 <PaginationPrevious
                                     href="#"
-                                    text="Anterior"
+                                    text={t("pagination.previous")}
                                     onClick={(event) => {
                                         event.preventDefault();
                                         handlePageChange(page - 1);
@@ -167,7 +172,7 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                             <PaginationItem>
                                 <PaginationNext
                                     href="#"
-                                    text="Próximo"
+                                    text={t("pagination.next")}
                                     onClick={(event) => {
                                         event.preventDefault();
                                         handlePageChange(page + 1);

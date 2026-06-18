@@ -3,8 +3,11 @@
 // React
 import { useState } from "react"
 
+// i18n
+import { useTranslations } from "next-intl"
+
 // libs
-import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon, FlagIcon } from "lucide-react"
+import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon, LayoutDashboardIcon, FlagIcon } from "lucide-react"
 
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -58,6 +61,8 @@ export function NavUser({
     avatar: string
   }
 }) {
+  const t = useTranslations("user")
+
   const { isMobile } = useSidebar()
 
   const { dispatch } = useAuth()
@@ -142,32 +147,22 @@ export function NavUser({
                 <DropdownMenuItem onSelect={() => setAccountDialogOpen(true)}>
                   <CircleUserRoundIcon
                   />
-                  Account
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCardIcon
-                  />
-                  Billing
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <BellIcon
-                  />
-                  Notifications
+                  {t("account")}
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => setCustomizerOpen(true)}>
                   <LayoutDashboardIcon />
-                  Customizar Dashboard
+                  {t("customizeDashboard")}
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => setLocaleDialogOpen(true)}>
                   <FlagIcon />
-                  Idioma
+                  {t("language")}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={handleLogout} disabled={isLoggingOut}>
                 <LogOutIcon
                 />
-                {isLoggingOut ? "Logging out..." : "Log out"}
+                {isLoggingOut ? t("loggingOut") : t("logout")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

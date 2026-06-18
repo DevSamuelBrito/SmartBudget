@@ -3,6 +3,9 @@
 // react
 import { useMemo, useState } from "react";
 
+// i18n
+import { useTranslations } from "next-intl";
+
 // zod
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -77,17 +80,6 @@ const defaultTransactionValues: TransactionFormValues = {
     transactionCategoryId: null,
 };
 
-const transactionTypeOptions = [
-    { label: "Receita", value: 1 },
-    { label: "Despesa", value: 2 },
-    { label: "Transferência", value: 3 },
-] as const;
-
-const recurrenceOptions = [
-    { label: "Única", value: 0 },
-    { label: "Recorrente", value: 1 },
-] as const;
-
 export function TransactionFormSheet({
     open,
     mode,
@@ -98,6 +90,19 @@ export function TransactionFormSheet({
     isSubmitting = false,
 }: TransactionFormSheetProps) {
     "use no memo";
+
+    const t = useTranslations("transactions");
+
+    const transactionTypeOptions = [
+        { label: t("types.receita"), value: 1 },
+        { label: t("types.despesa"), value: 2 },
+        { label: t("types.transferencia"), value: 3 },
+    ] as const;
+
+    const recurrenceOptions = [
+        { label: t("recurrence.unica"), value: 0 },
+        { label: t("recurrence.recorrente"), value: 1 },
+    ] as const;
 
     const formValues = useMemo<TransactionFormValues>(() => {
         if (!open || !transaction) {
@@ -200,12 +205,12 @@ export function TransactionFormSheet({
         setCategoryOpen(false);
     }
 
-    const title = mode === "create" ? "Adicionar nova transação" : "Editar transação";
+    const title = mode === "create" ? t("form.createTitle") : t("form.editTitle");
 
     const description =
         mode === "create"
-            ? "Preencha os dados da transação."
-            : "Atualize os dados da transação.";
+            ? t("form.createDescription")
+            : t("form.editDescription");
 
     return (
         <Sheet
@@ -232,13 +237,13 @@ export function TransactionFormSheet({
 
                 <form id="transaction-form" className="space-y-4 px-4" onSubmit={handleSubmit(submitForm)}>
                     <div className="space-y-2">
-                        <Label htmlFor="transaction-amount">Valor</Label>
+                        <Label htmlFor="transaction-amount">{t("form.amountLabel")}</Label>
                         <Input
                             id="transaction-amount"
                             type="number"
                             step="0.01"
                             min="0"
-                            placeholder="Ex: 120.50"
+                            placeholder={t("form.amountPlaceholder")}
                             {...register("amount", { valueAsNumber: true })}
                             aria-invalid={Boolean(errors.amount)}
                             disabled={isSubmitting}
@@ -249,7 +254,7 @@ export function TransactionFormSheet({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="transaction-date">Data da transação</Label>
+                        <Label htmlFor="transaction-date">{t("form.dateLabel")}</Label>
                         <Popover open={dateOpen} onOpenChange={setDateOpen}>
                             <PopoverTrigger asChild>
                                 <Button
@@ -264,7 +269,7 @@ export function TransactionFormSheet({
                                     {selectedTransactionDate ? (
                                         format(selectedTransactionDate, "PPP", { locale: undefined })
                                     ) : (
-                                        <span>Selecione uma data</span>
+                                        <span>{t("form.datePlaceholder")}</span>
                                     )}
                                 </Button>
                             </PopoverTrigger>
@@ -305,7 +310,7 @@ export function TransactionFormSheet({
 
                     <div className="grid gap-4 sm:grid-cols-2">
                         <div className="space-y-2">
-                            <Label>Tipo da transação</Label>
+                            <Label>{t("form.typeLabel")}</Label>
                             <Select
                                 value={String(transactionType)}
                                 onValueChange={(value) => {
@@ -328,7 +333,7 @@ export function TransactionFormSheet({
                                 disabled={isSubmitting}
                             >
                                 <SelectTrigger className="w-full" aria-invalid={Boolean(errors.transactionType)}>
-                                    <SelectValue placeholder="Selecione" />
+                                    <SelectValue placeholder={t("form.typePlaceholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {transactionTypeOptions.map((option) => (
@@ -344,7 +349,7 @@ export function TransactionFormSheet({
                         </div>
 
                         <div className="space-y-2">
-                            <Label>Recorrência</Label>
+                            <Label>{t("form.recurrenceLabel")}</Label>
                             <Select
                                 value={String(recurrence)}
                                 onValueChange={(value) => {
@@ -356,7 +361,7 @@ export function TransactionFormSheet({
                                 disabled={isSubmitting}
                             >
                                 <SelectTrigger className="w-full" aria-invalid={Boolean(errors.recurrence)}>
-                                    <SelectValue placeholder="Selecione" />
+                                    <SelectValue placeholder={t("form.recurrencePlaceholder")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {recurrenceOptions.map((option) => (
@@ -373,10 +378,10 @@ export function TransactionFormSheet({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="transaction-description">Descrição</Label>
+                        <Label htmlFor="transaction-description">{t("form.descriptionLabel")}</Label>
                         <Input
                             id="transaction-description"
-                            placeholder="Ex: Compra no mercado"
+                            placeholder={t("form.descriptionPlaceholder")}
                             {...register("description")}
                             aria-invalid={Boolean(errors.description)}
                             disabled={isSubmitting}
@@ -387,10 +392,10 @@ export function TransactionFormSheet({
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="transaction-category">Categoria</Label>
+                        <Label htmlFor="transaction-category">{t("form.categoryLabel")}</Label>
                         {isTransferTransaction && (
                             <p className="text-sm text-muted-foreground">
-                                Transações do tipo Transferência não usam categoria.
+                                {t("form.categoryTransferNote")}
                             </p>
                         )}
                         <div className="relative">
@@ -405,7 +410,7 @@ export function TransactionFormSheet({
                             )}
                             <Input
                                 id="transaction-category"
-                                placeholder={isTransferTransaction ? "Categoria indisponível para transferência" : "Selecione uma categoria"}
+                                placeholder={isTransferTransaction ? t("form.categoryTransferPlaceholder") : t("form.categoryPlaceholder")}
                                 value={displayedCategoryQuery}
                                 onFocus={() => {
                                     if (!isTransferTransaction) {
@@ -456,7 +461,7 @@ export function TransactionFormSheet({
                                         ))
                                     ) : (
                                         <p className="px-3 py-2 text-sm text-muted-foreground">
-                                            Nenhuma categoria encontrada.
+                                            {t("form.noCategoryFound")}
                                         </p>
                                     )}
                                 </div>
@@ -476,11 +481,11 @@ export function TransactionFormSheet({
                         onClick={() => onOpenChange(false)}
                         disabled={isSubmitting}
                     >
-                        Cancelar
+                        {t("form.cancel")}
                     </Button>
                     <Button form="transaction-form" type="submit" disabled={isSubmitting}>
                         {isSubmitting && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
-                        Salvar
+                        {t("form.save")}
                     </Button>
                 </SheetFooter>
             </SheetContent>

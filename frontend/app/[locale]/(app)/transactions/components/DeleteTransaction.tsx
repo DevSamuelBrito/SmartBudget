@@ -1,5 +1,8 @@
 "use client";
 
+// i18n
+import { useTranslations } from "next-intl";
+
 // icons
 import { Loader2 } from "lucide-react";
 
@@ -33,6 +36,8 @@ export function DeleteTransactionSheet({
     onSubmit,
     isDeleting = false,
 }: DeleteTransactionSheetProps) {
+    const t = useTranslations("transactions");
+
     if (!transaction) {
         return null;
     }
@@ -50,9 +55,12 @@ export function DeleteTransactionSheet({
         >
             <SheetContent side="right" className="sm:max-w-md" closeButtonDisabled={isDeleting}>
                 <SheetHeader>
-                    <SheetTitle>Excluir transação</SheetTitle>
+                    <SheetTitle>{t("delete.title")}</SheetTitle>
                     <SheetDescription>
-                        Você tem certeza que deseja excluir <strong>{transaction.description}</strong>?
+                        {t.rich("delete.description", {
+                            description: transaction.description,
+                            strong: (chunks) => <strong>{chunks}</strong>,
+                        })}
                     </SheetDescription>
                 </SheetHeader>
 
@@ -63,7 +71,7 @@ export function DeleteTransactionSheet({
                         onClick={() => onOpenChange(false)}
                         disabled={isDeleting}
                     >
-                        Cancelar
+                        {t("delete.cancel")}
                     </Button>
                     <Button
                         type="button"
@@ -72,7 +80,7 @@ export function DeleteTransactionSheet({
                         disabled={isDeleting}
                     >
                         {isDeleting && <Loader2 className="size-4 animate-spin" />}
-                        Excluir
+                        {t("delete.confirm")}
                     </Button>
                 </SheetFooter>
             </SheetContent>

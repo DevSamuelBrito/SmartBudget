@@ -1,5 +1,8 @@
 "use client"
 
+// i18n
+import { useTranslations } from "next-intl"
+
 // components
 import { Button } from "@/components/ui/button"
 
@@ -46,15 +49,16 @@ export function LanguageSwitcherDialog({
     isChangingLocale,
     onChangeLocale,
 }: LanguageSwitcherDialogProps) {
+    const t = useTranslations("languageSwitcher")
     const currentLocale = open ? getLocaleFromCookie() : null
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
-                    <DialogTitle>Idioma</DialogTitle>
+                    <DialogTitle>{t("title")}</DialogTitle>
                     <DialogDescription>
-                        Escolha o idioma da aplicação.
+                        {t("description")}
                     </DialogDescription>
                 </DialogHeader>
 
