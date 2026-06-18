@@ -25,6 +25,7 @@ using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
 using SmartBudgetPro.Application.UseCases.User.GetUserByID;
 using SmartBudgetPro.Application.UseCases.User.UpdateUser;
 using SmartBudgetPro.Application.UseCases.User.UpdateUserProfile;
+using SmartBudgetPro.Application.UseCases.User.UpgradeUserToPremium;
 
 namespace SmartBudgetPro.Application;
 
@@ -40,6 +41,7 @@ public static class DependencyInjection
         services.AddScoped<DeleteUserUseCase>();
         services.AddScoped<UpdateUserProfileUseCase>();
         services.AddScoped<ChangeUserPasswordUseCase>();
+        services.AddScoped<UpgradeUserToPremiumUseCase>();
 
         //financial transaction
         services.AddScoped<GetAllFinancialTransactionUseCase>();
