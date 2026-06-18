@@ -24,8 +24,10 @@ import { Input } from "@/components/ui/input";
 import { registerAction } from "@/app/actions/auth-actions";
 
 // schemas
-
-import { registerSchema, type RegisterFormValues } from "@/app/[locale]/(auth)/login/schemas/register-schema";
+import {
+    registerSchema,
+    type RegisterFormValues,
+} from "../schemas/register-schema";
 
 type RegisterFormSideProps = {
     onBackToLogin: () => void;

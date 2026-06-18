@@ -11,14 +11,11 @@ import { useTranslations } from "next-intl";
 
 // external
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { useForm } from "react-hook-form";
-
 import { toast } from "sonner";
 
 // components
 import { Button } from "@/components/ui/button";
-
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
@@ -36,7 +33,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { loginAction } from "@/app/actions/auth-actions";
 
 // schemas
-import { loginSchema, type LoginFormValues } from "@/app/[locale]/(auth)/login/schemas/login-schema";
+import { loginSchema, type LoginFormValues } from "../schemas/login-schema";
 
 type LoginFormSideProps = {
   onSignUpClick: () => void;

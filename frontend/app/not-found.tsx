@@ -1,6 +1,9 @@
 //next
 import Link from "next/link"
 
+// next-intl
+import { getTranslations } from "next-intl/server"
+
 //icons
 import { Home } from "lucide-react"
 
@@ -9,7 +12,9 @@ import { Button } from "@/components/ui/button"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function NotFound() {
+export default async function NotFound() {
+    const t = await getTranslations("notFound")
+
     return (
         <div className="relative flex min-h-[calc(100vh-var(--header-height))] items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-muted/40 px-4 py-10">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(14,165,233,0.10),transparent_32%)]" />
@@ -20,23 +25,22 @@ export default function NotFound() {
                         <span className="text-2xl font-semibold tracking-tight">404</span>
                     </div>
                     <div className="space-y-2">
-                        <CardTitle className="text-2xl sm:text-3xl">Página não encontrada</CardTitle>
+                        <CardTitle className="text-2xl sm:text-3xl">{t("title")}</CardTitle>
                         <CardDescription className="text-base">
-                            O endereço que você tentou acessar não existe.
+                            {t("description")}
                         </CardDescription>
                     </div>
                 </CardHeader>
 
                 <CardContent className="flex flex-col items-center gap-4 pb-8 text-center">
                     <p className="max-w-md text-sm leading-6 text-muted-foreground sm:text-base">
-                        Você pode voltar para a página inicial para continuar navegando pelo
-                        SmartBudget PRO.
+                        {t("body")}
                     </p>
 
                     <Button asChild size="lg" className="w-full max-w-sm shadow-sm shadow-primary/20 sm:w-auto">
                         <Link href="/">
                             <Home className="size-4" />
-                            Ir para a página inicial
+                            {t("homeButton")}
                         </Link>
                     </Button>
 

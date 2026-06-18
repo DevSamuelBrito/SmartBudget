@@ -1,7 +1,10 @@
 "use client"
 
-//react 
+//react
 import { useEffect, useState } from "react"
+
+// i18n
+import { useTranslations } from "next-intl"
 
 //react-hook-form
 import { useForm } from "react-hook-form"
@@ -71,6 +74,8 @@ export function UserAccountDialog({
     onOpenChange,
     onProfileUpdated,
 }: UserAccountDialogProps) {
+    const t = useTranslations("account")
+
     const { state, dispatch } = useAuth()
     const authUser = state.user
 
@@ -150,14 +155,14 @@ export function UserAccountDialog({
                 setClientUserDataCookie(nextProfile)
             }
 
-            toast.success("Informações atualizadas com sucesso!")
+            toast.success(t("updateSuccess"))
             onProfileUpdated?.({
                 name: values.name,
                 email: values.email,
             })
             onOpenChange(false)
         } catch (error) {
-            toast.error(getErrorMessage(error, "Não foi possível atualizar as informações."))
+            toast.error(getErrorMessage(error, t("updateError")))
         }
     }
 
@@ -165,11 +170,11 @@ export function UserAccountDialog({
         try {
             await changePasswordMutation.mutateAsync(values)
 
-            toast.success("Senha alterada com sucesso!")
+            toast.success(t("passwordSuccess"))
             resetPassword()
             setChangePasswordSheetOpen(false)
         } catch (error) {
-            toast.error(getErrorMessage(error, "Não foi possível alterar a senha."))
+            toast.error(getErrorMessage(error, t("passwordError")))
         }
     }
 
@@ -178,27 +183,27 @@ export function UserAccountDialog({
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent className="sm:max-w-lg">
                     <DialogHeader>
-                        <DialogTitle>Minha Conta</DialogTitle>
+                        <DialogTitle>{t("title")}</DialogTitle>
                         <DialogDescription>
-                            Atualize seus dados pessoais e gerencie a segurança da conta.
+                            {t("description")}
                         </DialogDescription>
                     </DialogHeader>
 
                     <div className="space-y-6">
                         <section className="space-y-4 rounded-lg border p-4">
                             <div className="space-y-1">
-                                <h3 className="font-medium">Informações pessoais</h3>
+                                <h3 className="font-medium">{t("personalInfo.title")}</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Edite seu nome e e-mail.
+                                    {t("personalInfo.description")}
                                 </p>
                             </div>
 
                             <form id="account-profile-form" className="space-y-3" onSubmit={handleSubmitProfile(handleUpdateProfile)}>
                                 <div className="space-y-2">
-                                    <Label htmlFor="account-name">Nome</Label>
+                                    <Label htmlFor="account-name">{t("personalInfo.nameLabel")}</Label>
                                     <Input
                                         id="account-name"
-                                        placeholder="Seu nome"
+                                        placeholder={t("personalInfo.namePlaceholder")}
                                         {...registerProfile("name")}
                                         disabled={profileMutation.isPending}
                                     />
@@ -208,11 +213,11 @@ export function UserAccountDialog({
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="account-email">E-mail</Label>
+                                    <Label htmlFor="account-email">{t("personalInfo.emailLabel")}</Label>
                                     <Input
                                         id="account-email"
                                         type="email"
-                                        placeholder="voce@email.com"
+                                        placeholder={t("personalInfo.emailPlaceholder")}
                                         {...registerProfile("email")}
                                         disabled={profileMutation.isPending}
                                     />
@@ -225,9 +230,9 @@ export function UserAccountDialog({
 
                         <section className="space-y-3 rounded-lg border p-4">
                             <div className="space-y-1">
-                                <h3 className="font-medium">Segurança</h3>
+                                <h3 className="font-medium">{t("security.title")}</h3>
                                 <p className="text-sm text-muted-foreground">
-                                    Altere sua senha de acesso.
+                                    {t("security.description")}
                                 </p>
                             </div>
 
@@ -239,7 +244,7 @@ export function UserAccountDialog({
                                     setChangePasswordSheetOpen(true)
                                 }}
                             >
-                                Alterar Senha
+                                {t("security.changePasswordButton")}
                             </Button>
                         </section>
                     </div>
@@ -250,7 +255,7 @@ export function UserAccountDialog({
                             type="submit"
                             disabled={profileMutation.isPending}
                         >
-                            {profileMutation.isPending ? "Salvando..." : "Salvar alterações"}
+                            {profileMutation.isPending ? t("saving") : t("saveChanges")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -268,15 +273,15 @@ export function UserAccountDialog({
             >
                 <SheetContent side="right" className="sm:max-w-md" closeButtonDisabled={changePasswordMutation.isPending}>
                     <SheetHeader>
-                        <SheetTitle>Alterar Senha</SheetTitle>
+                        <SheetTitle>{t("changePassword.title")}</SheetTitle>
                         <SheetDescription>
-                            Informe sua senha atual e defina uma nova senha.
+                            {t("changePassword.description")}
                         </SheetDescription>
                     </SheetHeader>
 
                     <form id="change-password-form" className="space-y-4 px-4" onSubmit={handleSubmitPassword(handleChangePassword)}>
                         <div className="space-y-2">
-                            <Label htmlFor="current-password">Senha atual</Label>
+                            <Label htmlFor="current-password">{t("changePassword.currentPasswordLabel")}</Label>
                             <Input
                                 id="current-password"
                                 type="password"
@@ -289,7 +294,7 @@ export function UserAccountDialog({
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="new-password">Nova senha</Label>
+                            <Label htmlFor="new-password">{t("changePassword.newPasswordLabel")}</Label>
                             <Input
                                 id="new-password"
                                 type="password"
@@ -302,7 +307,7 @@ export function UserAccountDialog({
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="confirm-new-password">Confirmar nova senha</Label>
+                            <Label htmlFor="confirm-new-password">{t("changePassword.confirmPasswordLabel")}</Label>
                             <Input
                                 id="confirm-new-password"
                                 type="password"
@@ -325,14 +330,14 @@ export function UserAccountDialog({
                             }}
                             disabled={changePasswordMutation.isPending}
                         >
-                            Cancelar
+                            {t("changePassword.cancel")}
                         </Button>
                         <Button
                             form="change-password-form"
                             type="submit"
                             disabled={changePasswordMutation.isPending}
                         >
-                            {changePasswordMutation.isPending ? "Salvando..." : "Salvar"}
+                            {changePasswordMutation.isPending ? t("changePassword.saving") : t("changePassword.save")}
                         </Button>
                     </SheetFooter>
                 </SheetContent>

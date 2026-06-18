@@ -3,14 +3,15 @@
 //react
 import { useSyncExternalStore } from "react"
 
-//lucide
+//next
 import { usePathname } from "next/navigation"
 
+// i18n
+import { useTranslations } from "next-intl"
+
+//libs
 import { MoonStar, SunMedium } from "lucide-react"
 
-//next
-
-//next
 import { useTheme } from "next-themes"
 
 //components
@@ -28,6 +29,7 @@ export function SiteHeader() {
   )
 
   const pathname = usePathname()
+  const t = useTranslations("siteHeader")
 
   const { resolvedTheme, theme, setTheme } = useTheme()
 
@@ -48,10 +50,10 @@ export function SiteHeader() {
 
   const themeLabel =
     !mounted || !currentTheme
-      ? "Alternar tema"
+      ? t("toggleTheme")
       : currentTheme === "dark"
-        ? "Alternar para modo claro"
-        : "Alternar para modo escuro"
+        ? t("toggleLight")
+        : t("toggleDark")
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
