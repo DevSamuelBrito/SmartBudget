@@ -4,7 +4,7 @@
 import { useState } from "react"
 
 // libs
-import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon } from "lucide-react"
+import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon, FlagIcon } from "lucide-react"
 
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -159,6 +159,7 @@ export function NavUser({
                   Customizar Dashboard
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => setLocaleDialogOpen(true)}>
+                  <FlagIcon />
                   Idioma
                 </DropdownMenuItem>
               </DropdownMenuGroup>

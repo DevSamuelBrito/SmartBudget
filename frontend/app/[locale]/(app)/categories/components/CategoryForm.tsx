@@ -3,6 +3,9 @@
 // react
 import { useCallback, useEffect } from "react";
 
+// i18n
+import { useTranslations } from "next-intl";
+
 // RHF
 import { useForm, useWatch } from "react-hook-form";
 
@@ -57,6 +60,7 @@ export function CategoryFormSheet({
 }: CategoryFormSheetProps) {
     "use no memo"
 
+    const t = useTranslations("categories");
     const defaultIcon = category?.icon ?? themes[0]?.iconKey ?? "";
 
     const {
@@ -103,12 +107,12 @@ export function CategoryFormSheet({
         });
     }
 
-    const title = mode === "create" ? "Criar categoria" : "Renomear categoria";
+    const title = mode === "create" ? t("form.createTitle") : t("form.editTitle");
 
     const description =
         mode === "create"
-            ? "Escolha um nome e um Icone para a nova categoria."
-            : "Atualize o nome e o Icone da categoria.";
+            ? t("form.createDescription")
+            : t("form.editDescription");
 
     return (
         <Sheet
@@ -133,10 +137,10 @@ export function CategoryFormSheet({
 
                 <form id="category-form" className="space-y-4 px-4" onSubmit={handleSubmit(submitForm)}>
                     <div className="space-y-2">
-                        <Label htmlFor="category-name">Nome</Label>
+                        <Label htmlFor="category-name">{t("form.nameLabel")}</Label>
                         <Input
                             id="category-name"
-                            placeholder="Ex: Conta de Luz"
+                            placeholder={t("form.namePlaceholder")}
                             {...register("name")}
                             disabled={isSubmitting}
                         />
@@ -146,7 +150,7 @@ export function CategoryFormSheet({
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Icones</Label>
+                        <Label>{t("form.iconsLabel")}</Label>
                         <input type="hidden" {...register("icon")} />
                         <div className="grid grid-cols-4 gap-2">
                             {themes.map((theme) => (
@@ -155,7 +159,7 @@ export function CategoryFormSheet({
                                     type="button"
                                     onClick={() => setValue("icon", theme.iconKey, { shouldValidate: true, shouldDirty: true })}
                                     className="transition"
-                                    aria-label={`Selecionar tema ${theme.label}`}
+                                    aria-label={t("form.selectThemeAriaLabel", { label: theme.label })}
                                     disabled={isSubmitting}
                                 >
                                     <div
@@ -179,7 +183,7 @@ export function CategoryFormSheet({
                         variant="outline"
                         onClick={() => onOpenChange(false)}
                         disabled={isSubmitting}>
-                        Cancelar
+                        {t("form.cancel")}
                     </Button>
                     <Button
                         form="category-form"
@@ -187,7 +191,7 @@ export function CategoryFormSheet({
                         disabled={isSubmitting}
                     >
                         {isSubmitting && <Loader2 className="animate-spin size-4 text-muted-foreground" />}
-                        Salvar
+                        {t("form.save")}
                     </Button>
                 </SheetFooter>
             </SheetContent>

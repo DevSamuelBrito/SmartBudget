@@ -70,7 +70,7 @@ export function LanguageSwitcherDialog({
                         onClick={() => onChangeLocale("pt-BR")}
                         disabled={isChangingLocale}
                     >
-                        PT-BR
+                        🇧🇷 PT-BR
                     </Button>
 
                     <Button
@@ -84,7 +84,7 @@ export function LanguageSwitcherDialog({
                         onClick={() => onChangeLocale("en")}
                         disabled={isChangingLocale}
                     >
-                        EN
+                        🇺🇸 EN
                     </Button>
                 </div>
             </DialogContent>

@@ -119,6 +119,73 @@
       }
     }
   },
+  "categories": {
+    "searchPlaceholder": "Search category by name",
+    "createButton": "Create new category",
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "table": {
+      "icon": "Icon",
+      "name": "Name",
+      "budget": "Budget",
+      "spent": "Spent",
+      "remaining": "Remaining",
+      "progress": "Progress",
+      "actions": "Actions"
+    },
+    "actions": {
+      "setBudget": "Set budget",
+      "editAriaLabel": "Edit {name}",
+      "deleteAriaLabel": "Delete {name}",
+      "setBudgetAriaLabel": "Set budget for category {name}"
+    },
+    "form": {
+      "createTitle": "Create category",
+      "editTitle": "Rename category",
+      "createDescription": "Choose a name and an icon for the new category.",
+      "editDescription": "Update the name and icon of the category.",
+      "nameLabel": "Name",
+      "namePlaceholder": "E.g.: Electricity Bill",
+      "iconsLabel": "Icons",
+      "selectThemeAriaLabel": "Select theme {label}",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "delete": {
+      "title": "Delete category",
+      "description": "Are you sure you want to delete <strong>{name}</strong>?",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "budget": {
+      "title": "Set budget",
+      "description": "Set the limit for category <strong>{name}</strong> for {period}.",
+      "limitLabel": "Limit amount",
+      "cancel": "Cancel",
+      "save": "Save",
+      "errorInvalidAmount": "Please enter a value greater than zero."
+    },
+    "months": {
+      "1": "January",
+      "2": "February",
+      "3": "March",
+      "4": "April",
+      "5": "May",
+      "6": "June",
+      "7": "July",
+      "8": "August",
+      "9": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December",
+      "monthPlaceholder": "Month",
+      "yearPlaceholder": "Year",
+      "monthAriaLabel": "Month",
+      "yearAriaLabel": "Year"
+    }
+  },
   "auth": {
     "login": "Sign in",
     "register": "Create account",

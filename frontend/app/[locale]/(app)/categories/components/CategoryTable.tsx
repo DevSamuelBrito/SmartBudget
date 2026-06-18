@@ -3,6 +3,9 @@
 // react
 import { useRef } from "react";
 
+// i18n
+import { useTranslations } from "next-intl";
+
 import { Pencil, Trash2 } from "lucide-react";
 
 // ui
@@ -45,6 +48,7 @@ export function CategoryTable({
     themes,
     budgetsByCategoryId,
 }: CategoryTableProps) {
+    const t = useTranslations("categories");
     const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
 
@@ -121,16 +125,16 @@ export function CategoryTable({
                                 size="sm"
                                 variant="outline"
                                 onClick={() => onSetBudget(category)}
-                                aria-label={`Definir orçamento da categoria ${category.name}`}
+                                aria-label={t("actions.setBudgetAriaLabel", { name: category.name })}
                             >
-                                Definir orçamento
+                                {t("actions.setBudget")}
                             </Button>
 
                             <Button
                                 size="icon-sm"
                                 variant="ghost"
                                 onClick={() => onEdit(category)}
-                                aria-label={`Editar ${category.name}`}
+                                aria-label={t("actions.editAriaLabel", { name: category.name })}
                             >
                                 <Pencil className="size-4" />
                             </Button>
@@ -139,7 +143,7 @@ export function CategoryTable({
                                 size="icon-sm"
                                 variant="ghost"
                                 onClick={() => onDelete(category)}
-                                aria-label={`Excluir ${category.name}`}
+                                aria-label={t("actions.deleteAriaLabel", { name: category.name })}
                             >
                                 <Trash2 className="size-4 text-destructive" />
                             </Button>
@@ -157,13 +161,13 @@ export function CategoryTable({
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-24">Icone</TableHead>
-                            <TableHead>Nome</TableHead>
-                            <TableHead>Orcamento</TableHead>
-                            <TableHead>Gasto</TableHead>
-                            <TableHead>Restante</TableHead>
-                            <TableHead>Progresso</TableHead>
-                            <TableHead className="w-60">Ações</TableHead>
+                            <TableHead className="w-24">{t("table.icon")}</TableHead>
+                            <TableHead>{t("table.name")}</TableHead>
+                            <TableHead>{t("table.budget")}</TableHead>
+                            <TableHead>{t("table.spent")}</TableHead>
+                            <TableHead>{t("table.remaining")}</TableHead>
+                            <TableHead>{t("table.progress")}</TableHead>
+                            <TableHead className="w-60">{t("table.actions")}</TableHead>
                         </TableRow>
                     </TableHeader>
 

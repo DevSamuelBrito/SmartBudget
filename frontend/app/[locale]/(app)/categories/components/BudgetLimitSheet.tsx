@@ -5,6 +5,10 @@ import { useMemo, useState } from "react";
 
 import type { FormEvent } from "react";
 
+// i18n
+import { useTranslations } from "next-intl";
+
+
 //lucide icons
 import { Loader2 } from "lucide-react";
 
@@ -37,21 +41,6 @@ type BudgetLimitSheetProps = {
     isSubmitting?: boolean;
 };
 
-const monthLabel = [
-    "Janeiro",
-    "Fevereiro",
-    "Marco",
-    "Abril",
-    "Maio",
-    "Junho",
-    "Julho",
-    "Agosto",
-    "Setembro",
-    "Outubro",
-    "Novembro",
-    "Dezembro",
-] as const;
-
 export function BudgetLimitSheet({
     open,
     category,
@@ -61,11 +50,13 @@ export function BudgetLimitSheet({
     onSubmit,
     isSubmitting = false,
 }: BudgetLimitSheetProps) {
+    const t = useTranslations("categories");
+
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const periodLabel = useMemo(() => {
-        return `${monthLabel[period.month - 1]} de ${period.year}`;
-    }, [period.month, period.year]);
+        return `${t(`months.${period.month}`)} de ${period.year}`;
+    }, [period.month, period.year, t]);
 
     if (!category) {
         return null;
@@ -79,7 +70,7 @@ export function BudgetLimitSheet({
         const parsedValue = Number(rawValue);
 
         if (!Number.isFinite(parsedValue) || parsedValue <= 0) {
-            setErrorMessage("Informe um valor maior que zero.");
+            setErrorMessage(t("budget.errorInvalidAmount"));
 
             return;
         }
@@ -106,9 +97,13 @@ export function BudgetLimitSheet({
         >
             <SheetContent side="right" className="sm:max-w-md" closeButtonDisabled={isSubmitting}>
                 <SheetHeader>
-                    <SheetTitle>Definir orcamento</SheetTitle>
+                    <SheetTitle>{t("budget.title")}</SheetTitle>
                     <SheetDescription>
-                        Defina o limite da categoria <strong>{category.name}</strong> para {periodLabel}.
+                        {t.rich("budget.description", {
+                            name: category.name,
+                            period: periodLabel,
+                            strong: (chunks) => <strong>{chunks}</strong>,
+                        })}
                     </SheetDescription>
                 </SheetHeader>
 
@@ -118,7 +113,7 @@ export function BudgetLimitSheet({
                     className="space-y-2 px-4"
                     onSubmit={handleSubmit}
                 >
-                    <Label htmlFor="budget-limit">Valor limite</Label>
+                    <Label htmlFor="budget-limit">{t("budget.limitLabel")}</Label>
                     <Input
                         id="budget-limit"
                         name="limitAmount"
@@ -139,11 +134,11 @@ export function BudgetLimitSheet({
 
                 <SheetFooter>
                     <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isSubmitting}>
-                        Cancelar
+                        {t("budget.cancel")}
                     </Button>
                     <Button type="submit" form="budget-form" disabled={isSubmitting}>
                         {isSubmitting && <Loader2 className="size-4 animate-spin" />}
-                        Salvar
+                        {t("budget.save")}
                     </Button>
                 </SheetFooter>
             </SheetContent>

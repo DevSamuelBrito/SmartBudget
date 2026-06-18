@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type MonthYearSelectorProps = {
@@ -11,20 +13,7 @@ type MonthYearSelectorProps = {
   className?: string;
 };
 
-const monthOptions = [
-  { value: 1, label: "Janeiro" },
-  { value: 2, label: "Fevereiro" },
-  { value: 3, label: "Marco" },
-  { value: 4, label: "Abril" },
-  { value: 5, label: "Maio" },
-  { value: 6, label: "Junho" },
-  { value: 7, label: "Julho" },
-  { value: 8, label: "Agosto" },
-  { value: 9, label: "Setembro" },
-  { value: 10, label: "Outubro" },
-  { value: 11, label: "Novembro" },
-  { value: 12, label: "Dezembro" },
-] as const;
+const monthValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
 
 export function MonthYearSelector({
   month,
@@ -34,6 +23,8 @@ export function MonthYearSelector({
   maxYear,
   className,
 }: MonthYearSelectorProps) {
+  const t = useTranslations("categories.months");
+
   const currentYear = new Date().getFullYear();
   const startYear = minYear ?? currentYear - 5;
   const endYear = maxYear ?? currentYear + 5;
@@ -51,13 +42,13 @@ export function MonthYearSelector({
           })
         }
       >
-        <SelectTrigger className="w-40" aria-label="Mes">
-          <SelectValue placeholder="Mes" />
+        <SelectTrigger className="w-40" aria-label={t("monthAriaLabel")}>
+          <SelectValue placeholder={t("monthPlaceholder")} />
         </SelectTrigger>
         <SelectContent>
-          {monthOptions.map((option) => (
-            <SelectItem key={option.value} value={String(option.value)}>
-              {option.label}
+          {monthValues.map((value) => (
+            <SelectItem key={value} value={String(value)}>
+              {t(String(value) as Parameters<typeof t>[0])}
             </SelectItem>
           ))}
         </SelectContent>
@@ -72,8 +63,8 @@ export function MonthYearSelector({
           })
         }
       >
-        <SelectTrigger className="w-28" aria-label="Ano">
-          <SelectValue placeholder="Ano" />
+        <SelectTrigger className="w-28" aria-label={t("yearAriaLabel")}>
+          <SelectValue placeholder={t("yearPlaceholder")} />
         </SelectTrigger>
         <SelectContent>
           {yearOptions.map((option) => (

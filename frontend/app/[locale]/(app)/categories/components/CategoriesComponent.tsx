@@ -3,6 +3,9 @@
 // react
 import { useState } from "react";
 
+// i18n
+import { useTranslations } from "next-intl";
+
 //react query
 import { Plus, Search } from "lucide-react";
 
@@ -132,6 +135,8 @@ export function CategoriesScreen({
         });
     }
 
+    const t = useTranslations("categories");
+
     const pageCount = Math.max(1, totalPages);
 
     const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
@@ -153,7 +158,7 @@ export function CategoriesScreen({
                     <Input
                         value={search}
                         onChange={(event) => setSearch(event.target.value)}
-                        placeholder="Buscar categoria por nome"
+                        placeholder={t("searchPlaceholder")}
                         className="pl-8"
                     />
                 </div>
@@ -166,7 +171,7 @@ export function CategoriesScreen({
 
                 <Button onClick={() => setCreateOpen(true)}>
                     <Plus className="size-4" />
-                    Criar nova categoria
+                    {t("createButton")}
                 </Button>
             </div>
 
@@ -186,7 +191,7 @@ export function CategoriesScreen({
                             <PaginationItem>
                                 <PaginationPrevious
                                     href="#"
-                                    text="Anterior"
+                                    text={t("pagination.previous")}
                                     onClick={(event) => {
                                         event.preventDefault();
                                         handlePageChange(page - 1);
@@ -214,7 +219,7 @@ export function CategoriesScreen({
                             <PaginationItem>
                                 <PaginationNext
                                     href="#"
-                                    text="Próximo"
+                                    text={t("pagination.next")}
                                     onClick={(event) => {
                                         event.preventDefault();
                                         handlePageChange(page + 1);

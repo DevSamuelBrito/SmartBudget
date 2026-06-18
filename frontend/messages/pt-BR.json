@@ -119,6 +119,73 @@
       }
     }
   },
+  "categories": {
+    "searchPlaceholder": "Buscar categoria por nome",
+    "createButton": "Criar nova categoria",
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Próximo"
+    },
+    "table": {
+      "icon": "Ícone",
+      "name": "Nome",
+      "budget": "Orçamento",
+      "spent": "Gasto",
+      "remaining": "Restante",
+      "progress": "Progresso",
+      "actions": "Ações"
+    },
+    "actions": {
+      "setBudget": "Definir orçamento",
+      "editAriaLabel": "Editar {name}",
+      "deleteAriaLabel": "Excluir {name}",
+      "setBudgetAriaLabel": "Definir orçamento da categoria {name}"
+    },
+    "form": {
+      "createTitle": "Criar categoria",
+      "editTitle": "Renomear categoria",
+      "createDescription": "Escolha um nome e um ícone para a nova categoria.",
+      "editDescription": "Atualize o nome e o ícone da categoria.",
+      "nameLabel": "Nome",
+      "namePlaceholder": "Ex: Conta de Luz",
+      "iconsLabel": "Ícones",
+      "selectThemeAriaLabel": "Selecionar tema {label}",
+      "cancel": "Cancelar",
+      "save": "Salvar"
+    },
+    "delete": {
+      "title": "Excluir categoria",
+      "description": "Você tem certeza que deseja excluir <strong>{name}</strong>?",
+      "cancel": "Cancelar",
+      "confirm": "Excluir"
+    },
+    "budget": {
+      "title": "Definir orçamento",
+      "description": "Defina o limite da categoria <strong>{name}</strong> para {period}.",
+      "limitLabel": "Valor limite",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "errorInvalidAmount": "Informe um valor maior que zero."
+    },
+    "months": {
+      "1": "Janeiro",
+      "2": "Fevereiro",
+      "3": "Março",
+      "4": "Abril",
+      "5": "Maio",
+      "6": "Junho",
+      "7": "Julho",
+      "8": "Agosto",
+      "9": "Setembro",
+      "10": "Outubro",
+      "11": "Novembro",
+      "12": "Dezembro",
+      "monthPlaceholder": "Mês",
+      "yearPlaceholder": "Ano",
+      "monthAriaLabel": "Mês",
+      "yearAriaLabel": "Ano"
+    }
+  },
   "auth": {
     "login": "Entrar",
     "register": "Criar conta",

@@ -1,6 +1,9 @@
 "use client";
 
-// icons 
+// i18n
+import { useTranslations } from "next-intl";
+
+// icons
 import { Loader2 } from "lucide-react";
 
 // components
@@ -33,6 +36,8 @@ export function DeleteCategorySheet({
     onSubmit,
     isDeleting = false,
 }: DeleteCategorySheetProps) {
+    const t = useTranslations("categories");
+
     if (!category) {
         return null;
     }
@@ -50,9 +55,12 @@ export function DeleteCategorySheet({
         >
             <SheetContent side="right" className="sm:max-w-md" closeButtonDisabled={isDeleting}>
                 <SheetHeader>
-                    <SheetTitle>Excluir categoria</SheetTitle>
+                    <SheetTitle>{t("delete.title")}</SheetTitle>
                     <SheetDescription>
-                        Você tem certeza que deseja excluir <strong>{category.name}</strong>?
+                        {t.rich("delete.description", {
+                            name: category.name,
+                            strong: (chunks) => <strong>{chunks}</strong>,
+                        })}
                     </SheetDescription>
                 </SheetHeader>
 
@@ -63,7 +71,7 @@ export function DeleteCategorySheet({
                         onClick={() => onOpenChange(false)}
                         disabled={isDeleting}
                     >
-                        Cancelar
+                        {t("delete.cancel")}
                     </Button>
                     <Button
                         type="button"
@@ -72,7 +80,7 @@ export function DeleteCategorySheet({
                         disabled={isDeleting}
                     >
                         {isDeleting && <Loader2 className="size-4 animate-spin" />}
-                        Excluir
+                        {t("delete.confirm")}
                     </Button>
                 </SheetFooter>
             </SheetContent>
