@@ -53,6 +53,9 @@ public class User
 
     public void UpgradeToPremium()
     {
+        if (IsPremium)
+            return;
+
         IsPremium = true;
         UpdatedAt = DateTime.UtcNow;
     }
