@@ -3,9 +3,6 @@
 // React
 import { useState } from "react"
 
-// Next
-import { useRouter } from "next/navigation"
-
 // libs
 import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon } from "lucide-react"
 
@@ -63,8 +60,6 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar()
 
-  const router = useRouter()
-
   const { dispatch } = useAuth()
 
   const [displayUser, setDisplayUser] = useState({
@@ -95,7 +90,7 @@ export function NavUser({
     setIsChangingLocale(true)
     await setLocaleAction(locale)
     setLocaleDialogOpen(false)
-    router.refresh()
+    window.location.reload()
     setIsChangingLocale(false)
   }
 
