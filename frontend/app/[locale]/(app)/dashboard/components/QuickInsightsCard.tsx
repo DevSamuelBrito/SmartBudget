@@ -1,5 +1,8 @@
 "use client";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 // Libs
 import { BadgeDollarSign, TrendingDown, TrendingUp } from "lucide-react";
 
@@ -21,11 +24,13 @@ type QuickInsightsCardProps = {
 };
 
 export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: QuickInsightsCardProps) {
+    const t = useTranslations("dashboard");
+
     return (
         <Card className="border-border/70 bg-card/90 backdrop-blur">
             <CardHeader>
-                <CardTitle>Indicadores rápidos</CardTitle>
-                <CardDescription>Médias diárias do mês</CardDescription>
+                <CardTitle>{t("charts.quickInsights.title")}</CardTitle>
+                <CardDescription>{t("charts.quickInsights.description")}</CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">
@@ -35,7 +40,7 @@ export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: Q
                             <TrendingUp className="size-4" />
                         </div>
                         <div>
-                            <p className="text-sm text-muted-foreground">Média diária de ganho</p>
+                            <p className="text-sm text-muted-foreground">{t("charts.quickInsights.dailyIncome")}</p>
                             <p className="text-lg font-semibold tabular-nums">
                                 {formatCurrency(dailyAverageIncome)}
                             </p>
@@ -49,7 +54,7 @@ export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: Q
                             <TrendingDown className="size-4" />
                         </div>
                         <div>
-                            <p className="text-sm text-muted-foreground">Média diária de gasto</p>
+                            <p className="text-sm text-muted-foreground">{t("charts.quickInsights.dailyExpense")}</p>
                             <p className="text-lg font-semibold tabular-nums">
                                 {formatCurrency(dailyAverageExpense)}
                             </p>
@@ -63,7 +68,7 @@ export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: Q
                             <BadgeDollarSign className="size-4" />
                         </div>
                         <div>
-                            <p className="text-sm text-muted-foreground">Saldo diário líquido</p>
+                            <p className="text-sm text-muted-foreground">{t("charts.quickInsights.netBalance")}</p>
                             <p className="text-lg font-semibold tabular-nums">
                                 {formatCurrency(dailyAverageIncome - dailyAverageExpense)}
                             </p>

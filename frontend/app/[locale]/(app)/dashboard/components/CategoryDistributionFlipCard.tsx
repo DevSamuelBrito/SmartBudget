@@ -1,6 +1,10 @@
 "use client";
 
+// React
 import { useState } from "react";
+
+// next-intl
+import { useTranslations } from "next-intl";
 
 // Libs
 import { Cell, Legend, Pie, PieChart } from "recharts";
@@ -69,6 +73,8 @@ export function CategoryDistributionFlipCard({
     pieData,
     categoryExpenses,
 }: CategoryDistributionFlipCardProps) {
+    const t = useTranslations("dashboard");
+
     const [showBarView, setShowBarView] = useState(false);
     const dynamicColors = buildCategoryColors(Math.max(pieData.length, categoryExpenses.length));
 
@@ -94,21 +100,21 @@ export function CategoryDistributionFlipCard({
     }));
 
     return (
-        <div className="[perspective:1400px]">
+        <div className="perspective-[1400px]">
             <div
-                className={`relative h-[430px] w-full transition-transform duration-700 [transform-style:preserve-3d] ${showBarView ? "[transform:rotateY(180deg)]" : ""
+                className={`relative h-107.5 w-full transition-transform duration-700 transform-3d ${showBarView ? "transform-[rotateY(180deg)]" : ""
                     }`}
             >
-                <Card className="absolute inset-0 border-border/70 bg-card/90 backdrop-blur [backface-visibility:hidden]">
+                <Card className="absolute inset-0 border-border/70 bg-card/90 backdrop-blur backface-hidden">
                     <CardHeader className="flex flex-row items-start justify-between gap-3">
                         <div className="space-y-1">
-                            <CardTitle>Despesas por categoria</CardTitle>
-                            <CardDescription>Distribuicao em pizza</CardDescription>
+                            <CardTitle>{t("charts.categoryDistribution.title")}</CardTitle>
+                            <CardDescription>{t("charts.categoryDistribution.pieDescription")}</CardDescription>
                         </div>
                         <Button
                             variant="outline"
                             size="icon-sm"
-                            aria-label="Mostrar gasto por categoria"
+                            aria-label={t("charts.categoryDistribution.pieToggleLabel")}
                             onClick={() => setShowBarView(true)}
                         >
                             <BarChart3 className="size-4" />
@@ -116,7 +122,7 @@ export function CategoryDistributionFlipCard({
                     </CardHeader>
 
                     <CardContent>
-                        <ChartContainer config={chartConfig} className="aspect-square h-[300px] w-full">
+                        <ChartContainer config={chartConfig} className="aspect-square h-75 w-full">
                             <PieChart>
                                 <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
                                 <Pie
@@ -143,16 +149,16 @@ export function CategoryDistributionFlipCard({
                     </CardContent>
                 </Card>
 
-                <Card className="absolute inset-0 border-border/70 bg-card/90 backdrop-blur [transform:rotateY(180deg)] [backface-visibility:hidden]">
+                <Card className="absolute inset-0 border-border/70 bg-card/90 backdrop-blur transform-[rotateY(180deg)] backface-hidden">
                     <CardHeader className="flex flex-row items-start justify-between gap-3">
                         <div className="space-y-1">
-                            <CardTitle>Gasto por categoria</CardTitle>
-                            <CardDescription>Distribuicao das despesas do mes relacionado ao todo.</CardDescription>
+                            <CardTitle>{t("charts.categoryDistribution.listTitle")}</CardTitle>
+                            <CardDescription>{t("charts.categoryDistribution.listDescription")}</CardDescription>
                         </div>
                         <Button
                             variant="outline"
                             size="icon-sm"
-                            aria-label="Mostrar despesas em pizza"
+                            aria-label={t("charts.categoryDistribution.listToggleLabel")}
                             onClick={() => setShowBarView(false)}
                         >
                             <PieChartIcon className="size-4" />
@@ -161,7 +167,7 @@ export function CategoryDistributionFlipCard({
 
                     <CardContent className="space-y-4 overflow-y-auto pb-6">
                         {categoryExpenses.length === 0 && (
-                            <p className="text-sm text-muted-foreground">Sem despesas neste periodo.</p>
+                            <p className="text-sm text-muted-foreground">{t("charts.categoryDistribution.empty")}</p>
                         )}
 
                         {categoryExpenses.map((category, index) => (

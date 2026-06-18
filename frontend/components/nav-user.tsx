@@ -1,11 +1,17 @@
 "use client"
 
+// React
 import { useState } from "react"
 
+// Next
+import { useRouter } from "next/navigation"
+
+// libs
 import { EllipsisVerticalIcon, CircleUserRoundIcon, CreditCardIcon, BellIcon, LogOutIcon, LayoutDashboardIcon } from "lucide-react"
 
 import { useQueryClient } from "@tanstack/react-query"
 
+// Components
 import {
   Avatar,
   AvatarFallback,
@@ -29,14 +35,22 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 
-import { DashboardCustomizerSheet } from "@/app/(app)/dashboard/components/DashboardCustomizerSheet"
+import { DashboardCustomizerSheet } from "@/app/[locale]/(app)/dashboard/components/DashboardCustomizerSheet"
+
+import { LanguageSwitcherDialog } from "@/components/language-switcher-dialog"
 
 import { UserAccountDialog } from "@/components/user-account-dialog"
 
-
+// contexts
 import { useAuth } from "@/contexts/auth-context"
 
+// APIs / Services
 import { logoutAction } from "@/app/actions/auth-actions"
+
+import { setLocaleAction } from "@/app/actions/locale-actions"
+
+// types
+import { type AppLocale } from "@/i18n/routing"
 
 export function NavUser({
   user,
@@ -48,6 +62,8 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+
+  const router = useRouter()
 
   const { dispatch } = useAuth()
 
@@ -62,13 +78,25 @@ export function NavUser({
 
   const [accountDialogOpen, setAccountDialogOpen] = useState(false)
 
+  const [localeDialogOpen, setLocaleDialogOpen] = useState(false)
+
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const [isChangingLocale, setIsChangingLocale] = useState(false)
 
   const handleLogout = async () => {
     setIsLoggingOut(true)
     dispatch({ type: "LOGOUT" })
     queryClient.clear()
     await logoutAction()
+  }
+
+  const handleChangeLocale = async (locale: AppLocale) => {
+    setIsChangingLocale(true)
+    await setLocaleAction(locale)
+    setLocaleDialogOpen(false)
+    router.refresh()
+    setIsChangingLocale(false)
   }
 
   return (
@@ -135,6 +163,9 @@ export function NavUser({
                   <LayoutDashboardIcon />
                   Customizar Dashboard
                 </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setLocaleDialogOpen(true)}>
+                  Idioma
+                </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={handleLogout} disabled={isLoggingOut}>
@@ -153,6 +184,12 @@ export function NavUser({
         onProfileUpdated={(nextProfile) => {
           setDisplayUser(nextProfile)
         }}
+      />
+      <LanguageSwitcherDialog
+        open={localeDialogOpen}
+        onOpenChange={setLocaleDialogOpen}
+        isChangingLocale={isChangingLocale}
+        onChangeLocale={handleChangeLocale}
       />
     </>
   )

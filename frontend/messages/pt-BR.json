@@ -1,0 +1,132 @@
+{
+  "dashboard": {
+    "title": "Painel",
+    "kpis": {
+      "currentBalance": {
+        "label": "Saldo atual",
+        "description": "Disponível total"
+      },
+      "monthlyIncome": {
+        "label": "Receitas do mês",
+        "description": "Entradas confirmadas"
+      },
+      "monthlyExpense": {
+        "label": "Despesas do mês",
+        "description": "Saídas do período"
+      },
+      "monthlySavings": {
+        "label": "Economia do mês",
+        "description": "Receitas - Despesas"
+      }
+    },
+    "charts": {
+      "quickInsights": {
+        "title": "Indicadores rápidos",
+        "description": "Médias diárias do mês",
+        "dailyIncome": "Média diária de ganho",
+        "dailyExpense": "Média diária de gasto",
+        "netBalance": "Saldo diário líquido"
+      },
+      "latestTransactions": {
+        "title": "Últimas transações",
+        "description": "Lançamentos mais recentes por data",
+        "incomeLegend": "Receita",
+        "expenseLegend": "Despesa",
+        "empty": "Nenhuma transação encontrada.",
+        "showing": "Mostrando as últimas {count} transações.",
+        "viewAll": "Ver tudo"
+      },
+      "budgetProgress": {
+        "title": "Progresso dos budgets",
+        "description": "Orçado x realizado por categoria",
+        "empty": "Nenhum budget definido para este período.",
+        "used": "{percentage}% utilizado",
+        "remaining": "Restam {amount}",
+        "manageCategories": "Gerenciar categorias"
+      },
+      "balanceEvolution": {
+        "title": "Evolução de saldo",
+        "description": "Saldo acumulado ao longo do mês",
+        "balance": "Saldo"
+      },
+      "incomeExpense": {
+        "title": "Receitas x Despesas",
+        "description": "Comparativo mensal",
+        "income": "Receitas",
+        "expense": "Despesas",
+        "months": {
+          "jan": "Jan",
+          "feb": "Fev",
+          "mar": "Mar",
+          "apr": "Abr",
+          "may": "Mai",
+          "jun": "Jun",
+          "jul": "Jul",
+          "aug": "Ago",
+          "sep": "Set",
+          "oct": "Out",
+          "nov": "Nov",
+          "dec": "Dez"
+        }
+      },
+      "categoryDistribution": {
+        "title": "Despesas por categoria",
+        "pieDescription": "Distribuição em pizza",
+        "listTitle": "Gasto por categoria",
+        "listDescription": "Distribuição das despesas do mês em relação ao total.",
+        "empty": "Sem despesas neste período.",
+        "pieToggleLabel": "Mostrar gasto por categoria",
+        "listToggleLabel": "Mostrar despesas em pizza"
+      },
+      "financialRisk": {
+        "title": "Risco financeiro",
+        "description": "Gastos fixos sobre a renda média dos últimos 3 meses",
+        "warningMessage": "Atenção: seus gastos fixos estão se aproximando do limite recomendado.",
+        "riskMessage": "Alerta: seus gastos fixos representam {percentage} da sua renda média.",
+        "noDataMessage": "Sem dados suficientes para calcular o risco financeiro.",
+        "okMessage": "Seus gastos fixos estão sob controle.",
+        "averageIncome": "Renda média (3 meses)",
+        "fixedExpenses": "Gastos fixos mensais",
+        "status": {
+          "ok": "Ok",
+          "warning": "Atenção",
+          "risk": "Risco",
+          "noData": "Sem dados"
+        }
+      }
+    },
+    "alerts": {
+      "title": "Alertas",
+      "description": "Orçamentos que precisam de atenção"
+    },
+    "customizer": {
+      "title": "Customizar dashboard",
+      "description": "Reordene, mostre/oculte e ajuste a largura dos componentes.",
+      "fixedKpisInfo": "Os KPI cards (saldo, receitas, despesas e economia) são fixos e não podem ser movidos ou ocultados.",
+      "columnOne": "1 coluna",
+      "columnTwo": "2 colunas (largura total)",
+      "save": "Salvar",
+      "saving": "Salvando...",
+      "components": {
+        "alertsCard": "Alertas",
+        "quickInsightsCard": "Indicadores rápidos",
+        "latestTransactionsCard": "Últimas transações",
+        "budgetProgressCard": "Progresso de budgets",
+        "financialRiskCard": "Risco financeiro",
+        "balanceEvolutionChart": "Evolução de saldo",
+        "incomeExpenseBarChart": "Receitas x Despesas",
+        "categoryDistributionFlipCard": "Distribuição por categoria"
+      }
+    }
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Criar conta",
+    "email": "E-mail",
+    "password": "Senha",
+    "name": "Nome",
+    "forgotPassword": "Esqueceu a senha?",
+    "noAccount": "Não tem uma conta?",
+    "alreadyHaveAccount": "Já tem uma conta?"
+  }
+}

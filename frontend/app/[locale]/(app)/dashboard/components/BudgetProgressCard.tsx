@@ -3,6 +3,9 @@
 //next
 import { useRouter } from "next/navigation";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 //lucide-react
 import { ExternalLink } from "lucide-react";
 
@@ -43,19 +46,20 @@ function getStatusColor(status: DashboardBudgetProgress["status"], percentage: n
 }
 
 export function BudgetProgressCard({ budgets }: BudgetProgressCardProps) {
+    const t = useTranslations("dashboard");
 
     const router = useRouter();
 
     return (
         <Card className="border-border/70 bg-card/90 backdrop-blur">
             <CardHeader>
-                <CardTitle>Progresso dos budgets</CardTitle>
-                <CardDescription>Orçado x realizado por categoria</CardDescription>
+                <CardTitle>{t("charts.budgetProgress.title")}</CardTitle>
+                <CardDescription>{t("charts.budgetProgress.description")}</CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-4">
                 {budgets.length === 0 && (
-                    <p className="text-sm text-muted-foreground">Nenhum budget definido para este período.</p>
+                    <p className="text-sm text-muted-foreground">{t("charts.budgetProgress.empty")}</p>
                 )}
 
                 {budgets.map((budget) => (
@@ -72,10 +76,12 @@ export function BudgetProgressCard({ budgets }: BudgetProgressCardProps) {
                         />
                         <div className="flex items-center justify-between">
                             <span className="text-xs text-muted-foreground">
-                                {budget.percentage.toFixed(0)}% utilizado
+                                {t("charts.budgetProgress.used", { percentage: budget.percentage.toFixed(0) })}
                             </span>
                             <span className="text-xs text-muted-foreground tabular-nums">
-                                Restam {formatCurrency(Math.max(budget.remainingAmount, 0))}
+                                {t("charts.budgetProgress.remaining", {
+                                    amount: formatCurrency(Math.max(budget.remainingAmount, 0)),
+                                })}
                             </span>
                         </div>
                     </div>
@@ -84,7 +90,7 @@ export function BudgetProgressCard({ budgets }: BudgetProgressCardProps) {
             <CardFooter>
 
                 <Button variant="outline" className="w-full" onClick={() => router.push("/transactions")}>
-                    Gerenciar Categorias
+                    {t("charts.budgetProgress.manageCategories")}
                     <ExternalLink className="size-4" />
                 </Button>
 

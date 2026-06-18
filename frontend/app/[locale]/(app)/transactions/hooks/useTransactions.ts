@@ -12,7 +12,7 @@ import { useAuth } from "@/contexts/auth-context";
 
 
 // APIs / Services
-import { getCategoryOptions } from "@/app/(app)/categories/services/categorias.service";
+import { getCategoryOptions } from "@/app/[locale]/(app)/categories/services/categorias.service";
 
 import { invalidateTransactionsCache } from "../actions/transactions.actions";
 
@@ -24,7 +24,7 @@ import {
 } from "../services/transactions.service";
 
 // Types
-import type { CategoryApi } from "@/app/(app)/categories/types";
+import type { CategoryApi } from "@/app/[locale]/(app)/categories/types";
 
 import type { TransactionFormValues } from "../schemas/transaction.schema";
 

@@ -1,5 +1,8 @@
 "use client";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 // Libs
 import { ArrowDownRight, ArrowUpRight, PiggyBank, Wallet } from "lucide-react";
 
@@ -23,32 +26,34 @@ type KpiCardsProps = {
 };
 
 export function KpiCards({ kpis }: KpiCardsProps) {
+  const t = useTranslations("dashboard");
+
   const cards = [
     {
-      label: "Saldo atual",
+      label: t("kpis.currentBalance.label"),
       value: kpis.currentBalance,
-      description: "Disponível total",
+      description: t("kpis.currentBalance.description"),
       icon: Wallet,
       tone: "text-foreground",
     },
     {
-      label: "Receitas do mês",
+      label: t("kpis.monthlyIncome.label"),
       value: kpis.monthlyIncome,
-      description: "Entradas confirmadas",
+      description: t("kpis.monthlyIncome.description"),
       icon: ArrowUpRight,
       tone: "text-emerald-500",
     },
     {
-      label: "Despesas do mês",
+      label: t("kpis.monthlyExpense.label"),
       value: kpis.monthlyExpense,
-      description: "Saídas do período",
+      description: t("kpis.monthlyExpense.description"),
       icon: ArrowDownRight,
       tone: "text-orange-500",
     },
     {
-      label: "Economia do mês",
+      label: t("kpis.monthlySavings.label"),
       value: kpis.monthlySavings,
-      description: "Receitas - Despesas",
+      description: t("kpis.monthlySavings.description"),
       icon: PiggyBank,
       tone: kpis.monthlySavings >= 0 ? "text-emerald-500" : "text-rose-500",
     },

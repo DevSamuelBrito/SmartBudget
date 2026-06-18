@@ -4,6 +4,10 @@ import { Suspense } from "react";
 //next
 import type { Metadata } from "next";
 
+//next-intl
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
+
 //styles 
 import "./globals.css";
 
@@ -27,32 +31,37 @@ export const metadata: Metadata = {
   description: "A budget management application built with Next.js, React Query, and Tailwind CSS.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body>
-        <Providers>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Suspense fallback={null}>
-              <NavigationProgress />
-            </Suspense>
-            <AuthProvider>
-              <TooltipProvider>
-                {children}
-              </TooltipProvider>
-              <Toaster />
-            </AuthProvider>
-          </ThemeProvider>
-        </Providers>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Providers>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Suspense fallback={null}>
+                <NavigationProgress />
+              </Suspense>
+              <AuthProvider>
+                <TooltipProvider>
+                  {children}
+                </TooltipProvider>
+                <Toaster />
+              </AuthProvider>
+            </ThemeProvider>
+          </Providers>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

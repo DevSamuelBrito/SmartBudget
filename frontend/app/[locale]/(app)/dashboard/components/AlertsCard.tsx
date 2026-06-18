@@ -1,5 +1,8 @@
 "use client";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 // Libs
 import { AlertTriangle, XCircle } from "lucide-react";
 
@@ -21,6 +24,8 @@ type AlertsCardProps = {
 };
 
 export function AlertsCard({ alerts }: AlertsCardProps) {
+  const t = useTranslations("dashboard");
+
   if (alerts.length === 0) return null;
 
   return (
@@ -28,9 +33,9 @@ export function AlertsCard({ alerts }: AlertsCardProps) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <AlertTriangle className="size-4 text-amber-500" />
-          Alertas
+          {t("alerts.title")}
         </CardTitle>
-        <CardDescription>Orçamentos que precisam de atenção</CardDescription>
+        <CardDescription>{t("alerts.description")}</CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-3">
@@ -40,11 +45,10 @@ export function AlertsCard({ alerts }: AlertsCardProps) {
           return (
             <div
               key={`${alert.budgetId}-${alert.type}`}
-              className={`flex items-start gap-3 rounded-lg border p-3 ${
-                isExceeded
+              className={`flex items-start gap-3 rounded-lg border p-3 ${isExceeded
                   ? "border-rose-500/30 bg-rose-500/5"
                   : "border-amber-500/30 bg-amber-500/5"
-              }`}
+                }`}
             >
               {isExceeded ? (
                 <XCircle className="mt-0.5 size-4 shrink-0 text-rose-500" />

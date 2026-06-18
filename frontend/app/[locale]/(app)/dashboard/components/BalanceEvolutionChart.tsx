@@ -1,5 +1,8 @@
 "use client";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 // Libs
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
@@ -25,14 +28,16 @@ type BalanceEvolutionChartProps = {
   data: DashboardBalanceEvolutionPoint[];
 };
 
-const chartConfig = {
-  balance: {
-    label: "Saldo",
-    color: "var(--primary)",
-  },
-} satisfies ChartConfig;
-
 export function BalanceEvolutionChart({ data }: BalanceEvolutionChartProps) {
+  const t = useTranslations("dashboard");
+
+  const chartConfig = {
+    balance: {
+      label: t("charts.balanceEvolution.balance"),
+      color: "var(--primary)",
+    },
+  } satisfies ChartConfig;
+
   const chartData = data.map((point) => ({
     date: new Date(point.date).getDate().toString().padStart(2, "0"),
     balance: point.balance,
@@ -41,8 +46,8 @@ export function BalanceEvolutionChart({ data }: BalanceEvolutionChartProps) {
   return (
     <Card className="border-border/70 bg-card/90 backdrop-blur">
       <CardHeader>
-        <CardTitle>Evolução de saldo</CardTitle>
-        <CardDescription>Saldo acumulado ao longo do mês</CardDescription>
+        <CardTitle>{t("charts.balanceEvolution.title")}</CardTitle>
+        <CardDescription>{t("charts.balanceEvolution.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="aspect-auto h-[280px] w-full">

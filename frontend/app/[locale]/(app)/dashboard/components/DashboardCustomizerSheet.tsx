@@ -3,6 +3,9 @@
 // React
 import { useMemo, useState } from "react";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 // Libs
 import {
     DndContext,
@@ -57,17 +60,6 @@ import { useAuth } from "@/contexts/auth-context";
 // Types
 import type { DashboardConfigItem } from "../types";
 
-const COMPONENT_LABELS: Record<string, string> = {
-    alertsCard: "Alertas",
-    quickInsightsCard: "Insights Rápidos",
-    latestTransactionsCard: "Últimas Transações",
-    budgetProgressCard: "Progresso de Orçamentos",
-    financialRiskCard: "Risco Financeiro",
-    balanceEvolutionChart: "Evolução do Saldo",
-    incomeExpenseBarChart: "Receitas vs Despesas",
-    categoryDistributionFlipCard: "Distribuição por Categoria",
-};
-
 type DashboardCustomizerSheetProps = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -82,6 +74,8 @@ function SortableItem({
     onToggleVisible: (key: string) => void;
     onToggleColumns: (key: string) => void;
 }) {
+    const t = useTranslations("dashboard");
+
     const {
         attributes,
         listeners,
@@ -117,7 +111,7 @@ function SortableItem({
             />
 
             <span className="flex-1 text-sm font-medium">
-                {COMPONENT_LABELS[item.componentKey] ?? item.componentKey}
+                {t(`customizer.components.${item.componentKey}`)}
             </span>
 
             <div className="flex items-center gap-1 rounded-md border p-0.5">
@@ -127,7 +121,7 @@ function SortableItem({
                         if (item.columns !== 1) onToggleColumns(item.componentKey);
                     }}
                     className={`rounded p-1 transition-colors ${item.columns === 1 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
-                    title="1 coluna"
+                    title={t("customizer.columnOne")}
                 >
                     <Columns2Icon className="size-4" />
                 </button>
@@ -137,7 +131,7 @@ function SortableItem({
                         if (item.columns !== 2) onToggleColumns(item.componentKey);
                     }}
                     className={`rounded p-1 transition-colors ${item.columns === 2 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
-                    title="2 colunas (largura total)"
+                    title={t("customizer.columnTwo")}
                 >
                     <RectangleHorizontalIcon className="size-4" />
                 </button>
@@ -150,6 +144,8 @@ export function DashboardCustomizerSheet({
     open,
     onOpenChange,
 }: DashboardCustomizerSheetProps) {
+    const t = useTranslations("dashboard");
+
     const { state } = useAuth();
     const userId = state.user?.userId;
     const { data: config } = useDashboardConfig(undefined, userId);
@@ -221,15 +217,13 @@ export function DashboardCustomizerSheet({
         <Sheet open={open} onOpenChange={onOpenChange}>
             <SheetContent className="flex flex-col gap-4 overflow-y-auto sm:max-w-md">
                 <SheetHeader>
-                    <SheetTitle>Customizar Dashboard</SheetTitle>
-                    <SheetDescription>
-                        Reordene, mostre/oculte e ajuste a largura dos componentes.
-                    </SheetDescription>
+                    <SheetTitle>{t("customizer.title")}</SheetTitle>
+                    <SheetDescription>{t("customizer.description")}</SheetDescription>
                 </SheetHeader>
 
                 <div className="flex items-start gap-2 rounded-md border border-blue-200 bg-blue-50 p-3 text-xs text-blue-700 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-300 mx-1">
                     <InfoIcon className="mt-0.5 size-3.5 shrink-0" />
-                    <span>Os KPI cards (saldo, receitas, despesas e economia) são fixos e não podem ser movidos ou ocultados.</span>
+                    <span>{t("customizer.fixedKpisInfo")}</span>
                 </div>
 
                 <div className="flex flex-col gap-2 mx-1">
@@ -260,7 +254,7 @@ export function DashboardCustomizerSheet({
                         disabled={saveMutation.isPending}
                         className="w-full"
                     >
-                        {saveMutation.isPending ? "Salvando..." : "Salvar"}
+                        {saveMutation.isPending ? t("customizer.saving") : t("customizer.save")}
                     </Button>
                 </SheetFooter>
             </SheetContent>

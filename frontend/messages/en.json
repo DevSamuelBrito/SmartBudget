@@ -1,0 +1,132 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "kpis": {
+      "currentBalance": {
+        "label": "Current balance",
+        "description": "Total available"
+      },
+      "monthlyIncome": {
+        "label": "Monthly income",
+        "description": "Confirmed inflows"
+      },
+      "monthlyExpense": {
+        "label": "Monthly expenses",
+        "description": "Period outflows"
+      },
+      "monthlySavings": {
+        "label": "Monthly savings",
+        "description": "Income - expenses"
+      }
+    },
+    "charts": {
+      "quickInsights": {
+        "title": "Quick insights",
+        "description": "Daily averages for the month",
+        "dailyIncome": "Daily income average",
+        "dailyExpense": "Daily expense average",
+        "netBalance": "Daily net balance"
+      },
+      "latestTransactions": {
+        "title": "Latest transactions",
+        "description": "Most recent entries by date",
+        "incomeLegend": "Income",
+        "expenseLegend": "Expense",
+        "empty": "No transactions found.",
+        "showing": "Showing the latest {count} transactions.",
+        "viewAll": "View all"
+      },
+      "budgetProgress": {
+        "title": "Budget progress",
+        "description": "Planned vs actual by category",
+        "empty": "No budget defined for this period.",
+        "used": "{percentage}% used",
+        "remaining": "{amount} remaining",
+        "manageCategories": "Manage categories"
+      },
+      "balanceEvolution": {
+        "title": "Balance evolution",
+        "description": "Accumulated balance throughout the month",
+        "balance": "Balance"
+      },
+      "incomeExpense": {
+        "title": "Income vs expenses",
+        "description": "Monthly comparison",
+        "income": "Income",
+        "expense": "Expenses",
+        "months": {
+          "jan": "Jan",
+          "feb": "Feb",
+          "mar": "Mar",
+          "apr": "Apr",
+          "may": "May",
+          "jun": "Jun",
+          "jul": "Jul",
+          "aug": "Aug",
+          "sep": "Sep",
+          "oct": "Oct",
+          "nov": "Nov",
+          "dec": "Dec"
+        }
+      },
+      "categoryDistribution": {
+        "title": "Expenses by category",
+        "pieDescription": "Pie distribution",
+        "listTitle": "Category spending",
+        "listDescription": "Distribution of monthly expenses relative to the total.",
+        "empty": "No expenses for this period.",
+        "pieToggleLabel": "Show spending by category",
+        "listToggleLabel": "Show expenses as pie chart"
+      },
+      "financialRisk": {
+        "title": "Financial risk",
+        "description": "Fixed expenses over the average income of the last 3 months",
+        "warningMessage": "Heads up: your fixed expenses are getting close to the recommended limit.",
+        "riskMessage": "Alert: your fixed expenses represent {percentage} of your average income.",
+        "noDataMessage": "Not enough data to calculate financial risk.",
+        "okMessage": "Your fixed expenses are under control.",
+        "averageIncome": "Average income (3 months)",
+        "fixedExpenses": "Monthly fixed expenses",
+        "status": {
+          "ok": "OK",
+          "warning": "Warning",
+          "risk": "Risk",
+          "noData": "No data"
+        }
+      }
+    },
+    "alerts": {
+      "title": "Alerts",
+      "description": "Budgets that need attention"
+    },
+    "customizer": {
+      "title": "Customize dashboard",
+      "description": "Reorder, show/hide, and adjust component widths.",
+      "fixedKpisInfo": "KPI cards (balance, income, expenses, and savings) are fixed and cannot be moved or hidden.",
+      "columnOne": "1 column",
+      "columnTwo": "2 columns (full width)",
+      "save": "Save",
+      "saving": "Saving...",
+      "components": {
+        "alertsCard": "Alerts",
+        "quickInsightsCard": "Quick insights",
+        "latestTransactionsCard": "Latest transactions",
+        "budgetProgressCard": "Budget progress",
+        "financialRiskCard": "Financial risk",
+        "balanceEvolutionChart": "Balance evolution",
+        "incomeExpenseBarChart": "Income vs expenses",
+        "categoryDistributionFlipCard": "Category distribution"
+      }
+    }
+  },
+  "auth": {
+    "login": "Sign in",
+    "register": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?"
+  }
+}

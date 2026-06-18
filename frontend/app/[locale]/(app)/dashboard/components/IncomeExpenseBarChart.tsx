@@ -1,7 +1,10 @@
 "use client";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 // Libs
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 // Components
 import {
@@ -25,25 +28,26 @@ type IncomeExpenseBarChartProps = {
   data: DashboardIncomeExpenseByMonth[];
 };
 
-const chartConfig = {
-  income: {
-    label: "Receitas",
-    color: "var(--color-emerald-500, #10b981)",
-  },
-  expense: {
-    label: "Despesas",
-    color: "var(--color-orange-500, #f97316)",
-  },
-} satisfies ChartConfig;
-
-const MONTH_LABELS = [
-  "", "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
-  "Jul", "Ago", "Set", "Out", "Nov", "Dez",
-];
-
 export function IncomeExpenseBarChart({ data }: IncomeExpenseBarChartProps) {
+  const t = useTranslations("dashboard");
+
+  const chartConfig = {
+    income: {
+      label: t("charts.incomeExpense.income"),
+      color: "var(--color-emerald-500, #10b981)",
+    },
+    expense: {
+      label: t("charts.incomeExpense.expense"),
+      color: "var(--color-orange-500, #f97316)",
+    },
+  } satisfies ChartConfig;
+
+  const monthLabels = t.raw("charts.incomeExpense.months") as Record<string, string>;
+
   const chartData = data.map((item) => ({
-    label: `${MONTH_LABELS[item.month]}/${String(item.year).slice(2)}`,
+    label: `${monthLabels[
+      ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"][item.month - 1]
+    ]}/${String(item.year).slice(2)}`,
     income: item.income,
     expense: item.expense,
   }));
@@ -51,8 +55,8 @@ export function IncomeExpenseBarChart({ data }: IncomeExpenseBarChartProps) {
   return (
     <Card className="border-border/70 bg-card/90 backdrop-blur">
       <CardHeader>
-        <CardTitle>Receitas x Despesas</CardTitle>
-        <CardDescription>Comparativo mensal</CardDescription>
+        <CardTitle>{t("charts.incomeExpense.title")}</CardTitle>
+        <CardDescription>{t("charts.incomeExpense.description")}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="aspect-auto h-[280px] w-full">

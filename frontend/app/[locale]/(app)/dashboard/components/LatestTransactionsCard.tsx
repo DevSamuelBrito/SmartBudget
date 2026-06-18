@@ -3,6 +3,9 @@
 //next
 import { useRouter } from "next/navigation";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 // Libs
 import { CircleHelp, ExternalLink } from "lucide-react";
 
@@ -20,10 +23,10 @@ import { Separator } from "@/components/ui/separator";
 
 import { Button } from "@/components/ui/button";
 
-import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/(app)/categories/components/theme-icons";
+import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/[locale]/(app)/categories/components/theme-icons";
 
 //constants
-import { ICONT_THEME } from "@/app/(app)/categories/constants/icons-theme";
+import { ICONT_THEME } from "@/app/[locale]/(app)/categories/constants/icons-theme";
 
 // Types
 import type { DashboardLatestTransaction } from "../types";
@@ -37,6 +40,7 @@ type LatestTransactionsCardProps = {
 };
 
 export function LatestTransactionsCard({ transactions }: LatestTransactionsCardProps) {
+    const t = useTranslations("dashboard");
 
     const router = useRouter();
 
@@ -74,16 +78,16 @@ export function LatestTransactionsCard({ transactions }: LatestTransactionsCardP
         <Card className="border-border/70 bg-card/90 backdrop-blur">
             <CardHeader className="flex-row items-start justify-between space-y-0">
                 <div>
-                    <CardTitle>Últimas transações</CardTitle>
-                    <CardDescription>Lançamentos mais recentes por Data</CardDescription>
+                    <CardTitle>{t("charts.latestTransactions.title")}</CardTitle>
+                    <CardDescription>{t("charts.latestTransactions.description")}</CardDescription>
                     <div className="mt-2 flex items-center gap-4 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1.5">
                             <span className="size-2 rounded-full bg-emerald-500" />
-                            Receita
+                            {t("charts.latestTransactions.incomeLegend")}
                         </span>
                         <span className="inline-flex items-center gap-1.5">
                             <span className="size-2 rounded-full bg-orange-500" />
-                            Despesa
+                            {t("charts.latestTransactions.expenseLegend")}
                         </span>
                     </div>
                 </div>
@@ -123,16 +127,16 @@ export function LatestTransactionsCard({ transactions }: LatestTransactionsCardP
             {transactions.length === 0 ? (
                 <CardFooter>
                     <p className="text-sm text-muted-foreground">
-                        Nenhuma transação encontrada.
+                        {t("charts.latestTransactions.empty")}
                     </p>
                 </CardFooter>
             ) : (
                 <CardFooter className="justify-between gap-3">
                     <p className="text-sm text-muted-foreground">
-                        Mostrando as últimas {visibleTransactions.length} transações.
+                        {t("charts.latestTransactions.showing", { count: visibleTransactions.length })}
                     </p>
                     <Button variant="outline" size="sm" onClick={() => router.push("/transactions")}>
-                        Ver tudo
+                        {t("charts.latestTransactions.viewAll")}
                         <ExternalLink className="size-4" />
                     </Button>
                 </CardFooter>

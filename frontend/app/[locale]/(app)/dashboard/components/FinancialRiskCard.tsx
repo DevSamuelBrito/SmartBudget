@@ -1,5 +1,8 @@
 "use client";
 
+// next-intl
+import { useTranslations } from "next-intl";
+
 // Libs
 import { ShieldAlert } from "lucide-react";
 
@@ -68,21 +71,27 @@ function getStatusStyles(status: NormalizedFinancialRiskStatus) {
     }
 }
 
-function getStatusMessage(status: NormalizedFinancialRiskStatus, percentageLabel: string) {
+function getStatusMessage(
+    t: ReturnType<typeof useTranslations>,
+    status: NormalizedFinancialRiskStatus,
+    percentageLabel: string,
+) {
     switch (status) {
         case "Warning":
-            return "Atenção: seus gastos fixos estão se aproximando do limite recomendado.";
+            return t("charts.financialRisk.warningMessage");
         case "Risk":
-            return `Alerta: seus gastos fixos representam ${percentageLabel} da sua renda média.`;
+            return t("charts.financialRisk.riskMessage", { percentageLabel });
         case "NoData":
-            return "Sem dados suficientes para calcular o risco financeiro.";
+            return t("charts.financialRisk.noDataMessage");
         case "Ok":
         default:
-            return "Seus gastos fixos estão sob controle.";
+            return t("charts.financialRisk.okMessage");
     }
 }
 
 export function FinancialRiskCard({ financialRisk }: FinancialRiskCardProps) {
+    const t = useTranslations("dashboard");
+
     const status = normalizeStatus(financialRisk.status);
     const styles = getStatusStyles(status);
     const percentageValue = Number.isFinite(financialRisk.percentage) ? financialRisk.percentage : 0;
@@ -94,8 +103,8 @@ export function FinancialRiskCard({ financialRisk }: FinancialRiskCardProps) {
             <CardHeader className="space-y-3">
                 <div className="flex items-start justify-between gap-4">
                     <div className="space-y-1">
-                        <CardTitle>Risco Financeiro</CardTitle>
-                        <CardDescription>Gastos fixos sobre a renda média dos últimos 3 meses</CardDescription>
+                        <CardTitle>{t("charts.financialRisk.title")}</CardTitle>
+                        <CardDescription>{t("charts.financialRisk.description")}</CardDescription>
                     </div>
 
                     <div className={`rounded-full border border-border/60 p-2 ${styles.badge}`}>
@@ -107,24 +116,24 @@ export function FinancialRiskCard({ financialRisk }: FinancialRiskCardProps) {
                     <div className="flex items-end justify-between gap-3">
                         <p className="text-3xl font-semibold tabular-nums">{percentageLabel}</p>
                         <span className="rounded-full border border-border/60 px-2.5 py-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                            {status}
+                            {t(`charts.financialRisk.status.${status === "NoData" ? "noData" : status === "Warning" ? "warning" : status === "Risk" ? "risk" : "ok"}`)}
                         </span>
                     </div>
 
                     <Progress value={progressValue} indicatorClassName={styles.bar} />
                 </div>
 
-                <p className="text-sm text-muted-foreground">{getStatusMessage(status, percentageLabel)}</p>
+                <p className="text-sm text-muted-foreground">{getStatusMessage(t, status, percentageLabel)}</p>
             </CardHeader>
 
             <CardContent className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-xl border border-border/70 bg-muted/40 p-4">
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Renda média (3 meses)</p>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">{t("charts.financialRisk.averageIncome")}</p>
                     <p className="mt-2 text-lg font-semibold tabular-nums">{formatCurrency(financialRisk.averageIncome)}</p>
                 </div>
 
                 <div className="rounded-xl border border-border/70 bg-muted/40 p-4">
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground">Gastos fixos mensais</p>
+                    <p className="text-xs uppercase tracking-wide text-muted-foreground">{t("charts.financialRisk.fixedExpenses")}</p>
                     <p className="mt-2 text-lg font-semibold tabular-nums">{formatCurrency(financialRisk.fixedExpenses)}</p>
                 </div>
             </CardContent>
