@@ -40,7 +40,7 @@ public class DeleteCategoryUseCaseTests
 
         // Assert
         await act.Should().ThrowAsync<TransactionCategoryNotFoundException>();
-        _transactionRepoMock.Verify(r => r.DeleteAsync(It.IsAny<Guid>()), Times.Never);
+        _categoryRepoMock.Verify(r => r.DeleteAsync(It.IsAny<Guid>()), Times.Never);
     }
 
     // ── Cenário: categoria com transações vinculadas ───────────────────────────
