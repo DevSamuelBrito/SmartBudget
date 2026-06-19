@@ -9,11 +9,12 @@ import type { DashboardFinancialRisk } from "@/app/[locale]/(app)/dashboard/type
 
 jest.mock("next-intl", () => ({
   useTranslations:
-    (_ns: string) =>
+    () =>
     (key: string, params?: Record<string, string>) => {
       if (key === "charts.financialRisk.riskMessage") {
         return `Alerta: seus gastos fixos representam ${params?.percentageLabel} da sua renda média.`;
       }
+      
       const map: Record<string, string> = {
         "charts.financialRisk.title": "Risco financeiro",
         "charts.financialRisk.description":
@@ -31,6 +32,7 @@ jest.mock("next-intl", () => ({
         "charts.financialRisk.status.risk": "Risco",
         "charts.financialRisk.status.noData": "Sem dados",
       };
+      
       return map[key] ?? key;
     },
 }));
