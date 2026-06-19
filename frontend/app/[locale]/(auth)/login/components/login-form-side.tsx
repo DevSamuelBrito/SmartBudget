@@ -107,7 +107,7 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
                 )}
               </Field>
               <Field>
-                <Button type="submit" disabled={isSubmitting}>
+                <Button data-testid="login-submit-button"  type="submit" disabled={isSubmitting}>
                   {isSubmitting ? `${t("login")}...` : t("login")}
                 </Button>
               </Field>
