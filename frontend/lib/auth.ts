@@ -28,18 +28,6 @@ export const getServerUserId = async (): Promise<string> => {
   return userId;
 };
 
-export const getServerUserIsPremium = async (): Promise<boolean> => {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-
-  if (!token) {
-    return false;
-  }
-
-  const payload = decodeJwt(token);
-
-  return payload["isPremium"] === "true";
-};
 
 export const authFetch = async (
   input: RequestInfo | URL,
