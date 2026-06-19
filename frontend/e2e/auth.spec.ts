@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-import { loginHelper, TEST_EMAIL, TEST_PASSWORD } from "./helpers/login-helper";
+import { loginHelper, TEST_EMAIL } from "./helpers/login-helper";
 
 test.describe("Authentication", () => {
   test("login com credenciais válidas redireciona para /dashboard", async ({
@@ -19,7 +19,7 @@ test.describe("Authentication", () => {
     await page.getByLabel("E-mail").fill("invalid@example.com");
     await page.getByLabel("Senha").fill("WrongPassword123!");
     await page.getByTestId("login-submit-button").click();
-    
+
     const errorToast = page
       .getByRole("status")
       .or(page.locator("[data-sonner-toast]"));
