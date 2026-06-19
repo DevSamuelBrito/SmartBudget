@@ -2,6 +2,7 @@ type AuthUser = {
   userId: string;
   name: string;
   email: string;
+  isPremium: boolean;
 };
 
 export const setClientUserDataCookie = (user: AuthUser) => {

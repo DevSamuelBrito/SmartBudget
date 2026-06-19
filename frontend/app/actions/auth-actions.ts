@@ -5,6 +5,9 @@ import { cookies } from "next/headers";
 
 import { redirect } from "next/navigation";
 
+// jose
+import { decodeJwt } from "jose";
+
 import { getServerApiBaseUrl } from "@/lib/server-api";
 
 interface LoginInput {
@@ -31,6 +34,7 @@ interface AuthUser {
   userId: string;
   name: string;
   email: string;
+  isPremium: boolean;
 }
 
 interface ProblemDetailsPayload {
@@ -98,10 +102,14 @@ export async function loginAction(
       maxAge: data.expiresInSeconds,
     });
 
+    const tokenPayload = decodeJwt(data.accessToken);
+    const isPremium = tokenPayload["isPremium"] === "true";
+
     const userData: AuthUser = {
       userId: data.userId,
       name: data.name,
       email: data.email,
+      isPremium,
     };
 
     cookieStore.set("user-data", JSON.stringify(userData), {

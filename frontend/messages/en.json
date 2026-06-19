@@ -69,6 +69,11 @@
           "dec": "Dec"
         }
       },
+      "expenseEvolution": {
+        "title": "Expense evolution",
+        "description": "Monthly expenses over the last 6 months",
+        "expense": "Expenses"
+      },
       "categoryDistribution": {
         "title": "Expenses by category",
         "pieDescription": "Pie distribution",
@@ -115,8 +120,24 @@
         "financialRiskCard": "Financial risk",
         "balanceEvolutionChart": "Balance evolution",
         "incomeExpenseBarChart": "Income vs expenses",
-        "categoryDistributionFlipCard": "Category distribution"
-      }
+        "categoryDistributionFlipCard": "Category distribution",
+        "expenseEvolutionChart": "Expense evolution"
+      },
+      "premiumBadge": "Premium"
+    }
+  },
+  "premium": {
+    "iconGate": {
+      "title": "Premium icon",
+      "description": "This icon is exclusive to Premium plan subscribers. Upgrade to access all premium icons and advanced features.",
+      "close": "Close",
+      "seePlans": "See plans"
+    },
+    "componentGate": {
+      "title": "Premium component",
+      "description": "This dashboard component is exclusive to Premium plan subscribers. Upgrade to unlock it and access all advanced features.",
+      "close": "Close",
+      "seePlans": "See plans"
     }
   },
   "transactions": {
@@ -255,7 +276,8 @@
     "dashboard": "Dashboard",
     "categories": "Categories",
     "transactions": "Transactions",
-    "newTransaction": "New Transaction"
+    "newTransaction": "New Transaction",
+    "plans": "Plans"
   },
   "user": {
     "account": "Account",
@@ -324,6 +346,40 @@
   "errors": {
     "generic": "Unexpected error. Please try again.",
     "notFound": "Page not found"
+  },
+  "plans": {
+    "title": "Plans",
+    "description": "Choose the plan that best suits your needs.",
+    "currentPlan": "Current plan",
+    "free": {
+      "title": "Free",
+      "description": "Essential tools to get started with your finances.",
+      "price": "$0",
+      "period": "/ month",
+      "cta": "Current plan",
+      "features": [
+        "Up to 50 transactions per month",
+        "Up to 5 categories",
+        "Basic dashboard",
+        "Budget tracking"
+      ]
+    },
+    "premium": {
+      "title": "Premium",
+      "description": "Full access to advanced features and unlimited data.",
+      "price": "$9.90",
+      "period": "/ month",
+      "cta": "Subscribe to Premium",
+      "upgrading": "Processing...",
+      "features": [
+        "Unlimited transactions",
+        "Unlimited categories",
+        "Advanced dashboard with customization",
+        "Financial risk analysis",
+        "Priority support"
+      ]
+    },
+    "upgradeSuccess": "Welcome to Premium! Enjoy all the features."
   },
   "auth": {
     "login": "Sign in",

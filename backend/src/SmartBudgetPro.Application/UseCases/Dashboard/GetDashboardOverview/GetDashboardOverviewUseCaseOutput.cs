@@ -16,7 +16,8 @@ public record GetDashboardOverviewUseCaseOutput(
     IReadOnlyList<DashboardIncomeExpenseByMonthDto> IncomeVsExpenseByMonth,
     IReadOnlyList<DashboardBalanceEvolutionPointDto> BalanceEvolution,
     IReadOnlyList<DashboardBudgetProgressDto> BudgetProgress,
-    IReadOnlyList<DashboardAlertDto> Alerts
+    IReadOnlyList<DashboardAlertDto> Alerts,
+    IReadOnlyList<DashboardExpenseByMonthDto>? ExpenseEvolutionByMonth
 );
 
 public record DashboardKpisDto(
@@ -85,4 +86,10 @@ public record DashboardFinancialRiskDto(
     decimal FixedExpenses,
     decimal Percentage,
     string Status
+);
+
+public record DashboardExpenseByMonthDto(
+    int Year,
+    int Month,
+    decimal Expense
 );

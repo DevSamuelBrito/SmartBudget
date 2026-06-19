@@ -1,9 +1,12 @@
-﻿using SmartBudgetPro.Application.Exceptions;
+﻿using SmartBudgetPro.Application.Common;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransactionCategory
 {
-    public class UpdateTransactionCategoryUseCase(ITransactionCategoryRepository transactionCategoryRepository)
+    public class UpdateTransactionCategoryUseCase(
+        ITransactionCategoryRepository transactionCategoryRepository,
+        IUserRepository userRepository)
     {
         public async Task ExecuteAsync(Guid userId, UpdateTransactionCategoryUseCaseInput input)
         {
@@ -14,6 +17,14 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransact
 
             if (category.UserId != userId)
                 throw new CategoryOwnershipException("This category does not belong to the authenticated user.");
+
+            var user = await userRepository.GetByIdAsync(userId);
+
+            if (user is null)
+                throw new UserNotFoundException();
+
+            if (!string.IsNullOrEmpty(input.Icon) && PremiumFeatures.Icons.Contains(input.Icon) && !user.IsPremium)
+                throw new PremiumPlanRequiredException("Premium plan required to use this icon.");
 
             var existingCategory = await transactionCategoryRepository.GetByNameAsync(category.UserId, input.Name);
 

@@ -78,6 +78,11 @@
         "pieToggleLabel": "Mostrar gasto por categoria",
         "listToggleLabel": "Mostrar despesas em pizza"
       },
+      "expenseEvolution": {
+        "title": "Evolução de despesas",
+        "description": "Despesas mensais dos últimos 6 meses",
+        "expense": "Despesas"
+      },
       "financialRisk": {
         "title": "Risco financeiro",
         "description": "Gastos fixos sobre a renda média dos últimos 3 meses",
@@ -115,8 +120,24 @@
         "financialRiskCard": "Risco financeiro",
         "balanceEvolutionChart": "Evolução de saldo",
         "incomeExpenseBarChart": "Receitas x Despesas",
-        "categoryDistributionFlipCard": "Distribuição por categoria"
-      }
+        "categoryDistributionFlipCard": "Distribuição por categoria",
+        "expenseEvolutionChart": "Evolução de despesas"
+      },
+      "premiumBadge": "Premium"
+    }
+  },
+  "premium": {
+    "iconGate": {
+      "title": "Ícone premium",
+      "description": "Este ícone é exclusivo para assinantes do plano Premium. Faça o upgrade para acessar todos os ícones premium e recursos avançados.",
+      "close": "Fechar",
+      "seePlans": "Ver planos"
+    },
+    "componentGate": {
+      "title": "Componente premium",
+      "description": "Este componente do dashboard é exclusivo para assinantes do plano Premium. Faça o upgrade para desbloqueá-lo e acessar todos os recursos avançados.",
+      "close": "Fechar",
+      "seePlans": "Ver planos"
     }
   },
   "transactions": {
@@ -255,7 +276,8 @@
     "dashboard": "Painel",
     "categories": "Categorias",
     "transactions": "Transações",
-    "newTransaction": "Nova Transação"
+    "newTransaction": "Nova Transação",
+    "plans": "Planos"
   },
   "user": {
     "account": "Minha Conta",
@@ -324,6 +346,40 @@
   "errors": {
     "generic": "Erro inesperado. Tente novamente.",
     "notFound": "Página não encontrada"
+  },
+  "plans": {
+    "title": "Planos",
+    "description": "Escolha o plano que melhor se adapta às suas necessidades.",
+    "currentPlan": "Plano atual",
+    "free": {
+      "title": "Gratuito",
+      "description": "Ferramentas essenciais para começar a organizar suas finanças.",
+      "price": "R$ 0",
+      "period": "/ mês",
+      "cta": "Plano atual",
+      "features": [
+        "Até 50 transações por mês",
+        "Até 5 categorias",
+        "Dashboard básico",
+        "Controle de orçamento"
+      ]
+    },
+    "premium": {
+      "title": "Premium",
+      "description": "Acesso completo a recursos avançados e dados ilimitados.",
+      "price": "R$ 49,90",
+      "period": "/ mês",
+      "cta": "Assinar Premium",
+      "upgrading": "Processando...",
+      "features": [
+        "Transações ilimitadas",
+        "Categorias ilimitadas",
+        "Dashboard avançado com personalização",
+        "Análise de risco financeiro",
+        "Suporte prioritário"
+      ]
+    },
+    "upgradeSuccess": "Bem-vindo ao Premium! Aproveite todos os recursos."
   },
   "auth": {
     "login": "Entrar",

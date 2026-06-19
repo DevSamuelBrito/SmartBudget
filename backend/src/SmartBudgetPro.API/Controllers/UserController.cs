@@ -9,6 +9,7 @@ using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
 using SmartBudgetPro.Application.UseCases.User.GetUserByID;
 using SmartBudgetPro.Application.UseCases.User.UpdateUser;
 using SmartBudgetPro.Application.UseCases.User.UpdateUserProfile;
+using SmartBudgetPro.Application.UseCases.User.UpgradeUserToPremium;
 
 namespace SmartBudgetPro.API.Controllers
 {
@@ -24,7 +25,8 @@ namespace SmartBudgetPro.API.Controllers
         UpdateUserUseCase updateUserUseCase,
         DeleteUserUseCase deleteUserUseCase,
         UpdateUserProfileUseCase updateUserProfileUseCase,
-        ChangeUserPasswordUseCase changeUserPasswordUseCase
+        ChangeUserPasswordUseCase changeUserPasswordUseCase,
+        UpgradeUserToPremiumUseCase upgradeUserToPremiumUseCase
     ) : ControllerBase
     {
 
@@ -89,6 +91,15 @@ namespace SmartBudgetPro.API.Controllers
             await deleteUserUseCase.ExecuteAsync(userId);
 
             return NoContent();
+        }
+
+        [HttpPut("upgrade")]
+        public async Task<IActionResult> Upgrade()
+        {
+            var userId = User.GetRequiredUserId();
+            var output = await upgradeUserToPremiumUseCase.ExecuteAsync(userId);
+
+            return Ok(output);
         }
 
     }

@@ -12,6 +12,8 @@ public class User
     public string Name { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
     public string PasswordHash { get; private set; } = string.Empty;
+    public bool IsPremium { get; private set; } = false;
+    public DateTime? UpdatedAt { get; private set; }
 
     private User() { } // For EF Core
 
@@ -47,6 +49,15 @@ public class User
     public void ChangePasswordHash(string newPasswordHash)
     {
         PasswordHash = ValidatePasswordHash(newPasswordHash);
+    }
+
+    public void UpgradeToPremium()
+    {
+        if (IsPremium)
+            return;
+
+        IsPremium = true;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     private static string ValidateAndNormalizeName(string name)

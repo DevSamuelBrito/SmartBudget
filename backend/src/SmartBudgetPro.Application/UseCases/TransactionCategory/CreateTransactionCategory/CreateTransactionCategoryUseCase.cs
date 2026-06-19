@@ -1,4 +1,5 @@
-﻿using SmartBudgetPro.Application.Common.DTOs;
+﻿using SmartBudgetPro.Application.Common;
+using SmartBudgetPro.Application.Common.DTOs;
 using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 using DomainCategory = SmartBudgetPro.Domain.Transactions.TransactionCategory;
@@ -14,6 +15,9 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
 
             if (user is null)
                 throw new UserNotFoundException();
+
+            if (!string.IsNullOrEmpty(input.Icon) && PremiumFeatures.Icons.Contains(input.Icon) && !user.IsPremium)
+                throw new PremiumPlanRequiredException("Premium plan required to use this icon.");
 
             var existingCategory = await transactionCategoryRepository.GetByNameAsync(input.UserId, input.Name);
 

@@ -8,6 +8,7 @@ type AuthUser = {
   userId: string;
   name: string;
   email: string;
+  isPremium: boolean;
 };
 
 type AuthState = {
@@ -53,6 +54,8 @@ const readUserDataCookie = (): AuthUser | null => {
     if (!parsed.userId || !parsed.name || !parsed.email) {
       return null;
     }
+
+    parsed.isPremium = parsed.isPremium ?? false;
 
     return parsed;
   } catch {

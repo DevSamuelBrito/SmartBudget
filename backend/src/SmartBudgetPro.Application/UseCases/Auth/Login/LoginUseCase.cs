@@ -23,7 +23,7 @@ public class LoginUseCase(
         if (!passwordHasher.Verify(input.Password, user.PasswordHash))
             throw new InvalidCredentialsException();
 
-        var tokenResult = jwtTokenGenerator.Generate(user.Id, user.Email, user.Name);
+        var tokenResult = jwtTokenGenerator.Generate(user.Id, user.Email, user.Name, user.IsPremium);
 
         return new LoginUseCaseOutput(
             tokenResult.AccessToken,

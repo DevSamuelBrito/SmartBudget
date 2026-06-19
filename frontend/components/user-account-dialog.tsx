@@ -145,6 +145,7 @@ export function UserAccountDialog({
                     userId,
                     name: values.name,
                     email: values.email,
+                    isPremium: authUser?.isPremium ?? false,
                 }
 
                 dispatch({

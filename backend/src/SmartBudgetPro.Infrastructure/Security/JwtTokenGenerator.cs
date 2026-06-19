@@ -12,7 +12,7 @@ public class JwtTokenGenerator(IOptions<JwtSettings> jwtSettingsOptions) : IJwtT
 {
     private readonly JwtSettings _jwtSettings = jwtSettingsOptions.Value;
 
-    public JwtTokenResult Generate(Guid userId, string email, string name)
+    public JwtTokenResult Generate(Guid userId, string email, string name, bool isPremium = false)
     {
         if (string.IsNullOrWhiteSpace(_jwtSettings.Issuer))
             throw new InvalidOperationException("JWT issuer is not configured.");
@@ -35,7 +35,8 @@ public class JwtTokenGenerator(IOptions<JwtSettings> jwtSettingsOptions) : IJwtT
             new(JwtRegisteredClaimNames.Sub, userId.ToString()),
             new(JwtRegisteredClaimNames.Email, email),
             new(JwtRegisteredClaimNames.Name, name),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new("isPremium", isPremium.ToString().ToLower())
         };
 
         var expiresInSeconds = _jwtSettings.ExpiresInMinutes * 60;

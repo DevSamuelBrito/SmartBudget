@@ -7,7 +7,7 @@ import * as React from "react"
 import { useTranslations } from "next-intl"
 
 //components
-import { LayoutDashboardIcon, CommandIcon, ArrowLeftRight, Tags } from "lucide-react"
+import { LayoutDashboardIcon, CommandIcon, ArrowLeftRight, Tags, Sparkles } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 
@@ -52,6 +52,11 @@ export function AppSidebar({
       title: t("categories"),
       url: "categories",
       icon: <Tags />,
+    },
+    {
+      title: t("plans"),
+      url: "plans",
+      icon: <Sparkles />,
     },
   ]
 
