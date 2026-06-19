@@ -26,7 +26,7 @@ public class UserTests
     [InlineData("")]
     [InlineData("   ")]
     [InlineData(null!)]
-    public void Create_InvalidName_ShouldThrowException(string name)
+    public void Create_InvalidName_ShouldThrowException(string? name)
     {
         // Arrange / Act
         var act = () => User.Create(name, "email@email.com", "hash");
@@ -40,7 +40,7 @@ public class UserTests
     [InlineData("")]
     [InlineData("   ")]
     [InlineData(null!)]
-    public void Create_InvalidEmail_ShouldThrowException(string email)
+    public void Create_InvalidEmail_ShouldThrowException(string? email)
     {
         // Arrange / Act
         var act = () => User.Create("Samuel", email, "hash");
@@ -54,7 +54,7 @@ public class UserTests
     [InlineData("")]
     [InlineData("   ")]
     [InlineData(null!)]
-    public void Create_InvalidPasswordHash_ShouldThrowException(string passwordHash)
+    public void Create_InvalidPasswordHash_ShouldThrowException(string? passwordHash)
     {
         // Arrange / Act
         var act = () => User.Create("Samuel", "samuel@email.com", passwordHash);
