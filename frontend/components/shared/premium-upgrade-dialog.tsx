@@ -1,5 +1,8 @@
 "use client";
 
+// next
+import Link from "next/link";
+
 // next-intl
 import { useTranslations } from "next-intl";
 
@@ -39,7 +42,7 @@ export function PremiumUpgradeDialog({
             {t(`${variant}.close`)}
           </Button>
           <Button asChild>
-            <a href="/plans">{t(`${variant}.seePlans`)}</a>
+            <Link href="/plans">{t(`${variant}.seePlans`)}</Link>
           </Button>
         </DialogFooter>
       </DialogContent>
