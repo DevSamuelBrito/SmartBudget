@@ -8,7 +8,8 @@ namespace SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardOverview;
 public class GetDashboardOverviewUseCase(
     IFinancialTransactionRepository financialTransactionRepository,
     ITransactionCategoryRepository transactionCategoryRepository,
-    IBudgetRepository budgetRepository)
+    IBudgetRepository budgetRepository,
+    IUserRepository userRepository)
 {
     public async Task<GetDashboardOverviewUseCaseOutput> ExecuteAsync(GetDashboardOverviewUseCaseInput input)
     {
@@ -30,6 +31,11 @@ public class GetDashboardOverviewUseCase(
 
         if (!input.UserId.HasValue)
             throw new MissingUserContextException();
+
+        var user = await userRepository.GetByIdAsync(input.UserId.Value);
+
+        if (user is null)
+            throw new UserNotFoundException();
 
         var allTransactions = (await financialTransactionRepository.GetByUserIdAsync(input.UserId.Value)).ToList();
         var allCategories = (await transactionCategoryRepository.GetByUserIdAsync(input.UserId.Value)).ToList();
@@ -225,16 +231,20 @@ public class GetDashboardOverviewUseCase(
             })
             .ToList();
 
-        const int expenseEvolutionMonths = 6;
-        var expenseEvolutionByMonth = new List<DashboardExpenseByMonthDto>(expenseEvolutionMonths);
-        for (var i = expenseEvolutionMonths - 1; i >= 0; i--)
+        List<DashboardExpenseByMonthDto>? expenseEvolutionByMonth = null;
+        if (user.IsPremium)
         {
-            var monthDate = periodStart.AddMonths(-i);
-            var hasBucket = monthBuckets.TryGetValue((monthDate.Year, monthDate.Month), out var bucket);
-            expenseEvolutionByMonth.Add(new DashboardExpenseByMonthDto(
-                monthDate.Year,
-                monthDate.Month,
-                hasBucket ? bucket!.Expense : 0m));
+            const int expenseEvolutionMonths = 6;
+            expenseEvolutionByMonth = new List<DashboardExpenseByMonthDto>(expenseEvolutionMonths);
+            for (var i = expenseEvolutionMonths - 1; i >= 0; i--)
+            {
+                var monthDate = periodStart.AddMonths(-i);
+                var hasBucket = monthBuckets.TryGetValue((monthDate.Year, monthDate.Month), out var bucket);
+                expenseEvolutionByMonth.Add(new DashboardExpenseByMonthDto(
+                    monthDate.Year,
+                    monthDate.Month,
+                    hasBucket ? bucket!.Expense : 0m));
+            }
         }
 
         var daysDivisor = GetAverageDaysDivisor(targetYear, targetMonth, now);

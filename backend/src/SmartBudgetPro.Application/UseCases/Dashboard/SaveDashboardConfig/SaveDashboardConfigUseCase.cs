@@ -1,4 +1,6 @@
 using FluentValidation;
+using SmartBudgetPro.Application.Common;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 using SmartBudgetPro.Domain.Dashboard;
 
@@ -6,6 +8,7 @@ namespace SmartBudgetPro.Application.UseCases.Dashboard.SaveDashboardConfig;
 
 public class SaveDashboardConfigUseCase(
     IUserDashboardConfigRepository repository,
+    IUserRepository userRepository,
     IValidator<SaveDashboardConfigUseCaseInput> validator)
 {
     public async Task ExecuteAsync(SaveDashboardConfigUseCaseInput input)
@@ -16,6 +19,17 @@ public class SaveDashboardConfigUseCase(
         {
             throw new ValidationException(validationResult.Errors);
         }
+
+        var user = await userRepository.GetByIdAsync(input.UserId);
+
+        if (user is null)
+            throw new UserNotFoundException();
+
+        var hasPremiumComponent = input.Items.Any(item =>
+            PremiumFeatures.DashboardComponentKeys.Contains(item.ComponentKey));
+
+        if (hasPremiumComponent && !user.IsPremium)
+            throw new PremiumPlanRequiredException("Premium plan required to use this dashboard component.");
 
         var configs = input.Items.Select(item =>
             UserDashboardConfig.Create(

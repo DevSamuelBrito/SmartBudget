@@ -17,7 +17,7 @@ public record GetDashboardOverviewUseCaseOutput(
     IReadOnlyList<DashboardBalanceEvolutionPointDto> BalanceEvolution,
     IReadOnlyList<DashboardBudgetProgressDto> BudgetProgress,
     IReadOnlyList<DashboardAlertDto> Alerts,
-    IReadOnlyList<DashboardExpenseByMonthDto> ExpenseEvolutionByMonth
+    IReadOnlyList<DashboardExpenseByMonthDto>? ExpenseEvolutionByMonth
 );
 
 public record DashboardKpisDto(
