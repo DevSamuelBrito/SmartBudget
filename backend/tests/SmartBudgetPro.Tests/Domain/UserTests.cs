@@ -29,7 +29,7 @@ public class UserTests
     public void Create_InvalidName_ShouldThrowException(string? name)
     {
         // Arrange / Act
-        var act = () => User.Create(name, "email@email.com", "hash");
+        var act = () => User.Create(name!, "email@email.com", "hash");
 
         // Assert
         act.Should().Throw<BusinessBadRequestException>()
@@ -43,7 +43,7 @@ public class UserTests
     public void Create_InvalidEmail_ShouldThrowException(string? email)
     {
         // Arrange / Act
-        var act = () => User.Create("Samuel", email, "hash");
+        var act = () => User.Create("Samuel", email!, "hash");
 
         // Assert
         act.Should().Throw<BusinessBadRequestException>()
@@ -57,7 +57,7 @@ public class UserTests
     public void Create_InvalidPasswordHash_ShouldThrowException(string? passwordHash)
     {
         // Arrange / Act
-        var act = () => User.Create("Samuel", "samuel@email.com", passwordHash);
+        var act = () => User.Create("Samuel", "samuel@email.com", passwordHash!);
 
         // Assert
         act.Should().Throw<BusinessBadRequestException>()
