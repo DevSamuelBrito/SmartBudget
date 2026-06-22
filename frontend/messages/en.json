@@ -236,6 +236,7 @@
       "namePlaceholder": "E.g.: Electricity Bill",
       "iconsLabel": "Icons",
       "selectThemeAriaLabel": "Select theme {label}",
+      "lockedThemeAriaLabel": "Locked theme {label}",
       "cancel": "Cancel",
       "save": "Save"
     },

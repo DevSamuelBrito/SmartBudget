@@ -236,6 +236,7 @@
       "namePlaceholder": "Ex: Conta de Luz",
       "iconsLabel": "Ícones",
       "selectThemeAriaLabel": "Selecionar tema {label}",
+      "lockedThemeAriaLabel": "Tema bloqueado {label}",
       "cancel": "Cancelar",
       "save": "Salvar"
     },
