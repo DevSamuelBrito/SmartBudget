@@ -335,7 +335,7 @@
     "title": "Página não encontrada",
     "description": "O endereço que você tentou acessar não existe.",
     "body": "Você pode voltar para a página inicial para continuar navegando pelo SmartBudget PRO.",
-    "homeButton": "Ir para a página inicial"
+    "homeButton": "Voltar ao App"
   },
   "common": {
     "save": "Salvar",
