@@ -16,7 +16,7 @@ export default async function NotFound() {
     const t = await getTranslations("notFound")
 
     return (
-        <div className="relative flex min-h-[calc(100vh-var(--header-height))] items-center justify-center overflow-hidden bg-gradient-to-br from-background via-background to-muted/40 px-4 py-10">
+        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-linear-to-br from-background via-background to-muted/40 px-4 py-10">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(14,165,233,0.10),transparent_32%)]" />
 
             <Card className="relative w-full max-w-xl border-border/70 bg-card/90 shadow-xl backdrop-blur">
@@ -38,7 +38,7 @@ export default async function NotFound() {
                     </p>
 
                     <Button asChild size="lg" className="w-full max-w-sm shadow-sm shadow-primary/20 sm:w-auto">
-                        <Link href="/">
+                        <Link href="/dashboard">
                             <Home className="size-4" />
                             {t("homeButton")}
                         </Link>

@@ -335,7 +335,7 @@
     "title": "Page not found",
     "description": "The address you tried to access does not exist.",
     "body": "You can go back to the home page to continue browsing SmartBudget PRO.",
-    "homeButton": "Go to home page"
+    "homeButton": "Return to the app"
   },
   "common": {
     "save": "Save",
