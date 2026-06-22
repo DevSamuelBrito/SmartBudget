@@ -1,3 +1,4 @@
+
 import { test, expect } from "@playwright/test";
 
 import { loginHelper, TEST_EMAIL } from "./helpers/login-helper";
@@ -23,6 +24,7 @@ test.describe("Authentication", () => {
     const errorToast = page
       .getByRole("status")
       .or(page.locator("[data-sonner-toast]"));
+      
     await expect(errorToast.first()).toBeVisible({ timeout: 5000 });
   });
 

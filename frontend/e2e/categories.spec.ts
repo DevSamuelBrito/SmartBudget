@@ -24,7 +24,7 @@ test.describe("Categories", () => {
 
   test("editar categoria atualiza o nome na tabela", async ({ page }) => {
     const originalName = `E2E Edit ${Date.now()}`;
-    const updatedName = `${originalName} Editado`;
+    const updatedName = `Categoria Atualizada ${Date.now()}`;
 
     await page.getByRole("button", { name: "Criar nova categoria" }).click();
 
@@ -44,6 +44,7 @@ test.describe("Categories", () => {
     await page.getByRole("button", { name: "Salvar" }).click();
 
     await expect(page.getByText(updatedName)).toBeVisible({ timeout: 8000 });
+
     await expect(page.getByText(originalName)).not.toBeVisible();
   });
 
@@ -53,6 +54,7 @@ test.describe("Categories", () => {
     await page.getByRole("button", { name: "Criar nova categoria" }).click();
     await page.getByLabel("Nome").fill(categoryName);
     await page.getByRole("button", { name: "Salvar" }).click();
+
     await expect(page.getByText(categoryName)).toBeVisible({ timeout: 8000 });
 
     await page.getByRole("button", { name: `Excluir ${categoryName}` }).click();
@@ -61,8 +63,8 @@ test.describe("Categories", () => {
 
     await page.getByRole("button", { name: "Excluir" }).click();
 
-    await expect(page.getByText(categoryName)).not.toBeVisible({
-      timeout: 8000,
-    });
+    await expect(page.getByText("Excluir categoria")).not.toBeVisible();
+
+    await expect(page.getByRole("cell", { name: categoryName })).toHaveCount(0);
   });
 });
