@@ -187,7 +187,7 @@ export function CategoriesScreen({
                             <Button variant="outline" className="w-10 px-0">
                                 {pendingIcon ? (
                                     (() => {
-                                        
+
                                         const theme = iconThemes.find((t) => t.iconKey === pendingIcon);
 
                                         return theme ? (
@@ -206,7 +206,7 @@ export function CategoriesScreen({
                                 <button
                                     type="button"
                                     onClick={() => setPendingIcon("")}
-                                    className={`flex size-8 items-center justify-center rounded border text-xs text-muted-foreground transition hover:bg-muted ${!pendingIcon ? "ring-2 ring-primary" : ""}`}
+                                    className={`flex size-8 items-center justify-center rounded border text-xs text-muted-foreground transition hover:bg-muted ${pendingIcon ? "" : "ring-2 ring-primary"}`}
                                     aria-label={t("filters.allIcons")}
                                 >
                                     —
