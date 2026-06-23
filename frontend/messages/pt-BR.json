@@ -1,0 +1,395 @@
+{
+  "dashboard": {
+    "title": "Painel",
+    "kpis": {
+      "currentBalance": {
+        "label": "Saldo atual",
+        "description": "Disponível total"
+      },
+      "monthlyIncome": {
+        "label": "Receitas do mês",
+        "description": "Entradas confirmadas"
+      },
+      "monthlyExpense": {
+        "label": "Despesas do mês",
+        "description": "Saídas do período"
+      },
+      "monthlySavings": {
+        "label": "Economia do mês",
+        "description": "Receitas - Despesas"
+      }
+    },
+    "charts": {
+      "quickInsights": {
+        "title": "Indicadores rápidos",
+        "description": "Médias diárias do mês",
+        "dailyIncome": "Média diária de ganho",
+        "dailyExpense": "Média diária de gasto",
+        "netBalance": "Saldo diário líquido"
+      },
+      "latestTransactions": {
+        "title": "Últimas transações",
+        "description": "Lançamentos mais recentes por data",
+        "incomeLegend": "Receita",
+        "expenseLegend": "Despesa",
+        "empty": "Nenhuma transação encontrada.",
+        "showing": "Mostrando as últimas {count} transações.",
+        "viewAll": "Ver tudo"
+      },
+      "budgetProgress": {
+        "title": "Progresso dos budgets",
+        "description": "Orçado x realizado por categoria",
+        "empty": "Nenhum budget definido para este período.",
+        "used": "{percentage}% utilizado",
+        "remaining": "Restam {amount}",
+        "manageCategories": "Gerenciar categorias"
+      },
+      "balanceEvolution": {
+        "title": "Evolução de saldo",
+        "description": "Saldo acumulado ao longo do mês",
+        "balance": "Saldo"
+      },
+      "incomeExpense": {
+        "title": "Receitas x Despesas",
+        "description": "Comparativo mensal",
+        "income": "Receitas",
+        "expense": "Despesas",
+        "months": {
+          "jan": "Jan",
+          "feb": "Fev",
+          "mar": "Mar",
+          "apr": "Abr",
+          "may": "Mai",
+          "jun": "Jun",
+          "jul": "Jul",
+          "aug": "Ago",
+          "sep": "Set",
+          "oct": "Out",
+          "nov": "Nov",
+          "dec": "Dez"
+        }
+      },
+      "categoryDistribution": {
+        "title": "Despesas por categoria",
+        "pieDescription": "Distribuição em pizza",
+        "listTitle": "Gasto por categoria",
+        "listDescription": "Distribuição das despesas do mês em relação ao total.",
+        "empty": "Sem despesas neste período.",
+        "pieToggleLabel": "Mostrar gasto por categoria",
+        "listToggleLabel": "Mostrar despesas em pizza"
+      },
+      "expenseEvolution": {
+        "title": "Evolução de despesas",
+        "description": "Despesas mensais dos últimos 6 meses",
+        "expense": "Despesas"
+      },
+      "financialRisk": {
+        "title": "Risco financeiro",
+        "description": "Gastos fixos sobre a renda média dos últimos 3 meses",
+        "warningMessage": "Atenção: seus gastos fixos estão se aproximando do limite recomendado.",
+        "riskMessage": "Alerta: seus gastos fixos representam {percentage} da sua renda média.",
+        "noDataMessage": "Sem dados suficientes para calcular o risco financeiro.",
+        "okMessage": "Seus gastos fixos estão sob controle.",
+        "averageIncome": "Renda média (3 meses)",
+        "fixedExpenses": "Gastos fixos mensais",
+        "status": {
+          "ok": "Ok",
+          "warning": "Atenção",
+          "risk": "Risco",
+          "noData": "Sem dados"
+        }
+      }
+    },
+    "alerts": {
+      "title": "Alertas",
+      "description": "Orçamentos que precisam de atenção"
+    },
+    "customizer": {
+      "title": "Customizar dashboard",
+      "description": "Reordene, mostre/oculte e ajuste a largura dos componentes.",
+      "fixedKpisInfo": "Os KPI cards (saldo, receitas, despesas e economia) são fixos e não podem ser movidos ou ocultados.",
+      "columnOne": "1 coluna",
+      "columnTwo": "2 colunas (largura total)",
+      "save": "Salvar",
+      "saving": "Salvando...",
+      "components": {
+        "alertsCard": "Alertas",
+        "quickInsightsCard": "Indicadores rápidos",
+        "latestTransactionsCard": "Últimas transações",
+        "budgetProgressCard": "Progresso de budgets",
+        "financialRiskCard": "Risco financeiro",
+        "balanceEvolutionChart": "Evolução de saldo",
+        "incomeExpenseBarChart": "Receitas x Despesas",
+        "categoryDistributionFlipCard": "Distribuição por categoria",
+        "expenseEvolutionChart": "Evolução de despesas"
+      },
+      "premiumBadge": "Premium"
+    }
+  },
+  "premium": {
+    "iconGate": {
+      "title": "Ícone premium",
+      "description": "Este ícone é exclusivo para assinantes do plano Premium. Faça o upgrade para acessar todos os ícones premium e recursos avançados.",
+      "close": "Fechar",
+      "seePlans": "Ver planos"
+    },
+    "componentGate": {
+      "title": "Componente premium",
+      "description": "Este componente do dashboard é exclusivo para assinantes do plano Premium. Faça o upgrade para desbloqueá-lo e acessar todos os recursos avançados.",
+      "close": "Fechar",
+      "seePlans": "Ver planos"
+    }
+  },
+  "transactions": {
+    "searchPlaceholder": "Buscar transação por descrição",
+    "createButton": "Adicionar nova Transação",
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Próximo"
+    },
+    "table": {
+      "amount": "Valor",
+      "date": "Data",
+      "type": "Tipo",
+      "recurrence": "Recorrência",
+      "description": "Descrição",
+      "category": "Categoria",
+      "autoGenerated": "Automática",
+      "originTransaction": "Transação origem",
+      "createdAt": "Criado em",
+      "updatedAt": "Atualizado em",
+      "actions": "Ações"
+    },
+    "actions": {
+      "editAriaLabel": "Editar {description}",
+      "deleteAriaLabel": "Excluir {description}",
+      "autoGeneratedAriaLabel": "Automática",
+      "notAutoGeneratedAriaLabel": "Não automática"
+    },
+    "types": {
+      "receita": "Receita",
+      "despesa": "Despesa",
+      "transferencia": "Transferência"
+    },
+    "recurrence": {
+      "unica": "Única",
+      "recorrente": "Recorrente"
+    },
+    "form": {
+      "createTitle": "Adicionar nova transação",
+      "editTitle": "Editar transação",
+      "createDescription": "Preencha os dados da transação.",
+      "editDescription": "Atualize os dados da transação.",
+      "amountLabel": "Valor",
+      "amountPlaceholder": "Ex: 120.50",
+      "dateLabel": "Data da transação",
+      "datePlaceholder": "Selecione uma data",
+      "typeLabel": "Tipo da transação",
+      "typePlaceholder": "Selecione",
+      "recurrenceLabel": "Recorrência",
+      "recurrencePlaceholder": "Selecione",
+      "descriptionLabel": "Descrição",
+      "descriptionPlaceholder": "Ex: Compra no mercado",
+      "categoryLabel": "Categoria",
+      "categoryPlaceholder": "Selecione uma categoria",
+      "categoryTransferPlaceholder": "Categoria indisponível para transferência",
+      "categoryTransferNote": "Transações do tipo Transferência não usam categoria.",
+      "noCategoryFound": "Nenhuma categoria encontrada.",
+      "cancel": "Cancelar",
+      "save": "Salvar"
+    },
+    "delete": {
+      "title": "Excluir transação",
+      "description": "Você tem certeza que deseja excluir <strong>{description}</strong>?",
+      "cancel": "Cancelar",
+      "confirm": "Excluir"
+    }
+  },
+  "categories": {
+    "searchPlaceholder": "Buscar categoria por nome",
+    "createButton": "Criar nova categoria",
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Próximo"
+    },
+    "table": {
+      "icon": "Ícone",
+      "name": "Nome",
+      "budget": "Orçamento",
+      "spent": "Gasto",
+      "remaining": "Restante",
+      "progress": "Progresso",
+      "actions": "Ações"
+    },
+    "actions": {
+      "setBudget": "Definir orçamento",
+      "editAriaLabel": "Editar {name}",
+      "deleteAriaLabel": "Excluir {name}",
+      "setBudgetAriaLabel": "Definir orçamento da categoria {name}"
+    },
+    "form": {
+      "createTitle": "Criar categoria",
+      "editTitle": "Renomear categoria",
+      "createDescription": "Escolha um nome e um ícone para a nova categoria.",
+      "editDescription": "Atualize o nome e o ícone da categoria.",
+      "nameLabel": "Nome",
+      "namePlaceholder": "Ex: Conta de Luz",
+      "iconsLabel": "Ícones",
+      "selectThemeAriaLabel": "Selecionar tema {label}",
+      "lockedThemeAriaLabel": "Tema bloqueado {label}",
+      "cancel": "Cancelar",
+      "save": "Salvar"
+    },
+    "delete": {
+      "title": "Excluir categoria",
+      "description": "Você tem certeza que deseja excluir <strong>{name}</strong>?",
+      "cancel": "Cancelar",
+      "confirm": "Excluir"
+    },
+    "budget": {
+      "title": "Definir orçamento",
+      "description": "Defina o limite da categoria <strong>{name}</strong> para {period}.",
+      "limitLabel": "Valor limite",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "errorInvalidAmount": "Informe um valor maior que zero."
+    },
+    "months": {
+      "1": "Janeiro",
+      "2": "Fevereiro",
+      "3": "Março",
+      "4": "Abril",
+      "5": "Maio",
+      "6": "Junho",
+      "7": "Julho",
+      "8": "Agosto",
+      "9": "Setembro",
+      "10": "Outubro",
+      "11": "Novembro",
+      "12": "Dezembro",
+      "monthPlaceholder": "Mês",
+      "yearPlaceholder": "Ano",
+      "monthAriaLabel": "Mês",
+      "yearAriaLabel": "Ano"
+    }
+  },
+  "nav": {
+    "dashboard": "Painel",
+    "categories": "Categorias",
+    "transactions": "Transações",
+    "newTransaction": "Nova Transação",
+    "plans": "Planos"
+  },
+  "user": {
+    "account": "Minha Conta",
+    "billing": "Billing",
+    "notifications": "Notificações",
+    "customizeDashboard": "Customizar Dashboard",
+    "language": "Idioma",
+    "logout": "Sair",
+    "loggingOut": "Saindo..."
+  },
+  "siteHeader": {
+    "toggleTheme": "Alternar tema",
+    "toggleLight": "Alternar para modo claro",
+    "toggleDark": "Alternar para modo escuro"
+  },
+  "languageSwitcher": {
+    "title": "Idioma",
+    "description": "Escolha o idioma da aplicação."
+  },
+  "account": {
+    "title": "Minha Conta",
+    "description": "Atualize seus dados pessoais e gerencie a segurança da conta.",
+    "personalInfo": {
+      "title": "Informações pessoais",
+      "description": "Edite seu nome e e-mail.",
+      "nameLabel": "Nome",
+      "namePlaceholder": "Seu nome",
+      "emailLabel": "E-mail",
+      "emailPlaceholder": "voce@email.com"
+    },
+    "security": {
+      "title": "Segurança",
+      "description": "Altere sua senha de acesso.",
+      "changePasswordButton": "Alterar Senha"
+    },
+    "changePassword": {
+      "title": "Alterar Senha",
+      "description": "Informe sua senha atual e defina uma nova senha.",
+      "currentPasswordLabel": "Senha atual",
+      "newPasswordLabel": "Nova senha",
+      "confirmPasswordLabel": "Confirmar nova senha",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "saving": "Salvando..."
+    },
+    "saveChanges": "Salvar alterações",
+    "saving": "Salvando...",
+    "updateSuccess": "Informações atualizadas com sucesso!",
+    "updateError": "Não foi possível atualizar as informações.",
+    "passwordSuccess": "Senha alterada com sucesso!",
+    "passwordError": "Não foi possível alterar a senha."
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "O endereço que você tentou acessar não existe.",
+    "body": "Você pode voltar para a página inicial para continuar navegando pelo SmartBudget PRO.",
+    "homeButton": "Voltar ao App"
+  },
+  "common": {
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar"
+  },
+  "errors": {
+    "generic": "Erro inesperado. Tente novamente.",
+    "notFound": "Página não encontrada"
+  },
+  "plans": {
+    "title": "Planos",
+    "description": "Escolha o plano que melhor se adapta às suas necessidades.",
+    "currentPlan": "Plano atual",
+    "free": {
+      "title": "Gratuito",
+      "description": "Ferramentas essenciais para começar a organizar suas finanças.",
+      "price": "R$ 0",
+      "period": "/ mês",
+      "cta": "Plano atual",
+      "features": [
+        "Até 50 transações por mês",
+        "Até 5 categorias",
+        "Dashboard básico",
+        "Controle de orçamento"
+      ]
+    },
+    "premium": {
+      "title": "Premium",
+      "description": "Acesso completo a recursos avançados e dados ilimitados.",
+      "price": "R$ 49,90",
+      "period": "/ mês",
+      "cta": "Assinar Premium",
+      "upgrading": "Processando...",
+      "features": [
+        "Transações ilimitadas",
+        "Categorias ilimitadas",
+        "Dashboard avançado com personalização",
+        "Análise de risco financeiro",
+        "Suporte prioritário"
+      ]
+    },
+    "upgradeSuccess": "Bem-vindo ao Premium! Aproveite todos os recursos."
+  },
+  "auth": {
+    "login": "Entrar",
+    "register": "Criar conta",
+    "email": "E-mail",
+    "password": "Senha",
+    "name": "Nome",
+    "forgotPassword": "Esqueceu a senha?",
+    "noAccount": "Não tem uma conta?",
+    "alreadyHaveAccount": "Já tem uma conta?"
+  }
+}

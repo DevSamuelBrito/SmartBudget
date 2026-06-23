@@ -1,15 +1,23 @@
-﻿using SmartBudgetPro.Application.Common.DTOs;
+﻿using FluentValidation;
+using SmartBudgetPro.Application.Common.DTOs;
 using SmartBudgetPro.Application.Interfaces;
+using SmartBudgetPro.Shared.Pagination;
 
 namespace SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction
 {
-    public class GetAllFinancialTransactionUseCase (IFinancialTransactionRepository transactionRepository)
+    public class GetAllFinancialTransactionUseCase (
+        IFinancialTransactionRepository transactionRepository,
+        IValidator<GetAllFinancialTransactionUseCaseInput> validator)
     {
-        public async Task<IEnumerable<FinancialTransactionDTO>> ExecuteAsync()
+        public async Task<PagedResult<FinancialTransactionDTO>> ExecuteAsync(GetAllFinancialTransactionUseCaseInput input)
         {
-            var transactions = await transactionRepository.GetAllAsync();
+            await validator.ValidateAndThrowAsync(input);
 
-            return transactions.Select(t => new FinancialTransactionDTO(
+            var skip = (input.Page - 1) * input.PageSize;
+            var transactions = await transactionRepository.GetByUserIdPagedAsync(input.UserId, skip, input.PageSize);
+            var totalCount = await transactionRepository.CountByUserIdAsync(input.UserId);
+
+            var items = transactions.Select(t => new FinancialTransactionDTO(
                 t.Id,
                 t.UserId,
                 t.TransactionCategoryId,
@@ -23,6 +31,8 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction
                 t.CreatedAt,
                 t.UpdatedAt
             ));
+
+            return new PagedResult<FinancialTransactionDTO>(items, totalCount, input.Page, input.PageSize);
         }
     }
 }

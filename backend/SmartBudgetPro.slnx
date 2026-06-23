@@ -4,5 +4,9 @@
     <Project Path="src/SmartBudgetPro.Application/SmartBudgetPro.Application.csproj" />
     <Project Path="src/SmartBudgetPro.Domain/SmartBudgetPro.Domain.csproj" />
     <Project Path="src/SmartBudgetPro.Infrastructure/SmartBudgetPro.Infrastructure.csproj" />
+    <Project Path="src/SmartBudgetPro.Shared/SmartBudgetPro.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SmartBudgetPro.Tests/SmartBudgetPro.Tests.csproj" />
   </Folder>
 </Solution>

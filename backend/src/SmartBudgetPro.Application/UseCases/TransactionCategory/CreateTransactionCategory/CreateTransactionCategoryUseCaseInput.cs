@@ -3,5 +3,6 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
 public record CreateTransactionCategoryUseCaseInput
 (
     Guid UserId,
-    string Name
+    string Name,
+    string Icon
 );

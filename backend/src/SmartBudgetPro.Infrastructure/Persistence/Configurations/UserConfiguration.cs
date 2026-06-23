@@ -26,6 +26,13 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Configurations
             builder.Property(u => u.PasswordHash)
                 .IsRequired()
                 .HasMaxLength(500);
+
+            builder.Property(u => u.IsPremium)
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            builder.Property(u => u.UpdatedAt)
+                .IsRequired(false);
         }
     }
 }

@@ -1,0 +1,75 @@
+// Types
+import type { DashboardOverviewApi, DashboardConfigItem } from "../types";
+
+// Libs
+import { api } from "@/lib/axios";
+
+import { authFetch, getServerUserId } from "@/lib/auth";
+
+import { getServerApiBaseUrl } from "@/lib/server-api";
+
+type GetDashboardOverviewParams = {
+  month?: number;
+  year?: number;
+};
+
+export const getDashboardOverviewServer = async (
+  params?: GetDashboardOverviewParams,
+): Promise<DashboardOverviewApi> => {
+  const baseUrl = getServerApiBaseUrl();
+
+  const query = new URLSearchParams();
+
+  if (params?.month) query.set("month", String(params.month));
+  if (params?.year) query.set("year", String(params.year));
+
+  const userId = await getServerUserId();
+
+  const url = new URL("dashboard/overview", baseUrl);
+
+  const queryString = query.toString();
+  
+  if (queryString) {
+    url.search = queryString;
+  }
+
+  const response = await authFetch(url.toString(), {
+    next: { tags: [`dashboard-overview-${userId}`] },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch dashboard overview from server.");
+  }
+
+  return (await response.json()) as DashboardOverviewApi;
+};
+
+export const getDashboardConfigServer = async (): Promise<
+  DashboardConfigItem[]
+> => {
+  const baseUrl = getServerApiBaseUrl();
+
+  const userId = await getServerUserId();
+
+  const response = await authFetch(`${baseUrl}dashboard/config`, {
+    next: { tags: [`dashboard-config-${userId}`] },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch dashboard config from server.");
+  }
+
+  return (await response.json()) as DashboardConfigItem[];
+};
+
+export const getDashboardConfig = async (): Promise<DashboardConfigItem[]> => {
+  const response = await api.get<DashboardConfigItem[]>("/dashboard/config");
+
+  return response.data;
+};
+
+export const saveDashboardConfig = async (
+  items: DashboardConfigItem[],
+): Promise<void> => {
+  await api.put("/dashboard/config", items);
+};

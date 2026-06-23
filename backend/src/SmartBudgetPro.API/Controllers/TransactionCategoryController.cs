@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
+using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.DeleteTransactionCategory;
@@ -7,7 +10,9 @@ using SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransactionC
 namespace SmartBudgetPro.API.Controllers
 {
     [ApiController]
-    [Route("api/transactionCategories")]
+    [ApiVersion("1.0")]
+    [Route("transactionCategories")]
+    [Authorize]
     public class TransactionCategoryController
         (
         GetAllTransactionCategoryUseCase getAllTransactionCategory,
@@ -20,9 +25,11 @@ namespace SmartBudgetPro.API.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] GetAllTransactionCategoryUseCaseInput input)
         {
-            var output = await getAllTransactionCategory.ExecuteAsync();
+            var userId = User.GetRequiredUserId();
+            var securedInput = input with { UserId = userId };
+            var output = await getAllTransactionCategory.ExecuteAsync(securedInput);
 
             return Ok(output);
         }
@@ -30,15 +37,19 @@ namespace SmartBudgetPro.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTransactionCategoryUseCaseInput input)
         {
-            var output = await createTransactionCategory.ExecuteAsync(input);
+            var userId = User.GetRequiredUserId();
+            var securedInput = input with { UserId = userId };
 
-            return Created($"api/transactionCategories/{output.Id}", output);
+            var output = await createTransactionCategory.ExecuteAsync(securedInput);
+
+            return Created($"/api/v1/transactionCategories/{output.Id}", output);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateTransactionCategoryUseCaseInput input)
         {
-            await updateTransactionCategory.ExecuteAsync(input);
+            var userId = User.GetRequiredUserId();
+            await updateTransactionCategory.ExecuteAsync(userId, input);
 
             return Ok();
 
@@ -47,12 +58,13 @@ namespace SmartBudgetPro.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
+            var userId = User.GetRequiredUserId();
             var input = new DeleteTransactionCategoryUseCaseInput
             {
                 id = id
             };
 
-            await deleteTransactionCategoryUseCase.ExecuteAsync(input);
+            await deleteTransactionCategoryUseCase.ExecuteAsync(userId, input);
 
             return NoContent();
         }

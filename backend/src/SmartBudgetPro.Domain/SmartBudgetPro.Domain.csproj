@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../SmartBudgetPro.Shared/SmartBudgetPro.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

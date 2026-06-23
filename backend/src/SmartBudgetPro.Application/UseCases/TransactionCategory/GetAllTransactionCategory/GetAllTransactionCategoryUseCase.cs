@@ -1,20 +1,33 @@
-﻿using SmartBudgetPro.Application.Common.DTOs;
+﻿using FluentValidation;
+using SmartBudgetPro.Application.Common.DTOs;
 using SmartBudgetPro.Application.Interfaces;
+using SmartBudgetPro.Shared.Pagination;
 
 namespace SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory
 {
-    public class GetAllTransactionCategoryUseCase(ITransactionCategoryRepository transactionCategoryRepository)
+    public class GetAllTransactionCategoryUseCase(
+        ITransactionCategoryRepository transactionCategoryRepository,
+        IValidator<GetAllTransactionCategoryUseCaseInput> validator)
     {
-        public async Task<IEnumerable<TransactionCategoryDto>> ExecuteAsync()
+        public async Task<PagedResult<TransactionCategoryDto>> ExecuteAsync(GetAllTransactionCategoryUseCaseInput input)
         {
-            var categories = await transactionCategoryRepository.GetAllAsync();
-            return categories.Select(c => new TransactionCategoryDto(
+            await validator.ValidateAndThrowAsync(input);
+
+            var skip = (input.Page - 1) * input.PageSize;
+
+            var categories = await transactionCategoryRepository.GetByUserIdPagedAsync(input.UserId, skip, input.PageSize);
+            var totalCount = await transactionCategoryRepository.CountByUserIdAsync(input.UserId);
+
+            var items = categories.Select(c => new TransactionCategoryDto(
                 c.Id,
                 c.UserId,
                 c.Name,
+                c.Icon,
                 c.CreatedAt,
                 c.UpdatedAt
             ));
+
+            return new PagedResult<TransactionCategoryDto>(items, totalCount, input.Page, input.PageSize);
         }
     }
 }

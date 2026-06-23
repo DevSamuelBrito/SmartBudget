@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SmartBudgetPro.Domain.Budgets;
+using SmartBudgetPro.Domain.Dashboard;
 using SmartBudgetPro.Domain.Transactions;
 using SmartBudgetPro.Domain.Users;
 using System.Reflection; 
@@ -14,6 +15,7 @@ public class AppDbContext : DbContext
     public DbSet<FinancialTransaction> FinancialTransactions { get; set; }
     public DbSet<TransactionCategory> TransactionCategories { get; set; }
     public DbSet<Budget> Budgets { get; set; }
+    public DbSet<UserDashboardConfig> UserDashboardConfigs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

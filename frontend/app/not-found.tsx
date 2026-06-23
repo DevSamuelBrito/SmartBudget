@@ -1,0 +1,51 @@
+//next
+import Link from "next/link"
+
+// next-intl
+import { getTranslations } from "next-intl/server"
+
+//icons
+import { Home } from "lucide-react"
+
+//components
+import { Button } from "@/components/ui/button"
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+
+export default async function NotFound() {
+    const t = await getTranslations("notFound")
+
+    return (
+        <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-linear-to-br from-background via-background to-muted/40 px-4 py-10">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(14,165,233,0.10),transparent_32%)]" />
+
+            <Card className="relative w-full max-w-xl border-border/70 bg-card/90 shadow-xl backdrop-blur">
+                <CardHeader className="space-y-4 text-center">
+                    <div className="mx-auto flex size-16 items-center justify-center rounded-2xl border border-border/60 bg-muted/70 text-primary shadow-sm">
+                        <span className="text-2xl font-semibold tracking-tight">404</span>
+                    </div>
+                    <div className="space-y-2">
+                        <CardTitle className="text-2xl sm:text-3xl">{t("title")}</CardTitle>
+                        <CardDescription className="text-base">
+                            {t("description")}
+                        </CardDescription>
+                    </div>
+                </CardHeader>
+
+                <CardContent className="flex flex-col items-center gap-4 pb-8 text-center">
+                    <p className="max-w-md text-sm leading-6 text-muted-foreground sm:text-base">
+                        {t("body")}
+                    </p>
+
+                    <Button asChild size="lg" className="w-full max-w-sm shadow-sm shadow-primary/20 sm:w-auto">
+                        <Link href="/dashboard">
+                            <Home className="size-4" />
+                            {t("homeButton")}
+                        </Link>
+                    </Button>
+
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
