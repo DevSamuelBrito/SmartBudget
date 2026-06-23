@@ -18,5 +18,8 @@ WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
+RUN adduser --disabled-password --gecos "" appuser
+USER appuser
+
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "SmartBudgetPro.API.dll"]
