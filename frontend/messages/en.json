@@ -207,7 +207,14 @@
   },
   "categories": {
     "searchPlaceholder": "Search category by name",
-    "createButton": "Create new category",
+    "createButton": "New category",
+    "filters": {
+      "namePlaceholder": "Search by name...",
+      "iconPlaceholder": "Filter by icon",
+      "allIcons": "All icons",
+      "searchButton": "Search",
+      "clearButton": "Clear"
+    },
     "pagination": {
       "previous": "Previous",
       "next": "Next"

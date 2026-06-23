@@ -6,8 +6,8 @@ import { useState } from "react";
 // i18n
 import { useTranslations } from "next-intl";
 
-//react query
-import { Plus, Search } from "lucide-react";
+// icons
+import { Plus, Search, X } from "lucide-react";
 
 // components
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,12 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+
 import { MonthYearSelector } from "@/components/shared/month-year-selector";
 
 import { CategoryFormSheet } from "./CategoryForm";
@@ -34,6 +40,8 @@ import { CategoryTable } from "./CategoryTable";
 import { DeleteCategorySheet } from "./DeleteCategory";
 
 import { BudgetLimitSheet } from "./BudgetLimitSheet";
+
+import { ThemeIcon } from "./theme-icons";
 
 // hooks
 import { useCategories } from "../hooks/useCategories";
@@ -81,8 +89,13 @@ export function CategoriesScreen({
         handleUpsertBudget,
         isSavingBudget,
 
-        search,
-        setSearch,
+        pendingName,
+        setPendingName,
+        pendingIcon,
+        setPendingIcon,
+        handleSearch,
+        handleClearFilters,
+        appliedFilters,
     } = useCategories(
         {
             initialCategories,
@@ -149,34 +162,103 @@ export function CategoriesScreen({
         setPage(nextPage);
     }
 
+    const hasActiveFilters = Boolean(appliedFilters.name || appliedFilters.icon);
 
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="relative w-full max-w-md">
-                    <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                        value={search}
-                        onChange={(event) => setSearch(event.target.value)}
-                        placeholder={t("searchPlaceholder")}
-                        className="pl-8"
-                    />
+            <div className="flex flex-wrap items-end justify-between gap-3">
+                {/* Left group: name + icon filters */}
+                <div className="flex flex-wrap items-end gap-2">
+                    <div className="relative w-56">
+                        <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                            value={pendingName}
+                            onChange={(e) => setPendingName(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") handleSearch();
+                            }}
+                            placeholder={t("filters.namePlaceholder")}
+                            className="pl-8"
+                        />
+                    </div>
+
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button variant="outline" className="w-10 px-0">
+                                {pendingIcon ? (
+                                    (() => {
+                                        
+                                        const theme = iconThemes.find((t) => t.iconKey === pendingIcon);
+
+                                        return theme ? (
+                                            <span className={`flex size-5 items-center justify-center rounded text-white ${theme.colorClass}`}>
+                                                <ThemeIcon iconKey={theme.iconKey} className="size-3" />
+                                            </span>
+                                        ) : null;
+                                    })()
+                                ) : (
+                                    <Search className="size-4 text-muted-foreground" />
+                                )}
+                            </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-2" align="start">
+                            <div className="grid grid-cols-5 gap-1">
+                                <button
+                                    type="button"
+                                    onClick={() => setPendingIcon("")}
+                                    className={`flex size-8 items-center justify-center rounded border text-xs text-muted-foreground transition hover:bg-muted ${!pendingIcon ? "ring-2 ring-primary" : ""}`}
+                                    aria-label={t("filters.allIcons")}
+                                >
+                                    —
+                                </button>
+                                {iconThemes.map((theme) => (
+                                    <button
+                                        key={theme.iconKey}
+                                        type="button"
+                                        onClick={() => setPendingIcon(theme.iconKey)}
+                                        className={`flex size-8 items-center justify-center rounded text-white transition ${theme.colorClass} ${pendingIcon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : "opacity-80 hover:opacity-100"}`}
+                                        aria-label={theme.label}
+                                    >
+                                        <ThemeIcon iconKey={theme.iconKey} className="size-4" />
+                                    </button>
+                                ))}
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+
+                    <Button onClick={handleSearch} variant="default">
+                        <Search className="size-4" />
+                        {t("filters.searchButton")}
+                    </Button>
+
+                    {hasActiveFilters && (
+                        <Button onClick={handleClearFilters} variant="outline">
+                            <X className="size-4" />
+                            {t("filters.clearButton")}
+                        </Button>
+                    )}
                 </div>
 
-                <MonthYearSelector
-                    month={selectedPeriod.month}
-                    year={selectedPeriod.year}
-                    onChange={setSelectedPeriod}
-                />
-
-                <Button onClick={() => setCreateOpen(true)}>
-                    <Plus className="size-4" />
-                    {t("createButton")}
-                </Button>
+                {/* Right group: period selector + new category */}
+                <div className="flex flex-wrap items-center gap-2">
+                    <Button onClick={() => setCreateOpen(true)}>
+                        <Plus className="size-4" />
+                        {t("createButton")}
+                    </Button>
+                </div>
             </div>
 
             <Card>
                 <CardContent className="pt-4">
+
+                    <div className="flex items-center justify-center gap-2 mb-5">
+                        <MonthYearSelector
+                            month={selectedPeriod.month}
+                            year={selectedPeriod.year}
+                            onChange={setSelectedPeriod}
+                        />
+                    </div>
+
                     <CategoryTable
                         categories={categories}
                         onEdit={setEditingCategory}
