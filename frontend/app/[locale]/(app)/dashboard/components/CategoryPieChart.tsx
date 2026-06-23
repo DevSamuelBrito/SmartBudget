@@ -36,7 +36,7 @@ const PIE_COLORS = [
     "#6366f1",
 ];
 
-export function CategoryPieChart({ data }: CategoryPieChartProps) {
+export function CategoryPieChart({ data }: Readonly<CategoryPieChartProps>) {
     const chartConfig = data.reduce<ChartConfig>((acc, item, index) => {
         const key = item.transactionCategoryId ?? `uncategorized-${index}`;
 

@@ -89,7 +89,7 @@ function getStatusMessage(
     }
 }
 
-export function FinancialRiskCard({ financialRisk }: FinancialRiskCardProps) {
+export function FinancialRiskCard({ financialRisk }: Readonly<FinancialRiskCardProps>) {
     const t = useTranslations("dashboard");
 
     const status = normalizeStatus(financialRisk.status);
@@ -97,6 +97,15 @@ export function FinancialRiskCard({ financialRisk }: FinancialRiskCardProps) {
     const percentageValue = Number.isFinite(financialRisk.percentage) ? financialRisk.percentage : 0;
     const percentageLabel = `${percentageValue.toFixed(1).replace(".", ",")}%`;
     const progressValue = status === "NoData" ? 0 : Math.min(percentageValue, 100);
+
+    const statusKey =
+        status === "NoData"
+            ? "noData"
+            : status === "Warning"
+                ? "warning"
+                : status === "Risk"
+                    ? "risk"
+                    : "ok";
 
     return (
         <Card className="border-border/70 bg-card/90 backdrop-blur">
@@ -116,7 +125,7 @@ export function FinancialRiskCard({ financialRisk }: FinancialRiskCardProps) {
                     <div className="flex items-end justify-between gap-3">
                         <p className="text-3xl font-semibold tabular-nums">{percentageLabel}</p>
                         <span className="rounded-full border border-border/60 px-2.5 py-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                            {t(`charts.financialRisk.status.${status === "NoData" ? "noData" : status === "Warning" ? "warning" : status === "Risk" ? "risk" : "ok"}`)}
+                            {t(`charts.financialRisk.status.${statusKey}`)}
                         </span>
                     </div>
 

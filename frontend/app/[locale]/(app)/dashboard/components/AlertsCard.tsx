@@ -23,7 +23,7 @@ type AlertsCardProps = {
   alerts: DashboardAlert[];
 };
 
-export function AlertsCard({ alerts }: AlertsCardProps) {
+export function AlertsCard({ alerts }: Readonly<AlertsCardProps>) {
   const t = useTranslations("dashboard");
 
   if (alerts.length === 0) return null;

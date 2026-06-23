@@ -48,7 +48,7 @@ export function LanguageSwitcherDialog({
     onOpenChange,
     isChangingLocale,
     onChangeLocale,
-}: LanguageSwitcherDialogProps) {
+}: Readonly<LanguageSwitcherDialogProps>) {
     const t = useTranslations("languageSwitcher")
     const currentLocale = open ? getLocaleFromCookie() : null
 

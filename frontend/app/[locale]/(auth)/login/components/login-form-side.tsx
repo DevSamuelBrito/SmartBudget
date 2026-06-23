@@ -2,8 +2,9 @@
 
 // React
 import type { ComponentProps } from "react";
-
 // Next
+import Link from "next/dist/client/link";
+
 import { useRouter } from "next/navigation";
 
 // next-intl
@@ -12,11 +13,15 @@ import { useTranslations } from "next-intl";
 // external
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
+
 import { toast } from "sonner";
 
 // components
 import { Button } from "@/components/ui/button";
+
 import { Card, CardContent } from "@/components/ui/card";
+
 import {
   Field,
   FieldDescription,
@@ -24,6 +29,7 @@ import {
   FieldLabel,
   FieldSeparator,
 } from "@/components/ui/field";
+
 import { Input } from "@/components/ui/input";
 
 // contexts
@@ -93,9 +99,9 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">{t("password")}</FieldLabel>
-                  <a href="#" className="ml-auto text-sm underline-offset-2 hover:underline">
+                  <Link href="/forgot-password" className="ml-auto text-sm underline-offset-2 hover:underline">
                     {t("forgotPassword")}
-                  </a>
+                  </Link>
                 </div>
                 <Input
                   id="password"
@@ -107,7 +113,7 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
                 )}
               </Field>
               <Field>
-                <Button data-testid="login-submit-button"  type="submit" disabled={isSubmitting}>
+                <Button data-testid="login-submit-button" type="submit" disabled={isSubmitting}>
                   {isSubmitting ? `${t("login")}...` : t("login")}
                 </Button>
               </Field>
@@ -158,7 +164,7 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
           <div className="relative hidden bg-muted md:block">
             <img
               src="/placeholder.svg"
-              alt="Image"
+              alt=""
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
             />
           </div>

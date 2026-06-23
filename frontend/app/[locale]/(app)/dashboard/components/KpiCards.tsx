@@ -25,7 +25,7 @@ type KpiCardsProps = {
   kpis: DashboardKpis;
 };
 
-export function KpiCards({ kpis }: KpiCardsProps) {
+export function KpiCards({ kpis }: Readonly<KpiCardsProps>) {
   const t = useTranslations("dashboard");
 
   const cards = [

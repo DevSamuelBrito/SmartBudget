@@ -22,7 +22,7 @@ export function MonthYearSelector({
   minYear,
   maxYear,
   className,
-}: MonthYearSelectorProps) {
+}: Readonly<MonthYearSelectorProps>) {
   const t = useTranslations("categories.months");
 
   const currentYear = new Date().getFullYear();

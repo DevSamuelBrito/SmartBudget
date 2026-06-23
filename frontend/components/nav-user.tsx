@@ -54,13 +54,13 @@ import { type AppLocale } from "@/i18n/routing"
 
 export function NavUser({
   user,
-}: {
+}:Readonly<{
   user: {
     name: string
     email: string
     avatar: string
   }
-}) {
+}>) {
   const t = useTranslations("user")
 
   const { isMobile } = useSidebar()

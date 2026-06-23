@@ -39,7 +39,7 @@ type DashboardScreenProps = {
     initialConfig: DashboardConfigItem[];
 };
 
-export function DashboardScreen({ data, initialConfig }: DashboardScreenProps) {
+export function DashboardScreen({ data, initialConfig }: Readonly<DashboardScreenProps>) {
 
     const { state } = useAuth();
     const userId = state.user?.userId;

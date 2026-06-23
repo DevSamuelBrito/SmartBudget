@@ -29,7 +29,7 @@ const recurrenceClassName: Record<RecurrenceType, string> = {
   recorrente: "bg-amber-100 text-amber-800 hover:bg-amber-100",
 };
 
-export function TransactionTypeBadge({ type }: TransactionTypeBadgeProps) {
+export function TransactionTypeBadge({ type }: Readonly<TransactionTypeBadgeProps>) {
   const t = useTranslations("transactions.types");
 
   return (
@@ -39,7 +39,7 @@ export function TransactionTypeBadge({ type }: TransactionTypeBadgeProps) {
   );
 }
 
-export function RecurrenceBadge({ recurrence }: RecurrenceBadgeProps) {
+export function RecurrenceBadge({ recurrence }: Readonly<RecurrenceBadgeProps>) {
   const t = useTranslations("transactions.recurrence");
 
   return (

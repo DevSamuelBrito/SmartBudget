@@ -72,7 +72,7 @@ function buildCategoryColors(total: number) {
 export function CategoryDistributionFlipCard({
     pieData,
     categoryExpenses,
-}: CategoryDistributionFlipCardProps) {
+}: Readonly<CategoryDistributionFlipCardProps>) {
     const t = useTranslations("dashboard");
 
     const [showBarView, setShowBarView] = useState(false);

@@ -3,12 +3,16 @@
 //react
 import * as React from "react"
 
+//next
+import Link from "next/link"
+
 // i18n
 import { useTranslations } from "next-intl"
 
-//components
+//icons
 import { LayoutDashboardIcon, CommandIcon, ArrowLeftRight, Tags, Sparkles } from "lucide-react"
 
+//components
 import { NavMain } from "@/components/nav-main"
 
 import { NavUser } from "@/components/nav-user"
@@ -69,10 +73,10 @@ export function AppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <a href="#">
+              <Link href="/dashboard">
                 <CommandIcon className="size-5!" />
                 <span className="text-base font-semibold">SmartBudget PRO</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -88,7 +88,7 @@ export function TransactionFormSheet({
     onOpenChange,
     onSubmit,
     isSubmitting = false,
-}: TransactionFormSheetProps) {
+}: Readonly<TransactionFormSheetProps>) {
     "use no memo";
 
     const t = useTranslations("transactions");
@@ -410,7 +410,11 @@ export function TransactionFormSheet({
                             )}
                             <Input
                                 id="transaction-category"
-                                placeholder={isTransferTransaction ? t("form.categoryTransferPlaceholder") : t("form.categoryPlaceholder")}
+                                placeholder={
+                                    isTransferTransaction
+                                        ? t("form.categoryTransferPlaceholder")
+                                        : t("form.categoryPlaceholder")
+                                }
                                 value={displayedCategoryQuery}
                                 onFocus={() => {
                                     if (!isTransferTransaction) {
@@ -429,7 +433,7 @@ export function TransactionFormSheet({
                                     }
                                 }}
                                 onBlur={() => {
-                                    window.setTimeout(() => setCategoryOpen(false), 150);
+                                    setTimeout(() => setCategoryOpen(false), 150);
                                 }}
                                 className={`${selectedCategory ? "pl-14" : ""} h-12`}
                                 aria-invalid={Boolean(errors.transactionCategoryId)}

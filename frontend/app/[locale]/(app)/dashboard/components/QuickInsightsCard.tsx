@@ -23,7 +23,7 @@ type QuickInsightsCardProps = {
     dailyAverageExpense: number;
 };
 
-export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: QuickInsightsCardProps) {
+export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: Readonly<QuickInsightsCardProps>) {
     const t = useTranslations("dashboard");
 
     return (

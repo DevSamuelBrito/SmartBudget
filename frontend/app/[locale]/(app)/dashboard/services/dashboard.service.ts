@@ -23,11 +23,16 @@ export const getDashboardOverviewServer = async (
   if (params?.month) query.set("month", String(params.month));
   if (params?.year) query.set("year", String(params.year));
 
-  const url = `${baseUrl}dashboard/overview${query.toString() ? `?${query.toString()}` : ""}`;
-
   const userId = await getServerUserId();
 
-  const response = await authFetch(url, {
+  const url = new URL("dashboard/overview", baseUrl);
+
+  const queryString = query.toString();
+  if (queryString) {
+    url.search = queryString;
+  }
+
+  const response = await authFetch(url.toString(), {
     next: { tags: [`dashboard-overview-${userId}`] },
   });
 

@@ -21,13 +21,13 @@ import {
 
 export function NavMain({
   items,
-}: {
+}: Readonly<{
   items: {
     title: string
     url: string
     icon?: React.ReactNode
   }[]
-}) {
+}>) {
   const pathname = usePathname()
   const t = useTranslations("nav")
 

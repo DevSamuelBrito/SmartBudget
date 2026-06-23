@@ -28,7 +28,7 @@ type IncomeExpenseBarChartProps = {
   data: DashboardIncomeExpenseByMonth[];
 };
 
-export function IncomeExpenseBarChart({ data }: IncomeExpenseBarChartProps) {
+export function IncomeExpenseBarChart({ data }: Readonly<IncomeExpenseBarChartProps>) {
   const t = useTranslations("dashboard");
 
   const chartConfig = {

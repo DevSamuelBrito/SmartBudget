@@ -27,7 +27,7 @@ export function PremiumUpgradeDialog({
   open,
   onOpenChange,
   variant,
-}: PremiumUpgradeDialogProps) {
+}: Readonly<PremiumUpgradeDialogProps>) {
   const t = useTranslations("premium");
 
   return (

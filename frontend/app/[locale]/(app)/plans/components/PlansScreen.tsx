@@ -28,7 +28,7 @@ import { useUpgradeToPremium } from "../hooks/use-upgrade-to-premium";
 import { cn } from "@/lib/utils";
 
 export function PlansScreen() {
-  
+
   const t = useTranslations("plans");
 
   const { isPremium, upgrade, isLoading, isSuccess, error } =
@@ -48,6 +48,16 @@ export function PlansScreen() {
 
   const freeFeatures: string[] = t.raw("free.features") as string[];
   const premiumFeatures: string[] = t.raw("premium.features") as string[];
+
+  let buttonLabel: string;
+
+  if (isPremium) {
+    buttonLabel = t("free.cta");
+  } else if (isLoading) {
+    buttonLabel = t("premium.upgrading");
+  } else {
+    buttonLabel = t("premium.cta");
+  }
 
   return (
     <div className="flex flex-1 flex-col gap-6 p-6">
@@ -130,11 +140,7 @@ export function PlansScreen() {
                 upgrade();
               }}
             >
-              {isPremium
-                ? t("free.cta")
-                : isLoading
-                  ? t("premium.upgrading")
-                  : t("premium.cta")}
+              {buttonLabel}
             </Button>
           </CardFooter>
         </Card>

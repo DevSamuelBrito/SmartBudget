@@ -23,7 +23,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 
 export function SiteHeader() {
   const mounted = useSyncExternalStore(
-    () => () => {},
+    () => () => { },
     () => true,
     () => false
   )
@@ -33,27 +33,31 @@ export function SiteHeader() {
 
   const { resolvedTheme, theme, setTheme } = useTheme()
 
+  const formatSegment = (segment: string) =>
+    segment
+      .replaceAll("-", " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
   const title =
     pathname === "/"
       ? "Dashboard"
       : pathname
-          .split("/")
-          .filter(Boolean)
-          .map((segment) =>
-            segment
-              .replace(/-/g, " ")
-              .replace(/\b\w/g, (character) => character.toUpperCase())
-          )
-          .join(" / ") || "Dashboard"
+        .split("/")
+        .filter(Boolean)
+        .map(formatSegment)
+        .join(" / ") || "Dashboard";
 
   const currentTheme = resolvedTheme ?? theme
 
-  const themeLabel =
-    !mounted || !currentTheme
-      ? t("toggleTheme")
-      : currentTheme === "dark"
-        ? t("toggleLight")
-        : t("toggleDark")
+  let themeLabel = t("toggleTheme");
+
+  if (mounted && currentTheme) {
+    if (currentTheme === "dark") {
+      themeLabel = t("toggleLight");
+    } else {
+      themeLabel = t("toggleDark");
+    }
+  }
 
   return (
     <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">

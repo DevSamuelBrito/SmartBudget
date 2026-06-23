@@ -45,7 +45,7 @@ function getStatusColor(status: DashboardBudgetProgress["status"], percentage: n
     return "bg-emerald-500";
 }
 
-export function BudgetProgressCard({ budgets }: BudgetProgressCardProps) {
+export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps>) {
     const t = useTranslations("dashboard");
 
     const router = useRouter();

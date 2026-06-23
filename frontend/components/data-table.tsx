@@ -124,7 +124,7 @@ export const schema = z.object({
 })
 
 // Create a separate component for the drag handle
-function DragHandle({ id }: { id: number }) {
+function DragHandle({ id }: Readonly<{ id: number }>) {
   const { attributes, listeners } = useSortable({
     id,
   })
@@ -322,7 +322,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
   },
 ]
 
-function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
+function DraggableRow({ row }: Readonly<{ row: Row<z.infer<typeof schema>> }>) {
   const { transform, transition, setNodeRef, isDragging } = useSortable({
     id: row.original.id,
   })
@@ -349,9 +349,9 @@ function DraggableRow({ row }: { row: Row<z.infer<typeof schema>> }) {
 
 export function DataTable({
   data: initialData,
-}: {
+}: Readonly<{
   data: z.infer<typeof schema>[]
-}) {
+}>) {
   "use no memo"
 
   const [data, setData] = React.useState(() => initialData)
@@ -419,7 +419,7 @@ export function DataTable({
       setData((data) => {
         const oldIndex = dataIds.indexOf(active.id)
         const newIndex = dataIds.indexOf(over.id)
-        
+
         return arrayMove(data, oldIndex, newIndex)
       })
     }
@@ -475,7 +475,7 @@ export function DataTable({
                 .getAllColumns()
                 .filter(
                   (column) =>
-                    typeof column.accessorFn !== "undefined" &&
+                    column.accessorFn !== undefined &&
                     column.getCanHide()
                 )
                 .map((column) => {
@@ -490,7 +490,7 @@ export function DataTable({
                     >
                       {column.id}
                     </DropdownMenuCheckboxItem>
-                  )
+                  );
                 })}
             </DropdownMenuContent>
           </DropdownMenu>
@@ -523,9 +523,9 @@ export function DataTable({
                           {header.isPlaceholder
                             ? null
                             : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                         </TableHead>
                       )
                     })}
@@ -679,7 +679,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-function TableCellViewer({ item }: { item: z.infer<typeof schema> }) {
+function TableCellViewer({ item }: Readonly<{ item: z.infer<typeof schema> }>) {
   const isMobile = useIsMobile()
 
   return (

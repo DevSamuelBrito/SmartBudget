@@ -5,12 +5,16 @@ import type { ComponentProps } from "react";
 
 // external
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useTranslations } from "next-intl";
+
 import { useForm } from "react-hook-form";
+
 import { toast } from "sonner";
 
 // components
 import { Button } from "@/components/ui/button";
+
 import { Card, CardContent } from "@/components/ui/card";
 import {
     Field,
@@ -18,6 +22,7 @@ import {
     FieldGroup,
     FieldLabel,
 } from "@/components/ui/field";
+
 import { Input } from "@/components/ui/input";
 
 // actions
@@ -75,7 +80,7 @@ export function RegisterFormSide({
                     <div className="relative hidden bg-muted md:block">
                         <img
                             src="/placeholder.svg"
-                            alt="Image"
+                            alt=""
                             className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
                         />
                     </div>

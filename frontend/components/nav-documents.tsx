@@ -21,13 +21,13 @@ import {
 
 export function NavDocuments({
   items,
-}: {
+}: Readonly<{
   items: {
     name: string
     url: string
     icon: React.ReactNode
   }[]
-}) {
+}>) {
   const { isMobile } = useSidebar()
 
   return (

@@ -28,7 +28,7 @@ type BalanceEvolutionChartProps = {
   data: DashboardBalanceEvolutionPoint[];
 };
 
-export function BalanceEvolutionChart({ data }: BalanceEvolutionChartProps) {
+export function BalanceEvolutionChart({ data }: Readonly<BalanceEvolutionChartProps>) {
   const t = useTranslations("dashboard");
 
   const chartConfig = {

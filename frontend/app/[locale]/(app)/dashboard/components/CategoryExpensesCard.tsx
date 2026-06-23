@@ -31,7 +31,7 @@ const CATEGORY_COLORS = [
   "bg-indigo-500",
 ];
 
-export function CategoryExpensesCard({ categoryExpenses }: CategoryExpensesCardProps) {
+export function CategoryExpensesCard({ categoryExpenses }: Readonly<CategoryExpensesCardProps>) {
   return (
     <Card className="border-border/70 bg-card/90 backdrop-blur">
       <CardHeader className="space-y-1">

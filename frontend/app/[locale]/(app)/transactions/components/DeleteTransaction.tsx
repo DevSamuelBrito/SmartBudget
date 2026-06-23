@@ -35,7 +35,7 @@ export function DeleteTransactionSheet({
     onOpenChange,
     onSubmit,
     isDeleting = false,
-}: DeleteTransactionSheetProps) {
+}: Readonly<DeleteTransactionSheetProps>) {
     const t = useTranslations("transactions");
 
     if (!transaction) {

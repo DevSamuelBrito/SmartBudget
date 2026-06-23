@@ -45,18 +45,21 @@ const getApiBaseUrl = () => {
   return getServerApiBaseUrl();
 };
 
+const toStr = (value: unknown, fallback: string): string =>
+  typeof value === "string" ? value : fallback;
+
 const normalizeLoginResponse = (payload: unknown): LoginResponse => {
   const data = payload as Record<string, unknown>;
 
   return {
-    accessToken: String(data.accessToken ?? data.AccessToken ?? ""),
-    tokenType: String(data.tokenType ?? data.TokenType ?? "Bearer"),
+    accessToken: toStr(data.accessToken ?? data.AccessToken, ""),
+    tokenType: toStr(data.tokenType ?? data.TokenType, "Bearer"),
     expiresInSeconds: Number(
       data.expiresInSeconds ?? data.ExpiresInSeconds ?? 0,
     ),
-    userId: String(data.userId ?? data.UserId ?? ""),
-    name: String(data.name ?? data.Name ?? ""),
-    email: String(data.email ?? data.Email ?? ""),
+    userId: toStr(data.userId ?? data.UserId, ""),
+    name: toStr(data.name ?? data.Name, ""),
+    email: toStr(data.email ?? data.Email, ""),
   };
 };
 

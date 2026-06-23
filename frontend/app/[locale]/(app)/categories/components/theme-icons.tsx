@@ -60,7 +60,7 @@ type ThemeIconProps = {
     className?: string;
 };
 
-export function ThemeIcon({ iconKey, className }: ThemeIconProps) {
+export function ThemeIcon({ iconKey, className }: Readonly<ThemeIconProps>) {
     const Icon = iconMap[iconKey];
 
     return <Icon className={className} />;

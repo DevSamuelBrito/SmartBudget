@@ -39,7 +39,7 @@ type LatestTransactionsCardProps = {
     transactions: DashboardLatestTransaction[];
 };
 
-export function LatestTransactionsCard({ transactions }: LatestTransactionsCardProps) {
+export function LatestTransactionsCard({ transactions }: Readonly<LatestTransactionsCardProps>) {
     const t = useTranslations("dashboard");
 
     const router = useRouter();

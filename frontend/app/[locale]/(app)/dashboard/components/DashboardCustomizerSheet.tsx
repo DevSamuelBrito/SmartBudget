@@ -79,13 +79,13 @@ function SortableItem({
     onToggleVisible,
     onToggleColumns,
     onPremiumLockClick,
-}: {
+}: Readonly<{
     item: DashboardConfigItem;
     isPremiumUser: boolean;
     onToggleVisible: (key: string) => void;
     onToggleColumns: (key: string) => void;
     onPremiumLockClick: () => void;
-}) {
+}>) {
     const t = useTranslations("dashboard");
 
     const isPremiumComponent = PREMIUM_COMPONENT_KEYS.includes(item.componentKey);
@@ -117,8 +117,8 @@ function SortableItem({
             <button
                 type="button"
                 className={`touch-none text-muted-foreground ${isLocked ? "cursor-not-allowed" : "cursor-grab hover:text-foreground"}`}
-                {...(!isLocked ? attributes : {})}
-                {...(!isLocked ? listeners : {})}
+                {...(!isLocked ? {} : attributes)}
+                {...(!isLocked ? {} : listeners)}
                 onClick={isLocked ? onPremiumLockClick : undefined}
             >
                 {isLocked ? (
@@ -136,7 +136,7 @@ function SortableItem({
 
                         return;
                     }
-                    
+
                     onToggleVisible(item.componentKey);
                 }}
                 disabled={isLocked}
@@ -189,7 +189,7 @@ function SortableItem({
 export function DashboardCustomizerSheet({
     open,
     onOpenChange,
-}: DashboardCustomizerSheetProps) {
+}: Readonly<DashboardCustomizerSheetProps>) {
     const t = useTranslations("dashboard");
 
     const { state } = useAuth();

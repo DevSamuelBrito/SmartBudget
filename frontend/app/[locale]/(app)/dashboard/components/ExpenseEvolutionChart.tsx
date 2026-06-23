@@ -28,7 +28,7 @@ type ExpenseEvolutionChartProps = {
   data: DashboardExpenseByMonth[];
 };
 
-export function ExpenseEvolutionChart({ data }: ExpenseEvolutionChartProps) {
+export function ExpenseEvolutionChart({ data }: Readonly<ExpenseEvolutionChartProps>) {
   const t = useTranslations("dashboard");
 
   const chartConfig = {
