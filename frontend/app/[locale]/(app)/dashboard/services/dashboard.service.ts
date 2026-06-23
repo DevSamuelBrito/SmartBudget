@@ -28,6 +28,7 @@ export const getDashboardOverviewServer = async (
   const url = new URL("dashboard/overview", baseUrl);
 
   const queryString = query.toString();
+  
   if (queryString) {
     url.search = queryString;
   }
