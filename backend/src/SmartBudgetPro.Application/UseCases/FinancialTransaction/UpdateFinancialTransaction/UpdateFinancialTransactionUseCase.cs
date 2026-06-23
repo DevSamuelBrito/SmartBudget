@@ -62,17 +62,18 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinanci
                 await RecalculateBudgetAsync(input.UserId, oldCategoryId.Value, oldDate.Year, oldDate.Month);
             }
 
-            // Recalculate budget for new category/period if it's an expense (skip if same category and period)
-            if (input.TransactionType == FinancialTransactionType.Expense && input.TransactionCategoryId.HasValue)
+            if (input.TransactionType == FinancialTransactionType.Expense && input.TransactionCategoryId.HasValue
+                && ShouldRecalculateNewCategory(oldCategoryId, oldDate, input.TransactionCategoryId, input.TransactionDate))
             {
-                var sameCategory = oldCategoryId == input.TransactionCategoryId;
-                var samePeriod = oldDate.Year == input.TransactionDate.Year && oldDate.Month == input.TransactionDate.Month;
-
-                if (!(sameCategory && samePeriod))
-                {
-                    await RecalculateBudgetAsync(input.UserId, input.TransactionCategoryId.Value, input.TransactionDate.Year, input.TransactionDate.Month);
-                }
+                await RecalculateBudgetAsync(input.UserId, input.TransactionCategoryId.Value, input.TransactionDate.Year, input.TransactionDate.Month);
             }
+        }
+
+        private static bool ShouldRecalculateNewCategory(Guid? oldCategoryId, DateTime oldDate, Guid? newCategoryId, DateTime newDate)
+        {
+            var sameCategory = oldCategoryId == newCategoryId;
+            var samePeriod = oldDate.Year == newDate.Year && oldDate.Month == newDate.Month;
+            return !(sameCategory && samePeriod);
         }
 
         private async Task RecalculateBudgetAsync(Guid userId, Guid categoryId, int year, int month)

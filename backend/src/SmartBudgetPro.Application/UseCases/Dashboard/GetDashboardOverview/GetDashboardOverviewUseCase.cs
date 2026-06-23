@@ -43,7 +43,7 @@ public class GetDashboardOverviewUseCase(
 
         var categoryById = allCategories.ToDictionary(category => category.Id, category => category);
 
-        var periodStart = new DateTime(targetYear, targetMonth, 1);
+        var periodStart = new DateTime(targetYear, targetMonth, 1, 0, 0, 0, DateTimeKind.Utc); 
         var periodEndExclusive = periodStart.AddMonths(1);
 
         var monthTransactions = allTransactions
