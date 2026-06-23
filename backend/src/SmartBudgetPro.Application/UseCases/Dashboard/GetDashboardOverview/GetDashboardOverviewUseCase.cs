@@ -50,6 +50,59 @@ public class GetDashboardOverviewUseCase(
             .Where(t => t.TransactionDate >= periodStart && t.TransactionDate < periodEndExclusive)
             .ToList();
 
+        var (totalIncome, totalExpense, monthIncome, monthExpense) = CalculateKpis(allTransactions, monthTransactions);
+
+        var financialRisk = CalculateFinancialRisk(allTransactions, periodStart, targetYear, targetMonth);
+
+        var latestTransactions = BuildLatestTransactions(allTransactions, categoryById, input.LatestTransactionsCount);
+
+        var categoryExpenses = BuildCategoryExpenses(monthTransactions, monthExpense, categoryById);
+
+        var monthBuckets = BuildMonthBuckets(allTransactions);
+
+        var incomeVsExpenseByMonth = BuildIncomeVsExpenseByMonth(monthBuckets, periodStart, input.HistoryMonths);
+
+        var balanceEvolution = BuildBalanceEvolution(allTransactions, periodStart, targetYear, targetMonth);
+
+        var budgetProgress = BuildBudgetProgress(allBudgets, categoryById, targetMonth, targetYear);
+
+        var alerts = BuildAlerts(budgetProgress);
+
+        var expenseEvolutionByMonth = user.IsPremium
+            ? BuildExpenseEvolutionByMonth(monthBuckets, periodStart)
+            : null;
+
+        var daysDivisor = GetAverageDaysDivisor(targetYear, targetMonth, now);
+
+        return new GetDashboardOverviewUseCaseOutput(
+            targetMonth,
+            targetYear,
+            new DashboardKpisDto(
+                CurrentBalance: totalIncome - totalExpense,
+                MonthlyIncome: monthIncome,
+                MonthlyExpense: monthExpense,
+                MonthlySavings: monthIncome - monthExpense),
+            DailyAverageIncome: monthIncome / daysDivisor,
+            DailyAverageExpense: monthExpense / daysDivisor,
+            FinancialRisk: new DashboardFinancialRiskDto(
+                financialRisk.AverageIncome,
+                financialRisk.FixedExpenses,
+                financialRisk.Percentage,
+                financialRisk.Status),
+            LatestTransactions: latestTransactions,
+            CategoryExpenses: categoryExpenses,
+            CategoryExpensePie: categoryExpenses,
+            IncomeVsExpenseByMonth: incomeVsExpenseByMonth,
+            BalanceEvolution: balanceEvolution,
+            BudgetProgress: budgetProgress,
+            Alerts: alerts,
+            ExpenseEvolutionByMonth: expenseEvolutionByMonth);
+    }
+
+    private static (decimal TotalIncome, decimal TotalExpense, decimal MonthIncome, decimal MonthExpense) CalculateKpis(
+        List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> allTransactions,
+        List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> monthTransactions)
+    {
         var totalIncome = allTransactions
             .Where(t => t.Type == FinancialTransactionType.Income)
             .Sum(t => t.Amount);
@@ -66,34 +119,18 @@ public class GetDashboardOverviewUseCase(
             .Where(t => t.Type == FinancialTransactionType.Expense)
             .Sum(t => t.Amount);
 
-        var financialRiskIncomeStart = periodStart.AddMonths(-2); 
-        var financialRiskIncomeEndExclusive = periodStart.AddMonths(1); 
+        return (totalIncome, totalExpense, monthIncome, monthExpense);
+    }
 
-        var averageIncome = allTransactions
-            .Where(t => t.Type == FinancialTransactionType.Income)
-            .Where(t => t.TransactionDate >= financialRiskIncomeStart && t.TransactionDate < financialRiskIncomeEndExclusive)
-            .Sum(t => t.Amount) / 3m;
-
-        var fixedExpenses = allTransactions
-            .Where(t => t.Type == FinancialTransactionType.Expense)
-            .Where(t => t.Recurrence == RecurrenceType.Monthly)
-            .Where(t => t.TransactionDate.Year == targetYear && t.TransactionDate.Month == targetMonth)
-            .Sum(t => t.Amount);
-
-        var financialRiskPercentage = averageIncome == 0m
-            ? 0m
-            : (fixedExpenses / averageIncome) * 100m;
-
-        var financialRiskStatus = averageIncome == 0m
-            ? "NoData"
-            : financialRiskPercentage > 70m
-                ? "FinancialRisk"
-                : "Ok";
-
-        var latestTransactions = allTransactions
+    private static List<DashboardLatestTransactionDto> BuildLatestTransactions(
+        List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> allTransactions,
+        Dictionary<Guid, SmartBudgetPro.Domain.Transactions.TransactionCategory> categoryById,
+        int latestTransactionsCount)
+    {
+        return allTransactions
             .OrderByDescending(t => t.TransactionDate)
             .ThenByDescending(t => t.CreatedAt)
-            .Take(input.LatestTransactionsCount)
+            .Take(latestTransactionsCount)
             .Select(t =>
             {
                 SmartBudgetPro.Domain.Transactions.TransactionCategory? category = null;
@@ -112,8 +149,14 @@ public class GetDashboardOverviewUseCase(
                     t.Description);
             })
             .ToList();
+    }
 
-        var categoryExpenses = monthTransactions
+    private static List<DashboardCategoryExpenseDto> BuildCategoryExpenses(
+        List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> monthTransactions,
+        decimal monthExpense,
+        Dictionary<Guid, SmartBudgetPro.Domain.Transactions.TransactionCategory> categoryById)
+    {
+        return monthTransactions
             .Where(t => t.Type == FinancialTransactionType.Expense)
             .GroupBy(t => t.TransactionCategoryId)
             .Select(group =>
@@ -138,19 +181,29 @@ public class GetDashboardOverviewUseCase(
             })
             .OrderByDescending(c => c.Amount)
             .ToList();
+    }
 
-        var monthBuckets = allTransactions
+    private static Dictionary<(int Year, int Month), (decimal Income, decimal Expense)> BuildMonthBuckets(
+        List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> allTransactions)
+    {
+        return allTransactions
             .GroupBy(t => new { t.TransactionDate.Year, t.TransactionDate.Month })
             .ToDictionary(
                 group => (group.Key.Year, group.Key.Month),
-                group => new
-                {
-                    Income = group.Where(t => t.Type == FinancialTransactionType.Income).Sum(t => t.Amount),
-                    Expense = group.Where(t => t.Type == FinancialTransactionType.Expense).Sum(t => t.Amount)
-                });
+                group => (
+                    Income: group.Where(t => t.Type == FinancialTransactionType.Income).Sum(t => t.Amount),
+                    Expense: group.Where(t => t.Type == FinancialTransactionType.Expense).Sum(t => t.Amount)
+                ));
+    }
 
-        var incomeVsExpenseByMonth = new List<DashboardIncomeExpenseByMonthDto>(input.HistoryMonths);
-        for (var i = input.HistoryMonths - 1; i >= 0; i--)
+    private static List<DashboardIncomeExpenseByMonthDto> BuildIncomeVsExpenseByMonth(
+        Dictionary<(int Year, int Month), (decimal Income, decimal Expense)> monthBuckets,
+        DateTime periodStart,
+        int historyMonths)
+    {
+        var incomeVsExpenseByMonth = new List<DashboardIncomeExpenseByMonthDto>(historyMonths);
+
+        for (var i = historyMonths - 1; i >= 0; i--)
         {
             var monthDate = periodStart.AddMonths(-i);
 
@@ -159,9 +212,24 @@ public class GetDashboardOverviewUseCase(
             incomeVsExpenseByMonth.Add(new DashboardIncomeExpenseByMonthDto(
                 monthDate.Year,
                 monthDate.Month,
-                hasBucket ? bucket!.Income : 0m,
-                hasBucket ? bucket!.Expense : 0m));
+                hasBucket ? bucket.Income : 0m,
+                hasBucket ? bucket.Expense : 0m));
         }
+
+        return incomeVsExpenseByMonth;
+    }
+
+    private static List<DashboardBalanceEvolutionPointDto> BuildBalanceEvolution(
+        List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> allTransactions,
+        DateTime periodStart,
+        int targetYear,
+        int targetMonth)
+    {
+        var periodEndExclusive = periodStart.AddMonths(1);
+
+        var monthTransactions = allTransactions
+            .Where(t => t.TransactionDate >= periodStart && t.TransactionDate < periodEndExclusive)
+            .ToList();
 
         var balanceUntilPeriodStart = allTransactions
             .Where(t => t.TransactionDate < periodStart)
@@ -185,7 +253,16 @@ public class GetDashboardOverviewUseCase(
             balanceEvolution.Add(new DashboardBalanceEvolutionPointDto(date, runningBalance));
         }
 
-        var budgetProgress = allBudgets
+        return balanceEvolution;
+    }
+
+    private static List<DashboardBudgetProgressDto> BuildBudgetProgress(
+        List<SmartBudgetPro.Domain.Budgets.Budget> allBudgets,
+        Dictionary<Guid, SmartBudgetPro.Domain.Transactions.TransactionCategory> categoryById,
+        int targetMonth,
+        int targetYear)
+    {
+        return allBudgets
             .Where(b => b.Month == targetMonth && b.Year == targetYear)
             .Select(budget =>
             {
@@ -207,8 +284,11 @@ public class GetDashboardOverviewUseCase(
             })
             .OrderByDescending(b => b.Percentage)
             .ToList();
+    }
 
-        var alerts = budgetProgress
+    private static List<DashboardAlertDto> BuildAlerts(List<DashboardBudgetProgressDto> budgetProgress)
+    {
+        return budgetProgress
             .Where(b => b.Status is BudgetStatus.Warning or BudgetStatus.Exceeded || b.Percentage >= 80m)
             .Select(budget =>
             {
@@ -230,48 +310,60 @@ public class GetDashboardOverviewUseCase(
                     message);
             })
             .ToList();
+    }
 
-        List<DashboardExpenseByMonthDto>? expenseEvolutionByMonth = null;
-        if (user.IsPremium)
+    private static (decimal AverageIncome, decimal FixedExpenses, decimal Percentage, string Status) CalculateFinancialRisk(
+            List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> allTransactions,
+            DateTime periodStart,
+            int targetYear,
+            int targetMonth)
+    {
+        var financialRiskIncomeStart = periodStart.AddMonths(-2);
+        var financialRiskIncomeEndExclusive = periodStart.AddMonths(1);
+
+        var averageIncome = allTransactions
+            .Where(t => t.Type == FinancialTransactionType.Income)
+            .Where(t => t.TransactionDate >= financialRiskIncomeStart && t.TransactionDate < financialRiskIncomeEndExclusive)
+            .Sum(t => t.Amount) / 3m;
+
+        var fixedExpenses = allTransactions
+            .Where(t => t.Type == FinancialTransactionType.Expense)
+            .Where(t => t.Recurrence == RecurrenceType.Monthly)
+            .Where(t => t.TransactionDate.Year == targetYear && t.TransactionDate.Month == targetMonth)
+            .Sum(t => t.Amount);
+
+        var percentage = averageIncome == 0m
+            ? 0m
+            : (fixedExpenses / averageIncome) * 100m;
+
+        var status = averageIncome == 0m
+            ? "NoData"
+            : percentage > 70m
+                ? "FinancialRisk"
+                : "Ok";
+
+        return (averageIncome, fixedExpenses, percentage, status);
+    }
+
+    private static List<DashboardExpenseByMonthDto>? BuildExpenseEvolutionByMonth(
+        Dictionary<(int Year, int Month), (decimal Income, decimal Expense)> monthBuckets,
+        DateTime periodStart)
+    {
+        const int expenseEvolutionMonths = 6;
+        var expenseEvolutionByMonth = new List<DashboardExpenseByMonthDto>(expenseEvolutionMonths);
+
+        for (var i = expenseEvolutionMonths - 1; i >= 0; i--)
         {
-            const int expenseEvolutionMonths = 6;
-            expenseEvolutionByMonth = new List<DashboardExpenseByMonthDto>(expenseEvolutionMonths);
-            for (var i = expenseEvolutionMonths - 1; i >= 0; i--)
-            {
-                var monthDate = periodStart.AddMonths(-i);
-                var hasBucket = monthBuckets.TryGetValue((monthDate.Year, monthDate.Month), out var bucket);
-                expenseEvolutionByMonth.Add(new DashboardExpenseByMonthDto(
-                    monthDate.Year,
-                    monthDate.Month,
-                    hasBucket ? bucket!.Expense : 0m));
-            }
+            var monthDate = periodStart.AddMonths(-i);
+            var hasBucket = monthBuckets.TryGetValue((monthDate.Year, monthDate.Month), out var bucket);
+
+            expenseEvolutionByMonth.Add(new DashboardExpenseByMonthDto(
+                monthDate.Year,
+                monthDate.Month,
+                hasBucket ? bucket.Expense : 0m));
         }
 
-        var daysDivisor = GetAverageDaysDivisor(targetYear, targetMonth, now);
-
-        return new GetDashboardOverviewUseCaseOutput(
-            targetMonth,
-            targetYear,
-            new DashboardKpisDto(
-                CurrentBalance: totalIncome - totalExpense,
-                MonthlyIncome: monthIncome,
-                MonthlyExpense: monthExpense,
-                MonthlySavings: monthIncome - monthExpense),
-            DailyAverageIncome: monthIncome / daysDivisor,
-            DailyAverageExpense: monthExpense / daysDivisor,
-            FinancialRisk: new DashboardFinancialRiskDto(
-                averageIncome,
-                fixedExpenses,
-                financialRiskPercentage,
-                financialRiskStatus),
-            LatestTransactions: latestTransactions,
-            CategoryExpenses: categoryExpenses,
-            CategoryExpensePie: categoryExpenses,
-            IncomeVsExpenseByMonth: incomeVsExpenseByMonth,
-            BalanceEvolution: balanceEvolution,
-            BudgetProgress: budgetProgress,
-            Alerts: alerts,
-            ExpenseEvolutionByMonth: expenseEvolutionByMonth);
+        return expenseEvolutionByMonth;
     }
 
     private static decimal ToSignedAmount(SmartBudgetPro.Domain.Transactions.FinancialTransaction transaction)
