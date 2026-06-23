@@ -10,13 +10,13 @@ namespace SmartBudgetPro.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-
+            // Intentionally empty. Column IsPremium was added in the subsequent migration FixUserColumns.
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-
+            // Intentionally empty. See FixUserColumns migration.
         }
     }
 }
