@@ -1,3 +1,5 @@
+namespace SmartBudgetPro.Infrastructure.Security;
+
 public class JwtSettings
 {
     public string Issuer { get; set; } = default!;

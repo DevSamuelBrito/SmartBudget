@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
+namespace SmartBudgetPro.Infrastructure.Security;
+
+
 public static class AuthenticationExtensions
 {
     public static IServiceCollection AddJwtAuthentication(
