@@ -31,6 +31,20 @@ import type { BudgetByPeriodApi, CategoryApi, CategoryTheme } from "../types";
 // utils
 import { formatCurrency } from "@/lib/utils/formatters";
 
+
+function getProgressClassName(status: BudgetByPeriodApi["status"]) {
+    if (status === "Exceeded" || status === 3) {
+        return "bg-red-500";
+    }
+
+    if (status === "Warning" || status === 2) {
+        return "bg-amber-500";
+    }
+
+    return "bg-emerald-500";
+}
+
+
 type CategoryTableProps = {
     categories: CategoryApi[];
     onEdit: (category: CategoryApi) => void;
@@ -47,25 +61,13 @@ export function CategoryTable({
     onSetBudget,
     themes,
     budgetsByCategoryId,
-}: CategoryTableProps) {
+}: Readonly<CategoryTableProps>) {
     const t = useTranslations("categories");
     const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
 
     function getTheme(iconKey: CategoryApi["icon"]) {
         return themes.find((theme) => theme.iconKey === iconKey);
-    }
-
-    function getProgressClassName(status: BudgetByPeriodApi["status"]) {
-        if (status === "Exceeded" || status === 3) {
-            return "bg-red-500";
-        }
-
-        if (status === "Warning" || status === 2) {
-            return "bg-amber-500";
-        }
-
-        return "bg-emerald-500";
     }
 
     const renderTableBody = () => {

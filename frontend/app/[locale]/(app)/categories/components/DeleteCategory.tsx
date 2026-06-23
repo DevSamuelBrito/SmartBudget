@@ -35,7 +35,7 @@ export function DeleteCategorySheet({
     onOpenChange,
     onSubmit,
     isDeleting = false,
-}: DeleteCategorySheetProps) {
+}: Readonly<DeleteCategorySheetProps>) {
     const t = useTranslations("categories");
 
     if (!category) {
