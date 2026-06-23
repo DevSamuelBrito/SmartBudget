@@ -5,8 +5,12 @@ namespace SmartBudgetPro.API.Configuration;
 
 public static class ApiDocumentationExtensions
 {
+    private const string BearerScheme = "Bearer";
+
     public static IServiceCollection AddApiDocumentation(this IServiceCollection services)
     {
+
+
         services.AddOpenApi("v1", options =>
         {
             options.AddDocumentTransformer((document, _, _) =>
@@ -14,7 +18,7 @@ public static class ApiDocumentationExtensions
                 document.Components ??= new OpenApiComponents();
                 document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
 
-                document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
+                document.Components.SecuritySchemes[BearerScheme] = new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.Http,
                     Scheme = "bearer",
@@ -27,7 +31,7 @@ public static class ApiDocumentationExtensions
                 document.Security ??= new List<OpenApiSecurityRequirement>();
                 document.Security.Add(new OpenApiSecurityRequirement
                 {
-                    [new OpenApiSecuritySchemeReference("Bearer", document, null)] = []
+                    [new OpenApiSecuritySchemeReference(BearerScheme, document, null)] = []
                 });
 
                 return Task.CompletedTask;
@@ -42,8 +46,8 @@ public static class ApiDocumentationExtensions
         app.MapOpenApi();
         app.MapScalarApiReference(options =>
         {
-            options.AddHttpAuthentication("Bearer", _ => { });
-            options.AddPreferredSecuritySchemes(["Bearer"]);
+            options.AddHttpAuthentication(BearerScheme, _ => { });
+            options.AddPreferredSecuritySchemes([BearerScheme]);
         });
 
         return app;
