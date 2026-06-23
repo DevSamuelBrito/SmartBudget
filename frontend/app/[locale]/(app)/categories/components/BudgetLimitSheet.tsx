@@ -49,13 +49,15 @@ export function BudgetLimitSheet({
     onOpenChange,
     onSubmit,
     isSubmitting = false,
-}: BudgetLimitSheetProps) {
+}: Readonly<BudgetLimitSheetProps>) {
     const t = useTranslations("categories");
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const periodLabel = useMemo(() => {
-        return `${t(`months.${period.month}`)} de ${period.year}`;
+        const month = t(`months.${period.month}`);
+
+        return `${month} de ${period.year}`;
     }, [period.month, period.year, t]);
 
     if (!category) {
@@ -66,8 +68,16 @@ export function BudgetLimitSheet({
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        const rawValue = String(formData.get("limitAmount") ?? "");
-        const parsedValue = Number(rawValue);
+        
+        const limitAmount = formData.get("limitAmount");
+
+        if (typeof limitAmount !== "string") {
+            setErrorMessage(t("budget.errorInvalidAmount"));
+
+            return;
+        }
+
+        const parsedValue = Number(limitAmount);
 
         if (!Number.isFinite(parsedValue) || parsedValue <= 0) {
             setErrorMessage(t("budget.errorInvalidAmount"));
