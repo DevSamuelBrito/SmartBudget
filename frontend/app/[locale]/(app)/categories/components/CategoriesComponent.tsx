@@ -184,7 +184,8 @@ export function CategoriesScreen({
 
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Button variant="outline" className="w-10 px-0">
+                            <Button variant="outline" className="w-10 px-0" aria-label="Filter by icon"
+                            >
                                 {pendingIcon ? (
                                     (() => {
 

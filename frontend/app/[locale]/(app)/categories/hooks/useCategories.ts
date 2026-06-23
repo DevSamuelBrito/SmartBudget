@@ -259,7 +259,10 @@ export function useCategories({
   }
 
   function handleSearch() {
-    setAppliedFilters({ name: pendingName, icon: pendingIcon });
+    setAppliedFilters({
+      name: pendingName?.trim() ?? "",
+      icon: pendingIcon ?? "",
+    });
     setPage(1);
   }
 
