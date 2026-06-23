@@ -4,7 +4,7 @@ namespace SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCatego
 
 public class GetAllTransactionCategoryUseCaseInputValidator : AbstractValidator<GetAllTransactionCategoryUseCaseInput>
 {
-    public GetAllTransactionCategoryUseCaseInputValidator()
+  public GetAllTransactionCategoryUseCaseInputValidator()
     {
         RuleFor(input => input.Page)
             .GreaterThan(0);
@@ -12,5 +12,13 @@ public class GetAllTransactionCategoryUseCaseInputValidator : AbstractValidator<
         RuleFor(input => input.PageSize)
             .GreaterThan(0)
             .LessThanOrEqualTo(100);
+
+        RuleFor(input => input.Name)
+            .MaximumLength(150)
+            .When(input => input.Name is not null);
+
+        RuleFor(input => input.Icon)
+            .MaximumLength(50)
+            .When(input => input.Icon is not null);
     }
 }
