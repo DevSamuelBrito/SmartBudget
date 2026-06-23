@@ -34,8 +34,6 @@ import {
 // components
 import { ThemeIcon } from "./theme-icons";
 
-import { PREMIUM_ICON_KEYS } from "./theme-icons";
-
 import { PremiumUpgradeDialog } from "@/components/shared/premium-upgrade-dialog";
 
 import { categoryFormSchema } from "../schemas/category.schema";
@@ -64,7 +62,7 @@ export function CategoryFormSheet({
     onOpenChange,
     onSubmit,
     isSubmitting = false,
-}: CategoryFormSheetProps) {
+}: Readonly<CategoryFormSheetProps>) {
     "use no memo"
 
     const t = useTranslations("categories");
@@ -192,46 +190,46 @@ export function CategoryFormSheet({
                                             aria-haspopup={isLocked ? "dialog" : undefined}
                                             disabled={isSubmitting}
                                         >
-                                        <div
-                                            className={`relative flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
-                                                } ${theme.colorClass} ${isLocked ? "opacity-60" : ""}`}
-                                        >
-                                            <ThemeIcon iconKey={theme.iconKey} className="size-5" />
-                                            {isLocked && (
-                                                <span className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/40">
-                                                    <Lock className="size-4 text-white" />
-                                                </span>
-                                            )}
-                                        </div>
+                                            <div
+                                                className={`relative flex size-14 items-center justify-center rounded-lg text-white transition ${icon === theme.iconKey ? "ring-2 ring-primary ring-offset-2" : ""
+                                                    } ${theme.colorClass} ${isLocked ? "opacity-60" : ""}`}
+                                            >
+                                                <ThemeIcon iconKey={theme.iconKey} className="size-5" />
+                                                {isLocked && (
+                                                    <span className="absolute inset-0 flex items-center justify-center rounded-lg bg-black/40">
+                                                        <Lock className="size-4 text-white" />
+                                                    </span>
+                                                )}
+                                            </div>
                                         </button>
-                            );
+                                    );
                                 })}
+                            </div>
+                            {errors.icon && (
+                                <p className="text-sm text-destructive">{errors.icon.message}</p>
+                            )}
                         </div>
-                        {errors.icon && (
-                            <p className="text-sm text-destructive">{errors.icon.message}</p>
-                        )}
-                    </div>
-                </form>
+                    </form>
 
-                <SheetFooter>
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => onOpenChange(false)}
-                        disabled={isSubmitting}>
-                        {t("form.cancel")}
-                    </Button>
-                    <Button
-                        form="category-form"
-                        type="submit"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting && <Loader2 className="animate-spin size-4 text-muted-foreground" />}
-                        {t("form.save")}
-                    </Button>
-                </SheetFooter>
-            </SheetContent>
-        </Sheet >
+                    <SheetFooter>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => onOpenChange(false)}
+                            disabled={isSubmitting}>
+                            {t("form.cancel")}
+                        </Button>
+                        <Button
+                            form="category-form"
+                            type="submit"
+                            disabled={isSubmitting}
+                        >
+                            {isSubmitting && <Loader2 className="animate-spin size-4 text-muted-foreground" />}
+                            {t("form.save")}
+                        </Button>
+                    </SheetFooter>
+                </SheetContent>
+            </Sheet >
 
             <PremiumUpgradeDialog
                 open={premiumDialogOpen}
@@ -241,5 +239,3 @@ export function CategoryFormSheet({
         </>
     );
 }
-
-export { PREMIUM_ICON_KEYS };
