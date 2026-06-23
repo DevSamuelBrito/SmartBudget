@@ -55,7 +55,7 @@ export function CategoriesScreen({
     initialBudgets,
     initialMonth,
     initialYear,
-}: CategoriesScreenProps) {
+}: Readonly<CategoriesScreenProps>) {
     const {
         categories,
         page,
@@ -197,7 +197,7 @@ export function CategoriesScreen({
                                         handlePageChange(page - 1);
                                     }}
                                     aria-disabled={!hasPreviousPage}
-                                    className={!hasPreviousPage ? "pointer-events-none opacity-50" : undefined}
+                                    className={hasPreviousPage ? undefined : "pointer-events-none opacity-50"}
                                 />
                             </PaginationItem>
 
@@ -225,7 +225,7 @@ export function CategoriesScreen({
                                         handlePageChange(page + 1);
                                     }}
                                     aria-disabled={!hasNextPage}
-                                    className={!hasNextPage ? "pointer-events-none opacity-50" : undefined}
+                                    className={hasNextPage ? undefined : "pointer-events-none opacity-50"}
                                 />
                             </PaginationItem>
                         </PaginationContent>
