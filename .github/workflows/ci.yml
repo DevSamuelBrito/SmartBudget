@@ -38,6 +38,12 @@ jobs:
       - name: Run tests with coverage
         run: npm test -- --coverage --coverageReporters=lcov --passWithNoTests
 
+      - name: Check coverage file
+        run: |
+          echo "Looking for lcov.info..."
+          find . -name "lcov.info" 2>/dev/null
+          ls -la coverage/ 2>/dev/null || echo "coverage/ directory not found"
+
       - name: SonarCloud Scan Frontend
         uses: SonarSource/sonarqube-scan-action@v6
         with:
