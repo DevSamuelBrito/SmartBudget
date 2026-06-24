@@ -6,7 +6,7 @@ import { useRef } from "react";
 // i18n
 import { useTranslations } from "next-intl";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { Blocks, Pencil, Trash2 } from "lucide-react";
 
 // ui
 import { Button } from "@/components/ui/button";
@@ -71,6 +71,19 @@ export function CategoryTable({
     }
 
     const renderTableBody = () => {
+        if (categories.length === 0) {
+            return (
+                <TableRow>
+                    <TableCell colSpan={7} className="h-52 text-center">
+                        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+                            <Blocks className="size-10 opacity-30" />
+                            <span className="text-sm">{t("table.empty")}</span>
+                        </div>
+                    </TableCell>
+                </TableRow>
+            );
+        }
+
         return categories.map((category) => {
             const theme = getTheme(category.icon);
             const budget = budgetsByCategoryId.get(category.id);

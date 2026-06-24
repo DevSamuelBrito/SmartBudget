@@ -269,7 +269,7 @@ export function CategoriesScreen({
                         budgetsByCategoryId={budgetMapByCategoryId}
                     />
 
-                    <Pagination className="mt-4">
+                    {totalPages > 1 && <Pagination className="mt-4">
                         <PaginationContent>
                             <PaginationItem>
                                 <PaginationPrevious
@@ -312,7 +312,7 @@ export function CategoriesScreen({
                                 />
                             </PaginationItem>
                         </PaginationContent>
-                    </Pagination>
+                    </Pagination>}
                 </CardContent>
             </Card>
 

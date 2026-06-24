@@ -233,7 +233,8 @@
       "spent": "Spent",
       "remaining": "Remaining",
       "progress": "Progress",
-      "actions": "Actions"
+      "actions": "Actions",
+      "empty": "No categories found."
     },
     "actions": {
       "setBudget": "Set budget",

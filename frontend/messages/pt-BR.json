@@ -233,7 +233,8 @@
       "spent": "Gasto",
       "remaining": "Restante",
       "progress": "Progresso",
-      "actions": "Ações"
+      "actions": "Ações",
+      "empty": "Nenhuma categoria encontrada."
     },
     "actions": {
       "setBudget": "Definir orçamento",
