@@ -11,7 +11,7 @@ test.describe("Categories", () => {
   test("criar categoria exibe a categoria na tabela", async ({ page }) => {
     const categoryName = `E2E Categoria Criação ${Date.now()}`;
 
-    await page.getByRole("button", { name: "Criar nova categoria" }).click();
+    await page.getByRole("button", { name: "Nova categoria" }).click();
 
     await expect(page.getByText("Criar categoria")).toBeVisible();
 
@@ -26,7 +26,7 @@ test.describe("Categories", () => {
     const originalName = `E2E Edit ${Date.now()}`;
     const updatedName = `Categoria Atualizada ${Date.now()}`;
 
-    await page.getByRole("button", { name: "Criar nova categoria" }).click();
+    await page.getByRole("button", { name: "Nova categoria" }).click();
 
     await page.locator("#category-name").fill(originalName);
 
@@ -51,7 +51,7 @@ test.describe("Categories", () => {
   test("excluir categoria remove a linha da tabela", async ({ page }) => {
     const categoryName = `E2E Delete ${Date.now()}`;
 
-    await page.getByRole("button", { name: "Criar nova categoria" }).click();
+    await page.getByRole("button", { name: "Nova categoria" }).click();
     await page.getByLabel("Nome").fill(categoryName);
     await page.getByRole("button", { name: "Salvar" }).click();
 

@@ -30,7 +30,7 @@ import type { TransactionFormValues } from "../schemas/transaction.schema";
 
 import type { PagedResult } from "@/types/pagination";
 
-import type { TransactionApi } from "../types";
+import type { FinancialTransactionType, RecurrenceType, TransactionApi } from "../types";
 
 type UseTransactionsProps = {
   initialTransactions: PagedResult<TransactionApi>;
@@ -42,6 +42,22 @@ type UseTransactionsProps = {
 type UpdateTransactionPayload = TransactionFormValues & { id: string };
 
 type CreateTransactionPayload = TransactionFormValues;
+
+type AppliedFilters = {
+  description: string;
+  categoryId: string;
+  date: string;
+  type: FinancialTransactionType | "";
+  recurrence: RecurrenceType | "";
+};
+
+const emptyFilters: AppliedFilters = {
+  description: "",
+  categoryId: "",
+  date: "",
+  type: "",
+  recurrence: "",
+};
 
 export function useTransactions({
   initialTransactions,
@@ -55,12 +71,30 @@ export function useTransactions({
 
   const [page, setPage] = useState(1);
 
-  const [search, setSearch] = useState("");
+  const [pendingFilters, setPendingFilters] = useState<AppliedFilters>(emptyFilters);
+  const [appliedFilters, setAppliedFilters] = useState<AppliedFilters>(emptyFilters);
 
   const transactionsQuery = useQuery<PagedResult<TransactionApi>>({
-    queryKey: ["transactions", userId, { page, pageSize }],
-    queryFn: () => getTransactions({ page, pageSize }),
-    initialData: page === 1 ? initialTransactions : undefined,
+    queryKey: ["transactions", userId, { page, pageSize, ...appliedFilters }],
+    queryFn: () =>
+      getTransactions({
+        page,
+        pageSize,
+        description: appliedFilters.description || undefined,
+        categoryId: appliedFilters.categoryId || undefined,
+        date: appliedFilters.date || undefined,
+        type: appliedFilters.type !== "" ? appliedFilters.type : undefined,
+        recurrence: appliedFilters.recurrence !== "" ? appliedFilters.recurrence : undefined,
+      }),
+    initialData:
+      page === 1 &&
+      !appliedFilters.description &&
+      !appliedFilters.categoryId &&
+      !appliedFilters.date &&
+      appliedFilters.type === "" &&
+      appliedFilters.recurrence === ""
+        ? initialTransactions
+        : undefined,
     staleTime: Infinity,
   });
 
@@ -146,33 +180,12 @@ export function useTransactions({
     [categories],
   );
 
-  const normalizedSearch = search.trim().toLowerCase();
-
-  const transactions = (transactionsQuery.data?.items ?? [])
-    .map((transaction) => ({
-      ...transaction,
-      category: transaction.transactionCategoryId
-        ? categoryMap.get(transaction.transactionCategoryId)
-        : undefined,
-    }))
-    .filter((transaction) => {
-      if (!normalizedSearch) {
-        return true;
-      }
-
-      const categoryName = transaction.category?.name ?? "";
-
-      const searchableValues = [
-        transaction.description,
-        transaction.transactionDate,
-        transaction.amount.toString(),
-        categoryName,
-      ]
-        .join(" ")
-        .toLowerCase();
-
-      return searchableValues.includes(normalizedSearch);
-    });
+  const transactions = (transactionsQuery.data?.items ?? []).map((transaction) => ({
+    ...transaction,
+    category: transaction.transactionCategoryId
+      ? categoryMap.get(transaction.transactionCategoryId)
+      : undefined,
+  }));
 
   function handleCreateTransaction(payload: CreateTransactionPayload) {
     createTransactionMutation.mutate(payload);
@@ -186,6 +199,24 @@ export function useTransactions({
     deleteTransactionMutation.mutate(transactionId);
   }
 
+  function handleSearch() {
+    setAppliedFilters({ ...pendingFilters });
+    setPage(1);
+  }
+
+  function handleClearFilters() {
+    setPendingFilters(emptyFilters);
+    setAppliedFilters(emptyFilters);
+    setPage(1);
+  }
+
+  const hasActiveFilters =
+    Boolean(appliedFilters.description) ||
+    Boolean(appliedFilters.categoryId) ||
+    Boolean(appliedFilters.date) ||
+    appliedFilters.type !== "" ||
+    appliedFilters.recurrence !== "";
+
   return {
     transactions,
     page,
@@ -194,13 +225,17 @@ export function useTransactions({
     hasNextPage: transactionsQuery.data?.hasNextPage ?? false,
     hasPreviousPage: transactionsQuery.data?.hasPreviousPage ?? false,
     categories,
-    search,
-    setSearch,
     handleCreateTransaction,
     handleUpdateTransaction,
     handleDeleteTransaction,
     isCreatingTransaction: createTransactionMutation.isPending,
     isUpdatingTransaction: updateTransactionMutation.isPending,
     isDeletingTransaction: deleteTransactionMutation.isPending,
+    pendingFilters,
+    setPendingFilters,
+    appliedFilters,
+    hasActiveFilters,
+    handleSearch,
+    handleClearFilters,
   };
 }

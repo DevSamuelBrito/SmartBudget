@@ -6,15 +6,14 @@ import { useState } from "react";
 // i18n
 import { useTranslations } from "next-intl";
 
-// libs
-import { Plus, Search } from "lucide-react";
+// icons
+import { Plus } from "lucide-react";
 
 // components
 import { Button } from "@/components/ui/button";
 
-import { Card, CardContent } from "@/components/ui/card";
 
-import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 
 import {
     Pagination,
@@ -24,6 +23,8 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
+
+import { TransactionFiltersBar } from "./TransactionFiltersBar";
 
 import { TransactionFormSheet } from "./TransactionFormSheet";
 
@@ -58,8 +59,11 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
         isCreatingTransaction,
         isUpdatingTransaction,
         isDeletingTransaction,
-        search,
-        setSearch,
+        pendingFilters,
+        setPendingFilters,
+        hasActiveFilters,
+        handleSearch,
+        handleClearFilters,
     } = useTransactions(
         {
             initialTransactions,
@@ -72,63 +76,51 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
     const [createOpen, setCreateOpen] = useState(false);
     const [editingTransaction, setEditingTransaction] = useState<TransactionWithCategory | null>(null);
     const [deletingTransaction, setDeletingTransaction] = useState<TransactionWithCategory | null>(null);
+
     const editingOpen = Boolean(editingTransaction);
     const deletingOpen = Boolean(deletingTransaction);
 
     function closeEditingSheet(open: boolean) {
-        if (!open) {
-            setEditingTransaction(null);
-        }
+        if (!open) setEditingTransaction(null);
     }
 
     function closeDeletingSheet(open: boolean) {
-        if (!open) {
-            setDeletingTransaction(null);
-        }
+        if (!open) setDeletingTransaction(null);
     }
 
     function handleEditTransaction(values: Parameters<typeof handleCreateTransaction>[0]) {
-        if (!editingTransaction) {
-            return;
-        }
-
-        handleUpdateTransaction({
-            id: editingTransaction.id,
-            ...values,
-        });
+        if (!editingTransaction) return;
+        handleUpdateTransaction({ id: editingTransaction.id, ...values });
     }
 
     const t = useTranslations("transactions");
 
     const pageCount = Math.max(1, totalPages);
-
     const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
 
     function handlePageChange(nextPage: number) {
-        if (nextPage < 1 || nextPage > pageCount || nextPage === page) {
-            return;
-        }
-
+        if (nextPage < 1 || nextPage > pageCount || nextPage === page) return;
         setPage(nextPage);
     }
 
     return (
         <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-                <div className="relative w-full max-w-md">
-                    <Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                        value={search}
-                        onChange={(event) => setSearch(event.target.value)}
-                        placeholder={t("searchPlaceholder")}
-                        className="pl-8"
-                    />
-                </div>
+            <div className="flex flex-wrap items-end justify-between gap-3">
+                <TransactionFiltersBar
+                    pendingFilters={pendingFilters}
+                    setPendingFilters={setPendingFilters}
+                    categories={categories}
+                    hasActiveFilters={hasActiveFilters}
+                    onSearch={handleSearch}
+                    onClearFilters={handleClearFilters}
+                />
 
-                <Button onClick={() => setCreateOpen(true)}>
-                    <Plus className="size-4" />
-                    {t("createButton")}
-                </Button>
+                <div className="flex items-center gap-2">
+                    <Button onClick={() => setCreateOpen(true)}>
+                        <Plus className="size-4" />
+                        {t("createButton")}
+                    </Button>
+                </div>
             </div>
 
             <Card>
@@ -139,50 +131,52 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                         onDelete={setDeletingTransaction}
                     />
 
-                    <Pagination className="mt-4">
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    href="#"
-                                    text={t("pagination.previous")}
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        handlePageChange(page - 1);
-                                    }}
-                                    aria-disabled={!hasPreviousPage}
-                                    className={hasPreviousPage ? undefined : "pointer-events-none opacity-50"}
-                                />
-                            </PaginationItem>
-
-                            {pages.map((pageNumber) => (
-                                <PaginationItem key={pageNumber}>
-                                    <PaginationLink
+                    {totalPages > 1 && (
+                        <Pagination className="mt-4">
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious
                                         href="#"
-                                        isActive={pageNumber === page}
+                                        text={t("pagination.previous")}
                                         onClick={(event) => {
                                             event.preventDefault();
-                                            handlePageChange(pageNumber);
+                                            handlePageChange(page - 1);
                                         }}
-                                    >
-                                        {pageNumber}
-                                    </PaginationLink>
+                                        aria-disabled={!hasPreviousPage}
+                                        className={hasPreviousPage ? undefined : "pointer-events-none opacity-50"}
+                                    />
                                 </PaginationItem>
-                            ))}
 
-                            <PaginationItem>
-                                <PaginationNext
-                                    href="#"
-                                    text={t("pagination.next")}
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        handlePageChange(page + 1);
-                                    }}
-                                    aria-disabled={!hasNextPage}
-                                    className={hasNextPage ? undefined : "pointer-events-none opacity-50"}
-                                />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
+                                {pages.map((pageNumber) => (
+                                    <PaginationItem key={pageNumber}>
+                                        <PaginationLink
+                                            href="#"
+                                            isActive={pageNumber === page}
+                                            onClick={(event) => {
+                                                event.preventDefault();
+                                                handlePageChange(pageNumber);
+                                            }}
+                                        >
+                                            {pageNumber}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                ))}
+
+                                <PaginationItem>
+                                    <PaginationNext
+                                        href="#"
+                                        text={t("pagination.next")}
+                                        onClick={(event) => {
+                                            event.preventDefault();
+                                            handlePageChange(page + 1);
+                                        }}
+                                        aria-disabled={!hasNextPage}
+                                        className={hasNextPage ? undefined : "pointer-events-none opacity-50"}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    )}
                 </CardContent>
             </Card>
 
@@ -211,10 +205,7 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                 onOpenChange={closeDeletingSheet}
                 isDeleting={isDeletingTransaction}
                 onSubmit={() => {
-                    if (!deletingTransaction) {
-                        return;
-                    }
-
+                    if (!deletingTransaction) return;
                     handleDeleteTransaction(deletingTransaction.id);
                 }}
             />
