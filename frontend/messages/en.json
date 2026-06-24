@@ -159,6 +159,7 @@
       "next": "Next"
     },
     "table": {
+      "empty": "No transactions found.",
       "amount": "Amount",
       "date": "Date",
       "type": "Type",

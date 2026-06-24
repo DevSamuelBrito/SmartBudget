@@ -7,7 +7,7 @@ import { useRef } from "react";
 import { useTranslations } from "next-intl";
 
 // libs
-import { Check, Pencil, Trash2, X } from "lucide-react";
+import { Check, Pencil, ReceiptText, Trash2, X } from "lucide-react";
 
 // ui
 import { Button } from "@/components/ui/button";
@@ -84,6 +84,19 @@ const TransactionTable = ({ transactions, onEdit, onDelete }: TransactionTablePr
     };
 
     const renderTableBody = () => {
+        if (transactions.length === 0) {
+            return (
+                <TableRow>
+                    <TableCell colSpan={11} className="h-52 text-center">
+                        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+                            <ReceiptText className="size-10 opacity-30" />
+                            <span className="text-sm">{t("table.empty")}</span>
+                        </div>
+                    </TableCell>
+                </TableRow>
+            );
+        }
+
         return transactions.map((transaction) => {
             return (
                 <TableRow key={transaction.id}>

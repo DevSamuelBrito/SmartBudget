@@ -159,6 +159,7 @@
       "next": "Próximo"
     },
     "table": {
+      "empty": "Nenhuma transação encontrada.",
       "amount": "Valor",
       "date": "Data",
       "type": "Tipo",

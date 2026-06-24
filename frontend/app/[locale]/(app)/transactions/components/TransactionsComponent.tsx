@@ -131,50 +131,52 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                         onDelete={setDeletingTransaction}
                     />
 
-                    <Pagination className="mt-4">
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    href="#"
-                                    text={t("pagination.previous")}
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        handlePageChange(page - 1);
-                                    }}
-                                    aria-disabled={!hasPreviousPage}
-                                    className={hasPreviousPage ? undefined : "pointer-events-none opacity-50"}
-                                />
-                            </PaginationItem>
-
-                            {pages.map((pageNumber) => (
-                                <PaginationItem key={pageNumber}>
-                                    <PaginationLink
+                    {totalPages > 1 && (
+                        <Pagination className="mt-4">
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious
                                         href="#"
-                                        isActive={pageNumber === page}
+                                        text={t("pagination.previous")}
                                         onClick={(event) => {
                                             event.preventDefault();
-                                            handlePageChange(pageNumber);
+                                            handlePageChange(page - 1);
                                         }}
-                                    >
-                                        {pageNumber}
-                                    </PaginationLink>
+                                        aria-disabled={!hasPreviousPage}
+                                        className={hasPreviousPage ? undefined : "pointer-events-none opacity-50"}
+                                    />
                                 </PaginationItem>
-                            ))}
 
-                            <PaginationItem>
-                                <PaginationNext
-                                    href="#"
-                                    text={t("pagination.next")}
-                                    onClick={(event) => {
-                                        event.preventDefault();
-                                        handlePageChange(page + 1);
-                                    }}
-                                    aria-disabled={!hasNextPage}
-                                    className={hasNextPage ? undefined : "pointer-events-none opacity-50"}
-                                />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
+                                {pages.map((pageNumber) => (
+                                    <PaginationItem key={pageNumber}>
+                                        <PaginationLink
+                                            href="#"
+                                            isActive={pageNumber === page}
+                                            onClick={(event) => {
+                                                event.preventDefault();
+                                                handlePageChange(pageNumber);
+                                            }}
+                                        >
+                                            {pageNumber}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                ))}
+
+                                <PaginationItem>
+                                    <PaginationNext
+                                        href="#"
+                                        text={t("pagination.next")}
+                                        onClick={(event) => {
+                                            event.preventDefault();
+                                            handlePageChange(page + 1);
+                                        }}
+                                        aria-disabled={!hasNextPage}
+                                        className={hasNextPage ? undefined : "pointer-events-none opacity-50"}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    )}
                 </CardContent>
             </Card>
 
