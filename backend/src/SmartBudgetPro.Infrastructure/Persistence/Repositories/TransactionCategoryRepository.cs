@@ -22,10 +22,17 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
             return await context.TransactionCategories.Where(c => c.UserId == userId).ToListAsync();
         }
 
-        public async Task<IEnumerable<TransactionCategory>> GetByUserIdPagedAsync(Guid userId, int skip, int take)
+        public async Task<IEnumerable<TransactionCategory>> GetByUserIdPagedAsync(Guid userId, int skip, int take, string? name = null, string? icon = null)
         {
-            return await context.TransactionCategories
-                .Where(c => c.UserId == userId)
+            var query = context.TransactionCategories.Where(c => c.UserId == userId);
+
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(c => c.Name.ToLower().Contains(name.ToLower()));
+
+            if (!string.IsNullOrWhiteSpace(icon))
+                query = query.Where(c => c.Icon == icon);
+
+            return await query
                 .OrderBy(c => c.Name)
                 .ThenBy(c => c.Id)
                 .Skip(skip)
@@ -33,10 +40,17 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                 .ToListAsync();
         }
 
-        public async Task<int> CountByUserIdAsync(Guid userId)
+        public async Task<int> CountByUserIdAsync(Guid userId, string? name = null, string? icon = null)
         {
-            return await context.TransactionCategories
-                .CountAsync(c => c.UserId == userId);
+            var query = context.TransactionCategories.Where(c => c.UserId == userId);
+
+            if (!string.IsNullOrWhiteSpace(name))
+                query = query.Where(c => c.Name.ToLower().Contains(name.ToLower()));
+
+            if (!string.IsNullOrWhiteSpace(icon))
+                query = query.Where(c => c.Icon == icon);
+
+            return await query.CountAsync();
         }
 
         public async Task AddAsync(TransactionCategory category)
