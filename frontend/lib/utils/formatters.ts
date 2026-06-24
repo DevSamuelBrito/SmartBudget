@@ -3,6 +3,7 @@ import type { TransactionApi } from "@/app/[locale]/(app)/transactions/types";
 
 export const formatDate = (value: string) => {
   const [year, month, day] = value.substring(0, 10).split("-");
+  
   return `${day}/${month}/${year}`;
 };
 

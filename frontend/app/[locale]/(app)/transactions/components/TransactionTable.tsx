@@ -41,8 +41,11 @@ const TransactionTable = ({ transactions, onEdit, onDelete }: TransactionTablePr
     const scrollAreaRef = useRef<HTMLDivElement | null>(null);
 
     const mapTransactionType = (type: TransactionApi["type"]): "receita" | "despesa" | "transferencia" => {
+        
         if (type === 1) return "receita";
+
         if (type === 2) return "despesa";
+
         return "transferencia";
     };
 
