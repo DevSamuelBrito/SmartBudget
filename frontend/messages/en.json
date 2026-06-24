@@ -143,6 +143,17 @@
   "transactions": {
     "searchPlaceholder": "Search transaction by description",
     "createButton": "Add new Transaction",
+    "filters": {
+      "descriptionPlaceholder": "Search by description...",
+      "categoryPlaceholder": "Filter by category",
+      "datePlaceholder": "Date",
+      "typePlaceholder": "Type",
+      "allTypes": "All types",
+      "recurrencePlaceholder": "Recurrence",
+      "allRecurrences": "All",
+      "searchButton": "Search",
+      "clearButton": "Clear"
+    },
     "pagination": {
       "previous": "Previous",
       "next": "Next"
