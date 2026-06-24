@@ -74,16 +74,18 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
         {
             var query = context.FinancialTransactions.Where(t => t.UserId == userId);
 
-            if (!string.IsNullOrWhiteSpace(description))
-                query = query.Where(t => t.Description.ToLower().Contains(description.ToLower()));
+            var normalizedDescription = description?.Trim();
+            if (!string.IsNullOrWhiteSpace(normalizedDescription))
+                query = query.Where(t => t.Description.ToLower().Contains(normalizedDescription.ToLower()));
 
             if (categoryId.HasValue)
                 query = query.Where(t => t.TransactionCategoryId == categoryId.Value);
 
             if (date.HasValue)
             {
-                var utcDate = DateTime.SpecifyKind(date.Value.Date, DateTimeKind.Utc);
-                query = query.Where(t => t.TransactionDate.Date == utcDate);
+                var startOfDay = DateTime.SpecifyKind(date.Value.Date, DateTimeKind.Utc);
+                var endOfDay = startOfDay.AddDays(1);
+                query = query.Where(t => t.TransactionDate >= startOfDay && t.TransactionDate < endOfDay);
             }
 
             if (type.HasValue)
