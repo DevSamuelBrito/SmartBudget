@@ -12,5 +12,10 @@ public class GetAllFinancialTransactionUseCaseInputValidator : AbstractValidator
         RuleFor(input => input.PageSize)
             .GreaterThan(0)
             .LessThanOrEqualTo(100);
+
+        RuleFor(input => input.Description)
+            .MaximumLength(255)
+            .When(input => input.Description is not null);
+
     }
 }
