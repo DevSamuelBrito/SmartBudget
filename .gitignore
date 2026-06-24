@@ -3,6 +3,7 @@
 
 # Backend (.NET build artifacts)
 backend/**/bin/
+backend/**/bin\
 backend/**/obj/
 backend/**/*.user
 backend/.vs/

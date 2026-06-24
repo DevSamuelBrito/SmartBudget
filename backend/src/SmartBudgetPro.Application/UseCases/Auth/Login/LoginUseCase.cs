@@ -1,6 +1,7 @@
 using FluentValidation;
 using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
+using DomainRefreshToken = SmartBudgetPro.Domain.Auth.RefreshToken;
 
 namespace SmartBudgetPro.Application.UseCases.Auth.Login;
 
@@ -8,6 +9,7 @@ public class LoginUseCase(
     IUserRepository userRepository,
     IPasswordHasher passwordHasher,
     IJwtTokenGenerator jwtTokenGenerator,
+    IRefreshTokenRepository refreshTokenRepository,
     IValidator<LoginUseCaseInput> validator)
 {
     public async Task<LoginUseCaseOutput> ExecuteAsync(LoginUseCaseInput input)
@@ -25,10 +27,14 @@ public class LoginUseCase(
 
         var tokenResult = jwtTokenGenerator.Generate(user.Id, user.Email, user.Name, user.IsPremium);
 
+        var refreshToken = DomainRefreshToken.Create(user.Id);
+        await refreshTokenRepository.AddAsync(refreshToken);
+
         return new LoginUseCaseOutput(
             tokenResult.AccessToken,
             "Bearer",
             tokenResult.ExpiresInSeconds,
+            refreshToken.Token,
             user.Id,
             user.Name,
             user.Email);

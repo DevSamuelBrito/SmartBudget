@@ -7,6 +7,8 @@ using SmartBudgetPro.Application.UseCases.Budget.GetBudgetByID;
 using SmartBudgetPro.Application.UseCases.Budget.GetBudgetsByPeriod;
 using SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
 using SmartBudgetPro.Application.UseCases.Auth.Login;
+using SmartBudgetPro.Application.UseCases.Auth.RefreshToken;
+using SmartBudgetPro.Application.UseCases.Auth.Logout;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardOverview;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
@@ -73,6 +75,9 @@ public static class DependencyInjection
 
         //auth
         services.AddScoped<LoginUseCase>();
+        services.AddScoped<RefreshTokenUseCase>();
+        services.AddScoped<LogoutUseCase>();
+        services.AddValidatorsFromAssemblyContaining<RefreshTokenUseCaseInputValidator>();
 
         return services;
     }
