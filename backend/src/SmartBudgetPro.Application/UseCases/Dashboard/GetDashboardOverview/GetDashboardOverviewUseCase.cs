@@ -422,6 +422,8 @@ public class GetDashboardOverviewUseCase(
         return monthTransactions
             .Where(t => t.Type == FinancialTransactionType.Expense)
             .OrderByDescending(t => t.Amount)
+            .ThenByDescending(t => t.TransactionDate)
+            .ThenByDescending(t => t.Id)
             .Take(5)
             .Select(t =>
             {
