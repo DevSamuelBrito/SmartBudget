@@ -340,8 +340,6 @@ SmartBudget/
 
 ## Screenshots
 
-> Screenshots will be added here. Place images in `docs/screenshots/`.
-
 ![Dashboard](./docs/screenshots/dashboard.png)
 ![Transactions](./docs/screenshots/transactions.png)
 ![Categories](./docs/screenshots/categories.png)
