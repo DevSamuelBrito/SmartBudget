@@ -103,7 +103,9 @@
     "alerts": {
       "title": "Alerts",
       "description": "Budgets that need attention",
-      "empty": "All clear! No active alerts at the moment."
+      "empty": "All clear! No active alerts at the moment.",
+      "budgetExceeded": "The category {categoryName} has exceeded the monthly budget.",
+      "budgetWarning": "The category {categoryName} has reached {percentage}% of the monthly budget."
     },
     "customizer": {
       "title": "Customize dashboard",

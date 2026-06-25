@@ -19,6 +19,9 @@ import { Badge } from "@/components/ui/badge";
 // Types
 import type { DashboardAlert } from "../types";
 
+// Utils
+import { getAlertMessage } from "../utils/alert-message";
+
 type AlertsCardProps = {
   alerts: DashboardAlert[];
 };
@@ -60,7 +63,9 @@ export function AlertsCard({ alerts }: Readonly<AlertsCardProps>) {
               )}
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium">{alert.categoryName}</p>
-                <p className="text-xs text-muted-foreground">{alert.message}</p>
+                <p className="text-xs text-muted-foreground">
+                  {getAlertMessage(t, alert.type, alert.categoryName, alert.percentage)}
+                </p>
               </div>
               <Badge
                 variant="outline"

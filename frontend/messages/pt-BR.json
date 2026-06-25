@@ -103,7 +103,9 @@
     "alerts": {
       "title": "Alertas",
       "description": "Orçamentos que precisam de atenção",
-      "empty": "Tudo sob controle! Nenhum alerta no momento."
+      "empty": "Tudo sob controle! Nenhum alerta no momento.",
+      "budgetExceeded": "A categoria {categoryName} excedeu o orçamento mensal.",
+      "budgetWarning": "A categoria {categoryName} atingiu {percentage}% do orçamento mensal."
     },
     "customizer": {
       "title": "Customizar dashboard",

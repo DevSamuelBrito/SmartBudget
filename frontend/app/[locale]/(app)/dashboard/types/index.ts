@@ -55,14 +55,15 @@ export type DashboardBudgetProgress = {
   status: "Ok" | "Warning" | "Exceeded" | 1 | 2 | 3;
 };
 
+export type DashboardAlertType = "BudgetExceeded" | "BudgetWarning";
+
 export type DashboardAlert = {
-  type: string;
+  type: DashboardAlertType;
   budgetId: string;
   transactionCategoryId: string;
   categoryName: string;
   percentage: number;
   status: "Ok" | "Warning" | "Exceeded" | 1 | 2 | 3;
-  message: string;
 };
 
 export type DashboardFinancialRisk = {
