@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 // Libs
-import { CircleHelp, ExternalLink } from "lucide-react";
+import { CircleHelp, ExternalLink, ReceiptText } from "lucide-react";
 
 // Components
 import {
@@ -24,6 +24,8 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
 import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/[locale]/(app)/categories/components/theme-icons";
+
+import { EmptyState } from "./EmptyState";
 
 //constants
 import { ICONT_THEME } from "@/app/[locale]/(app)/categories/constants/icons-theme";
@@ -94,7 +96,13 @@ export function LatestTransactionsCard({ transactions }: Readonly<LatestTransact
             </CardHeader>
 
             <CardContent className="space-y-4">
-                {visibleTransactions.map((transaction, index) => (
+                {transactions.length === 0 ? (
+                    <EmptyState
+                        icon={ReceiptText}
+                        title={t("emptyState.title")}
+                        description={t("charts.latestTransactions.emptyState")}
+                    />
+                ) : visibleTransactions.map((transaction, index) => (
                     <div key={transaction.id}>
                         <div className="flex items-center gap-3">
                             <div className={`flex size-10 shrink-0 items-center justify-center rounded-xl ${getCategoryThemeClass(transaction.categoryIcon)}`}>
@@ -124,13 +132,7 @@ export function LatestTransactionsCard({ transactions }: Readonly<LatestTransact
                 ))}
             </CardContent>
 
-            {transactions.length === 0 ? (
-                <CardFooter>
-                    <p className="text-sm text-muted-foreground">
-                        {t("charts.latestTransactions.empty")}
-                    </p>
-                </CardFooter>
-            ) : (
+            {transactions.length > 0 && (
                 <CardFooter className="justify-between gap-3">
                     <p className="text-sm text-muted-foreground">
                         {t("charts.latestTransactions.showing", { count: visibleTransactions.length })}

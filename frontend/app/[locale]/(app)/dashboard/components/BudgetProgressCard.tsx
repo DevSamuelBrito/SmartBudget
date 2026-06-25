@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 //lucide-react
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Target } from "lucide-react";
 
 // Components
 import {
@@ -22,6 +22,8 @@ import {
 import { Progress } from "@/components/ui/progress";
 
 import { Button } from "@/components/ui/button";
+
+import { EmptyState } from "./EmptyState";
 
 // Types
 import type { DashboardBudgetProgress } from "../types";
@@ -58,11 +60,13 @@ export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps
             </CardHeader>
 
             <CardContent className="space-y-4">
-                {budgets.length === 0 && (
-                    <p className="text-sm text-muted-foreground">{t("charts.budgetProgress.empty")}</p>
-                )}
-
-                {budgets.map((budget) => (
+                {budgets.length === 0 ? (
+                    <EmptyState
+                        icon={Target}
+                        title={t("emptyState.title")}
+                        description={t("charts.budgetProgress.emptyState")}
+                    />
+                ) : budgets.map((budget) => (
                     <div key={budget.budgetId} className="space-y-2">
                         <div className="flex items-center justify-between gap-2">
                             <span className="font-medium">{budget.categoryName}</span>
@@ -87,6 +91,7 @@ export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps
                     </div>
                 ))}
             </CardContent>
+
             <CardFooter>
 
                 <Button variant="outline" className="w-full" onClick={() => router.push("/transactions")}>

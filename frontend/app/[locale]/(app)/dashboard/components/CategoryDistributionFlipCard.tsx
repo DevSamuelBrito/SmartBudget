@@ -31,6 +31,8 @@ import {
     type ChartConfig,
 } from "@/components/ui/chart";
 
+import { EmptyState } from "./EmptyState";
+
 // Types
 import type { DashboardCategoryExpense } from "../types";
 
@@ -76,6 +78,7 @@ export function CategoryDistributionFlipCard({
     const t = useTranslations("dashboard");
 
     const [showBarView, setShowBarView] = useState(false);
+    const isEmpty = pieData.length === 0 && categoryExpenses.length === 0;
     const dynamicColors = buildCategoryColors(Math.max(pieData.length, categoryExpenses.length));
 
     const getColor = (index: number) => {
@@ -98,6 +101,24 @@ export function CategoryDistributionFlipCard({
         value: item.amount,
         fill: getColor(index),
     }));
+
+    if (isEmpty) {
+        return (
+            <Card className="border-border/70 bg-card/90 backdrop-blur">
+                <CardHeader>
+                    <CardTitle>{t("charts.categoryDistribution.title")}</CardTitle>
+                    <CardDescription>{t("charts.categoryDistribution.pieDescription")}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <EmptyState
+                        icon={PieChartIcon}
+                        title={t("emptyState.title")}
+                        description={t("charts.categoryDistribution.emptyState")}
+                    />
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <div className="perspective-[1400px]">

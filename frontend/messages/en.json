@@ -19,13 +19,17 @@
         "description": "Income - expenses"
       }
     },
+    "emptyState": {
+      "title": "No data available"
+    },
     "charts": {
       "quickInsights": {
         "title": "Quick insights",
         "description": "Daily averages for the month",
         "dailyIncome": "Daily income average",
         "dailyExpense": "Daily expense average",
-        "netBalance": "Daily net balance"
+        "netBalance": "Daily net balance",
+        "emptyState": "Add transactions to view quick insights"
       },
       "latestTransactions": {
         "title": "Latest transactions",
@@ -34,7 +38,8 @@
         "expenseLegend": "Expense",
         "empty": "No transactions found.",
         "showing": "Showing the latest {count} transactions.",
-        "viewAll": "View all"
+        "viewAll": "View all",
+        "emptyState": "Add transactions to view your recent entries"
       },
       "budgetProgress": {
         "title": "Budget progress",
@@ -42,18 +47,21 @@
         "empty": "No budget defined for this period.",
         "used": "{percentage}% used",
         "remaining": "{amount} remaining",
-        "manageCategories": "Manage categories"
+        "manageCategories": "Manage categories",
+        "emptyState": "Set up budgets by category to track your spending"
       },
       "balanceEvolution": {
         "title": "Balance evolution",
         "description": "Accumulated balance throughout the month",
-        "balance": "Balance"
+        "balance": "Balance",
+        "emptyState": "Add transactions to view your balance evolution"
       },
       "incomeExpense": {
         "title": "Income vs expenses",
         "description": "Monthly comparison",
         "income": "Income",
         "expense": "Expenses",
+        "emptyState": "Add transactions to compare income and expenses",
         "months": {
           "jan": "Jan",
           "feb": "Feb",
@@ -72,7 +80,8 @@
       "expenseEvolution": {
         "title": "Expense evolution",
         "description": "Monthly expenses over the last 6 months",
-        "expense": "Expenses"
+        "expense": "Expenses",
+        "emptyState": "Add expenses to view the spending evolution"
       },
       "categoryDistribution": {
         "title": "Expenses by category",
@@ -81,7 +90,8 @@
         "listDescription": "Distribution of monthly expenses relative to the total.",
         "empty": "No expenses for this period.",
         "pieToggleLabel": "Show spending by category",
-        "listToggleLabel": "Show expenses as pie chart"
+        "listToggleLabel": "Show expenses as pie chart",
+        "emptyState": "Add categorized expenses to view the distribution"
       },
       "financialRisk": {
         "title": "Financial risk",
@@ -97,7 +107,8 @@
           "warning": "Warning",
           "risk": "Risk",
           "noData": "No data"
-        }
+        },
+        "emptyState": "Add income and expenses to calculate your financial risk"
       }
     },
     "alerts": {

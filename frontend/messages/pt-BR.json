@@ -19,13 +19,17 @@
         "description": "Receitas - Despesas"
       }
     },
+    "emptyState": {
+      "title": "Sem dados disponíveis"
+    },
     "charts": {
       "quickInsights": {
         "title": "Indicadores rápidos",
         "description": "Médias diárias do mês",
         "dailyIncome": "Média diária de ganho",
         "dailyExpense": "Média diária de gasto",
-        "netBalance": "Saldo diário líquido"
+        "netBalance": "Saldo diário líquido",
+        "emptyState": "Adicione transações para visualizar os indicadores rápidos"
       },
       "latestTransactions": {
         "title": "Últimas transações",
@@ -34,7 +38,8 @@
         "expenseLegend": "Despesa",
         "empty": "Nenhuma transação encontrada.",
         "showing": "Mostrando as últimas {count} transações.",
-        "viewAll": "Ver tudo"
+        "viewAll": "Ver tudo",
+        "emptyState": "Adicione transações para visualizar os lançamentos"
       },
       "budgetProgress": {
         "title": "Progresso dos budgets",
@@ -42,18 +47,21 @@
         "empty": "Nenhum budget definido para este período.",
         "used": "{percentage}% utilizado",
         "remaining": "Restam {amount}",
-        "manageCategories": "Gerenciar categorias"
+        "manageCategories": "Gerenciar categorias",
+        "emptyState": "Configure budgets por categoria para acompanhar seu orçamento"
       },
       "balanceEvolution": {
         "title": "Evolução de saldo",
         "description": "Saldo acumulado ao longo do mês",
-        "balance": "Saldo"
+        "balance": "Saldo",
+        "emptyState": "Adicione transações para visualizar a evolução do saldo"
       },
       "incomeExpense": {
         "title": "Receitas x Despesas",
         "description": "Comparativo mensal",
         "income": "Receitas",
         "expense": "Despesas",
+        "emptyState": "Adicione transações para comparar receitas e despesas",
         "months": {
           "jan": "Jan",
           "feb": "Fev",
@@ -76,12 +84,14 @@
         "listDescription": "Distribuição das despesas do mês em relação ao total.",
         "empty": "Sem despesas neste período.",
         "pieToggleLabel": "Mostrar gasto por categoria",
-        "listToggleLabel": "Mostrar despesas em pizza"
+        "listToggleLabel": "Mostrar despesas em pizza",
+        "emptyState": "Adicione despesas com categoria para visualizar a distribuição"
       },
       "expenseEvolution": {
         "title": "Evolução de despesas",
         "description": "Despesas mensais dos últimos 6 meses",
-        "expense": "Despesas"
+        "expense": "Despesas",
+        "emptyState": "Adicione despesas para visualizar a evolução dos gastos"
       },
       "financialRisk": {
         "title": "Risco financeiro",
@@ -97,7 +107,8 @@
           "warning": "Atenção",
           "risk": "Risco",
           "noData": "Sem dados"
-        }
+        },
+        "emptyState": "Adicione receitas e despesas para calcular seu risco financeiro"
       }
     },
     "alerts": {
