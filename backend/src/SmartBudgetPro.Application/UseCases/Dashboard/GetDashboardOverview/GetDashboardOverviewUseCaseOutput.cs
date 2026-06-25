@@ -17,7 +17,12 @@ public record GetDashboardOverviewUseCaseOutput(
     IReadOnlyList<DashboardBalanceEvolutionPointDto> BalanceEvolution,
     IReadOnlyList<DashboardBudgetProgressDto> BudgetProgress,
     IReadOnlyList<DashboardAlertDto> Alerts,
-    IReadOnlyList<DashboardExpenseByMonthDto>? ExpenseEvolutionByMonth
+    IReadOnlyList<DashboardExpenseByMonthDto>? ExpenseEvolutionByMonth,
+    DashboardSavingsRateDto? SavingsRate,
+    DashboardMonthlyComparisonDto? MonthlyComparison,
+    IReadOnlyList<DashboardTopExpenseDto>? TopExpenses,
+    IReadOnlyList<DashboardCashFlowDto>? CashFlow,
+    DashboardBudgetHealthDto? BudgetHealth
 );
 
 public record DashboardKpisDto(
@@ -91,4 +96,41 @@ public record DashboardExpenseByMonthDto(
     int Year,
     int Month,
     decimal Expense
+);
+
+public record DashboardSavingsRateDto(
+    decimal Rate,
+    decimal SavedAmount,
+    string Status
+);
+
+public record DashboardMonthlyComparisonDto(
+    decimal PreviousMonthIncome,
+    decimal PreviousMonthExpense,
+    decimal PreviousMonthBalance,
+    decimal IncomeVariation,
+    decimal ExpenseVariation,
+    decimal BalanceVariation
+);
+
+public record DashboardTopExpenseDto(
+    string Description,
+    string? CategoryName,
+    string? CategoryIcon,
+    decimal Amount,
+    DateTime Date
+);
+
+public record DashboardCashFlowDto(
+    int WeekNumber,
+    decimal TotalIncome,
+    decimal TotalExpense
+);
+
+public record DashboardBudgetHealthDto(
+    decimal Score,
+    int OkCount,
+    int WarningCount,
+    int ExceededCount,
+    string Status
 );
