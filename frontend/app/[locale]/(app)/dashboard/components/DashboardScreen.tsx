@@ -24,6 +24,16 @@ import { QuickInsightsCard } from "./QuickInsightsCard";
 
 import { ExpenseEvolutionChart } from "./ExpenseEvolutionChart";
 
+import { SavingsRateCard } from "./SavingsRateCard";
+
+import { MonthlyComparisonCard } from "./MonthlyComparisonCard";
+
+import { TopExpensesCard } from "./TopExpensesCard";
+
+import { CashFlowChart } from "./CashFlowChart";
+
+import { BudgetHealthCard } from "./BudgetHealthCard";
+
 // Hooks
 import { useDashboardConfig } from "../hooks/useDashboardConfig";
 
@@ -32,7 +42,14 @@ import { useAuth } from "@/contexts/auth-context";
 // Types
 import type { DashboardOverviewApi, DashboardConfigItem } from "../types";
 
-export const PREMIUM_COMPONENT_KEYS: string[] = ["expenseEvolutionChart"];
+export const PREMIUM_COMPONENT_KEYS: string[] = [
+    "expenseEvolutionChart",
+    "savingsRateCard",
+    "monthlyComparisonCard",
+    "topExpensesCard",
+    "cashFlowChart",
+    "budgetHealthCard",
+];
 
 type DashboardScreenProps = {
     data: DashboardOverviewApi;
@@ -72,6 +89,11 @@ export function DashboardScreen({ data, initialConfig }: Readonly<DashboardScree
         expenseEvolutionChart: (
             <ExpenseEvolutionChart data={data.expenseEvolutionByMonth} />
         ),
+        savingsRateCard: <SavingsRateCard data={data.savingsRate} />,
+        monthlyComparisonCard: <MonthlyComparisonCard data={data.monthlyComparison} />,
+        topExpensesCard: <TopExpensesCard data={data.topExpenses} />,
+        cashFlowChart: <CashFlowChart data={data.cashFlow} />,
+        budgetHealthCard: <BudgetHealthCard data={data.budgetHealth} />,
     };
 
     const visibleItems = (config ?? [])

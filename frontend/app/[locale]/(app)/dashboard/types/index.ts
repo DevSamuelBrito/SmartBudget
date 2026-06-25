@@ -73,6 +73,43 @@ export type DashboardFinancialRisk = {
   status: "Ok" | "Warning" | "Risk" | "NoData" | "FinancialRisk";
 };
 
+export type DashboardSavingsRate = {
+  rate: number;
+  savedAmount: number;
+  status: "Great" | "Ok" | "Low";
+};
+
+export type DashboardMonthlyComparison = {
+  previousMonthIncome: number;
+  previousMonthExpense: number;
+  previousMonthBalance: number;
+  incomeVariation: number;
+  expenseVariation: number;
+  balanceVariation: number;
+};
+
+export type DashboardTopExpense = {
+  description: string;
+  categoryName: string | null;
+  categoryIcon: string | null;
+  amount: number;
+  date: string;
+};
+
+export type DashboardCashFlow = {
+  weekNumber: number;
+  totalIncome: number;
+  totalExpense: number;
+};
+
+export type DashboardBudgetHealth = {
+  score: number;
+  okCount: number;
+  warningCount: number;
+  exceededCount: number;
+  status: "Healthy" | "Moderate" | "AtRisk";
+};
+
 export type DashboardOverviewApi = {
   month: number;
   year: number;
@@ -88,6 +125,11 @@ export type DashboardOverviewApi = {
   budgetProgress: DashboardBudgetProgress[];
   alerts: DashboardAlert[];
   expenseEvolutionByMonth: DashboardExpenseByMonth[];
+  savingsRate: DashboardSavingsRate | null;
+  monthlyComparison: DashboardMonthlyComparison | null;
+  topExpenses: DashboardTopExpense[] | null;
+  cashFlow: DashboardCashFlow[] | null;
+  budgetHealth: DashboardBudgetHealth | null;
 };
 
 export type DashboardConfigItem = {

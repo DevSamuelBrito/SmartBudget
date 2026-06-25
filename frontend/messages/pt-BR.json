@@ -93,6 +93,56 @@
         "expense": "Despesas",
         "emptyState": "Adicione despesas para visualizar a evolução dos gastos"
       },
+      "savingsRate": {
+        "title": "Taxa de poupança",
+        "description": "Percentual da receita mensal economizado",
+        "rateLabel": "da receita",
+        "savedAmount": "economizado no mês",
+        "status": {
+          "great": "Ótimo",
+          "ok": "Ok",
+          "low": "Baixo"
+        },
+        "emptyState": "Sem receitas no período"
+      },
+      "monthlyComparison": {
+        "title": "Comparativo mensal",
+        "description": "Mês atual vs mês anterior",
+        "metric": "Indicador",
+        "previous": "Mês anterior",
+        "variation": "Variação",
+        "income": "Receitas",
+        "expense": "Despesas",
+        "balance": "Saldo",
+        "footer": "Variação em relação ao mês anterior",
+        "emptyState": "Sem dados do mês anterior para comparar"
+      },
+      "topExpenses": {
+        "title": "Maiores despesas",
+        "description": "Top 5 despesas do mês",
+        "emptyState": "Sem despesas registradas neste período"
+      },
+      "cashFlow": {
+        "title": "Fluxo de caixa semanal",
+        "description": "Entradas e saídas por semana do mês",
+        "income": "Receitas",
+        "expense": "Despesas",
+        "weekLabel": "Sem.",
+        "emptyState": "Sem transações neste período"
+      },
+      "budgetHealth": {
+        "title": "Saúde dos orçamentos",
+        "description": "Pontuação geral dos budgets do mês",
+        "ok": "No prazo",
+        "warning": "Atenção",
+        "exceeded": "Excedido",
+        "status": {
+          "healthy": "Saudável",
+          "moderate": "Moderado",
+          "atRisk": "Em risco"
+        },
+        "emptyState": "Nenhum orçamento configurado"
+      },
       "financialRisk": {
         "title": "Risco financeiro",
         "description": "Gastos fixos sobre a renda média dos últimos 3 meses",
@@ -135,7 +185,12 @@
         "balanceEvolutionChart": "Evolução de saldo",
         "incomeExpenseBarChart": "Receitas x Despesas",
         "categoryDistributionFlipCard": "Distribuição por categoria",
-        "expenseEvolutionChart": "Evolução de despesas"
+        "expenseEvolutionChart": "Evolução de despesas",
+        "savingsRateCard": "Taxa de poupança",
+        "monthlyComparisonCard": "Comparativo mensal",
+        "topExpensesCard": "Maiores despesas",
+        "cashFlowChart": "Fluxo de caixa semanal",
+        "budgetHealthCard": "Saúde dos orçamentos"
       },
       "premiumBadge": "Premium"
     }
