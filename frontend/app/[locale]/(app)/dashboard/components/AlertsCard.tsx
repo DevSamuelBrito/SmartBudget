@@ -4,7 +4,7 @@
 import { useTranslations } from "next-intl";
 
 // Libs
-import { AlertTriangle, XCircle } from "lucide-react";
+import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 
 // Components
 import {
@@ -26,8 +26,6 @@ type AlertsCardProps = {
 export function AlertsCard({ alerts }: Readonly<AlertsCardProps>) {
   const t = useTranslations("dashboard");
 
-  if (alerts.length === 0) return null;
-
   return (
     <Card className="border-border/70 bg-card/90 backdrop-blur">
       <CardHeader>
@@ -39,7 +37,12 @@ export function AlertsCard({ alerts }: Readonly<AlertsCardProps>) {
       </CardHeader>
 
       <CardContent className="space-y-3">
-        {alerts.map((alert) => {
+        {alerts.length === 0 ? (
+          <div className="flex items-center gap-3 rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3">
+            <CheckCircle2 className="size-4 shrink-0 text-emerald-500" />
+            <p className="text-sm text-muted-foreground">{t("alerts.empty")}</p>
+          </div>
+        ) : alerts.map((alert) => {
           const isExceeded = alert.type === "BudgetExceeded";
 
           return (
