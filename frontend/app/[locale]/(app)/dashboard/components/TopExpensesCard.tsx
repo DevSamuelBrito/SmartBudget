@@ -17,12 +17,14 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+
 import {
     ChartContainer,
     ChartTooltip,
     ChartTooltipContent,
     type ChartConfig,
 } from "@/components/ui/chart";
+
 import { EmptyState } from "./EmptyState";
 
 // types
@@ -100,7 +102,7 @@ export function TopExpensesCard({ data }: Readonly<TopExpensesCardProps>) {
                                     <ChartTooltipContent
                                         labelFormatter={(_label, payload) => {
                                             const item = payload?.[0]?.payload as typeof chartData[0] | undefined;
-                                            
+
                                             return item?.description ?? _label;
                                         }}
                                         formatter={(value) => formatCurrency(Number(value))}
@@ -109,9 +111,9 @@ export function TopExpensesCard({ data }: Readonly<TopExpensesCardProps>) {
                                 }
                             />
                             <Bar dataKey="amount" radius={[0, 4, 4, 0]}>
-                                {chartData.map((entry) => (
+                                {chartData.map((entry, index) => (
                                     <Cell
-                                        key={entry.description}
+                                        key={index}
                                         fill={COLORS[entry.colorIndex % COLORS.length]}
                                     />
                                 ))}
