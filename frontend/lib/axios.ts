@@ -40,9 +40,12 @@ api.interceptors.response.use(
       const refreshed = await refreshPromise;
 
       if (refreshed) {
-        
         return api(originalRequest);
       }
+
+      window.location.href = "/login";
+      
+      return new Promise(() => {});
     }
 
     const apiMessage =

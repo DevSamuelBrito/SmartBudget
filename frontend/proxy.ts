@@ -1,5 +1,5 @@
 //next
-import { type NextRequest } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 import createMiddleware from "next-intl/middleware";
 
@@ -69,6 +69,35 @@ export default async function middleware(request: NextRequest) {
     if (!newTokens) refreshFailed = true;
   }
 
+  if (refreshFailed) {
+    const { pathname } = request.nextUrl;
+    const isAuthRoute = /\/(login|register)(\/|$)/.test(pathname);
+
+    if (!isAuthRoute) {
+      const locale = pathname.split("/")[1] ?? "";
+      const loginPath = locale ? `/${locale}/login` : "/login";
+      const redirectRes = NextResponse.redirect(new URL(loginPath, request.url));
+
+      redirectRes.cookies.delete("token");
+
+      redirectRes.cookies.delete("refresh-token");
+
+      redirectRes.cookies.delete("user-data");
+
+      return redirectRes;
+    }
+
+    const response = intlMiddleware(request);
+
+    response.cookies.delete("token");
+
+    response.cookies.delete("refresh-token");
+
+    response.cookies.delete("user-data");
+
+    return response;
+  }
+
   const response = intlMiddleware(request);
 
   if (newTokens) {
@@ -76,14 +105,38 @@ export default async function middleware(request: NextRequest) {
       ...COOKIE_BASE,
       maxAge: newTokens.expiresInSeconds,
     });
+
     response.cookies.set("refresh-token", newTokens.refreshToken, {
       ...COOKIE_BASE,
       maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS,
     });
-  } else if (refreshFailed) {
-    response.cookies.delete("token");
-    response.cookies.delete("refresh-token");
-    response.cookies.delete("user-data");
+
+    const existingUserData = request.cookies.get("user-data")?.value;
+
+    if (existingUserData) {
+
+      try {
+        const existing = JSON.parse(existingUserData) as Record<string, unknown>;
+        
+        const payload = decodeJwt(newTokens.accessToken);
+
+        const updatedUserData = {
+          ...existing,
+          name: typeof payload["name"] === "string" ? payload["name"] : existing.name,
+          email: typeof payload["email"] === "string" ? payload["email"] : existing.email,
+          isPremium: payload["isPremium"] === "true",
+        };
+
+        response.cookies.set("user-data", JSON.stringify(updatedUserData), {
+          httpOnly: false,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax" as const,
+          path: "/",
+          maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS,
+        });
+      } catch {
+      }
+    }
   }
 
   return response;

@@ -3,6 +3,9 @@ import { cookies } from "next/headers";
 
 import { NextResponse } from "next/server";
 
+// jose
+import { decodeJwt } from "jose";
+
 interface RefreshApiResponse {
   accessToken: string;
   expiresInSeconds: number;
@@ -17,8 +20,6 @@ const COOKIE_BASE = {
 };
 
 const REFRESH_TOKEN_MAX_AGE_SECONDS = 7 * 24 * 60 * 60;
-
-let refreshPromise: Promise<RefreshApiResponse | null> | null = null;
 
 async function doRefresh(token: string): Promise<RefreshApiResponse | null> {
   try {
@@ -48,16 +49,9 @@ export async function POST() {
     return NextResponse.json({ error: "No refresh token" }, { status: 401 });
   }
 
-  if (!refreshPromise) {
-    refreshPromise = doRefresh(refreshToken).finally(() => {
-      refreshPromise = null;
-    });
-  }
-
-  const result = await refreshPromise;
+  const result = await doRefresh(refreshToken);
 
   if (!result) {
-
     return NextResponse.json({ error: "Refresh failed" }, { status: 401 });
   }
 
@@ -72,6 +66,33 @@ export async function POST() {
     ...COOKIE_BASE,
     maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS,
   });
+
+  const existingUserDataStr = cookieStore.get("user-data")?.value;
+
+  if (existingUserDataStr) {
+    try {
+      const existing = JSON.parse(existingUserDataStr) as Record<string, unknown>;
+
+      const payload = decodeJwt(result.accessToken);
+
+      const updatedUserData = {
+        ...existing,
+        name: typeof payload["name"] === "string" ? payload["name"] : existing.name,
+        email: typeof payload["email"] === "string" ? payload["email"] : existing.email,
+        isPremium: payload["isPremium"] === "true",
+      };
+      
+      response.cookies.set("user-data", JSON.stringify(updatedUserData), {
+        httpOnly: false,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax" as const,
+        path: "/",
+        maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS,
+      });
+    } catch {
+      
+    }
+  }
 
   return response;
 }
