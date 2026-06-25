@@ -296,18 +296,13 @@ public class GetDashboardOverviewUseCase(
                     ? "BudgetExceeded"
                     : "BudgetWarning";
 
-                var message = type == "BudgetExceeded"
-                    ? $"A categoria {budget.CategoryName} excedeu o budget mensal."
-                    : $"A categoria {budget.CategoryName} atingiu {budget.Percentage:F1}% do budget mensal.";
-
                 return new DashboardAlertDto(
                     type,
                     budget.BudgetId,
                     budget.TransactionCategoryId,
                     budget.CategoryName,
                     budget.Percentage,
-                    budget.Status,
-                    message);
+                    budget.Status);
             })
             .ToList();
     }

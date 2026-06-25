@@ -77,8 +77,7 @@ public record DashboardAlertDto(
     Guid TransactionCategoryId,
     string CategoryName,
     decimal Percentage,
-    BudgetStatus Status,
-    string Message
+    BudgetStatus Status
 );
 
 public record DashboardFinancialRiskDto(
