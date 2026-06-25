@@ -117,8 +117,8 @@ function SortableItem({
             <button
                 type="button"
                 className={`touch-none text-muted-foreground ${isLocked ? "cursor-not-allowed" : "cursor-grab hover:text-foreground"}`}
-                {...(!isLocked ? {} : attributes)}
-                {...(!isLocked ? {} : listeners)}
+                {...(isLocked ? {} : attributes)}
+                {...(isLocked ? {} : listeners)}
                 onClick={isLocked ? onPremiumLockClick : undefined}
             >
                 {isLocked ? (
@@ -160,26 +160,26 @@ function SortableItem({
                 <button
                     type="button"
                     onClick={() => {
-                        if (isLocked || item.columns !== 1) return;
+                        if (isLocked || item.columns !== 2) return;
                         onToggleColumns(item.componentKey);
                     }}
                     disabled={isLocked}
                     className={`rounded p-1 transition-colors ${item.columns === 1 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
                     title={t("customizer.columnOne")}
                 >
-                    <Columns2Icon className="size-4" />
+                    <RectangleHorizontalIcon className="size-4" />
                 </button>
                 <button
                     type="button"
                     onClick={() => {
-                        if (isLocked || item.columns !== 2) return;
+                        if (isLocked || item.columns !== 1) return;
                         onToggleColumns(item.componentKey);
                     }}
                     disabled={isLocked}
                     className={`rounded p-1 transition-colors ${item.columns === 2 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"}`}
                     title={t("customizer.columnTwo")}
                 >
-                    <RectangleHorizontalIcon className="size-4" />
+                    <Columns2Icon className="size-4" />
                 </button>
             </div>
         </div>
@@ -280,6 +280,10 @@ export function DashboardCustomizerSheet({
                             sensors={sensors}
                             collisionDetection={closestCenter}
                             onDragEnd={handleDragEnd}
+                            accessibility={{
+                                screenReaderInstructions: { draggable: "" },
+                            }}
+                            autoScroll={false}
                         >
                             <SortableContext
                                 items={items.map((i) => i.componentKey)}
