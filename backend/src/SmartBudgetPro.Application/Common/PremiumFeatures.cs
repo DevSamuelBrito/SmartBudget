@@ -9,6 +9,11 @@ public static class PremiumFeatures
 
     public static readonly IReadOnlySet<string> DashboardComponentKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
-        "expenseEvolutionChart"
+        "expenseEvolutionChart",
+        "savingsRateCard",
+        "monthlyComparisonCard",
+        "topExpensesCard",
+        "cashFlowChart",
+        "budgetHealthCard"
     };
 }

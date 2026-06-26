@@ -1,10 +1,10 @@
 "use client";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // Libs
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert, ShieldOff } from "lucide-react";
 
 // Components
 import {
@@ -17,11 +17,13 @@ import {
 
 import { Progress } from "@/components/ui/progress";
 
+import { EmptyState } from "./EmptyState";
+
 // Types
 import type { DashboardFinancialRisk } from "../types";
 
 // Utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type FinancialRiskCardProps = {
     financialRisk: DashboardFinancialRisk;
@@ -91,11 +93,12 @@ function getStatusMessage(
 
 export function FinancialRiskCard({ financialRisk }: Readonly<FinancialRiskCardProps>) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
 
     const status = normalizeStatus(financialRisk.status);
     const styles = getStatusStyles(status);
     const percentageValue = Number.isFinite(financialRisk.percentage) ? financialRisk.percentage : 0;
-    const percentageLabel = `${percentageValue.toFixed(1).replace(".", ",")}%`;
+    const percentageLabel = `${formatPercentage(percentageValue, locale)}%`;
     const progressValue = status === "NoData" ? 0 : Math.min(percentageValue, 100);
 
     const statusKey =
@@ -120,32 +123,46 @@ export function FinancialRiskCard({ financialRisk }: Readonly<FinancialRiskCardP
                         <ShieldAlert className="size-4" />
                     </div>
                 </div>
-
-                <div className="space-y-2">
-                    <div className="flex items-end justify-between gap-3">
-                        <p className="text-3xl font-semibold tabular-nums">{percentageLabel}</p>
-                        <span className="rounded-full border border-border/60 px-2.5 py-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                            {t(`charts.financialRisk.status.${statusKey}`)}
-                        </span>
-                    </div>
-
-                    <Progress value={progressValue} indicatorClassName={styles.bar} />
-                </div>
-
-                <p className="text-sm text-muted-foreground">{getStatusMessage(t, status, percentageLabel)}</p>
             </CardHeader>
 
-            <CardContent className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-xl border border-border/70 bg-muted/40 p-4">
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground">{t("charts.financialRisk.averageIncome")}</p>
-                    <p className="mt-2 text-lg font-semibold tabular-nums">{formatCurrency(financialRisk.averageIncome)}</p>
-                </div>
+            {status === "NoData" ? (
+                <CardContent>
+                    <EmptyState
+                        icon={ShieldOff}
+                        title={t("emptyState.title")}
+                        description={t("charts.financialRisk.emptyState")}
+                    />
+                </CardContent>
+            ) : (
+                <>
+                    <CardHeader className="space-y-3 pt-0">
+                        <div className="space-y-2">
+                            <div className="flex items-end justify-between gap-3">
+                                <p className="text-3xl font-semibold tabular-nums">{percentageLabel}</p>
+                                <span className="rounded-full border border-border/60 px-2.5 py-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                                    {t(`charts.financialRisk.status.${statusKey}`)}
+                                </span>
+                            </div>
 
-                <div className="rounded-xl border border-border/70 bg-muted/40 p-4">
-                    <p className="text-xs uppercase tracking-wide text-muted-foreground">{t("charts.financialRisk.fixedExpenses")}</p>
-                    <p className="mt-2 text-lg font-semibold tabular-nums">{formatCurrency(financialRisk.fixedExpenses)}</p>
-                </div>
-            </CardContent>
+                            <Progress value={progressValue} indicatorClassName={styles.bar} />
+                        </div>
+
+                        <p className="text-sm text-muted-foreground">{getStatusMessage(t, status, percentageLabel)}</p>
+                    </CardHeader>
+
+                    <CardContent className="grid gap-3 sm:grid-cols-2">
+                        <div className="rounded-xl border border-border/70 bg-muted/40 p-4">
+                            <p className="text-xs uppercase tracking-wide text-muted-foreground">{t("charts.financialRisk.averageIncome")}</p>
+                            <p className="mt-2 text-lg font-semibold tabular-nums">{formatCurrency(financialRisk.averageIncome)}</p>
+                        </div>
+
+                        <div className="rounded-xl border border-border/70 bg-muted/40 p-4">
+                            <p className="text-xs uppercase tracking-wide text-muted-foreground">{t("charts.financialRisk.fixedExpenses")}</p>
+                            <p className="mt-2 text-lg font-semibold tabular-nums">{formatCurrency(financialRisk.fixedExpenses)}</p>
+                        </div>
+                    </CardContent>
+                </>
+            )}
         </Card>
     );
 }

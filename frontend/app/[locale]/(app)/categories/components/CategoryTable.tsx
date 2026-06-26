@@ -4,7 +4,7 @@
 import { useRef } from "react";
 
 // i18n
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Blocks, Pencil, Trash2 } from "lucide-react";
 
@@ -29,7 +29,7 @@ import { ThemeIcon } from "./theme-icons";
 import type { BudgetByPeriodApi, CategoryApi, CategoryTheme } from "../types";
 
 // utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 
 function getProgressClassName(status: BudgetByPeriodApi["status"]) {
@@ -63,7 +63,11 @@ export function CategoryTable({
     budgetsByCategoryId,
 }: Readonly<CategoryTableProps>) {
     const t = useTranslations("categories");
+
+    const locale = useLocale();
+
     const scrollAreaRef = useRef<HTMLDivElement | null>(null);
+
 
 
     function getTheme(iconKey: CategoryApi["icon"]) {
@@ -126,7 +130,7 @@ export function CategoryTable({
                                     indicatorClassName={getProgressClassName(budget.status)}
                                 />
                                 <p className="text-xs text-muted-foreground">
-                                    {budget.percentage.toFixed(1)}%
+                                    {formatPercentage(budget.percentage, locale, 0)}%
                                 </p>
                             </div>
                         ) : (

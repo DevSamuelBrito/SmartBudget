@@ -4,10 +4,10 @@
 import { useRouter } from "next/navigation";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 //lucide-react
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Target } from "lucide-react";
 
 // Components
 import {
@@ -23,11 +23,13 @@ import { Progress } from "@/components/ui/progress";
 
 import { Button } from "@/components/ui/button";
 
+import { EmptyState } from "./EmptyState";
+
 // Types
 import type { DashboardBudgetProgress } from "../types";
 
 // Utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type BudgetProgressCardProps = {
     budgets: DashboardBudgetProgress[];
@@ -47,6 +49,7 @@ function getStatusColor(status: DashboardBudgetProgress["status"], percentage: n
 
 export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps>) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
 
     const router = useRouter();
 
@@ -58,11 +61,13 @@ export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps
             </CardHeader>
 
             <CardContent className="space-y-4">
-                {budgets.length === 0 && (
-                    <p className="text-sm text-muted-foreground">{t("charts.budgetProgress.empty")}</p>
-                )}
-
-                {budgets.map((budget) => (
+                {budgets.length === 0 ? (
+                    <EmptyState
+                        icon={Target}
+                        title={t("emptyState.title")}
+                        description={t("charts.budgetProgress.emptyState")}
+                    />
+                ) : budgets.map((budget) => (
                     <div key={budget.budgetId} className="space-y-2">
                         <div className="flex items-center justify-between gap-2">
                             <span className="font-medium">{budget.categoryName}</span>
@@ -76,7 +81,7 @@ export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps
                         />
                         <div className="flex items-center justify-between">
                             <span className="text-xs text-muted-foreground">
-                                {t("charts.budgetProgress.used", { percentage: budget.percentage.toFixed(0) })}
+                                {t("charts.budgetProgress.used", { percentage: formatPercentage(budget.percentage, locale, 0) })}
                             </span>
                             <span className="text-xs text-muted-foreground tabular-nums">
                                 {t("charts.budgetProgress.remaining", {
@@ -87,6 +92,7 @@ export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps
                     </div>
                 ))}
             </CardContent>
+
             <CardFooter>
 
                 <Button variant="outline" className="w-full" onClick={() => router.push("/transactions")}>

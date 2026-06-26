@@ -1,5 +1,8 @@
 "use client";
 
+// next-intl
+import { useLocale } from "next-intl";
+
 // Components
 import {
   Card,
@@ -14,7 +17,7 @@ import { Progress } from "@/components/ui/progress";
 import type { DashboardCategoryExpense } from "../types";
 
 // Utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type CategoryExpensesCardProps = {
   categoryExpenses: DashboardCategoryExpense[];
@@ -32,6 +35,8 @@ const CATEGORY_COLORS = [
 ];
 
 export function CategoryExpensesCard({ categoryExpenses }: Readonly<CategoryExpensesCardProps>) {
+  const locale = useLocale();
+
   return (
     <Card className="border-border/70 bg-card/90 backdrop-blur">
       <CardHeader className="space-y-1">
@@ -56,7 +61,7 @@ export function CategoryExpensesCard({ categoryExpenses }: Readonly<CategoryExpe
                   {formatCurrency(category.amount)}
                 </span>
                 <span className="text-xs text-muted-foreground tabular-nums">
-                  ({category.percentage.toFixed(0)}%)
+                  ({formatPercentage(category.percentage, locale, 0)}%)
                 </span>
               </div>
             </div>

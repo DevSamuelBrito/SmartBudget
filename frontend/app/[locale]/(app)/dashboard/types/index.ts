@@ -55,14 +55,15 @@ export type DashboardBudgetProgress = {
   status: "Ok" | "Warning" | "Exceeded" | 1 | 2 | 3;
 };
 
+export type DashboardAlertType = "BudgetExceeded" | "BudgetWarning";
+
 export type DashboardAlert = {
-  type: string;
+  type: DashboardAlertType;
   budgetId: string;
   transactionCategoryId: string;
   categoryName: string;
   percentage: number;
   status: "Ok" | "Warning" | "Exceeded" | 1 | 2 | 3;
-  message: string;
 };
 
 export type DashboardFinancialRisk = {
@@ -70,6 +71,43 @@ export type DashboardFinancialRisk = {
   fixedExpenses: number;
   percentage: number;
   status: "Ok" | "Warning" | "Risk" | "NoData" | "FinancialRisk";
+};
+
+export type DashboardSavingsRate = {
+  rate: number;
+  savedAmount: number;
+  status: "Great" | "Ok" | "Low";
+};
+
+export type DashboardMonthlyComparison = {
+  previousMonthIncome: number;
+  previousMonthExpense: number;
+  previousMonthBalance: number;
+  incomeVariation: number;
+  expenseVariation: number;
+  balanceVariation: number;
+};
+
+export type DashboardTopExpense = {
+  description: string;
+  categoryName: string | null;
+  categoryIcon: string | null;
+  amount: number;
+  date: string;
+};
+
+export type DashboardCashFlow = {
+  weekNumber: number;
+  totalIncome: number;
+  totalExpense: number;
+};
+
+export type DashboardBudgetHealth = {
+  score: number;
+  okCount: number;
+  warningCount: number;
+  exceededCount: number;
+  status: "Healthy" | "Moderate" | "AtRisk";
 };
 
 export type DashboardOverviewApi = {
@@ -87,6 +125,11 @@ export type DashboardOverviewApi = {
   budgetProgress: DashboardBudgetProgress[];
   alerts: DashboardAlert[];
   expenseEvolutionByMonth: DashboardExpenseByMonth[];
+  savingsRate: DashboardSavingsRate | null;
+  monthlyComparison: DashboardMonthlyComparison | null;
+  topExpenses: DashboardTopExpense[] | null;
+  cashFlow: DashboardCashFlow[] | null;
+  budgetHealth: DashboardBudgetHealth | null;
 };
 
 export type DashboardConfigItem = {

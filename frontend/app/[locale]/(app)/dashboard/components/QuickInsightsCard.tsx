@@ -4,7 +4,7 @@
 import { useTranslations } from "next-intl";
 
 // Libs
-import { BadgeDollarSign, TrendingDown, TrendingUp } from "lucide-react";
+import { BadgeDollarSign, InboxIcon, TrendingDown, TrendingUp } from "lucide-react";
 
 // Components
 import {
@@ -14,6 +14,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+
+import { EmptyState } from "./EmptyState";
 
 // Utils
 import { formatCurrency } from "@/lib/utils/formatters";
@@ -26,6 +28,8 @@ type QuickInsightsCardProps = {
 export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: Readonly<QuickInsightsCardProps>) {
     const t = useTranslations("dashboard");
 
+    const isEmpty = dailyAverageIncome === 0 && dailyAverageExpense === 0;
+
     return (
         <Card className="border-border/70 bg-card/90 backdrop-blur">
             <CardHeader>
@@ -34,6 +38,13 @@ export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: R
             </CardHeader>
 
             <CardContent className="space-y-4">
+                {isEmpty ? (
+                    <EmptyState
+                        icon={InboxIcon}
+                        title={t("emptyState.title")}
+                        description={t("charts.quickInsights.emptyState")}
+                    />
+                ) : (<>
                 <div className="rounded-xl border border-border/70 bg-muted/40 p-4">
                     <div className="flex items-center gap-3">
                         <div className="rounded-full bg-emerald-500/10 p-2 text-emerald-500">
@@ -75,6 +86,7 @@ export function QuickInsightsCard({ dailyAverageIncome, dailyAverageExpense }: R
                         </div>
                     </div>
                 </div>
+                </>)}
             </CardContent>
         </Card>
     );

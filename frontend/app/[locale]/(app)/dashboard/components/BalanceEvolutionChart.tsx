@@ -6,6 +6,8 @@ import { useTranslations } from "next-intl";
 // Libs
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
+import { BarChart2 } from "lucide-react";
+
 // Components
 import {
   Card,
@@ -20,6 +22,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+
+import { EmptyState } from "./EmptyState";
 
 // Types
 import type { DashboardBalanceEvolutionPoint } from "../types";
@@ -43,6 +47,8 @@ export function BalanceEvolutionChart({ data }: Readonly<BalanceEvolutionChartPr
     balance: point.balance,
   }));
 
+  const isEmpty = data.every((point) => point.balance === 0);
+
   return (
     <Card className="border-border/70 bg-card/90 backdrop-blur">
       <CardHeader>
@@ -50,7 +56,14 @@ export function BalanceEvolutionChart({ data }: Readonly<BalanceEvolutionChartPr
         <CardDescription>{t("charts.balanceEvolution.description")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="aspect-auto h-[280px] w-full">
+        {isEmpty ? (
+          <EmptyState
+            icon={BarChart2}
+            title={t("emptyState.title")}
+            description={t("charts.balanceEvolution.emptyState")}
+          />
+        ) : (
+        <ChartContainer config={chartConfig} className="aspect-auto h-70 w-full">
           <AreaChart data={chartData}>
             <defs>
               <linearGradient id="fillBalance" x1="0" y1="0" x2="0" y2="1">
@@ -84,6 +97,7 @@ export function BalanceEvolutionChart({ data }: Readonly<BalanceEvolutionChartPr
             />
           </AreaChart>
         </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );
