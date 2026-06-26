@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { createContext, useContext, useMemo, useReducer } from "react";
+import { createContext, useContext, useEffect, useMemo, useReducer } from "react";
 
 // types
 type AuthUser = {
@@ -80,9 +80,15 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 // provider
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [state, dispatch] = useReducer(authReducer, {
-    user: readUserDataCookie(),
-  });
+  const [state, dispatch] = useReducer(authReducer, { user: null });
+
+  useEffect(() => {
+    const user = readUserDataCookie();
+    
+    if (user) {
+      dispatch({ type: "LOGIN", payload: user });
+    }
+  }, []);
 
   const value = useMemo(() => ({ state, dispatch }), [state]);
 

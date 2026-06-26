@@ -23,13 +23,21 @@ import {
 
 import { Badge } from "@/components/ui/badge";
 
+// hooks
+import { useAuth } from "@/contexts/auth-context";
+
 // utils
 import { cn } from "@/lib/utils";
 
 export default function PlansPage() {
   const t = useTranslations("plans");
 
+  const { state } = useAuth();
+
+  const isPremium = state.user?.isPremium ?? false;
+
   const freeFeatures: string[] = t.raw("free.features") as string[];
+
   const premiumFeatures: string[] = t.raw("premium.features") as string[];
 
   return (
@@ -55,7 +63,12 @@ export default function PlansPage() {
           {/* Free card */}
           <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle className="text-xl">{t("free.title")}</CardTitle>
+              <div className="flex items-start justify-between gap-2">
+                <CardTitle className="text-xl">{t("free.title")}</CardTitle>
+                {isPremium && (
+                  <Badge variant="secondary">{t("currentPlan")}</Badge>
+                )}
+              </div>
               <CardDescription>{t("free.description")}</CardDescription>
             </CardHeader>
 
@@ -77,9 +90,15 @@ export default function PlansPage() {
             </CardContent>
 
             <CardFooter>
-              <Button className="w-full" variant="outline" asChild>
-                <Link href="/dashboard">{t("free.continueWithFree")}</Link>
-              </Button>
+              {isPremium ? (
+                <Button className="w-full" variant="outline" disabled>
+                  {t("currentPlan")}
+                </Button>
+              ) : (
+                <Button className="w-full" variant="outline" asChild>
+                  <Link href="/dashboard">{t("free.continueWithFree")}</Link>
+                </Button>
+              )}
             </CardFooter>
           </Card>
 
@@ -89,8 +108,13 @@ export default function PlansPage() {
               {t("premium.ribbon")}
             </div>
             <CardHeader>
-              <div className="flex items-start justify-between gap-2">
+              <div className="flex items-center gap-2">
                 <CardTitle className="text-xl">{t("premium.title")}</CardTitle>
+                {isPremium && (
+                  <Badge className="bg-green-500 hover:bg-green-500 text-white">
+                    {t("active")}
+                  </Badge>
+                )}
               </div>
               <CardDescription>{t("premium.description")}</CardDescription>
             </CardHeader>
@@ -118,9 +142,15 @@ export default function PlansPage() {
             </CardContent>
 
             <CardFooter>
-              <Button className="w-full" asChild>
-                <Link href="/checkout">{t("premium.getPremium")}</Link>
-              </Button>
+              {isPremium ? (
+                <Button className="w-full" disabled>
+                  {t("currentPlan")}
+                </Button>
+              ) : (
+                <Button className="w-full" asChild>
+                  <Link href="/checkout">{t("premium.getPremium")}</Link>
+                </Button>
+              )}
             </CardFooter>
           </Card>
         </div>

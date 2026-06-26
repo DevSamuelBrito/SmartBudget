@@ -450,6 +450,7 @@
     "title": "Choose your plan",
     "description": "Start for free and upgrade whenever you're ready.",
     "currentPlan": "Current plan",
+    "active": "✓ Active",
     "backToApp": "Back to app",
     "free": {
       "title": "Free",
