@@ -447,38 +447,73 @@
     "notFound": "Página não encontrada"
   },
   "plans": {
-    "title": "Planos",
-    "description": "Escolha o plano que melhor se adapta às suas necessidades.",
+    "title": "Escolha seu plano",
+    "description": "Comece gratuitamente e faça upgrade quando quiser.",
     "currentPlan": "Plano atual",
+    "backToApp": "Voltar ao app",
+    "popularBadge": "Mais popular",
+    "promoBadge": "🎉 Grátis por tempo limitado",
     "free": {
       "title": "Gratuito",
       "description": "Ferramentas essenciais para começar a organizar suas finanças.",
       "price": "R$ 0",
       "period": "/ mês",
       "cta": "Plano atual",
+      "continueWithFree": "Continuar com Free",
       "features": [
-        "Até 50 transações por mês",
-        "Até 5 categorias",
-        "Dashboard básico",
-        "Controle de orçamento"
+        "Transações e categorias",
+        "Ícones básicos de categoria",
+        "Dashboard com KPIs e gráficos essenciais",
+        "Controle de orçamento mensal"
       ]
     },
     "premium": {
       "title": "Premium",
       "description": "Acesso completo a recursos avançados e dados ilimitados.",
       "price": "R$ 49,90",
+      "originalPrice": "R$ 49,90 / mês",
+      "promoPrice": "Grátis",
       "period": "/ mês",
       "cta": "Assinar Premium",
+      "getPremium": "Obter Premium",
       "upgrading": "Processando...",
       "features": [
         "Transações ilimitadas",
         "Categorias ilimitadas",
-        "Dashboard avançado com personalização",
+        "Ícones exclusivos de categoria",
+        "Dashboard personalizável com componentes avançados",
+        "Taxa de poupança e comparativo mensal",
+        "Fluxo de caixa semanal",
+        "Saúde dos orçamentos",
         "Análise de risco financeiro",
-        "Suporte prioritário"
+        "Top 5 maiores gastos do mês"
       ]
     },
     "upgradeSuccess": "Bem-vindo ao Premium! Aproveite todos os recursos."
+  },
+  "checkout": {
+    "title": "Finalizar assinatura",
+    "subtitle": "Insira os dados do cartão para confirmar.",
+    "backToPlans": "Voltar aos planos",
+    "planSummary": {
+      "title": "Resumo do pedido",
+      "plan": "Plano",
+      "price": "Valor",
+      "originalPrice": "R$ 49,90 / mês",
+      "free": "Grátis"
+    },
+    "form": {
+      "cardName": "Nome no cartão",
+      "cardNamePlaceholder": "Como aparece no cartão",
+      "cardNumber": "Número do cartão",
+      "expiry": "Validade",
+      "cvv": "CVV"
+    },
+    "processing": "Processando...",
+    "submit": "Confirmar assinatura",
+    "successToast": "🎉 Bem-vindo ao Premium!",
+    "errorToast": "Erro ao processar pagamento. Tente novamente.",
+    "disclaimer": "Ambiente de demonstração — nenhum dado real é processado."
   },
   "auth": {
     "login": "Entrar",
