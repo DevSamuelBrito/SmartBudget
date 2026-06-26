@@ -116,6 +116,17 @@ export function TransactionFormSheet({
         defaultValues: defaultTransactionValues,
     });
 
+    const [categoryQuery, setCategoryQuery] = useState("");
+    const [categoryOpen, setCategoryOpen] = useState(false);
+    const [dateOpen, setDateOpen] = useState(false);
+
+    const [prevOpen, setPrevOpen] = useState(open);
+    
+    if (prevOpen !== open) {
+        setPrevOpen(open);
+        if (open && !transaction) setCategoryQuery("");
+    }
+
     useEffect(() => {
         if (!open) return;
 
@@ -130,7 +141,6 @@ export function TransactionFormSheet({
             });
         } else {
             reset(defaultTransactionValues);
-            setCategoryQuery("");
         }
     }, [open, transaction, reset]);
 
@@ -140,10 +150,6 @@ export function TransactionFormSheet({
     const transactionType = useWatch({ control, name: "transactionType" });
     const recurrence = useWatch({ control, name: "recurrence" });
     const isTransferTransaction = transactionType === 3;
-
-    const [categoryQuery, setCategoryQuery] = useState("");
-    const [categoryOpen, setCategoryOpen] = useState(false);
-    const [dateOpen, setDateOpen] = useState(false);
 
     const selectedCategory = useMemo(() => {
         return categories.find((category) => category.id === transactionCategoryId) ?? null;
