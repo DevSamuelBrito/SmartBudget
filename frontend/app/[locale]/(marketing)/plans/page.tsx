@@ -11,6 +11,7 @@ import { ArrowLeft, Check } from "lucide-react";
 
 // components
 import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -19,6 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { Badge } from "@/components/ui/badge";
 
 // utils
@@ -82,36 +84,27 @@ export default function PlansPage() {
           </Card>
 
           {/* Premium card */}
-          <Card className={cn("flex flex-col relative ring-2 ring-primary")}>
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
-              <Badge className="px-3 py-1 text-xs font-semibold shadow-sm">
-                {t("popularBadge")}
-              </Badge>
+          <Card className={cn("flex flex-col relative ring-2 ring-primary overflow-hidden")}>
+            <div className="absolute top-5 -right-7 w-32 rotate-45 bg-green-500 text-white text-xs font-bold text-center py-1 shadow">
+              {t("premium.ribbon")}
             </div>
-
             <CardHeader>
               <div className="flex items-start justify-between gap-2">
                 <CardTitle className="text-xl">{t("premium.title")}</CardTitle>
               </div>
-              <Badge
-                variant="secondary"
-                className="w-fit text-xs font-medium mt-1"
-              >
-                {t("promoBadge")}
-              </Badge>
               <CardDescription>{t("premium.description")}</CardDescription>
             </CardHeader>
 
             <CardContent className="flex-1">
-              <div className="mb-6">
+              <div className="mb-4">
                 <div className="flex items-baseline gap-2">
-                  <p className="text-4xl font-bold text-primary">
+                  <p className="text-3xl font-bold text-primary">
                     {t("premium.promoPrice")}
                   </p>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   <span className="line-through">{t("premium.originalPrice")}</span>
-                  {" "}{t("premium.period")}
+                  {" "}
                 </p>
               </div>
               <ul className="space-y-3">

@@ -451,8 +451,6 @@
     "description": "Start for free and upgrade whenever you're ready.",
     "currentPlan": "Current plan",
     "backToApp": "Back to app",
-    "popularBadge": "Most popular",
-    "promoBadge": "🎉 Free for a limited time",
     "free": {
       "title": "Free",
       "description": "Essential tools to get started with your finances.",
@@ -477,6 +475,7 @@
       "cta": "Subscribe to Premium",
       "getPremium": "Get Premium",
       "upgrading": "Processing...",
+      "ribbon": "FREE",
       "features": [
         "Everything in Free",
         "Exclusive category icons",

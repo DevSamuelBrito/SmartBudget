@@ -451,8 +451,6 @@
     "description": "Comece gratuitamente e faça upgrade quando quiser.",
     "currentPlan": "Plano atual",
     "backToApp": "Voltar ao app",
-    "popularBadge": "Mais popular",
-    "promoBadge": "🎉 Grátis por tempo limitado",
     "free": {
       "title": "Gratuito",
       "description": "Ferramentas essenciais para começar a organizar suas finanças.",
@@ -477,6 +475,7 @@
       "cta": "Assinar Premium",
       "getPremium": "Obter Premium",
       "upgrading": "Processando...",
+      "ribbon": "GRÁTIS",
       "features": [
         "Transações ilimitadas",
         "Categorias ilimitadas",
