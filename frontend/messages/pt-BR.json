@@ -427,7 +427,13 @@
     "updateSuccess": "Informações atualizadas com sucesso!",
     "updateError": "Não foi possível atualizar as informações.",
     "passwordSuccess": "Senha alterada com sucesso!",
-    "passwordError": "Não foi possível alterar a senha."
+    "passwordError": "Não foi possível alterar a senha.",
+    "subscription": {
+      "title": "Plano",
+      "description": "Seu plano atual de assinatura.",
+      "premium": "Premium",
+      "free": "Gratuito"
+    }
   },
   "notFound": {
     "title": "Página não encontrada",
@@ -512,8 +518,7 @@
     "processing": "Processando...",
     "submit": "Confirmar assinatura",
     "successToast": "🎉 Bem-vindo ao Premium!",
-    "errorToast": "Erro ao processar pagamento. Tente novamente.",
-    "disclaimer": "Ambiente de demonstração — nenhum dado real é processado."
+    "errorToast": "Erro ao processar pagamento. Tente novamente."
   },
   "auth": {
     "login": "Entrar",

@@ -91,9 +91,6 @@ export default function CheckoutPage() {
             </Button>
           </form>
 
-          <p className="text-center text-xs text-muted-foreground">
-            {t("disclaimer")}
-          </p>
         </div>
       </div>
     </div>

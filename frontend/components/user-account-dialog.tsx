@@ -231,6 +231,21 @@ export function UserAccountDialog({
 
                         <section className="space-y-3 rounded-lg border p-4">
                             <div className="space-y-1">
+                                <h3 className="font-medium">{t("subscription.title")}</h3>
+                                <p className="text-sm text-muted-foreground">
+                                    {t("subscription.description")}
+                                </p>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                                <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${authUser?.isPremium ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400" : "bg-muted text-muted-foreground"}`}>
+                                    {authUser?.isPremium ? t("subscription.premium") : t("subscription.free")}
+                                </span>
+                            </div>
+                        </section>
+
+                        <section className="space-y-3 rounded-lg border p-4">
+                            <div className="space-y-1">
                                 <h3 className="font-medium">{t("security.title")}</h3>
                                 <p className="text-sm text-muted-foreground">
                                     {t("security.description")}

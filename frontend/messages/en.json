@@ -427,7 +427,13 @@
     "updateSuccess": "Information updated successfully!",
     "updateError": "Could not update the information.",
     "passwordSuccess": "Password changed successfully!",
-    "passwordError": "Could not change the password."
+    "passwordError": "Could not change the password.",
+    "subscription": {
+      "title": "Plan",
+      "description": "Your current subscription plan.",
+      "premium": "Premium",
+      "free": "Free"
+    }
   },
   "notFound": {
     "title": "Page not found",
@@ -511,8 +517,7 @@
     "processing": "Processing...",
     "submit": "Confirm subscription",
     "successToast": "🎉 Welcome to Premium!",
-    "errorToast": "Payment processing error. Please try again.",
-    "disclaimer": "Demo environment — no real data is processed."
+    "errorToast": "Payment processing error. Please try again."
   },
   "auth": {
     "login": "Sign in",
