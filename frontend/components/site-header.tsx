@@ -30,22 +30,19 @@ export function SiteHeader() {
 
   const pathname = usePathname()
   const t = useTranslations("siteHeader")
+  const tNav = useTranslations("nav")
 
   const { resolvedTheme, theme, setTheme } = useTheme()
 
-  const formatSegment = (segment: string) =>
-    segment
-      .replaceAll("-", " ")
-      .replace(/\b\w/g, (c) => c.toUpperCase());
+  const PAGE_KEYS = ["dashboard", "transactions", "categories", "plans"] as const
+  
+  type PageKey = typeof PAGE_KEYS[number]
 
-  const title =
-    pathname === "/"
-      ? "Dashboard"
-      : pathname
-        .split("/")
-        .filter(Boolean)
-        .map(formatSegment)
-        .join(" / ") || "Dashboard";
+  const lastSegment = pathname.split("/").filter(Boolean).pop() ?? "";
+
+  const title = PAGE_KEYS.includes(lastSegment as PageKey)
+    ? tNav(lastSegment as PageKey)
+    : "Dashboard";
 
   const currentTheme = resolvedTheme ?? theme
 
@@ -60,7 +57,7 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+    <header className="sticky top-0 z-10 flex h-(--header-height) shrink-0 items-center gap-2 border-b bg-background transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
         <SidebarTrigger className="-ml-1" />
         <Separator
