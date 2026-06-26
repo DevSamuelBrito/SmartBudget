@@ -14,7 +14,7 @@ jest.mock("next-intl", () => ({
       if (key === "charts.financialRisk.riskMessage") {
         return `Alerta: seus gastos fixos representam ${params?.percentageLabel} da sua renda média.`;
       }
-      
+
       const map: Record<string, string> = {
         "charts.financialRisk.title": "Risco financeiro",
         "charts.financialRisk.description":
@@ -25,20 +25,25 @@ jest.mock("next-intl", () => ({
           "Atenção: seus gastos fixos estão se aproximando do limite recomendado.",
         "charts.financialRisk.noDataMessage":
           "Sem dados suficientes para calcular o risco financeiro.",
+        "charts.financialRisk.emptyState":
+          "Sem dados suficientes para calcular o risco financeiro.",
         "charts.financialRisk.averageIncome": "Renda média (3 meses)",
         "charts.financialRisk.fixedExpenses": "Gastos fixos mensais",
         "charts.financialRisk.status.ok": "Ok",
         "charts.financialRisk.status.warning": "Atenção",
         "charts.financialRisk.status.risk": "Risco",
         "charts.financialRisk.status.noData": "Sem dados",
+        "emptyState.title": "Sem dados",
       };
-      
+
       return map[key] ?? key;
     },
+  useLocale: () => "pt-BR",
 }));
 
 jest.mock("lucide-react", () => ({
   ShieldAlert: () => null,
+  ShieldOff: () => null,
 }));
 
 jest.mock("@/components/ui/progress", () => ({
@@ -50,6 +55,7 @@ jest.mock("@/components/ui/progress", () => ({
 jest.mock("@/lib/utils/formatters", () => ({
   formatCurrency: (value: number) =>
     `R$ ${value.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}`,
+  formatPercentage: (value: number) => String(value),
 }));
 
 const makeRisk = (

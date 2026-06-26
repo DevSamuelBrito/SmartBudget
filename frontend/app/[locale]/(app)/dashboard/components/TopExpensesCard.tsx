@@ -113,7 +113,7 @@ export function TopExpensesCard({ data }: Readonly<TopExpensesCardProps>) {
                             <Bar dataKey="amount" radius={[0, 4, 4, 0]}>
                                 {chartData.map((entry, index) => (
                                     <Cell
-                                        key={index}
+                                        key={`${index}-${entry.description}`}
                                         fill={COLORS[entry.colorIndex % COLORS.length]}
                                     />
                                 ))}
