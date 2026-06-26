@@ -427,7 +427,13 @@
     "updateSuccess": "Information updated successfully!",
     "updateError": "Could not update the information.",
     "passwordSuccess": "Password changed successfully!",
-    "passwordError": "Could not change the password."
+    "passwordError": "Could not change the password.",
+    "subscription": {
+      "title": "Plan",
+      "description": "Your current subscription plan.",
+      "premium": "Premium",
+      "free": "Free"
+    }
   },
   "notFound": {
     "title": "Page not found",
@@ -447,38 +453,71 @@
     "notFound": "Page not found"
   },
   "plans": {
-    "title": "Plans",
-    "description": "Choose the plan that best suits your needs.",
+    "title": "Choose your plan",
+    "description": "Start for free and upgrade whenever you're ready.",
     "currentPlan": "Current plan",
+    "active": "✓ Active",
+    "backToApp": "Back to app",
     "free": {
       "title": "Free",
       "description": "Essential tools to get started with your finances.",
       "price": "$0",
       "period": "/ month",
       "cta": "Current plan",
+      "continueWithFree": "Continue with Free",
       "features": [
-        "Up to 50 transactions per month",
-        "Up to 5 categories",
-        "Basic dashboard",
-        "Budget tracking"
+        "Transactions and categories",
+        "Basic category icons",
+        "Dashboard with KPIs and essential charts",
+        "Monthly budget tracking"
       ]
     },
     "premium": {
       "title": "Premium",
       "description": "Full access to advanced features and unlimited data.",
       "price": "$9.90",
+      "originalPrice": "$9.90 / month",
+      "promoPrice": "Free",
       "period": "/ month",
       "cta": "Subscribe to Premium",
+      "getPremium": "Get Premium",
       "upgrading": "Processing...",
+      "ribbon": "FREE",
       "features": [
-        "Unlimited transactions",
-        "Unlimited categories",
-        "Advanced dashboard with customization",
+        "Everything in Free",
+        "Exclusive category icons",
+        "Customizable dashboard with advanced components",
+        "Savings rate and monthly comparison",
+        "Weekly cash flow",
+        "Budget health score",
         "Financial risk analysis",
-        "Priority support"
+        "Top 5 biggest expenses of the month"
       ]
     },
     "upgradeSuccess": "Welcome to Premium! Enjoy all the features."
+  },
+  "checkout": {
+    "title": "Complete your subscription",
+    "subtitle": "Enter your card details to confirm.",
+    "backToPlans": "Back to plans",
+    "planSummary": {
+      "title": "Order summary",
+      "plan": "Plan",
+      "price": "Amount",
+      "originalPrice": "$9.90 / month",
+      "free": "Free"
+    },
+    "form": {
+      "cardName": "Name on card",
+      "cardNamePlaceholder": "As it appears on the card",
+      "cardNumber": "Card number",
+      "expiry": "Expiry",
+      "cvv": "CVV"
+    },
+    "processing": "Processing...",
+    "submit": "Confirm subscription",
+    "successToast": "🎉 Welcome to Premium!",
+    "errorToast": "Payment processing error. Please try again."
   },
   "auth": {
     "login": "Sign in",
