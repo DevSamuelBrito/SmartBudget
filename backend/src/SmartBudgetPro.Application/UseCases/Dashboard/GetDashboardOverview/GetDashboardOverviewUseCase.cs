@@ -270,7 +270,7 @@ public class GetDashboardOverviewUseCase(
 
         for (var day = 1; day <= daysInMonth; day++)
         {
-            var date = new DateTime(targetYear, targetMonth, day);
+            var date = new DateTime(targetYear, targetMonth, day, 0, 0, 0, DateTimeKind.Utc);
 
             if (dailyNetByDate.TryGetValue(date, out var dailyNet))
                 runningBalance += dailyNet;
