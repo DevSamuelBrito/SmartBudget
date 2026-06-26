@@ -370,6 +370,7 @@
     "notifications": "Notificações",
     "customizeDashboard": "Customizar Dashboard",
     "language": "Idioma",
+    "settings": "Configurações",
     "logout": "Sair",
     "loggingOut": "Saindo..."
   },
@@ -381,6 +382,19 @@
   "languageSwitcher": {
     "title": "Idioma",
     "description": "Escolha o idioma da aplicação."
+  },
+  "settings": {
+    "title": "Configurações",
+    "description": "Gerencie suas preferências.",
+    "language": {
+      "title": "Idioma"
+    },
+    "theme": {
+      "title": "Aparência",
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema"
+    }
   },
   "account": {
     "title": "Minha Conta",

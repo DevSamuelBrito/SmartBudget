@@ -5,12 +5,6 @@ import Link from "next/link"
 
 import { usePathname } from "next/navigation"
 
-// i18n
-import { useTranslations } from "next-intl"
-
-//icons
-import { CirclePlusIcon } from "lucide-react"
-
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -29,23 +23,10 @@ export function NavMain({
   }[]
 }>) {
   const pathname = usePathname()
-  const t = useTranslations("nav")
 
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
-        <SidebarMenu>
-          <SidebarMenuItem className="flex items-center gap-2">
-            <SidebarMenuButton
-              tooltip={t("newTransaction")}
-              className="min-w-8 bg-primary text-primary-foreground duration-200 ease-linear hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground"
-            >
-              <CirclePlusIcon
-              />
-              <span>{t("newTransaction")}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
         <SidebarMenu>
           {items.map((item) => {
             const isActive = pathname?.startsWith(`/${item.url}`)

@@ -7,7 +7,7 @@ import { useState } from "react"
 import { useTranslations } from "next-intl"
 
 // libs
-import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon, LayoutDashboardIcon, FlagIcon } from "lucide-react"
+import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon, LayoutDashboardIcon, SettingsIcon } from "lucide-react"
 
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -37,7 +37,7 @@ import {
 
 import { DashboardCustomizerSheet } from "@/app/[locale]/(app)/dashboard/components/DashboardCustomizerSheet"
 
-import { LanguageSwitcherDialog } from "@/components/language-switcher-dialog"
+import { SettingsDialog } from "@/components/settings-dialog"
 
 import { UserAccountDialog } from "@/components/user-account-dialog"
 
@@ -78,7 +78,7 @@ export function NavUser({
 
   const [accountDialogOpen, setAccountDialogOpen] = useState(false)
 
-  const [localeDialogOpen, setLocaleDialogOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
@@ -94,7 +94,7 @@ export function NavUser({
   const handleChangeLocale = async (locale: AppLocale) => {
     setIsChangingLocale(true)
     await setLocaleAction(locale)
-    setLocaleDialogOpen(false)
+    setSettingsOpen(false)
     window.location.reload()
     setIsChangingLocale(false)
   }
@@ -149,9 +149,9 @@ export function NavUser({
                   <LayoutDashboardIcon />
                   {t("customizeDashboard")}
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setLocaleDialogOpen(true)}>
-                  <FlagIcon />
-                  {t("language")}
+                <DropdownMenuItem onSelect={() => setSettingsOpen(true)}>
+                  <SettingsIcon />
+                  {t("settings")}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
@@ -172,9 +172,9 @@ export function NavUser({
           setDisplayUser(nextProfile)
         }}
       />
-      <LanguageSwitcherDialog
-        open={localeDialogOpen}
-        onOpenChange={setLocaleDialogOpen}
+      <SettingsDialog
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
         isChangingLocale={isChangingLocale}
         onChangeLocale={handleChangeLocale}
       />

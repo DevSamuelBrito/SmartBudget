@@ -370,6 +370,7 @@
     "notifications": "Notifications",
     "customizeDashboard": "Customize Dashboard",
     "language": "Language",
+    "settings": "Settings",
     "logout": "Log out",
     "loggingOut": "Logging out..."
   },
@@ -381,6 +382,19 @@
   "languageSwitcher": {
     "title": "Language",
     "description": "Choose the application language."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your preferences.",
+    "language": {
+      "title": "Language"
+    },
+    "theme": {
+      "title": "Appearance",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
   },
   "account": {
     "title": "My Account",
