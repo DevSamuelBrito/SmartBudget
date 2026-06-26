@@ -4,7 +4,7 @@
 import { useState } from "react";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // Libs
 import { Cell, Legend, Pie, PieChart } from "recharts";
@@ -37,7 +37,7 @@ import { EmptyState } from "./EmptyState";
 import type { DashboardCategoryExpense } from "../types";
 
 // Utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type CategoryDistributionFlipCardProps = {
     pieData: DashboardCategoryExpense[];
@@ -76,6 +76,7 @@ export function CategoryDistributionFlipCard({
     categoryExpenses,
 }: Readonly<CategoryDistributionFlipCardProps>) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
 
     const [showBarView, setShowBarView] = useState(false);
     const isEmpty = pieData.length === 0 && categoryExpenses.length === 0;
@@ -206,7 +207,7 @@ export function CategoryDistributionFlipCard({
                                             {formatCurrency(category.amount)}
                                         </span>
                                         <span className="text-xs text-muted-foreground tabular-nums">
-                                            ({category.percentage.toFixed(0)}%)
+                                            ({formatPercentage(category.percentage, locale, 0)}%)
                                         </span>
                                     </div>
                                 </div>

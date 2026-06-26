@@ -1,7 +1,7 @@
 "use client";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // lucide-react
 import { TrendingUp, TrendingDown, Minus, GitCompare } from "lucide-react";
@@ -19,7 +19,7 @@ import {
 import type { DashboardMonthlyComparison } from "../types";
 
 // utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type MonthlyComparisonCardProps = {
     data: DashboardMonthlyComparison | null;
@@ -37,8 +37,9 @@ function getVariationConfig(variation: number, isIncome: boolean): VariationConf
 }
 
 function VariationIndicator({ variation, isPositive }: Readonly<{ variation: number; isPositive: boolean }>) {
+    const locale = useLocale();
     const absValue = Math.abs(variation);
-    const label = `${absValue.toFixed(1).replace(".", ",")}%`;
+    const label = `${formatPercentage(absValue, locale)}%`;
 
     if (absValue < 0.01) {
         return (

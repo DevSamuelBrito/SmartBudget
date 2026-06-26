@@ -1,7 +1,7 @@
 "use client";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // Libs
 import { ShieldAlert, ShieldOff } from "lucide-react";
@@ -23,7 +23,7 @@ import { EmptyState } from "./EmptyState";
 import type { DashboardFinancialRisk } from "../types";
 
 // Utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type FinancialRiskCardProps = {
     financialRisk: DashboardFinancialRisk;
@@ -93,11 +93,12 @@ function getStatusMessage(
 
 export function FinancialRiskCard({ financialRisk }: Readonly<FinancialRiskCardProps>) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
 
     const status = normalizeStatus(financialRisk.status);
     const styles = getStatusStyles(status);
     const percentageValue = Number.isFinite(financialRisk.percentage) ? financialRisk.percentage : 0;
-    const percentageLabel = `${percentageValue.toFixed(1).replace(".", ",")}%`;
+    const percentageLabel = `${formatPercentage(percentageValue, locale)}%`;
     const progressValue = status === "NoData" ? 0 : Math.min(percentageValue, 100);
 
     const statusKey =

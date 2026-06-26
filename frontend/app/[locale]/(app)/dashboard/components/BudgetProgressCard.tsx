@@ -4,7 +4,7 @@
 import { useRouter } from "next/navigation";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 //lucide-react
 import { ExternalLink, Target } from "lucide-react";
@@ -29,7 +29,7 @@ import { EmptyState } from "./EmptyState";
 import type { DashboardBudgetProgress } from "../types";
 
 // Utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type BudgetProgressCardProps = {
     budgets: DashboardBudgetProgress[];
@@ -49,6 +49,7 @@ function getStatusColor(status: DashboardBudgetProgress["status"], percentage: n
 
 export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps>) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
 
     const router = useRouter();
 
@@ -80,7 +81,7 @@ export function BudgetProgressCard({ budgets }: Readonly<BudgetProgressCardProps
                         />
                         <div className="flex items-center justify-between">
                             <span className="text-xs text-muted-foreground">
-                                {t("charts.budgetProgress.used", { percentage: budget.percentage.toFixed(0) })}
+                                {t("charts.budgetProgress.used", { percentage: formatPercentage(budget.percentage, locale, 0) })}
                             </span>
                             <span className="text-xs text-muted-foreground tabular-nums">
                                 {t("charts.budgetProgress.remaining", {

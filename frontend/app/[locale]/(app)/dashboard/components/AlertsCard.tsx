@@ -1,7 +1,7 @@
 "use client";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // Libs
 import { AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
@@ -22,12 +22,15 @@ import type { DashboardAlert } from "../types";
 // Utils
 import { getAlertMessage } from "../utils/alert-message";
 
+import { formatPercentage } from "@/lib/utils/formatters";
+
 type AlertsCardProps = {
   alerts: DashboardAlert[];
 };
 
 export function AlertsCard({ alerts }: Readonly<AlertsCardProps>) {
   const t = useTranslations("dashboard");
+  const locale = useLocale();
 
   return (
     <Card className="border-border/70 bg-card/90 backdrop-blur">
@@ -71,7 +74,7 @@ export function AlertsCard({ alerts }: Readonly<AlertsCardProps>) {
                 variant="outline"
                 className={isExceeded ? "border-rose-500/50 text-rose-500" : "border-amber-500/50 text-amber-500"}
               >
-                {alert.percentage.toFixed(0)}%
+                {formatPercentage(alert.percentage, locale, 0)}%
               </Badge>
             </div>
           );

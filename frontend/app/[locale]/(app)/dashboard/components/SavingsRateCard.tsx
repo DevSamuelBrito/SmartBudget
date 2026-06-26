@@ -1,7 +1,7 @@
 "use client";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // recharts
 import { RadialBarChart, RadialBar, PolarAngleAxis } from "recharts";
@@ -25,7 +25,7 @@ import { EmptyState } from "./EmptyState";
 import type { DashboardSavingsRate } from "../types";
 
 // utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type SavingsRateCardProps = {
     data: DashboardSavingsRate | null;
@@ -60,6 +60,7 @@ const chartConfig = {
 
 export function SavingsRateCard({ data }: Readonly<SavingsRateCardProps>) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
 
     const isEmpty = data === null || data.rate === 0 && data.savedAmount === 0;
     const rateValue = data ? Math.max(0, Math.min(data.rate, 100)) : 0;
@@ -106,7 +107,7 @@ export function SavingsRateCard({ data }: Readonly<SavingsRateCardProps>) {
                             </ChartContainer>
                             <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
                                 <span className="text-2xl font-bold tabular-nums">
-                                    {data!.rate.toFixed(1).replace(".", ",")}%
+                                    {formatPercentage(data!.rate, locale)}%
                                 </span>
                                 <span className="text-xs text-muted-foreground">{t("charts.savingsRate.rateLabel")}</span>
                             </div>

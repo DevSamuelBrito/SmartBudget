@@ -10,6 +10,9 @@ export const formatDate = (value: string) => {
 export const formatCurrency = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
+export const formatPercentage = (value: number, locale: string, decimals = 1): string =>
+  new Intl.NumberFormat(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value);
+
 export const formatBoolean = (value: boolean) => (value ? "Sim" : "Não");
 
 export const formatTransactionType = (value: TransactionApi["type"]) => {
