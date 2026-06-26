@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // i18n
 import { useTranslations } from "next-intl";
@@ -104,32 +104,35 @@ export function TransactionFormSheet({
         { label: t("recurrence.recorrente"), value: 1 },
     ] as const;
 
-    const formValues = useMemo<TransactionFormValues>(() => {
-        if (!open || !transaction) {
-            return defaultTransactionValues;
-        }
-
-        return {
-            amount: transaction.amount,
-            transactionDate: transaction.transactionDate.slice(0, 10),
-            transactionType: transaction.type,
-            recurrence: transaction.recurrence,
-            description: transaction.description,
-            transactionCategoryId: transaction.type === 3 ? null : transaction.transactionCategoryId,
-        };
-    }, [open, transaction]);
-
     const {
         register,
         handleSubmit,
         control,
         setValue,
+        reset,
         formState: { errors },
     } = useForm<TransactionFormValues>({
         resolver: zodResolver(transactionFormSchema),
         defaultValues: defaultTransactionValues,
-        values: formValues,
     });
+
+    useEffect(() => {
+        if (!open) return;
+
+        if (transaction) {
+            reset({
+                amount: transaction.amount,
+                transactionDate: transaction.transactionDate.slice(0, 10),
+                transactionType: transaction.type,
+                recurrence: transaction.recurrence,
+                description: transaction.description,
+                transactionCategoryId: transaction.type === 3 ? null : transaction.transactionCategoryId,
+            });
+        } else {
+            reset(defaultTransactionValues);
+            setCategoryQuery("");
+        }
+    }, [open, transaction, reset]);
 
     const transactionCategoryId = useWatch({ control, name: "transactionCategoryId" });
 
