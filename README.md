@@ -46,6 +46,7 @@ SmartBudget is a personal finance tracker that helps users take control of their
 | FluentValidation | Input validation |
 | JWT | Authentication tokens |
 | xUnit + Moq + FluentAssertions | Unit testing |
+| Brevo | Transactional email service (password reset) |
 
 ### Frontend
 
@@ -262,6 +263,9 @@ See `.env.example` for a ready-to-copy template.
 | `JwtSettings:Issuer` | JWT issuer identifier |
 | `JwtSettings:Audience` | JWT audience identifier |
 | `JwtSettings:ExpirationMinutes` | Token lifetime in minutes |
+| `Email:ApiKey` | Brevo API key for sending emails |
+| `Email:FromEmail` | Sender email address validated in Brevo |
+| `FrontendUrl` | Frontend URL used to generate the password reset link |
 
 ---
 

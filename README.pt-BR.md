@@ -46,6 +46,7 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 | FluentValidation | Validação de entradas |
 | JWT | Tokens de autenticação |
 | xUnit + Moq + FluentAssertions | Testes unitários |
+| Brevo | Serviço de e-mail transacional (recuperação de senha) |
 
 ### Frontend
 
@@ -262,6 +263,9 @@ Consulte o `.env.example` para um template pronto para copiar.
 | `JwtSettings:Issuer` | Identificador do emissor do JWT |
 | `JwtSettings:Audience` | Identificador da audiência do JWT |
 | `JwtSettings:ExpirationMinutes` | Tempo de vida do token em minutos |
+| `Email:ApiKey` | Chave de API do Brevo para envio de e-mails |
+| `Email:FromEmail` | E-mail remetente validado no Brevo |
+| `FrontendUrl` | URL do frontend para geração do link de reset de senha |
 
 ---
 
