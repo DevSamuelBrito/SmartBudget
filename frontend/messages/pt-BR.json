@@ -528,6 +528,26 @@
     "name": "Nome",
     "forgotPassword": "Esqueceu a senha?",
     "noAccount": "Não tem uma conta?",
-    "alreadyHaveAccount": "Já tem uma conta?"
+    "alreadyHaveAccount": "Já tem uma conta?",
+    "forgotPasswordPage": {
+      "title": "Esqueceu sua senha?",
+      "description": "Informe seu e-mail e enviaremos um link de recuperação.",
+      "emailLabel": "E-mail",
+      "submitButton": "Enviar link de recuperação",
+      "submitting": "Enviando...",
+      "backToLogin": "← Voltar ao login",
+      "successMessage": "Se este e-mail estiver cadastrado, você receberá um link de recuperação em breve."
+    },
+    "resetPasswordPage": {
+      "title": "Redefinir senha",
+      "description": "Defina sua nova senha de acesso.",
+      "newPasswordLabel": "Nova senha",
+      "confirmPasswordLabel": "Confirmar nova senha",
+      "submitButton": "Redefinir senha",
+      "submitting": "Redefinindo...",
+      "successToast": "Senha alterada com sucesso!",
+      "invalidToken": "Este link de recuperação é inválido ou já expirou. Solicite um novo link.",
+      "requestNewLink": "Solicitar novo link"
+    }
   }
 }
