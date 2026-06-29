@@ -534,7 +534,7 @@
       "emailLabel": "Email",
       "submitButton": "Send recovery link",
       "submitting": "Sending...",
-      "backToLogin": "← Back to login",
+      "backToLogin": "Back to login",
       "successMessage": "If this email is registered, you will receive a recovery link shortly."
     },
     "resetPasswordPage": {

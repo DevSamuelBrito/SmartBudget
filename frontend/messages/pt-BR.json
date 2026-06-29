@@ -535,7 +535,7 @@
       "emailLabel": "E-mail",
       "submitButton": "Enviar link de recuperação",
       "submitting": "Enviando...",
-      "backToLogin": "← Voltar ao login",
+      "backToLogin": "Voltar ao login",
       "successMessage": "Se este e-mail estiver cadastrado, você receberá um link de recuperação em breve."
     },
     "resetPasswordPage": {
