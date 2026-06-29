@@ -5,6 +5,8 @@ using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.UseCases.Auth.Login;
 using SmartBudgetPro.Application.UseCases.Auth.Logout;
 using SmartBudgetPro.Application.UseCases.Auth.RefreshToken;
+using SmartBudgetPro.Application.UseCases.Auth.ForgotPassword;
+using SmartBudgetPro.Application.UseCases.Auth.ResetPassword;
 
 namespace SmartBudgetPro.API.Controllers;
 
@@ -15,7 +17,9 @@ namespace SmartBudgetPro.API.Controllers;
 public class AuthController(
     LoginUseCase loginUseCase,
     RefreshTokenUseCase refreshTokenUseCase,
-    LogoutUseCase logoutUseCase) : ControllerBase
+    LogoutUseCase logoutUseCase,
+    ForgotPasswordUseCase forgotPasswordUseCase,
+    ResetPasswordUseCase resetPasswordUseCase) : ControllerBase
 {
     [AllowAnonymous]
     [HttpPost("login")]
@@ -38,6 +42,22 @@ public class AuthController(
     {
         var userId = User.GetRequiredUserId();
         await logoutUseCase.ExecuteAsync(new LogoutUseCaseInput(userId));
+        return NoContent();
+    }
+
+    [AllowAnonymous]
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordUseCaseInput input)
+    {
+        await forgotPasswordUseCase.ExecuteAsync(input);
+        return Ok(new { message = "If this email is registered, you will receive a password reset link shortly." });
+    }
+
+    [AllowAnonymous]
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordUseCaseInput input)
+    {
+        await resetPasswordUseCase.ExecuteAsync(input);
         return NoContent();
     }
 }
