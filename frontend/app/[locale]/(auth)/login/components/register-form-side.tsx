@@ -44,6 +44,7 @@ export function RegisterFormSide({
     ...props
 }: RegisterFormSideProps) {
     const t = useTranslations("auth");
+    const tVal = useTranslations();
 
     const {
         register,
@@ -96,7 +97,7 @@ export function RegisterFormSide({
                                 <FieldLabel htmlFor="name">{t("name")}</FieldLabel>
                                 <Input id="name" type="text" {...register("name")} />
                                 {errors.name && (
-                                    <p className="text-sm text-destructive">{errors.name.message}</p>
+                                    <p className="text-sm text-destructive">{tVal(errors.name.message as string)}</p>
                                 )}
                             </Field>
                             <Field>
@@ -108,7 +109,7 @@ export function RegisterFormSide({
                                     {...register("email")}
                                 />
                                 {errors.email && (
-                                    <p className="text-sm text-destructive">{errors.email.message}</p>
+                                    <p className="text-sm text-destructive">{tVal(errors.email.message as string)}</p>
                                 )}
                             </Field>
                             <Field>
@@ -119,7 +120,7 @@ export function RegisterFormSide({
                                     {...register("password")}
                                 />
                                 {errors.password && (
-                                    <p className="text-sm text-destructive">{errors.password.message}</p>
+                                    <p className="text-sm text-destructive">{tVal(errors.password.message as string)}</p>
                                 )}
                             </Field>
                             <Field>

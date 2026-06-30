@@ -50,6 +50,7 @@ type LoginFormSideProps = {
 export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormSideProps) {
   const router = useRouter();
   const t = useTranslations("auth");
+  const tVal = useTranslations();
 
   const { dispatch } = useAuth();
 
@@ -95,7 +96,7 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
                   {...register("email")}
                 />
                 {errors.email && (
-                  <p className="text-sm text-destructive">{errors.email.message}</p>
+                  <p className="text-sm text-destructive">{tVal(errors.email.message as string)}</p>
                 )}
               </Field>
               <Field>
@@ -111,7 +112,7 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
                   {...register("password")}
                 />
                 {errors.password && (
-                  <p className="text-sm text-destructive">{errors.password.message}</p>
+                  <p className="text-sm text-destructive">{tVal(errors.password.message as string)}</p>
                 )}
               </Field>
               <Field>

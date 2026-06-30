@@ -519,6 +519,12 @@
     "successToast": "🎉 Welcome to Premium!",
     "errorToast": "Payment processing error. Please try again."
   },
+  "validation": {
+    "emailInvalid": "Please enter a valid email.",
+    "passwordMin": "Password must be at least 6 characters.",
+    "nameMin": "Please enter your name.",
+    "passwordsDoNotMatch": "Passwords do not match."
+  },
   "auth": {
     "login": "Sign in",
     "register": "Create account",
@@ -527,6 +533,26 @@
     "name": "Name",
     "forgotPassword": "Forgot your password?",
     "noAccount": "Don't have an account?",
-    "alreadyHaveAccount": "Already have an account?"
+    "alreadyHaveAccount": "Already have an account?",
+    "forgotPasswordPage": {
+      "title": "Forgot your password?",
+      "description": "Enter your email and we will send you a recovery link.",
+      "emailLabel": "Email",
+      "submitButton": "Send recovery link",
+      "submitting": "Sending...",
+      "backToLogin": "Back to login",
+      "successMessage": "If this email is registered, you will receive a recovery link shortly."
+    },
+    "resetPasswordPage": {
+      "title": "Reset password",
+      "description": "Set your new access password.",
+      "newPasswordLabel": "New password",
+      "confirmPasswordLabel": "Confirm new password",
+      "submitButton": "Reset password",
+      "submitting": "Resetting...",
+      "successToast": "Password changed successfully!",
+      "invalidToken": "This recovery link is invalid or has already expired. Please request a new link.",
+      "requestNewLink": "Request new link"
+    }
   }
 }

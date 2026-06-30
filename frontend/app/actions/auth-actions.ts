@@ -168,6 +168,64 @@ export async function registerAction(
   }
 }
 
+export async function forgotPasswordAction(input: {
+  email: string;
+}): Promise<ActionResult> {
+  try {
+    const apiBaseUrl = getApiBaseUrl();
+
+    const response = await fetch(`${apiBaseUrl}auth/forgot-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      const errorData = (await response
+        .json()
+        .catch(() => null)) as ProblemDetailsPayload | null;
+
+      const message = errorData?.detail ?? "Erro ao enviar link de recuperação.";
+
+      return { success: false, error: message };
+    }
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erro ao conectar com o servidor." };
+  }
+}
+
+export async function resetPasswordAction(input: {
+  token: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}): Promise<ActionResult> {
+  try {
+    const apiBaseUrl = getApiBaseUrl();
+
+    const response = await fetch(`${apiBaseUrl}auth/reset-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      const errorData = (await response
+        .json()
+        .catch(() => null)) as ProblemDetailsPayload | null;
+
+      const message = errorData?.detail ?? "Erro ao redefinir senha.";
+
+      return { success: false, error: message };
+    }
+
+    return { success: true };
+  } catch {
+    return { success: false, error: "Erro ao conectar com o servidor." };
+  }
+}
+
 export async function logoutAction(): Promise<void> {
   const cookieStore = await cookies();
 
