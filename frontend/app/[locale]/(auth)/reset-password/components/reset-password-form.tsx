@@ -55,7 +55,7 @@ export function ResetPasswordForm() {
   });
 
   const onSubmit = async (data: ResetPasswordFormValues) => {
-    
+
     if (!token) return;
 
     const result = await resetPasswordAction({
@@ -96,6 +96,13 @@ export function ResetPasswordForm() {
             ) : (
               <form onSubmit={handleSubmit(onSubmit)}>
                 <FieldGroup>
+                  <div className="relative flex w-full items-center justify-center">
+
+                    <h1 className="text-center text-2xl font-bold">
+                      SmartBudget PRO
+                    </h1>
+                  </div>
+                  <div className="mb-2 h-px w-full bg-linear-to-r from-transparent via-border to-transparent" />
                   <div className="flex flex-col items-center gap-2 text-center">
                     <h1 className="text-2xl font-bold">{t("title")}</h1>
                     <p className="text-balance text-muted-foreground">

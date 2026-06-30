@@ -63,18 +63,19 @@ export function ForgotPasswordForm() {
                     </h1>
                   </div>
                   <div className="mb-2 h-px w-full bg-linear-to-r from-transparent via-border to-transparent" />
-                  <p className="text-balance text-muted-foreground">
+                  <p className="text-balance text-muted-foreground my-4">
                     {t("successMessage")}
                   </p>
 
-                  <Button>
+                  <Button asChild>
                     <Link
                       href="/login"
+                      className="inline-flex items-center gap-2"
                       aria-label={t("backToLogin")}
                     >
                       <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                      {t("backToLogin")}
                     </Link>
-                    {t("backToLogin")}
                   </Button>
                 </div>
               </div>
