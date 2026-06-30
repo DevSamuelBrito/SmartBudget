@@ -36,42 +36,42 @@ SmartBudget is a personal finance tracker that helps users take control of their
 
 ### Backend
 
-| Technology | Purpose |
-|---|---|
-| .NET 10 / C# | Runtime and language |
-| ASP.NET Core | REST API framework |
-| Entity Framework Core | ORM |
-| PostgreSQL (Neon) | Primary database |
-| Clean Architecture | Layered domain design |
-| FluentValidation | Input validation |
-| JWT | Authentication tokens |
-| xUnit + Moq + FluentAssertions | Unit testing |
-| Brevo | Transactional email service (password reset) |
+| Technology                     | Purpose                                      |
+| ------------------------------ | -------------------------------------------- |
+| .NET 10 / C#                   | Runtime and language                         |
+| ASP.NET Core                   | REST API framework                           |
+| Entity Framework Core          | ORM                                          |
+| PostgreSQL (Neon)              | Primary database                             |
+| Clean Architecture             | Layered domain design                        |
+| FluentValidation               | Input validation                             |
+| JWT                            | Authentication tokens                        |
+| xUnit + Moq + FluentAssertions | Unit testing                                 |
+| Brevo                          | Transactional email service (password reset) |
 
 ### Frontend
 
-| Technology | Purpose |
-|---|---|
-| Next.js 15 / React 19 | UI framework (App Router) |
-| TypeScript (strict) | Type safety |
-| Tailwind CSS 4 | Styling |
-| shadcn/ui | Component library |
-| TanStack React Query | Server state management |
-| React Hook Form + Zod | Form handling and validation |
-| Axios | HTTP client |
-| Recharts | Data visualization |
-| Playwright | End-to-end testing |
-| Jest + React Testing Library | Unit testing |
+| Technology                   | Purpose                      |
+| ---------------------------- | ---------------------------- |
+| Next.js 15 / React 19        | UI framework (App Router)    |
+| TypeScript (strict)          | Type safety                  |
+| Tailwind CSS 4               | Styling                      |
+| shadcn/ui                    | Component library            |
+| TanStack React Query         | Server state management      |
+| React Hook Form + Zod        | Form handling and validation |
+| Axios                        | HTTP client                  |
+| Recharts                     | Data visualization           |
+| Playwright                   | End-to-end testing           |
+| Jest + React Testing Library | Unit testing                 |
 
 ### DevOps
 
-| Tool | Purpose |
-|---|---|
-| Docker + Docker Compose | Containerized local environment |
-| GitHub Actions | CI pipeline (lint, build, test) |
-| SonarCloud | Code quality and coverage analysis |
-| Snyk | Dependency vulnerability scanning |
-| CodeRabbit | Automated PR code review |
+| Tool                    | Purpose                            |
+| ----------------------- | ---------------------------------- |
+| Docker + Docker Compose | Containerized local environment    |
+| GitHub Actions          | CI pipeline (lint, build, test)    |
+| SonarCloud              | Code quality and coverage analysis |
+| Snyk                    | Dependency vulnerability scanning  |
+| CodeRabbit              | Automated PR code review           |
 
 ---
 
@@ -174,7 +174,13 @@ Open [http://localhost:3000](http://localhost:3000). The API runs on port `8080`
     "Issuer": "SmartBudgetPro",
     "Audience": "SmartBudgetPro",
     "ExpirationMinutes": 60
-  }
+  },
+  "Email": {
+    "ApiKey": "",
+    "FromEmail": "",
+    "FromName": "SmartBudget"
+  },
+  "FrontendUrl": ""
 }
 ```
 
@@ -232,40 +238,40 @@ docker compose up --build
 
 ### `.env` (Docker — project root)
 
-| Variable | Description | Example |
-|---|---|---|
+| Variable                               | Description                                  | Example                             |
+| -------------------------------------- | -------------------------------------------- | ----------------------------------- |
 | `ConnectionStrings__DefaultConnection` | PostgreSQL connection string for the backend | `Host=...;Database=SmartBudget;...` |
-| `NEXT_PUBLIC_API_URL` | Public API URL used in the browser | `http://localhost:8080/api/v1/` |
-| `API_URL` | Internal API URL used by Next.js server-side | `http://backend:8080/api/v1/` |
+| `NEXT_PUBLIC_API_URL`                  | Public API URL used in the browser           | `http://localhost:8080/api/v1/`     |
+| `API_URL`                              | Internal API URL used by Next.js server-side | `http://backend:8080/api/v1/`       |
 
 See `.env.example` for a ready-to-copy template.
 
 ### `frontend/.env.local` (local development)
 
-| Variable | Description | Example |
-|---|---|---|
+| Variable              | Description                         | Example                         |
+| --------------------- | ----------------------------------- | ------------------------------- |
 | `NEXT_PUBLIC_API_URL` | Public API URL for browser requests | `http://localhost:8080/api/v1/` |
-| `API_URL` | Server-side API URL for Next.js | `http://localhost:8080/api/v1/` |
+| `API_URL`             | Server-side API URL for Next.js     | `http://localhost:8080/api/v1/` |
 
 ### `frontend/.env.test` (E2E tests)
 
-| Variable | Description | Example |
-|---|---|---|
-| `E2E_EMAIL` | Test account email used by Playwright | `test@example.com` |
-| `E2E_PASSWORD` | Test account password used by Playwright | `Test@123` |
+| Variable       | Description                              | Example            |
+| -------------- | ---------------------------------------- | ------------------ |
+| `E2E_EMAIL`    | Test account email used by Playwright    | `test@example.com` |
+| `E2E_PASSWORD` | Test account password used by Playwright | `Test@123`         |
 
 ### `backend/src/SmartBudgetPro.API/appsettings.Development.json` (local development)
 
-| Key | Description |
-|---|---|
-| `ConnectionStrings:DefaultConnection` | PostgreSQL connection string |
-| `JwtSettings:SecretKey` | Secret key for signing JWT tokens (min. 32 chars) |
-| `JwtSettings:Issuer` | JWT issuer identifier |
-| `JwtSettings:Audience` | JWT audience identifier |
-| `JwtSettings:ExpirationMinutes` | Token lifetime in minutes |
-| `Email:ApiKey` | Brevo API key for sending emails |
-| `Email:FromEmail` | Sender email address validated in Brevo |
-| `FrontendUrl` | Frontend URL used to generate the password reset link |
+| Key                                   | Description                                           |
+| ------------------------------------- | ----------------------------------------------------- |
+| `ConnectionStrings:DefaultConnection` | PostgreSQL connection string                          |
+| `JwtSettings:SecretKey`               | Secret key for signing JWT tokens (min. 32 chars)     |
+| `JwtSettings:Issuer`                  | JWT issuer identifier                                 |
+| `JwtSettings:Audience`                | JWT audience identifier                               |
+| `JwtSettings:ExpirationMinutes`       | Token lifetime in minutes                             |
+| `Email:ApiKey`                        | Brevo API key for sending emails                      |
+| `Email:FromEmail`                     | Sender email address validated in Brevo               |
+| `FrontendUrl`                         | Frontend URL used to generate the password reset link |
 
 ---
 
@@ -355,12 +361,12 @@ SmartBudget/
 
 Contributions are welcome. The project follows a simple branch strategy:
 
-| Branch | Purpose |
-|---|---|
-| `main` | Stable, production-ready code |
-| `develop` | Integration branch for ongoing work |
+| Branch      | Purpose                              |
+| ----------- | ------------------------------------ |
+| `main`      | Stable, production-ready code        |
+| `develop`   | Integration branch for ongoing work  |
 | `feature/*` | New features branched from `develop` |
-| `fix/*` | Bug fixes branched from `develop` |
+| `fix/*`     | Bug fixes branched from `develop`    |
 
 **Workflow:**
 
