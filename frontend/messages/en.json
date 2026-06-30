@@ -519,6 +519,12 @@
     "successToast": "🎉 Welcome to Premium!",
     "errorToast": "Payment processing error. Please try again."
   },
+  "validation": {
+    "emailInvalid": "Please enter a valid email.",
+    "passwordMin": "Password must be at least 6 characters.",
+    "nameMin": "Please enter your name.",
+    "passwordsDoNotMatch": "Passwords do not match."
+  },
   "auth": {
     "login": "Sign in",
     "register": "Create account",

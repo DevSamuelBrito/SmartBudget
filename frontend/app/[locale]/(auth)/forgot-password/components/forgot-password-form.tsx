@@ -33,6 +33,7 @@ import {
 
 export function ForgotPasswordForm() {
   const t = useTranslations("auth.forgotPasswordPage");
+  const tVal = useTranslations();
   const [submitted, setSubmitted] = useState(false);
 
   const {
@@ -112,7 +113,7 @@ export function ForgotPasswordForm() {
                     />
                     {errors.email && (
                       <p className="text-sm text-destructive">
-                        {errors.email.message}
+                        {tVal(errors.email.message as string)}
                       </p>
                     )}
                   </Field>

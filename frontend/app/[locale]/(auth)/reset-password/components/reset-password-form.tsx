@@ -34,6 +34,7 @@ import {
 
 export function ResetPasswordForm() {
   const t = useTranslations("auth.resetPasswordPage");
+  const tVal = useTranslations();
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
@@ -120,7 +121,7 @@ export function ResetPasswordForm() {
                     />
                     {errors.newPassword && (
                       <p className="text-sm text-destructive">
-                        {errors.newPassword.message}
+                        {tVal(errors.newPassword.message as string)}
                       </p>
                     )}
                   </Field>
@@ -135,7 +136,7 @@ export function ResetPasswordForm() {
                     />
                     {errors.confirmNewPassword && (
                       <p className="text-sm text-destructive">
-                        {errors.confirmNewPassword.message}
+                        {tVal(errors.confirmNewPassword.message as string)}
                       </p>
                     )}
                   </Field>
