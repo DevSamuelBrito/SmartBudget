@@ -37,9 +37,13 @@ public static class DependencyInjection
         services.AddHttpClient<IEmailService, BrevoEmailService>();
 
         // Settings
+        var frontendUrl = configuration["FrontendUrl"];
+        if (string.IsNullOrWhiteSpace(frontendUrl))
+            throw new InvalidOperationException("FrontendUrl is not configured.");
+
         services.AddSingleton(new ForgotPasswordSettings
         {
-            FrontendUrl = configuration["FrontendUrl"] ?? "http://localhost:3000"
+            FrontendUrl = frontendUrl
         });
 
         return services;
