@@ -6,6 +6,7 @@ using SmartBudgetPro.Application.Interfaces;
 using SmartBudgetPro.Infrastructure.Email;
 using SmartBudgetPro.Infrastructure.Persistence;
 using SmartBudgetPro.Infrastructure.Persistence.Repositories;
+using SmartBudgetPro.Infrastructure.Redis;
 using SmartBudgetPro.Infrastructure.Security;
 
 namespace SmartBudgetPro.Infrastructure;
@@ -18,13 +19,16 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
          options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
+        // Redis
+        services.AddSingleton<RedisConnection>();
+
         // Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IFinancialTransactionRepository, FinancialTransactionRepository>();
         services.AddScoped<ITransactionCategoryRepository, TransactionCategoryRepository>();
         services.AddScoped<IBudgetRepository, BudgetRepository>();
         services.AddScoped<IUserDashboardConfigRepository, UserDashboardConfigRepository>();
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IRefreshTokenRepository, RedisRefreshTokenRepository>();
         services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
 
         // Security

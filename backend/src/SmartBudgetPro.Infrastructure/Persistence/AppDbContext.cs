@@ -17,7 +17,6 @@ public class AppDbContext : DbContext
     public DbSet<TransactionCategory> TransactionCategories { get; set; }
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<UserDashboardConfig> UserDashboardConfigs { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

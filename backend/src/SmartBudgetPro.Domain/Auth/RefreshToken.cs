@@ -1,18 +1,27 @@
+using System.Text.Json.Serialization;
+
 namespace SmartBudgetPro.Domain.Auth;
 
 public class RefreshToken
 {
+    [JsonInclude]
     public Guid Id { get; private set; }
+    [JsonInclude]
     public Guid UserId { get; private set; }
+    [JsonInclude]
     public string Token { get; private set; } = string.Empty;
+    [JsonInclude]
     public DateTime ExpiresAt { get; private set; }
+    [JsonInclude]
     public bool IsRevoked { get; private set; }
+    [JsonInclude]
     public DateTime CreatedAt { get; private set; }
 
     public bool IsExpired => DateTime.UtcNow > ExpiresAt;
     public bool IsValid => !IsRevoked && !IsExpired;
 
-    private RefreshToken() { } // For EF Core
+    [JsonConstructor]
+    private RefreshToken() { } // For EF Core and JSON deserialization
 
     private RefreshToken(Guid userId, string token, DateTime expiresAt)
     {
