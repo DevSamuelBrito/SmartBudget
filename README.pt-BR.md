@@ -42,6 +42,7 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 | ASP.NET Core                   | Framework REST API                                    |
 | Entity Framework Core          | ORM                                                   |
 | PostgreSQL (Neon)              | Banco de dados principal                              |
+| Redis (Upstash)                | Armazenamento de refresh tokens com expiração automática via TTL |
 | Clean Architecture             | Arquitetura em camadas                                |
 | FluentValidation               | Validação de entradas                                 |
 | JWT                            | Tokens de autenticação                                |
@@ -241,6 +242,7 @@ docker compose up --build
 | Variável                               | Descrição                                         | Exemplo                             |
 | -------------------------------------- | ------------------------------------------------- | ----------------------------------- |
 | `ConnectionStrings__DefaultConnection` | String de conexão do PostgreSQL para o backend    | `Host=...;Database=SmartBudget;...` |
+| `Redis__ConnectionString`              | String de conexão do Redis (Upstash)              | `your-instance.upstash.io:6379,password=...` |
 | `NEXT_PUBLIC_API_URL`                  | URL pública da API usada no navegador             | `http://localhost:8080/api/v1/`     |
 | `API_URL`                              | URL interna da API usada pelo Next.js no servidor | `http://backend:8080/api/v1/`       |
 

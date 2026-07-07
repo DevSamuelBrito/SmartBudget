@@ -8,6 +8,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: ${ConnectionStrings__DefaultConnection}
+      Redis__ConnectionString: ${Redis__ConnectionString}
       Jwt__Key: ${Jwt__Key}
       Email__ApiKey: ${Email__ApiKey}
       Email__FromEmail: ${Email__FromEmail}
