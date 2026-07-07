@@ -52,7 +52,7 @@ public class RedisRefreshTokenRepository(RedisConnection redisConnection) : IRef
     public async Task UpdateAsync(RefreshToken refreshToken)
     {
         var tokenKey = TokenKey(refreshToken.Token);
-        var ttl = await Database.KeyTimeToLiveAsync(tokenKey);
+        var ttl = await Database.KeyTimeToLiveAsync(tokenKey) ?? TokenTtl;
         var json = JsonSerializer.Serialize(refreshToken);
 
         await Database.StringSetAsync(tokenKey, json, ttl, When.Always);
