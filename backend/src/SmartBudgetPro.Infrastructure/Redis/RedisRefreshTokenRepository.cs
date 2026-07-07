@@ -20,8 +20,7 @@ public class RedisRefreshTokenRepository(RedisConnection redisConnection) : IRef
         var userTokensKey = UserTokensKey(refreshToken.UserId);
         var json = JsonSerializer.Serialize(refreshToken);
 
-        await Database.StringSetAsync(tokenKey, json);
-        await Database.KeyExpireAsync(tokenKey, TokenTtl);
+        await Database.StringSetAsync(tokenKey, json, TokenTtl);
 
         await Database.SetAddAsync(userTokensKey, refreshToken.Token);
         await Database.KeyExpireAsync(userTokensKey, TokenTtl);
