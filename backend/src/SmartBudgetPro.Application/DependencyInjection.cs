@@ -17,6 +17,7 @@ using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
 using SmartBudgetPro.Application.UseCases.Dashboard.SaveDashboardConfig;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
+using SmartBudgetPro.Application.UseCases.Reports.GetMonthlyReport;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory;
@@ -74,6 +75,9 @@ public static class DependencyInjection
         services.AddScoped<GetDashboardOverviewUseCase>();
         services.AddScoped<GetDashboardConfigUseCase>();
         services.AddScoped<SaveDashboardConfigUseCase>();
+
+        //reports
+        services.AddScoped<GetMonthlyReportUseCase>();
 
         //auth
         services.AddScoped<LoginUseCase>();
