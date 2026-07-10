@@ -15,6 +15,17 @@ public class ReportsController(
     GetMonthlyReportUseCase getMonthlyReportUseCase,
     IExcelReportService excelReportService) : ControllerBase
 {
+    [HttpGet("monthly")]
+    public async Task<IActionResult> GetMonthlyReport([FromQuery] int month, [FromQuery] int year)
+    {
+        var userId = User.GetRequiredUserId();
+        var input = new GetMonthlyReportUseCaseInput(userId, month, year);
+
+        var report = await getMonthlyReportUseCase.ExecuteAsync(input);
+
+        return Ok(report);
+    }
+
     [HttpGet("monthly/excel")]
     public async Task<IActionResult> GetMonthlyReportExcel([FromQuery] int month, [FromQuery] int year)
     {
