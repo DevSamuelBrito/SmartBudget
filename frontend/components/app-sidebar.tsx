@@ -10,7 +10,7 @@ import Link from "next/link"
 import { useTranslations } from "next-intl"
 
 //icons
-import { LayoutDashboardIcon, CommandIcon, ArrowLeftRight, Tags, Sparkles } from "lucide-react"
+import { LayoutDashboardIcon, CommandIcon, ArrowLeftRight, Tags, Sparkles, FileTextIcon } from "lucide-react"
 
 //components
 import { NavMain } from "@/components/nav-main"
@@ -56,6 +56,11 @@ export function AppSidebar({
       title: t("categories"),
       url: "categories",
       icon: <Tags />,
+    },
+    {
+      title: t("reports"),
+      url: "reports",
+      icon: <FileTextIcon />,
     },
     {
       title: t("plans"),
