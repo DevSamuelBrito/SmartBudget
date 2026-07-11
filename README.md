@@ -27,6 +27,7 @@ SmartBudget is a personal finance tracker that helps users take control of their
 - **Categories** — Fully customizable categories with icons, colors, and drag-and-drop ordering
 - **Budgets** — Monthly budget limits per category with real-time spending indicators
 - **Dashboard** — Charts and summaries for income, expenses, balance, and category breakdown
+- **Reports** — Monthly report generation with PDF and Excel export, supporting multiple languages
 - **Premium plans** — Subscription tier system to unlock advanced features
 - **Internationalization** — Full UI translation in English and Brazilian Portuguese (pt-BR)
 
@@ -46,6 +47,7 @@ SmartBudget is a personal finance tracker that helps users take control of their
 | Clean Architecture             | Layered domain design                        |
 | FluentValidation               | Input validation                             |
 | JWT                            | Authentication tokens                        |
+| ClosedXML                      | Excel report generation                      |
 | xUnit + Moq + FluentAssertions | Unit testing                                 |
 | Brevo                          | Transactional email service (password reset) |
 
@@ -61,6 +63,7 @@ SmartBudget is a personal finance tracker that helps users take control of their
 | React Hook Form + Zod        | Form handling and validation |
 | Axios                        | HTTP client                  |
 | Recharts                     | Data visualization           |
+| @react-pdf/renderer          | PDF report generation        |
 | Playwright                   | End-to-end testing           |
 | Jest + React Testing Library | Unit testing                 |
 
