@@ -8,11 +8,11 @@ using SmartBudgetPro.Domain.Transactions;
 namespace SmartBudgetPro.Application.UseCases.Reports.GetMonthlyReport;
 
 public class GetMonthlyReportUseCase(
+    IValidator<GetMonthlyReportUseCaseInput> validator
     IFinancialTransactionRepository transactionRepository,
     IBudgetRepository budgetRepository,
     ITransactionCategoryRepository categoryRepository,
-    IUserRepository userRepository,
-    IValidator<GetMonthlyReportUseCaseInput> validator)
+    IUserRepository userRepository,)
 {
     public async Task<MonthlyReportDto> ExecuteAsync(GetMonthlyReportUseCaseInput input)
     {
