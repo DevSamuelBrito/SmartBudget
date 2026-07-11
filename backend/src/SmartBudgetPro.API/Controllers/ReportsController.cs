@@ -16,7 +16,7 @@ public class ReportsController(
     IExcelReportService excelReportService) : ControllerBase
 {
     [HttpGet("monthly")]
-    public async Task<IActionResult> GetMonthlyReport([FromQuery] int month, [FromQuery] int year)
+    public async Task<IActionResult> GetMonthlyReportAsync([FromQuery] int month, [FromQuery] int year)
     {
         var userId = User.GetRequiredUserId();
         var input = new GetMonthlyReportUseCaseInput(userId, month, year);
@@ -27,7 +27,7 @@ public class ReportsController(
     }
 
     [HttpGet("monthly/excel")]
-    public async Task<IActionResult> GetMonthlyReportExcel([FromQuery] int month, [FromQuery] int year)
+    public async Task<IActionResult> GetMonthlyReportExcelAsync([FromQuery] int month, [FromQuery] int year)
     {
         var userId = User.GetRequiredUserId();
         var input = new GetMonthlyReportUseCaseInput(userId, month, year);
