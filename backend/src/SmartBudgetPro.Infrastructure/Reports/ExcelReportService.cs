@@ -55,6 +55,11 @@ public class ExcelReportService : IExcelReportService
         titleRange.Style.Border.BottomBorderColor = HeaderFill;
         sheet.Row(1).Height = 26;
 
+        var separatorRange = sheet.Range(2, 1, 2, 2);
+        separatorRange.Style.Border.BottomBorder = XLBorderStyleValues.Medium;
+        separatorRange.Style.Border.BottomBorderColor = HeaderFill;
+        sheet.Row(2).Height = 8;
+
         sheet.Cell(3, 1).Value = "Usuário";
         sheet.Cell(3, 1).Style.Font.Bold = true;
         sheet.Cell(3, 2).Value = report.UserName;
