@@ -27,10 +27,13 @@ public class ReportsController(
     }
 
     [HttpGet("monthly/excel")]
-    public async Task<IActionResult> GetMonthlyReportExcelAsync([FromQuery] int month, [FromQuery] int year)
+    public async Task<IActionResult> GetMonthlyReportExcelAsync(
+        [FromQuery] int month,
+        [FromQuery] int year,
+        [FromQuery] string locale = "pt-BR")
     {
         var userId = User.GetRequiredUserId();
-        var input = new GetMonthlyReportUseCaseInput(userId, month, year);
+        var input = new GetMonthlyReportUseCaseInput(userId, month, year, locale);
 
         var report = await getMonthlyReportUseCase.ExecuteAsync(input);
         var fileBytes = await excelReportService.GenerateMonthlyReportAsync(report);

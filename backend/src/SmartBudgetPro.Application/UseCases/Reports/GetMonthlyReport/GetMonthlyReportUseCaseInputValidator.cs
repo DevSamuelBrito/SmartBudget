@@ -9,5 +9,6 @@ public class GetMonthlyReportUseCaseInputValidator : AbstractValidator<GetMonthl
         RuleFor(input => input.UserId).NotEmpty();
         RuleFor(input => input.Month).InclusiveBetween(1, 12);
         RuleFor(input => input.Year).InclusiveBetween(2000, 2100);
+        RuleFor(input => input.Locale).NotEmpty();
     }
 }

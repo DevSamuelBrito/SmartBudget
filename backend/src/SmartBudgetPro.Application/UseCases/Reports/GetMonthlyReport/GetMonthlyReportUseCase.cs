@@ -8,11 +8,11 @@ using SmartBudgetPro.Domain.Transactions;
 namespace SmartBudgetPro.Application.UseCases.Reports.GetMonthlyReport;
 
 public class GetMonthlyReportUseCase(
-    IValidator<GetMonthlyReportUseCaseInput> validator
+    IValidator<GetMonthlyReportUseCaseInput> validator,
     IFinancialTransactionRepository transactionRepository,
     IBudgetRepository budgetRepository,
     ITransactionCategoryRepository categoryRepository,
-    IUserRepository userRepository,)
+    IUserRepository userRepository)
 {
     public async Task<MonthlyReportDto> ExecuteAsync(GetMonthlyReportUseCaseInput input)
     {
@@ -80,6 +80,7 @@ public class GetMonthlyReportUseCase(
             totalExpense,
             totalIncome - totalExpense,
             transactionDtos,
-            categorySummary);
+            categorySummary,
+            input.Locale);
     }
 }

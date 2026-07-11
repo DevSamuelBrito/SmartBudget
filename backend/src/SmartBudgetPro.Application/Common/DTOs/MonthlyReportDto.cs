@@ -11,7 +11,8 @@ public record MonthlyReportDto(
     decimal TotalExpense,
     decimal Balance,
     IReadOnlyList<MonthlyReportTransactionDto> Transactions,
-    IReadOnlyList<MonthlyReportCategorySummaryDto> CategorySummary
+    IReadOnlyList<MonthlyReportCategorySummaryDto> CategorySummary,
+    string Locale = "pt-BR"
 );
 
 public record MonthlyReportTransactionDto(
