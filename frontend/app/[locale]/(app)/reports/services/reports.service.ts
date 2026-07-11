@@ -48,8 +48,12 @@ export const getMonthlyReport = async (
   return response.data;
 };
 
+type DownloadMonthlyReportExcelParams = MonthlyReportParams & {
+  locale: string;
+};
+
 export const downloadMonthlyReportExcel = async (
-  params: MonthlyReportParams,
+  params: DownloadMonthlyReportExcelParams,
 ): Promise<void> => {
   const response = await api.get("/reports/monthly/excel", {
     params,

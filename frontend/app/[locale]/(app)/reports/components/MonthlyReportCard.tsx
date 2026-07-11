@@ -49,6 +49,7 @@ export function MonthlyReportCard({
     initialData,
     initialMonth,
     initialYear,
+    locale,
   });
 
   const [showPreview, setShowPreview] = useState(false);

@@ -25,12 +25,14 @@ type UseMonthlyReportParams = {
   initialData: MonthlyReportApi;
   initialMonth: number;
   initialYear: number;
+  locale: string;
 };
 
 export function useMonthlyReport({
   initialData,
   initialMonth,
   initialYear,
+  locale,
 }: Readonly<UseMonthlyReportParams>) {
   const t = useTranslations("reports");
 
@@ -50,7 +52,7 @@ export function useMonthlyReport({
   });
 
   const { mutate: exportExcel, isPending: isExportingExcel } = useMutation({
-    mutationFn: () => downloadMonthlyReportExcel(period),
+    mutationFn: () => downloadMonthlyReportExcel({ ...period, locale }),
     onSuccess: () => toast.success(t("exportExcelSuccess")),
     onError: () => toast.error(t("exportExcelError")),
   });
