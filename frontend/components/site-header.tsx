@@ -34,7 +34,7 @@ export function SiteHeader() {
 
   const { resolvedTheme, theme, setTheme } = useTheme()
 
-  const PAGE_KEYS = ["dashboard", "transactions", "categories", "plans"] as const
+  const PAGE_KEYS = ["dashboard", "transactions", "categories", "reports", "plans"] as const
   
   type PageKey = typeof PAGE_KEYS[number]
 

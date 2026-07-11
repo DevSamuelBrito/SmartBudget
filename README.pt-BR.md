@@ -27,6 +27,7 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 - **Categorias** — Categorias personalizáveis com ícones, cores e ordenação por drag-and-drop
 - **Orçamentos** — Limites mensais por categoria com indicadores de gasto em tempo real
 - **Dashboard** — Gráficos e resumos de receitas, despesas, saldo e distribuição por categoria
+- **Relatórios** — Geração de relatório mensal com exportação em PDF e Excel, com suporte a múltiplos idiomas
 - **Planos premium** — Sistema de assinatura para desbloquear funcionalidades avançadas
 - **Internacionalização** — Interface totalmente traduzida em inglês e português (pt-BR)
 
@@ -46,6 +47,7 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 | Clean Architecture             | Arquitetura em camadas                                |
 | FluentValidation               | Validação de entradas                                 |
 | JWT                            | Tokens de autenticação                                |
+| ClosedXML                      | Geração de relatórios Excel                           |
 | xUnit + Moq + FluentAssertions | Testes unitários                                      |
 | Brevo                          | Serviço de e-mail transacional (recuperação de senha) |
 
@@ -61,6 +63,7 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 | React Hook Form + Zod        | Formulários e validação          |
 | Axios                        | Cliente HTTP                     |
 | Recharts                     | Visualização de dados            |
+| @react-pdf/renderer          | Geração de relatórios PDF        |
 | Playwright                   | Testes end-to-end                |
 | Jest + React Testing Library | Testes unitários                 |
 

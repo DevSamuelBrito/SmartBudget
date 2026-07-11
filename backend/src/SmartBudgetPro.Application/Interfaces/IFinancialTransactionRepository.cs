@@ -93,5 +93,10 @@ namespace SmartBudgetPro.Application.Interfaces
         /// Returns the sum of all expense transactions for a given category and period.
         /// </summary>
         Task<decimal> GetTotalExpensesByCategoryAndPeriodAsync(Guid categoryId, int year, int month);
+
+        /// <summary>
+        /// Retrieves all financial transactions for a specific user within a given month and year.
+        /// </summary>
+        Task<IEnumerable<FinancialTransaction>> GetByUserIdAndPeriodAsync(Guid userId, int year, int month);
     }
 }

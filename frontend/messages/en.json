@@ -357,11 +357,59 @@
       "yearAriaLabel": "Year"
     }
   },
+  "reports": {
+    "title": "Reports",
+    "generateButton": "Generate Report",
+    "generatingButton": "Generating...",
+    "selectPeriodMessage": "Select a period and click \"Generate report\" to preview the PDF.",
+    "loadingPreview": "Loading preview...",
+    "downloadPdf": "Download PDF",
+    "preparingPdf": "Preparing PDF...",
+    "exportExcel": "Export Excel",
+    "exportingExcel": "Exporting...",
+    "exportExcelSuccess": "Report exported successfully.",
+    "exportExcelError": "Could not export the report.",
+    "summary": {
+      "income": "Total Income",
+      "expense": "Total Expenses",
+      "balance": "Balance"
+    },
+    "transactionsTable": {
+      "title": "Monthly transactions",
+      "date": "Date",
+      "description": "Description",
+      "category": "Category",
+      "type": "Type",
+      "amount": "Amount",
+      "typeIncome": "Income",
+      "typeExpense": "Expense",
+      "typeTransfer": "Transfer",
+      "empty": "No transactions found for this period."
+    },
+    "categoriesTable": {
+      "title": "Categories and budgets",
+      "category": "Category",
+      "budget": "Budget",
+      "spent": "Spent",
+      "status": "Progress",
+      "empty": "No budget defined for this period."
+    },
+    "pdf": {
+      "title": "Monthly Report — {month} {year}",
+      "percentageUsed": "% Used",
+      "statusOk": "Within budget",
+      "statusWarning": "Warning",
+      "statusExceeded": "Exceeded",
+      "statusNone": "No budget",
+      "generatedAt": "Generated on {date}"
+    }
+  },
   "nav": {
     "dashboard": "Dashboard",
     "categories": "Categories",
     "transactions": "Transactions",
     "newTransaction": "New Transaction",
+    "reports": "Reports",
     "plans": "Plans"
   },
   "user": {

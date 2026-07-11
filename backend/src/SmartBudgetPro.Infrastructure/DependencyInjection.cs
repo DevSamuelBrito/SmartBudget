@@ -7,6 +7,7 @@ using SmartBudgetPro.Infrastructure.Email;
 using SmartBudgetPro.Infrastructure.Persistence;
 using SmartBudgetPro.Infrastructure.Persistence.Repositories;
 using SmartBudgetPro.Infrastructure.Redis;
+using SmartBudgetPro.Infrastructure.Reports;
 using SmartBudgetPro.Infrastructure.Security;
 
 namespace SmartBudgetPro.Infrastructure;
@@ -39,6 +40,9 @@ public static class DependencyInjection
 
         // Email
         services.AddHttpClient<IEmailService, BrevoEmailService>();
+
+        // Reports
+        services.AddScoped<IExcelReportService, ExcelReportService>();
 
         // Settings
         var frontendUrl = configuration["FrontendUrl"];

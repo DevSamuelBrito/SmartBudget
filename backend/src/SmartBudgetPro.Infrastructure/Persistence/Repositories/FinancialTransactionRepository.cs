@@ -138,5 +138,15 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                     && t.TransactionDate.Month == month)
                 .SumAsync(t => t.Amount);
         }
+
+        public async Task<IEnumerable<FinancialTransaction>> GetByUserIdAndPeriodAsync(Guid userId, int year, int month)
+        {
+            return await context.FinancialTransactions
+                .Where(t => t.UserId == userId
+                    && t.TransactionDate.Year == year
+                    && t.TransactionDate.Month == month)
+                .OrderBy(t => t.TransactionDate)
+                .ToListAsync();
+        }
     }
 }

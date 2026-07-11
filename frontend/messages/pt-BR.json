@@ -357,11 +357,59 @@
       "yearAriaLabel": "Ano"
     }
   },
+  "reports": {
+    "title": "Relatórios",
+    "generateButton": "Gerar Relatório",
+    "generatingButton": "Gerando...",
+    "selectPeriodMessage": "Selecione um período e clique em \"Gerar relatório\" para visualizar o PDF.",
+    "loadingPreview": "Carregando prévia...",
+    "downloadPdf": "Baixar PDF",
+    "preparingPdf": "Preparando PDF...",
+    "exportExcel": "Exportar Excel",
+    "exportingExcel": "Exportando...",
+    "exportExcelSuccess": "Relatório exportado com sucesso.",
+    "exportExcelError": "Não foi possível exportar o relatório.",
+    "summary": {
+      "income": "Total de Receitas",
+      "expense": "Total de Despesas",
+      "balance": "Saldo"
+    },
+    "transactionsTable": {
+      "title": "Transações do mês",
+      "date": "Data",
+      "description": "Descrição",
+      "category": "Categoria",
+      "type": "Tipo",
+      "amount": "Valor",
+      "typeIncome": "Receita",
+      "typeExpense": "Despesa",
+      "typeTransfer": "Transferência",
+      "empty": "Nenhuma transação encontrada para o período."
+    },
+    "categoriesTable": {
+      "title": "Categorias e orçamentos",
+      "category": "Categoria",
+      "budget": "Orçamento",
+      "spent": "Gasto",
+      "status": "Progresso",
+      "empty": "Nenhum orçamento definido para o período."
+    },
+    "pdf": {
+      "title": "Relatório Mensal — {month} {year}",
+      "percentageUsed": "% Utilizado",
+      "statusOk": "Dentro do limite",
+      "statusWarning": "Atenção",
+      "statusExceeded": "Estourado",
+      "statusNone": "Sem orçamento",
+      "generatedAt": "Gerado em {date}"
+    }
+  },
   "nav": {
     "dashboard": "Painel",
     "categories": "Categorias",
     "transactions": "Transações",
     "newTransaction": "Nova Transação",
+    "reports": "Relatórios",
     "plans": "Planos"
   },
   "user": {
