@@ -3,13 +3,18 @@
 // React
 import { useState } from "react";
 
+// next
+import { useSearchParams } from "next/navigation";
+
 // Components
 import { LoginFormSide } from "./login-form-side";
 
 import { RegisterFormSide } from "./register-form-side";
 
 export function LoginCard() {
-  const [isFlipped, setIsFlipped] = useState(false);
+  const searchParams = useSearchParams();
+
+  const [isFlipped, setIsFlipped] = useState(searchParams.get("mode") === "register");
 
   return (
     <div className="w-full max-w-sm md:max-w-4xl">

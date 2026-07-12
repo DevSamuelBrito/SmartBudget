@@ -2,6 +2,8 @@
 import { Suspense } from "react";
 
 //next
+import { Bricolage_Grotesque } from "next/font/google";
+
 import type { Metadata } from "next";
 
 //next-intl
@@ -26,6 +28,12 @@ import { AuthProvider } from "@/contexts/auth-context";
 import { Providers } from "../providers/providers";
 
 
+const fontHeading = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "SmartBudget PRO",
   description: "A budget management application built with Next.js, React Query, and Tailwind CSS.",
@@ -41,7 +49,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <body>
+      <body className={fontHeading.variable}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Providers>
             <ThemeProvider

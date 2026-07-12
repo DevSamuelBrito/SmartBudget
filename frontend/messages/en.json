@@ -602,5 +602,83 @@
       "invalidToken": "This recovery link is invalid or has already expired. Please request a new link.",
       "requestNewLink": "Request new link"
     }
+  },
+  "landing": {
+    "meta": {
+      "title": "SmartBudget — Real budget control, not passive tracking",
+      "description": "SmartBudget sets real-time spending limits by category and warns you before you overspend. Free to start."
+    },
+    "nav": {
+      "features": "Features",
+      "demo": "See it in action",
+      "login": "Log in",
+      "cta": "Create free account",
+      "goToDashboard": "Go to dashboard"
+    },
+    "hero": {
+      "headline": "Know you're overspending before you actually do.",
+      "subhead": "SmartBudget sets real limits on every category and warns you in real time — not at the end of the month, when it's too late to do anything about it.",
+      "primaryCta": "See it in action",
+      "secondaryCta": "Create free account",
+      "scrollHint": "Watch a real budget limit in motion"
+    },
+    "demo": {
+      "title": "This is what \"in control\" actually looks like",
+      "description": "Set a limit per category. Spend against it. Watch the indicator update in real time — long before you hit 100%.",
+      "category": "Dining out",
+      "used": "{percentage}% used",
+      "remaining": "{amount} left this month",
+      "statusWarning": "Getting close — about two dinners left in the budget.",
+      "caption": "This is a real, live SmartBudget component — not a mockup."
+    },
+    "glimpse": {
+      "title": "Your whole month, one screen",
+      "description": "Balance, income, expenses, and every budget's progress — the real SmartBudget dashboard.",
+      "caption": "Actual product screenshot, shown in dark mode.",
+      "alt": "SmartBudget dashboard showing current balance, monthly income and expenses, quick insights, and budget progress by category."
+    },
+    "features": {
+      "title": "Built for people who want real control",
+      "description": "No abandoned spreadsheets, no finance jargon.",
+      "items": {
+        "limits": {
+          "title": "Limits that actually hold",
+          "description": "Set a monthly limit per category. SmartBudget tracks spending against it in real time and flags it before you cross the line."
+        },
+        "reports": {
+          "title": "Reports you'll actually use",
+          "description": "Export a clean PDF or Excel report every month — for taxes, for a partner, or just for your own peace of mind."
+        },
+        "language": {
+          "title": "Works in your language",
+          "description": "Full English and Brazilian Portuguese support, not a half-translated afterthought."
+        },
+        "premium": {
+          "title": "Free to start, honest about premium",
+          "description": "The core budgeting tools are free. Premium unlocks deeper reports and advanced insights when you're ready."
+        }
+      }
+    },
+    "proof": {
+      "title": "Built in the open",
+      "description": "SmartBudget doesn't have a user base to show off yet — but you can check the code, the tests, and the security scans yourself.",
+      "ciLabel": "CI passing on every commit",
+      "sonarLabel": "SonarCloud quality gate: passing",
+      "snykLabel": "Snyk security scan: no known vulnerabilities",
+      "repoLink": "View the repository on GitHub"
+    },
+    "finalCta": {
+      "title": "Ready to actually see where your money goes?",
+      "description": "Create a free account in under a minute. No credit card required.",
+      "primaryCta": "Create free account",
+      "secondaryCta": "Log in"
+    },
+    "footer": {
+      "tagline": "Real budget control, not passive tracking.",
+      "loginLink": "Log in",
+      "plansLink": "Plans & pricing",
+      "languageLabel": "Language",
+      "rights": "© {year} SmartBudget. Open source on GitHub."
+    }
   }
 }
