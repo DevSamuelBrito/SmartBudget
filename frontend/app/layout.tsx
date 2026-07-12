@@ -37,6 +37,9 @@ const fontHeading = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: "SmartBudget PRO",
   description: "A budget management application built with Next.js, React Query, and Tailwind CSS.",
+  icons:{
+    icon: "/icon.svg",
+  }
 };
 
 export default async function RootLayout({
