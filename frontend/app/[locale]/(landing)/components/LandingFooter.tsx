@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 // lucide-react
-import { CommandIcon, Globe } from "lucide-react";
+import { Globe } from "lucide-react";
 
 // components
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,6 @@ export function LandingFooter() {
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-12 sm:flex-row sm:items-start sm:justify-between sm:px-6">
         <div className="flex flex-col gap-3">
           <Link href="/" className="flex items-center gap-2">
-            <CommandIcon className="size-4.5 text-primary" aria-hidden />
             <span className="font-heading text-base font-semibold tracking-tight">SmartBudget</span>
           </Link>
           <p className="max-w-[36ch] text-sm text-muted-foreground">{t("tagline")}</p>

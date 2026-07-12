@@ -10,7 +10,7 @@ import Link from "next/link"
 import { useTranslations } from "next-intl"
 
 //icons
-import { LayoutDashboardIcon, CommandIcon, ArrowLeftRight, Tags, Sparkles, FileTextIcon } from "lucide-react"
+import { LayoutDashboardIcon, ArrowLeftRight, Tags, Sparkles, FileTextIcon } from "lucide-react"
 
 //components
 import { NavMain } from "@/components/nav-main"
@@ -79,7 +79,6 @@ export function AppSidebar({
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <Link href="/dashboard">
-                <CommandIcon className="size-5! text-primary" />
                 <span className="text-base font-semibold text-primary">SmartBudget PRO</span>
               </Link>
             </SidebarMenuButton>

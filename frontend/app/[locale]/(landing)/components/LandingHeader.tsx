@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 
 // lucide-react
-import { CommandIcon, Globe, Menu } from "lucide-react";
+import { Globe, Menu } from "lucide-react";
 
 // components
 import { Button } from "@/components/ui/button";
@@ -72,7 +72,6 @@ export function LandingHeader() {
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2">
-          <CommandIcon className="size-5 text-primary" aria-hidden />
           <span className="font-heading text-lg font-semibold tracking-tight">SmartBudget</span>
         </Link>
 
