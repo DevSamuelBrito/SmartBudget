@@ -75,15 +75,15 @@ export function LiveBudgetDemo() {
   }, [api]);
 
   return (
-    <section id="demo" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
-      <div className="mx-auto max-w-2xl text-center">
+    <section id="demo" className="bg-primary py-24 text-primary-foreground sm:py-32">
+      <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
         <h2 className="text-balance font-heading text-[clamp(2rem,2.5vw+1.5rem,3rem)] font-semibold tracking-[-0.02em]">
           {t("title")}
         </h2>
-        <p className="mt-4 text-lg text-muted-foreground">{t("description")}</p>
+        <p className="mt-4 text-lg text-primary-foreground/85">{t("description")}</p>
       </div>
 
-      <div ref={sectionRef} className="mx-auto mt-12 max-w-md">
+      <div ref={sectionRef} className="mx-auto mt-12 max-w-md px-4 sm:px-6">
         <Carousel setApi={setApi} opts={{ loop: true, align: "center" }} className="px-2">
           <CarouselContent>
             {SLIDE_KEYS.map((key) => (
@@ -95,7 +95,7 @@ export function LiveBudgetDemo() {
 
                 <div className="mt-4 text-center">
                   <p className="font-semibold">{t(`slides.${key}.title`)}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{t(`slides.${key}.description`)}</p>
+                  <p className="mt-1 text-sm text-primary-foreground/75">{t(`slides.${key}.description`)}</p>
                 </div>
               </CarouselItem>
             ))}
@@ -115,7 +115,9 @@ export function LiveBudgetDemo() {
               onClick={() => api?.scrollTo(index)}
               className={cn(
                 "size-2 rounded-full transition-colors",
-                index === selectedIndex ? "bg-foreground" : "bg-muted-foreground/30 hover:bg-muted-foreground/50",
+                index === selectedIndex
+                  ? "bg-primary-foreground"
+                  : "bg-primary-foreground/30 hover:bg-primary-foreground/50",
               )}
             />
           ))}
