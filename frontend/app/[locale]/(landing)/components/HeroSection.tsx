@@ -1,5 +1,13 @@
+"use client";
+
+// react
+import { useState } from "react";
+
 // next
 import Link from "next/link";
+
+// react-query / react-hook-form / zod / [lib]
+import { motion, useReducedMotion } from "framer-motion";
 
 // next-intl
 import { useTranslations } from "next-intl";
@@ -14,15 +22,32 @@ const RISE = "opacity-0 animate-[hero-rise_0.8s_cubic-bezier(0.16,1,0.3,1)_forwa
 
 export function HeroSection() {
   const t = useTranslations("landing.hero");
+  const shouldReduceMotion = useReducedMotion();
+
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    setMousePosition({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+  };
 
   return (
-    <section className="relative overflow-hidden bg-primary text-primary-foreground">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-1/3 -right-1/4 size-[60rem] rounded-full bg-[oklch(0.95_0.08_152.2/0.5)] blur-3xl"
-      />
+    <section
+      onMouseMove={shouldReduceMotion ? undefined : handleMouseMove}
+      className="relative overflow-hidden bg-primary text-primary-foreground"
+    >
+      {!shouldReduceMotion && (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, oklch(0.95 0.08 152.2 / 0.15), transparent 80%)`,
+          }}
+        />
+      )}
 
-      <div className="relative mx-auto flex max-w-4xl flex-col items-start px-4 py-28 sm:px-6 sm:py-36">
+      <div className="relative mx-auto flex max-w-4xl flex-col items-start px-4 pt-16 pb-28 sm:px-6 sm:pt-20 sm:pb-36">
         <h1
           className={`${RISE} text-balance font-heading text-[clamp(2.75rem,4vw+1.75rem,5.5rem)] leading-[1.05] font-semibold tracking-[-0.03em]`}
           style={{ animationDelay: "0ms" }}
