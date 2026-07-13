@@ -3,6 +3,9 @@
 // React
 import type { ReactNode } from "react";
 
+// react-query / react-hook-form / zod / [lib]
+import { motion, useReducedMotion } from "framer-motion";
+
 // Components
 import { KpiCards } from "./KpiCards";
 
@@ -42,6 +45,9 @@ import { useAuth } from "@/contexts/auth-context";
 // Types
 import type { DashboardOverviewApi, DashboardConfigItem } from "../types";
 
+// Animations
+import { staggerContainer, staggerItem } from "@/lib/animations/stagger-variants";
+
 export const PREMIUM_COMPONENT_KEYS: string[] = [
     "expenseEvolutionChart",
     "savingsRateCard",
@@ -62,6 +68,7 @@ export function DashboardScreen({ data, initialConfig }: Readonly<DashboardScree
     const userId = state.user?.userId;
     const isPremiumUser = state.user?.isPremium ?? false;
     const { data: config } = useDashboardConfig(initialConfig, userId);
+    const shouldReduceMotion = useReducedMotion();
 
     const componentMap: Record<string, ReactNode> = {
         alertsCard: <AlertsCard alerts={data.alerts} />,
@@ -105,7 +112,12 @@ export function DashboardScreen({ data, initialConfig }: Readonly<DashboardScree
         <div className="relative min-h-[calc(100vh-var(--header-height))] overflow-hidden bg-linear-to-br from-background via-background to-muted/30">
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.12),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(14,165,233,0.08),transparent_32%)]" />
 
-            <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 lg:px-6">
+            <motion.div
+                variants={staggerContainer}
+                initial={shouldReduceMotion ? "show" : "hidden"}
+                animate="show"
+                className="relative mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 lg:px-6"
+            >
 
                 {/* KPI Cards */}
                 <KpiCards kpis={data.kpis} />
@@ -118,17 +130,18 @@ export function DashboardScreen({ data, initialConfig }: Readonly<DashboardScree
                         if (!component) return null;
 
                         return (
-                            <div
+                            <motion.div
                                 key={item.componentKey}
+                                variants={staggerItem}
                                 className={item.columns === 2 ? "xl:col-span-2" : "xl:col-span-1"}
                             >
                                 {component}
-                            </div>
+                            </motion.div>
                         );
                     })}
                 </section>
 
-            </div>
+            </motion.div>
         </div>
     );
 }
