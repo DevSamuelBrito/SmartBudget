@@ -579,10 +579,13 @@
     "register": "Criar conta",
     "email": "E-mail",
     "password": "Senha",
+    "confirmPassword": "Confirmar senha",
     "name": "Nome",
     "forgotPassword": "Esqueceu a senha?",
     "noAccount": "Não tem uma conta?",
     "alreadyHaveAccount": "Já tem uma conta?",
+    "loginTagline": "Continue no controle. Seus dados financeiros te esperam.",
+    "registerTagline": "Comece hoje a construir uma relação mais saudável com seu dinheiro.",
     "forgotPasswordPage": {
       "title": "Esqueceu sua senha?",
       "description": "Informe seu e-mail e enviaremos um link de recuperação.",

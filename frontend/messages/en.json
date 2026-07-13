@@ -578,10 +578,13 @@
     "register": "Create account",
     "email": "Email",
     "password": "Password",
+    "confirmPassword": "Confirm password",
     "name": "Name",
     "forgotPassword": "Forgot your password?",
     "noAccount": "Don't have an account?",
     "alreadyHaveAccount": "Already have an account?",
+    "loginTagline": "Stay in control. Your financial data is waiting for you.",
+    "registerTagline": "Start today building a healthier relationship with your money.",
     "forgotPasswordPage": {
       "title": "Forgot your password?",
       "description": "Enter your email and we will send you a recovery link.",

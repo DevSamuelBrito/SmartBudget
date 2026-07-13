@@ -4,6 +4,8 @@
 import type { ComponentProps } from "react";
 
 // Next
+import Image from "next/image";
+
 import Link from "next/dist/client/link";
 
 import { useRouter } from "next/navigation";
@@ -29,9 +31,17 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
+  FieldSeparator,
 } from "@/components/ui/field";
 
 import { Input } from "@/components/ui/input";
+
+// utils
+import { cn } from "@/lib/utils";
+
+import { ThemeToggle } from "@/components/theme-toggle";
+
+import { LanguageToggle } from "@/components/language-toggle";
 
 // contexts
 import { useAuth } from "@/contexts/auth-context";
@@ -75,10 +85,14 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
   };
 
   return (
-    <div className={className} {...props}>
-      <Card className="h-full overflow-hidden p-0">
+    <div className={cn("h-full", className)} {...props}>
+      <Card className="relative h-full overflow-hidden p-0">
+        <div className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-background/80 p-1 shadow-sm backdrop-blur-sm">
+          <ThemeToggle />
+          <LanguageToggle />
+        </div>
         <CardContent className="grid h-full p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
+          <form className="flex flex-col justify-center p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">{t("login")}</h1>
@@ -132,11 +146,19 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
             </FieldGroup>
           </form>
           <div className="relative hidden bg-muted md:block">
-            <img
-              src="/placeholder.svg"
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            <Image
+              src="/images/loginImage.jpg"
+              alt="Login Image"
+              fill
+              className="object-cover brightness-[0.8]"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+            <div className="absolute inset-x-6 bottom-6">
+              <Link href="/" className="text-2xl font-bold text-white">
+                SmartBudget
+              </Link>
+              <p className="mt-1 text-sm text-white/90">{t("loginTagline")}</p>
+            </div>
           </div>
         </CardContent>
       </Card>

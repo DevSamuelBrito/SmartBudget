@@ -18,17 +18,17 @@ export function LoginCard() {
 
   return (
     <div className="w-full max-w-sm md:max-w-4xl">
-      <div className="[perspective:1400px]">
+      <div className="perspective-[1400px]">
         <div
-          className={`relative min-h-[430px] w-full transition-transform duration-700 [transform-style:preserve-3d] ${
-            isFlipped ? "[transform:rotateY(180deg)]" : ""
+          className={`grid w-full transform-3d transition-transform duration-700 ${
+            isFlipped ? "transform-[rotateY(180deg)]" : ""
           }`}
         >
-          <div className="absolute inset-0 h-full w-full [backface-visibility:hidden]">
+          <div className="col-start-1 row-start-1 backface-hidden">
             <LoginFormSide onSignUpClick={() => setIsFlipped(true)} />
           </div>
 
-          <div className="absolute inset-0 h-full w-full [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <div className="col-start-1 row-start-1 backface-hidden transform-[rotateY(180deg)]">
             <RegisterFormSide onBackToLogin={() => setIsFlipped(false)} />
           </div>
         </div>
