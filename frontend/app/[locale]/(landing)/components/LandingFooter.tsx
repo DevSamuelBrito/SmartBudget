@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button";
 
 import { LanguageSwitcherDialog } from "@/components/language-switcher-dialog";
 
+import { ThemeToggle } from "@/components/theme-toggle";
+
 // apis / services
 import { setLocaleAction } from "@/app/actions/locale-actions";
 
@@ -61,6 +63,8 @@ export function LandingFooter() {
             <Globe className="size-4" />
             {t("languageLabel")}
           </Button>
+
+          <ThemeToggle />
         </div>
       </div>
 

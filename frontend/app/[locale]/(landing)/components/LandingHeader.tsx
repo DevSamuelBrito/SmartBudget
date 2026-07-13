@@ -19,6 +19,8 @@ import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/com
 
 import { LanguageSwitcherDialog } from "@/components/language-switcher-dialog";
 
+import { ThemeToggle } from "@/components/theme-toggle";
+
 // hooks
 import { useAuth } from "@/contexts/auth-context";
 
@@ -78,6 +80,8 @@ export function LandingHeader() {
         <nav className="hidden items-center gap-8 md:flex">{navLinks}</nav>
 
         <div className="hidden items-center gap-2 md:flex">
+          <ThemeToggle />
+
           <Button variant="ghost" size="icon" aria-label={tLanguage("title")} onClick={() => setLanguageOpen(true)}>
             <Globe className="size-4" />
           </Button>
@@ -98,48 +102,52 @@ export function LandingHeader() {
           )}
         </div>
 
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden" aria-label="Open menu">
-              <Menu className="size-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="flex w-72 flex-col gap-6 p-6">
-            <SheetTitle className="font-heading">SmartBudget</SheetTitle>
-            <nav className="flex flex-col gap-4">
-              <SheetClose asChild>
-                <a href="#features" className="text-base font-medium">
-                  {t("features")}
-                </a>
-              </SheetClose>
-              <SheetClose asChild>
-                <a href="#demo" className="text-base font-medium">
-                  {t("demo")}
-                </a>
-              </SheetClose>
-            </nav>
-            <div className="mt-auto flex flex-col gap-2">
-              <Button variant="outline" onClick={() => setLanguageOpen(true)}>
-                <Globe className="size-4" />
-                {tLanguage("title")}
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Open menu">
+                <Menu className="size-5" />
               </Button>
-              {isLoggedIn ? (
-                <Button asChild>
-                  <Link href="/dashboard">{t("goToDashboard")}</Link>
+            </SheetTrigger>
+            <SheetContent side="right" className="flex w-72 flex-col gap-6 p-6">
+              <SheetTitle className="font-heading">SmartBudget</SheetTitle>
+              <nav className="flex flex-col gap-4">
+                <SheetClose asChild>
+                  <a href="#features" className="text-base font-medium">
+                    {t("features")}
+                  </a>
+                </SheetClose>
+                <SheetClose asChild>
+                  <a href="#demo" className="text-base font-medium">
+                    {t("demo")}
+                  </a>
+                </SheetClose>
+              </nav>
+              <div className="mt-auto flex flex-col gap-2">
+                <Button variant="outline" onClick={() => setLanguageOpen(true)}>
+                  <Globe className="size-4" />
+                  {tLanguage("title")}
                 </Button>
-              ) : (
-                <>
-                  <Button variant="outline" asChild>
-                    <Link href="/login">{t("login")}</Link>
-                  </Button>
+                {isLoggedIn ? (
                   <Button asChild>
-                    <Link href="/login?mode=register">{t("cta")}</Link>
+                    <Link href="/dashboard">{t("goToDashboard")}</Link>
                   </Button>
-                </>
-              )}
-            </div>
-          </SheetContent>
-        </Sheet>
+                ) : (
+                  <>
+                    <Button variant="outline" asChild>
+                      <Link href="/login">{t("login")}</Link>
+                    </Button>
+                    <Button asChild>
+                      <Link href="/login?mode=register">{t("cta")}</Link>
+                    </Button>
+                  </>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
 
       <LanguageSwitcherDialog
