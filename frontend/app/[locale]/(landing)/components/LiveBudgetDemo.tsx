@@ -4,50 +4,45 @@
 import { useEffect, useRef, useState } from "react";
 
 // next-intl
-import { useLocale, useTranslations } from "next-intl";
-
-// lucide-react
-import { UtensilsCrossed } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // components
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  type CarouselApi,
+} from "@/components/ui/carousel";
 
-import { Progress } from "@/components/ui/progress";
+// components
+import { BudgetProgressPreview } from "./live-demo/BudgetProgressPreview";
 
-const TARGET_PERCENTAGE = 92;
-const LIMIT_AMOUNT = 400;
-const ANIMATION_DURATION_MS = 1600;
+import { CategoryDistributionPreview } from "./live-demo/CategoryDistributionPreview";
 
-function easeOutExpo(t: number): number {
-  return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-}
+import { IncomeExpensePreview } from "./live-demo/IncomeExpensePreview";
 
-function getStatusClass(percentage: number): string {
-  if (percentage >= 100) return "bg-destructive";
-  if (percentage >= 80) return "bg-amber-500";
-  
-return "bg-emerald-500";
-}
+import { FinancialRiskPreview } from "./live-demo/FinancialRiskPreview";
+
+// utils
+import { cn } from "@/lib/utils";
+
+const SLIDE_KEYS = ["budgetProgress", "categoryDistribution", "incomeExpense", "financialRisk"] as const;
 
 export function LiveBudgetDemo() {
   const t = useTranslations("landing.demo");
-  const locale = useLocale();
 
-  const ref = useRef<HTMLDivElement>(null);
-  const [percentage, setPercentage] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
 
-  const currency = locale === "pt-BR" ? "BRL" : "USD";
-
-  const formatCurrency = (value: number) =>
-    new Intl.NumberFormat(locale, { style: "currency", currency }).format(value);
+  const [api, setApi] = useState<CarouselApi>();
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
-    const node = ref.current;
+    const node = sectionRef.current;
 
     if (!node || hasAnimated) return;
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -55,24 +50,6 @@ export function LiveBudgetDemo() {
 
         observer.unobserve(node);
         setHasAnimated(true);
-
-        if (reduceMotion) {
-          setPercentage(TARGET_PERCENTAGE);
-          
-return;
-        }
-
-        const start = performance.now();
-
-        const tick = (now: number) => {
-          const progress = Math.min((now - start) / ANIMATION_DURATION_MS, 1);
-
-          setPercentage(Math.round(easeOutExpo(progress) * TARGET_PERCENTAGE));
-
-          if (progress < 1) requestAnimationFrame(tick);
-        };
-
-        requestAnimationFrame(tick);
       },
       { threshold: 0.4 },
     );
@@ -82,8 +59,20 @@ return;
     return () => observer.disconnect();
   }, [hasAnimated]);
 
-  const spentAmount = (LIMIT_AMOUNT * percentage) / 100;
-  const remainingAmount = Math.max(LIMIT_AMOUNT - spentAmount, 0);
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => setSelectedIndex(api.selectedScrollSnap());
+
+    const frame = requestAnimationFrame(onSelect);
+
+    api.on("select", onSelect);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      api.off("select", onSelect);
+    };
+  }, [api]);
 
   return (
     <section id="demo" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
@@ -94,41 +83,43 @@ return;
         <p className="mt-4 text-lg text-muted-foreground">{t("description")}</p>
       </div>
 
-      <div ref={ref} className="mx-auto mt-12 max-w-md">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center gap-3">
-              <span className="flex size-9 items-center justify-center rounded-lg bg-muted text-foreground/70">
-                <UtensilsCrossed className="size-4" aria-hidden />
-              </span>
-              <div>
-                <CardTitle>{t("category")}</CardTitle>
-                <CardDescription className="tabular-nums">
-                  {formatCurrency(spentAmount)} / {formatCurrency(LIMIT_AMOUNT)}
-                </CardDescription>
-              </div>
-            </div>
-          </CardHeader>
+      <div ref={sectionRef} className="mx-auto mt-12 max-w-md">
+        <Carousel setApi={setApi} opts={{ loop: true, align: "center" }} className="px-2">
+          <CarouselContent>
+            {SLIDE_KEYS.map((key) => (
+              <CarouselItem key={key} className="flex flex-col justify-center">
+                {key === "budgetProgress" && <BudgetProgressPreview animate={hasAnimated} />}
+                {key === "categoryDistribution" && <CategoryDistributionPreview />}
+                {key === "incomeExpense" && <IncomeExpensePreview />}
+                {key === "financialRisk" && <FinancialRiskPreview animate={hasAnimated} />}
 
-          <CardContent className="space-y-3">
-            <Progress value={percentage} indicatorClassName={getStatusClass(percentage)} />
+                <div className="mt-4 text-center">
+                  <p className="font-semibold">{t(`slides.${key}.title`)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{t(`slides.${key}.description`)}</p>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
 
-            <div className="flex items-center justify-between text-sm">
-              <span className="tabular-nums text-muted-foreground">{t("used", { percentage })}</span>
-              <span className="tabular-nums text-muted-foreground">
-                {t("remaining", { amount: formatCurrency(remainingAmount) })}
-              </span>
-            </div>
+          <CarouselPrevious aria-label={t("previousSlide")} />
+          <CarouselNext aria-label={t("nextSlide")} />
+        </Carousel>
 
-            {percentage >= 80 && (
-              <p className="rounded-md bg-amber-500/10 px-3 py-2 text-sm font-medium text-amber-700 dark:text-amber-400">
-                {t("statusWarning")}
-              </p>
-            )}
-          </CardContent>
-        </Card>
-
-        <p className="mt-4 text-center text-sm text-muted-foreground">{t("caption")}</p>
+        <div className="mt-6 flex items-center justify-center gap-2">
+          {SLIDE_KEYS.map((key, index) => (
+            <button
+              key={key}
+              type="button"
+              aria-label={t("goToSlide", { number: index + 1 })}
+              aria-current={index === selectedIndex}
+              onClick={() => api?.scrollTo(index)}
+              className={cn(
+                "size-2 rounded-full transition-colors",
+                index === selectedIndex ? "bg-foreground" : "bg-muted-foreground/30 hover:bg-muted-foreground/50",
+              )}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

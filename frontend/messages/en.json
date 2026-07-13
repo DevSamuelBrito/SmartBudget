@@ -628,11 +628,55 @@
     "demo": {
       "title": "This is what \"in control\" actually looks like",
       "description": "Set a limit per category. Spend against it. Watch the indicator update in real time — long before you hit 100%.",
-      "category": "Dining out",
-      "used": "{percentage}% used",
-      "remaining": "{amount} left this month",
-      "statusWarning": "Getting close — about two dinners left in the budget.",
-      "caption": "This is a real, live SmartBudget component — not a mockup."
+      "previousSlide": "Previous slide",
+      "nextSlide": "Next slide",
+      "goToSlide": "Go to slide {number}",
+      "slides": {
+        "budgetProgress": {
+          "title": "Track your budgets",
+          "description": "Real-time progress for every category budget, updated as you spend.",
+          "category": "Dining out",
+          "used": "{percentage}% used",
+          "remaining": "{amount} remaining"
+        },
+        "categoryDistribution": {
+          "title": "See where it goes",
+          "description": "A breakdown of monthly expenses by category, at a glance.",
+          "totalLabel": "This month's expenses",
+          "categories": {
+            "housing": "Housing",
+            "food": "Food",
+            "transport": "Transport",
+            "leisure": "Leisure",
+            "other": "Other"
+          }
+        },
+        "incomeExpense": {
+          "title": "Income vs expenses",
+          "description": "Compare monthly income and expenses to spot trends early.",
+          "income": "Income",
+          "expense": "Expenses",
+          "months": {
+            "jan": "Jan",
+            "feb": "Feb",
+            "mar": "Mar",
+            "apr": "Apr",
+            "may": "May",
+            "jun": "Jun"
+          }
+        },
+        "financialRisk": {
+          "title": "Know your financial risk",
+          "description": "A single indicator showing how exposed your budget is to fixed costs.",
+          "badge": "Financial risk",
+          "averageIncome": "Average income (3 months)",
+          "fixedExpenses": "Monthly fixed expenses",
+          "status": {
+            "warning": "Warning"
+          },
+          "warningMessage": "Heads up: your fixed expenses are getting close to the recommended limit."
+        }
+      }
     },
     "glimpse": {
       "title": "Your whole month, one screen",

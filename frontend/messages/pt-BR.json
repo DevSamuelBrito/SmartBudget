@@ -629,11 +629,55 @@
     "demo": {
       "title": "Isto é o que \"estar no controle\" parece de verdade",
       "description": "Defina um limite por categoria. Gaste. Veja o indicador atualizar em tempo real — bem antes de bater 100%.",
-      "category": "Restaurantes",
-      "used": "{percentage}% utilizado",
-      "remaining": "{amount} restantes este mês",
-      "statusWarning": "Quase lá — faltam cerca de dois jantares no orçamento.",
-      "caption": "Este é um componente real do SmartBudget, ao vivo — não é um mockup."
+      "previousSlide": "Slide anterior",
+      "nextSlide": "Próximo slide",
+      "goToSlide": "Ir para o slide {number}",
+      "slides": {
+        "budgetProgress": {
+          "title": "Acompanhe seus orçamentos",
+          "description": "Progresso em tempo real de cada orçamento por categoria, atualizado a cada gasto.",
+          "category": "Restaurantes",
+          "used": "{percentage}% utilizado",
+          "remaining": "{amount} restantes"
+        },
+        "categoryDistribution": {
+          "title": "Veja para onde o dinheiro vai",
+          "description": "A distribuição das despesas do mês por categoria, em um relance.",
+          "totalLabel": "Despesas do mês",
+          "categories": {
+            "housing": "Moradia",
+            "food": "Alimentação",
+            "transport": "Transporte",
+            "leisure": "Lazer",
+            "other": "Outros"
+          }
+        },
+        "incomeExpense": {
+          "title": "Receitas x despesas",
+          "description": "Compare receitas e despesas mês a mês para identificar tendências cedo.",
+          "income": "Receitas",
+          "expense": "Despesas",
+          "months": {
+            "jan": "Jan",
+            "feb": "Fev",
+            "mar": "Mar",
+            "apr": "Abr",
+            "may": "Mai",
+            "jun": "Jun"
+          }
+        },
+        "financialRisk": {
+          "title": "Conheça seu risco financeiro",
+          "description": "Um indicador único mostrando o quanto seu orçamento depende de gastos fixos.",
+          "badge": "Risco financeiro",
+          "averageIncome": "Renda média (3 meses)",
+          "fixedExpenses": "Gastos fixos mensais",
+          "status": {
+            "warning": "Atenção"
+          },
+          "warningMessage": "Atenção: seus gastos fixos estão se aproximando do limite recomendado."
+        }
+      }
     },
     "glimpse": {
       "title": "Seu mês inteiro, em uma tela",
