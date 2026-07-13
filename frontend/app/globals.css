@@ -219,6 +219,37 @@
   }
 }
 
+/*
+ * Circular reveal for the landing page theme toggle (LandingThemeToggle.tsx).
+ * Only ever runs there — it's the only place that calls document.startViewTransition.
+ */
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-toggle-circle 550ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes theme-toggle-circle {
+  from {
+    clip-path: circle(0px at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--theme-toggle-radius, 150%) at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 #nprogress {
   pointer-events: none;
   z-index: 999999 !important;

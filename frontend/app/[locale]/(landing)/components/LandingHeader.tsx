@@ -19,7 +19,7 @@ import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/com
 
 import { LanguageSwitcherDialog } from "@/components/language-switcher-dialog";
 
-import { ThemeToggle } from "@/components/theme-toggle";
+import { LandingThemeToggle } from "./LandingThemeToggle";
 
 // hooks
 import { useAuth } from "@/contexts/auth-context";
@@ -80,7 +80,7 @@ export function LandingHeader() {
         <nav className="hidden items-center gap-8 md:flex">{navLinks}</nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <ThemeToggle />
+          <LandingThemeToggle />
 
           <Button variant="ghost" size="icon" aria-label={tLanguage("title")} onClick={() => setLanguageOpen(true)}>
             <Globe className="size-4" />
@@ -103,7 +103,7 @@ export function LandingHeader() {
         </div>
 
         <div className="flex items-center gap-1 md:hidden">
-          <ThemeToggle />
+          <LandingThemeToggle />
 
           <Sheet>
             <SheetTrigger asChild>
