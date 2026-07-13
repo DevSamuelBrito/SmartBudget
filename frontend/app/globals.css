@@ -220,8 +220,8 @@
 }
 
 /*
- * Circular reveal for the landing page theme toggle (LandingThemeToggle.tsx).
- * Only ever runs there — it's the only place that calls document.startViewTransition.
+ * Circular reveal for theme toggles (see hooks/useThemeTransition.ts).
+ * Only takes effect when document.startViewTransition is actually called.
  */
 ::view-transition-old(root) {
   animation: none;

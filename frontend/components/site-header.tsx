@@ -21,6 +21,9 @@ import { Separator } from "@/components/ui/separator"
 
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
+// hooks
+import { useThemeTransition } from "@/hooks/useThemeTransition"
+
 export function SiteHeader() {
   const mounted = useSyncExternalStore(
     () => () => { },
@@ -32,7 +35,8 @@ export function SiteHeader() {
   const t = useTranslations("siteHeader")
   const tNav = useTranslations("nav")
 
-  const { resolvedTheme, theme, setTheme } = useTheme()
+  const { resolvedTheme, theme } = useTheme()
+  const { changeTheme } = useThemeTransition()
 
   const PAGE_KEYS = ["dashboard", "transactions", "categories", "reports", "plans"] as const
   
@@ -71,7 +75,7 @@ export function SiteHeader() {
           <Button
             variant="outline"
             size="icon-sm"
-            onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+            onClick={(event) => changeTheme(currentTheme === "dark" ? "light" : "dark", event)}
             aria-label={themeLabel}
             disabled={!mounted}
           >

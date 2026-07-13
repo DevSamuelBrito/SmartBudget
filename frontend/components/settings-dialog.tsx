@@ -24,6 +24,9 @@ import { Separator } from "@/components/ui/separator"
 
 import { BrazilFlagIcon, UnitedStatesFlagIcon } from "@/components/shared/flag-icons"
 
+// hooks
+import { useThemeTransition } from "@/hooks/useThemeTransition"
+
 // types
 import { type AppLocale } from "@/i18n/routing"
 
@@ -61,7 +64,8 @@ export function SettingsDialog({
     onChangeLocale,
 }: Readonly<SettingsDialogProps>) {
     const t = useTranslations("settings")
-    const { theme, setTheme } = useTheme()
+    const { theme } = useTheme()
+    const { changeTheme } = useThemeTransition()
     const currentLocale = open ? getLocaleFromCookie() : null
 
     const themes = [
@@ -116,7 +120,7 @@ export function SettingsDialog({
                                     type="button"
                                     variant={theme === value ? "default" : "outline"}
                                     className={theme === value ? "border-primary ring-2 ring-primary/20" : ""}
-                                    onClick={() => setTheme(value)}
+                                    onClick={(event) => changeTheme(value, event)}
                                 >
                                     {Icon && <Icon className="mr-2 h-4 w-4" />}
                                     {label}

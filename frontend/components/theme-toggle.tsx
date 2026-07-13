@@ -14,6 +14,9 @@ import { useTheme } from "next-themes"
 // components
 import { Button } from "@/components/ui/button"
 
+// hooks
+import { useThemeTransition } from "@/hooks/useThemeTransition"
+
 export function ThemeToggle() {
   const mounted = useSyncExternalStore(
     () => () => { },
@@ -22,7 +25,8 @@ export function ThemeToggle() {
   )
 
   const t = useTranslations("siteHeader")
-  const { resolvedTheme, theme, setTheme } = useTheme()
+  const { resolvedTheme, theme } = useTheme()
+  const { changeTheme } = useThemeTransition()
 
   const currentTheme = resolvedTheme ?? theme
 
@@ -37,7 +41,7 @@ export function ThemeToggle() {
       type="button"
       variant="ghost"
       size="icon-sm"
-      onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+      onClick={(event) => changeTheme(currentTheme === "dark" ? "light" : "dark", event)}
       aria-label={themeLabel}
       disabled={!mounted}
     >

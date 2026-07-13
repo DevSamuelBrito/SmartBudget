@@ -3,8 +3,6 @@
 // react
 import { useSyncExternalStore } from "react";
 
-import { flushSync } from "react-dom";
-
 // next-intl
 import { useTranslations } from "next-intl";
 
@@ -16,18 +14,8 @@ import { useTheme } from "next-themes";
 // components
 import { Button } from "@/components/ui/button";
 
-function playCircularReveal(x: number, y: number) {
-  const root = document.documentElement;
-
-  const endRadius = Math.hypot(
-    Math.max(x, window.innerWidth - x),
-    Math.max(y, window.innerHeight - y),
-  );
-
-  root.style.setProperty("--theme-toggle-x", `${x}px`);
-  root.style.setProperty("--theme-toggle-y", `${y}px`);
-  root.style.setProperty("--theme-toggle-radius", `${endRadius}px`);
-}
+// hooks
+import { useThemeTransition } from "@/hooks/useThemeTransition";
 
 export function LandingThemeToggle() {
   const mounted = useSyncExternalStore(
@@ -37,7 +25,8 @@ export function LandingThemeToggle() {
   );
 
   const t = useTranslations("siteHeader");
-  const { resolvedTheme, theme, setTheme } = useTheme();
+  const { resolvedTheme, theme } = useTheme();
+  const { changeTheme } = useThemeTransition();
 
   const currentTheme = resolvedTheme ?? theme;
 
@@ -48,21 +37,7 @@ export function LandingThemeToggle() {
   }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (typeof document.startViewTransition !== "function" || reduceMotion) {
-      setTheme(nextTheme);
-
-      return;
-    }
-
-    playCircularReveal(event.clientX, event.clientY);
-
-    document.startViewTransition(() => {
-      flushSync(() => setTheme(nextTheme));
-    });
+    changeTheme(currentTheme === "dark" ? "light" : "dark", event);
   };
 
   return (
