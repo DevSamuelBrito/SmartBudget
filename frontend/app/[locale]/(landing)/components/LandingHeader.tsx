@@ -75,6 +75,9 @@ export function LandingHeader() {
       <a href="#opensource" className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground">
         {t("openSource")}
       </a>
+      <a href="#plans" className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground">
+        {t("plans")}
+      </a>
     </>
   );
 
@@ -150,6 +153,11 @@ export function LandingHeader() {
                 <SheetClose asChild>
                   <a href="#opensource" className="text-base font-medium">
                     {t("openSource")}
+                  </a>
+                </SheetClose>
+                <SheetClose asChild>
+                  <a href="#plans" className="text-base font-medium">
+                    {t("plans")}
                   </a>
                 </SheetClose>
               </nav>

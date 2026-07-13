@@ -542,7 +542,8 @@
         "Top 5 biggest expenses of the month"
       ]
     },
-    "upgradeSuccess": "Welcome to Premium! Enjoy all the features."
+    "upgradeSuccess": "Welcome to Premium! Enjoy all the features.",
+    "viewFullPlans": "View full plans"
   },
   "checkout": {
     "title": "Complete your subscription",
@@ -615,6 +616,7 @@
       "features": "Features",
       "demo": "See it in action",
       "openSource": "Open Source",
+      "plans": "Plans",
       "login": "Log in",
       "cta": "Create free account",
       "goToDashboard": "Go to dashboard"

@@ -543,7 +543,8 @@
         "Top 5 maiores gastos do mês"
       ]
     },
-    "upgradeSuccess": "Bem-vindo ao Premium! Aproveite todos os recursos."
+    "upgradeSuccess": "Bem-vindo ao Premium! Aproveite todos os recursos.",
+    "viewFullPlans": "Ver planos completos"
   },
   "checkout": {
     "title": "Finalizar assinatura",
@@ -616,6 +617,7 @@
       "features": "Funcionalidades",
       "demo": "Ver na prática",
       "openSource": "Open Source",
+      "plans": "Planos",
       "login": "Entrar",
       "cta": "Criar conta grátis",
       "goToDashboard": "Ir para o dashboard"

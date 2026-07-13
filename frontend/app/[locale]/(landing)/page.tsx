@@ -17,6 +17,8 @@ import { FeaturesSection } from "./components/FeaturesSection";
 
 import { ProofSection } from "./components/ProofSection";
 
+import { PlansSection } from "./components/PlansSection";
+
 import { FinalCtaSection } from "./components/FinalCtaSection";
 
 import { LandingFooter } from "./components/LandingFooter";
@@ -49,6 +51,7 @@ export default function LandingPage() {
         <LiveBudgetDemo />
         <DashboardGlimpse />
         <ProofSection />
+        <PlansSection />
         <FinalCtaSection />
       </main>
 
