@@ -614,7 +614,8 @@
     },
     "nav": {
       "features": "Funcionalidades",
-      "demo": "Ver funcionando",
+      "demo": "Ver na prática",
+      "openSource": "Open Source",
       "login": "Entrar",
       "cta": "Criar conta grátis",
       "goToDashboard": "Ir para o dashboard"

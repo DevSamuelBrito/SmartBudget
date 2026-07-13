@@ -29,7 +29,7 @@ export function ProofSection() {
   const t = useTranslations("landing.proof");
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
+    <section id="opensource" className="mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32">
       <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="text-balance font-heading text-[clamp(2rem,2.5vw+1.5rem,3rem)] font-semibold tracking-[-0.02em]">
           {t("title")}

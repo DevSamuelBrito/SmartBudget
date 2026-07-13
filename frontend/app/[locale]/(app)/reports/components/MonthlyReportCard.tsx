@@ -6,6 +6,9 @@ import { useState } from "react";
 // next
 import dynamic from "next/dynamic";
 
+// react-query / react-hook-form / zod / [lib]
+import { motion, useReducedMotion } from "framer-motion";
+
 // i18n
 import { useLocale, useTranslations } from "next-intl";
 
@@ -53,6 +56,7 @@ export function MonthlyReportCard({
   });
 
   const [showPreview, setShowPreview] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   function handlePeriodChange(next: { month: number; year: number }) {
     setShowPreview(false);
@@ -108,7 +112,12 @@ export function MonthlyReportCard({
   const isPreviewReady = showPreview && !isLoading;
 
   return (
-    <div className="flex flex-1 flex-col gap-4">
+    <motion.div
+      initial={shouldReduceMotion ? false : { opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+      className="flex flex-1 flex-col gap-4"
+    >
       <div className="flex flex-wrap items-center gap-3">
         <MonthYearSelector month={period.month} year={period.year} onChange={handlePeriodChange} />
 
@@ -146,6 +155,6 @@ export function MonthlyReportCard({
           {t("loadingPreview")}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

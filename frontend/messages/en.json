@@ -614,6 +614,7 @@
     "nav": {
       "features": "Features",
       "demo": "See it in action",
+      "openSource": "Open Source",
       "login": "Log in",
       "cta": "Create free account",
       "goToDashboard": "Go to dashboard"

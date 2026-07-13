@@ -45,9 +45,9 @@ export default function LandingPage() {
 
       <main>
         <HeroSection />
+        <FeaturesSection />
         <LiveBudgetDemo />
         <DashboardGlimpse />
-        <FeaturesSection />
         <ProofSection />
         <FinalCtaSection />
       </main>
