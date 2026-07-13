@@ -3,6 +3,9 @@
 // react
 import { useState } from "react";
 
+// react-query / react-hook-form / zod / [lib]
+import { motion, useReducedMotion } from "framer-motion";
+
 // i18n
 import { useTranslations } from "next-intl";
 
@@ -94,6 +97,7 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
     }
 
     const t = useTranslations("transactions");
+    const shouldReduceMotion = useReducedMotion();
 
     const pageCount = Math.max(1, totalPages);
     const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
@@ -104,7 +108,12 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
     }
 
     return (
-        <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
+        <motion.div
+            initial={shouldReduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-1 flex-col gap-4 p-4 lg:p-6"
+        >
             <div className="flex flex-wrap items-end justify-between gap-3">
                 <TransactionFiltersBar
                     pendingFilters={pendingFilters}
@@ -209,7 +218,7 @@ const TransactionsScreen = ({ initialTransactions }: TransactionsScreenProps) =>
                     handleDeleteTransaction(deletingTransaction.id);
                 }}
             />
-        </div>
+        </motion.div>
     );
 }
 
