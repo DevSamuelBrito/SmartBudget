@@ -1,13 +1,17 @@
 "use client"
 
 import * as React from "react"
+
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
+
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
 
 import { cn } from "@/lib/utils"
+
 import { Button } from "@/components/ui/button"
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
+
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
@@ -51,13 +55,16 @@ function Carousel({
   children,
   ...props
 }: React.ComponentProps<"div"> & CarouselProps) {
+  
   const [carouselRef, api] = useEmblaCarousel(
     {
+
       ...opts,
       axis: orientation === "horizontal" ? "x" : "y",
     },
     plugins
   )
+
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
 
