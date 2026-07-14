@@ -5,8 +5,6 @@ using SmartBudgetPro.API.Extensions;
 using SmartBudgetPro.Application.UseCases.User.ChangeUserPassword;
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
 using SmartBudgetPro.Application.UseCases.User.DeleteUser;
-using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
-using SmartBudgetPro.Application.UseCases.User.GetUserByID;
 using SmartBudgetPro.Application.UseCases.User.UpdateUser;
 using SmartBudgetPro.Application.UseCases.User.UpdateUserProfile;
 using SmartBudgetPro.Application.UseCases.User.UpgradeUserToPremium;
@@ -19,8 +17,6 @@ namespace SmartBudgetPro.API.Controllers
     [Authorize]
     public class UserController
     (
-        GetAllUsersUseCase getAllUsersUseCase,
-        GetUserByIDUseCase getUserByIDUseCase,
         CreateUserUseCase createUserUseCase,
         UpdateUserUseCase updateUserUseCase,
         DeleteUserUseCase deleteUserUseCase,
@@ -29,23 +25,6 @@ namespace SmartBudgetPro.API.Controllers
         UpgradeUserToPremiumUseCase upgradeUserToPremiumUseCase
     ) : ControllerBase
     {
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var output = await getAllUsersUseCase.ExecuteAsync();
-
-            return Ok(output);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByID(Guid id)
-        {
-            var userId = User.GetRequiredUserId();
-            var output = await getUserByIDUseCase.ExecuteAsync(userId);
-
-            return Ok(output);
-        }
 
         [HttpPut("profile")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateUserProfileUseCaseInput input)
@@ -73,7 +52,7 @@ namespace SmartBudgetPro.API.Controllers
         {
             var output = await createUserUseCase.ExecuteAsync(input);
 
-            return CreatedAtAction(nameof(GetByID), new { id = output.Id }, output);
+            return Created(string.Empty, output);
         }
 
         [HttpPut("{id}")]

@@ -29,11 +29,6 @@ public class UserRepository(AppDbContext context) : IUserRepository
         await context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync()
-    {
-        return await context.Users.ToListAsync();
-    }
-
     public async Task<User?> GetByEmailAsync(string email)
     {
         var normalizedEmail = email.Trim();

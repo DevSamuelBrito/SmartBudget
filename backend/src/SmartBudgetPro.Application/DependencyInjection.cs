@@ -26,8 +26,6 @@ using SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransactionC
 using SmartBudgetPro.Application.UseCases.User.CreateUser;
 using SmartBudgetPro.Application.UseCases.User.DeleteUser;
 using SmartBudgetPro.Application.UseCases.User.ChangeUserPassword;
-using SmartBudgetPro.Application.UseCases.User.GetAllUsers;
-using SmartBudgetPro.Application.UseCases.User.GetUserByID;
 using SmartBudgetPro.Application.UseCases.User.UpdateUser;
 using SmartBudgetPro.Application.UseCases.User.UpdateUserProfile;
 using SmartBudgetPro.Application.UseCases.User.UpgradeUserToPremium;
@@ -39,8 +37,6 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         //user
-        services.AddScoped<GetAllUsersUseCase>();
-        services.AddScoped<GetUserByIDUseCase>();
         services.AddScoped<CreateUserUseCase>();
         services.AddScoped<UpdateUserUseCase>();
         services.AddScoped<DeleteUserUseCase>();
