@@ -49,7 +49,7 @@ public class DeleteCategoryUseCaseTests
     public async Task Execute_WhenCategoryHasLinkedTransactions_ShouldThrowException()
     {
         // Arrange
-        var category = TransactionCategory.Create(UserId, "Alimentação", "🍔");
+        var category = TransactionCategory.Create(UserId, "Alimentação", "Utensils");
 
         _categoryRepoMock
             .Setup(r => r.GetByIdAsync(category.Id))
@@ -75,7 +75,7 @@ public class DeleteCategoryUseCaseTests
     public async Task Execute_WhenCategoryHasNoTransactions_ShouldDeleteSuccessfully()
     {
         // Arrange
-        var category = TransactionCategory.Create(UserId, "Transporte", "🚗");
+        var category = TransactionCategory.Create(UserId, "Transporte", "Car");
 
         _categoryRepoMock
             .Setup(r => r.GetByIdAsync(category.Id))
