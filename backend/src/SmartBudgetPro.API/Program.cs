@@ -1,8 +1,11 @@
+using Microsoft.EntityFrameworkCore;
 using SmartBudgetPro.API.Configuration;
 using SmartBudgetPro.API.Middlewares;
 using SmartBudgetPro.Application;
 using SmartBudgetPro.Infrastructure;
 using SmartBudgetPro.Infrastructure.Jobs;
+using SmartBudgetPro.Infrastructure.Persistence;
+using SmartBudgetPro.Infrastructure.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,18 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    await dbContext.Database.MigrateAsync();
+
+    if (app.Environment.IsDevelopment())
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+        await seeder.SeedAsync();
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

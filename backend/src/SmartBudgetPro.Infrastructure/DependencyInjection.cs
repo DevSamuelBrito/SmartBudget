@@ -9,6 +9,7 @@ using SmartBudgetPro.Infrastructure.Persistence.Repositories;
 using SmartBudgetPro.Infrastructure.Redis;
 using SmartBudgetPro.Infrastructure.Reports;
 using SmartBudgetPro.Infrastructure.Security;
+using SmartBudgetPro.Infrastructure.Seed;
 
 namespace SmartBudgetPro.Infrastructure;
 
@@ -43,6 +44,9 @@ public static class DependencyInjection
 
         // Reports
         services.AddScoped<IExcelReportService, ExcelReportService>();
+
+        // Seed
+        services.AddScoped<DatabaseSeeder>();
 
         // Settings
         var frontendUrl = configuration["FrontendUrl"];
