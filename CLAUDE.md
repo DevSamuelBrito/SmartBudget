@@ -191,3 +191,7 @@ dotnet test --filter "FullyQualifiedName~BudgetControllerTests"
 - `/new-feature` — implementar feature full-stack
 - `/caveman` — modo comunicação ultra-comprimido
 - `/grill-me` — entrevista relentless sobre plano/design
+
+## Design Context
+
+`PRODUCT.md` and `DESIGN.md` at the project root carry strategic and visual design context for `/impeccable` commands. `PRODUCT.md` splits register by surface: the public landing page is brand register (marketing-led, conversion-focused), while the authenticated app (dashboard, transactions, budgets, reports) stays product register. `DESIGN.md` documents the existing flat, single-accent ("Quiet Confidence" / Growth Green) visual system extracted from the current codebase. Read both before design work on either surface.

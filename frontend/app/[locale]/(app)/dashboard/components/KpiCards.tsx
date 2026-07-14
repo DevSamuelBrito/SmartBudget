@@ -3,6 +3,9 @@
 // next-intl
 import { useTranslations } from "next-intl";
 
+// react-query / react-hook-form / zod / [lib]
+import { motion } from "framer-motion";
+
 // Libs
 import { ArrowDownRight, ArrowUpRight, PiggyBank, Wallet } from "lucide-react";
 
@@ -20,6 +23,9 @@ import type { DashboardKpis } from "../types";
 
 // Utils
 import { formatCurrency } from "@/lib/utils/formatters";
+
+// Animations
+import { staggerItem } from "@/lib/animations/stagger-variants";
 
 type KpiCardsProps = {
   kpis: DashboardKpis;
@@ -65,22 +71,24 @@ export function KpiCards({ kpis }: Readonly<KpiCardsProps>) {
         const Icon = card.icon;
 
         return (
-          <Card key={card.label} className="border-border/70 bg-card/90 backdrop-blur @container/card">
-            <CardHeader className="space-y-0 pb-2">
-              <CardDescription>{card.label}</CardDescription>
-              <div className="flex items-start justify-between gap-4">
-                <CardTitle className="text-2xl font-semibold tabular-nums @[220px]/card:text-3xl">
-                  {formatCurrency(card.value)}
-                </CardTitle>
-                <div className={`rounded-full border border-border/60 p-2 ${card.tone}`}>
-                  <Icon className="size-4" />
+          <motion.div key={card.label} variants={staggerItem}>
+            <Card className="border-border/70 bg-card/90 backdrop-blur @container/card">
+              <CardHeader className="space-y-0 pb-2">
+                <CardDescription>{card.label}</CardDescription>
+                <div className="flex items-start justify-between gap-4">
+                  <CardTitle className="text-2xl font-semibold tabular-nums @[220px]/card:text-3xl">
+                    {formatCurrency(card.value)}
+                  </CardTitle>
+                  <div className={`rounded-full border border-border/60 p-2 ${card.tone}`}>
+                    <Icon className="size-4" />
+                  </div>
                 </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">{card.description}</p>
-            </CardContent>
-          </Card>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground">{card.description}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
         );
       })}
     </section>

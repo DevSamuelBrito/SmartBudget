@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-12T19:30:00Z",
+  "title": "Design System: SmartBudget",
+  "extensions": {
+    "colorMeta": {
+      "growth-green": {
+        "role": "primary",
+        "displayName": "Growth Green",
+        "canonical": "oklch(0.8506 0.2199 152.5506)",
+        "tonalRamp": [
+          "oklch(0.20 0.05 152.55)",
+          "oklch(0.32 0.09 152.55)",
+          "oklch(0.44 0.12 156.76)",
+          "oklch(0.56 0.16 154.5)",
+          "oklch(0.68 0.19 153.5)",
+          "oklch(0.80 0.21 152.7)",
+          "oklch(0.88 0.18 152.4)",
+          "oklch(0.95 0.08 152.2)"
+        ]
+      },
+      "ink-on-green": {
+        "role": "primary-foreground",
+        "displayName": "Ink on Green",
+        "canonical": "oklch(0.2626 0.0147 166.4589)",
+        "tonalRamp": []
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "oklch(0.9911 0 0)",
+        "tonalRamp": [
+          "oklch(0.18 0 0)",
+          "oklch(0.30 0 0)",
+          "oklch(0.42 0 0)",
+          "oklch(0.55 0 0)",
+          "oklch(0.68 0 0)",
+          "oklch(0.80 0 0)",
+          "oklch(0.90 0 0)",
+          "oklch(0.99 0 0)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(0.2046 0 0)",
+        "tonalRamp": []
+      },
+      "quiet-gray": {
+        "role": "neutral",
+        "displayName": "Quiet Gray",
+        "canonical": "oklch(0.9461 0 0)",
+        "tonalRamp": []
+      },
+      "hairline": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(0.9037 0 0)",
+        "tonalRamp": []
+      },
+      "alert-red": {
+        "role": "destructive",
+        "displayName": "Alert Red",
+        "canonical": "oklch(0.5523 0.1927 32.7272)",
+        "tonalRamp": []
+      },
+      "chart-blue": { "role": "chart", "displayName": "Chart Blue", "canonical": "oklch(0.6231 0.188 259.8145)", "tonalRamp": [] },
+      "chart-violet": { "role": "chart", "displayName": "Chart Violet", "canonical": "oklch(0.6056 0.2189 292.7172)", "tonalRamp": [] },
+      "chart-gold": { "role": "chart", "displayName": "Chart Gold", "canonical": "oklch(0.7686 0.1647 70.0804)", "tonalRamp": [] },
+      "chart-teal": { "role": "chart", "displayName": "Chart Teal", "canonical": "oklch(0.6959 0.1491 162.4796)", "tonalRamp": [] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines on brand-register surfaces (Bricolage Grotesque)." },
+      "headline": { "displayName": "Headline", "purpose": "Section-level headings on brand-register surfaces (Bricolage Grotesque)." },
+      "title": { "displayName": "Title", "purpose": "Page-level headings in the product register, and every shadcn Title role (Card/Dialog/Sheet/Drawer), now rendered in Bricolage Grotesque via --font-heading." },
+      "body": { "displayName": "Body", "purpose": "Default UI text, labels, card content." },
+      "label": { "displayName": "Label", "purpose": "Badges, chips, small metadata." }
+    },
+    "shadows": [
+      { "name": "overlay", "value": "0px 1px 3px 0px hsl(0 0% 0% / 0.17), 0px 1px 2px -1px hsl(0 0% 0% / 0.17)", "purpose": "Dialogs, sheets, popovers, dropdowns, select menus — anything rendered in a portal above the page." }
+    ],
+    "motion": [],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Default call-to-action button; Growth Green fill.",
+      "html": "<button class=\"ds-btn-primary\">Get started</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid transparent; background: oklch(0.8506 0.2199 152.5506); color: oklch(0.2626 0.0147 166.4589); font-size: 0.875rem; font-weight: 500; transition: background 0.15s, transform 0.1s; } .ds-btn-primary:hover { background: color-mix(in oklch, oklch(0.8506 0.2199 152.5506) 80%, transparent); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.8348 0.1302 160.908 / 0.5); } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action button; transparent with hairline border.",
+      "html": "<button class=\"ds-btn-outline\">Cancel</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; height: 32px; padding: 0 10px; border-radius: 8px; border: 1px solid oklch(0.9037 0 0); background: oklch(0.9911 0 0); color: oklch(0.2046 0 0); font-size: 0.875rem; font-weight: 500; transition: background 0.15s; } .ds-btn-outline:hover { background: oklch(0.9461 0 0); } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 3px oklch(0.8348 0.1302 160.908 / 0.5); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Flat container with a hairline ring instead of a shadow.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-title\">Monthly spending</div><div class=\"ds-card-body\">You're on track this month.</div></div>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 16px; border-radius: 12px; background: oklch(0.9911 0 0); padding: 16px; box-shadow: 0 0 0 1px oklch(0.2046 0 0 / 0.1); } .ds-card-title { font-size: 1rem; font-weight: 500; color: oklch(0.2046 0 0); } .ds-card-body { font-size: 0.875rem; color: oklch(0.2046 0 0 / 0.6); }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Text field with hairline border and Growth-Green focus ring.",
+      "html": "<input class=\"ds-input\" placeholder=\"Email address\" />",
+      "css": ".ds-input { height: 32px; width: 100%; border-radius: 8px; border: 1px solid oklch(0.9037 0 0); background: transparent; padding: 4px 10px; font-size: 0.875rem; color: oklch(0.2046 0 0); } .ds-input::placeholder { color: oklch(0.2435 0 0 / 0.65); } .ds-input:focus-visible { outline: none; border-color: oklch(0.8348 0.1302 160.908); box-shadow: 0 0 0 3px oklch(0.8348 0.1302 160.908 / 0.5); }"
+    },
+    {
+      "name": "Primary Badge",
+      "kind": "chip",
+      "refersTo": "badge-primary",
+      "description": "Pill-shaped status/label chip in the primary accent.",
+      "html": "<span class=\"ds-badge-primary\">On track</span>",
+      "css": ".ds-badge-primary { display: inline-flex; align-items: center; height: 20px; padding: 2px 8px; border-radius: 9999px; background: oklch(0.8506 0.2199 152.5506); color: oklch(0.2626 0.0147 166.4589); font-size: 0.75rem; font-weight: 500; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Quiet Confidence",
+    "overview": "SmartBudget's product surface doesn't perform difficulty. Surfaces are flat and near-silent — a near-white canvas, near-black text, a single hairline ring standing in for borders — so that the one color the system permits itself, a fresh mint growth-green, reads as a genuine signal rather than decoration. The system earns trust by getting out of the way: no gradients, no ambient shadows on resting surfaces, no competing accents. Depth is reserved for things that are actually elevated off the page (menus, dialogs, sheets); everything else sits flat against the canvas. This rejects the generic-fintech look explicitly — no navy-and-gold, no corporate stock-photo chrome, no manufactured urgency. It also rejects card-on-card nesting and gratuitous elevation: a card is a hairline ring, not a drop shadow, and it never contains another card.",
+    "keyCharacteristics": [
+      "One accent, used deliberately: growth-green marks primary actions, positive state, and brand identity — nowhere else.",
+      "Flat by default: cards, inputs, and buttons rest without shadow; only floating layers cast one.",
+      "A deliberate display role now exists: Bricolage Grotesque carries hero and section headlines on brand-register surfaces, layered over the same system-sans body.",
+      "Tight, consistent radius scale: 8px for interactive controls, 12px for containers."
+    ],
+    "rules": [
+      { "name": "The One Signal Rule", "body": "Growth Green is the only saturated color allowed outside chart contexts. If a second accent color feels necessary anywhere in the UI, the answer is a neutral (Quiet Gray) or an opacity of the existing ink, not a new hue.", "section": "colors" },
+      { "name": "The One Display Family Rule", "body": "Bricolage Grotesque is the only display face in the system, used for Display and Headline roles on brand surfaces and for the Title role everywhere. Don't introduce a second display family for a future surface; extend weight/size within this one instead.", "section": "typography" },
+      { "name": "The Floating-Only Rule", "body": "If a component renders inline in the document flow, it does not get a shadow — a Hairline ring is the ceiling. Shadows are earned exclusively by leaving the page's stacking context.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep Growth Green as the only saturated UI color; everything else is neutral or a chart-only hue.",
+      "Do use a Hairline ring (ring-1 ring-foreground/10), not a shadow, for any surface that rests in the page's normal flow.",
+      "Do reserve real box-shadows for components that render in a portal above the page (dialogs, sheets, popovers, menus).",
+      "Do keep the 8px/12px radius relationship: controls at 8px, containers one step up at 12px.",
+      "Do use the Display/Headline Bricolage Grotesque roles for any new brand-register surface's headings; don't scale up Title or introduce a second display face."
+    ],
+    "donts": [
+      "Don't build a generic-fintech look: no navy-and-gold palette, no corporate stock photography, no enterprise-dashboard chrome.",
+      "Don't add a second saturated accent color outside chart contexts to \"add warmth\" or \"add energy\" — Growth Green carries all of the brand's color weight by design.",
+      "Don't nest cards inside cards, or add a shadow to a resting card to make it feel \"lifted.\"",
+      "Don't use border-left or border-right as a colored accent stripe on cards or callouts.",
+      "Don't use background-clip: text gradient text for emphasis — weight and size carry emphasis in this system."
+    ]
+  }
+}

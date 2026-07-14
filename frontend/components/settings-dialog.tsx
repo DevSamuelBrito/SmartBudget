@@ -22,6 +22,11 @@ import {
 
 import { Separator } from "@/components/ui/separator"
 
+import { BrazilFlagIcon, UnitedStatesFlagIcon } from "@/components/shared/flag-icons"
+
+// hooks
+import { useThemeTransition } from "@/hooks/useThemeTransition"
+
 // types
 import { type AppLocale } from "@/i18n/routing"
 
@@ -59,7 +64,8 @@ export function SettingsDialog({
     onChangeLocale,
 }: Readonly<SettingsDialogProps>) {
     const t = useTranslations("settings")
-    const { theme, setTheme } = useTheme()
+    const { theme } = useTheme()
+    const { changeTheme } = useThemeTransition()
     const currentLocale = open ? getLocaleFromCookie() : null
 
     const themes = [
@@ -87,11 +93,7 @@ export function SettingsDialog({
                                 onClick={() => onChangeLocale("pt-BR")}
                                 disabled={isChangingLocale}
                             >
-                                <svg viewBox="0 0 24 18" width="24" height="18">
-                                    <rect width="24" height="18" fill="#009C3B" />
-                                    <polygon points="12,1.5 22.5,9 12,16.5 1.5,9" fill="#FEDF00" />
-                                    <circle cx="12" cy="9" r="4.2" fill="#002776" />
-                                </svg>
+                                <BrazilFlagIcon />
                                 PT-BR
                             </Button>
                             <Button
@@ -101,16 +103,7 @@ export function SettingsDialog({
                                 onClick={() => onChangeLocale("en")}
                                 disabled={isChangingLocale}
                             >
-                                <svg viewBox="0 0 24 18" width="24" height="18">
-                                    <rect width="24" height="18" fill="#B22234" />
-                                    <rect y="1.38" width="24" height="1.38" fill="white" />
-                                    <rect y="4.15" width="24" height="1.38" fill="white" />
-                                    <rect y="6.92" width="24" height="1.38" fill="white" />
-                                    <rect y="9.69" width="24" height="1.38" fill="white" />
-                                    <rect y="12.46" width="24" height="1.38" fill="white" />
-                                    <rect y="15.23" width="24" height="1.38" fill="white" />
-                                    <rect width="10" height="9.69" fill="#3C3B6E" />
-                                </svg>
+                                <UnitedStatesFlagIcon />
                                 EN
                             </Button>
                         </div>
@@ -127,7 +120,7 @@ export function SettingsDialog({
                                     type="button"
                                     variant={theme === value ? "default" : "outline"}
                                     className={theme === value ? "border-primary ring-2 ring-primary/20" : ""}
-                                    onClick={() => setTheme(value)}
+                                    onClick={(event) => changeTheme(value, event)}
                                 >
                                     {Icon && <Icon className="mr-2 h-4 w-4" />}
                                     {label}

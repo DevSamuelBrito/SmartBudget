@@ -22,14 +22,15 @@ SmartBudget is a personal finance tracker that helps users take control of their
 
 ### Features
 
-- **Authentication** — Secure registration and login with JWT stored in HttpOnly cookies
+- **Authentication** — Secure registration and login with JWT stored in HttpOnly cookies, refresh token rotation backed by Redis, and password recovery via a forgot/reset password email flow
 - **Transactions** — Create, edit, delete, and filter income and expense transactions
 - **Categories** — Fully customizable categories with icons, colors, and drag-and-drop ordering
 - **Budgets** — Monthly budget limits per category with real-time spending indicators
-- **Dashboard** — Charts and summaries for income, expenses, balance, and category breakdown
+- **Dashboard** — Customizable dashboard with charts and summaries for income, expenses, balance, and category breakdown
 - **Reports** — Monthly report generation with PDF and Excel export, supporting multiple languages
 - **Premium plans** — Subscription tier system to unlock advanced features
 - **Internationalization** — Full UI translation in English and Brazilian Portuguese (pt-BR)
+- **Landing page** — Public marketing site with feature highlights, a live budget demo, and plan comparison
 
 ---
 
@@ -47,6 +48,7 @@ SmartBudget is a personal finance tracker that helps users take control of their
 | Clean Architecture             | Layered domain design                        |
 | FluentValidation               | Input validation                             |
 | JWT                            | Authentication tokens                        |
+| Asp.Versioning                 | URL-based API versioning (`/api/v1/...`)     |
 | ClosedXML                      | Excel report generation                      |
 | xUnit + Moq + FluentAssertions | Unit testing                                 |
 | Brevo                          | Transactional email service (password reset) |
@@ -64,6 +66,9 @@ SmartBudget is a personal finance tracker that helps users take control of their
 | Axios                        | HTTP client                  |
 | Recharts                     | Data visualization           |
 | @react-pdf/renderer          | PDF report generation        |
+| Framer Motion                | Animations and motion effects |
+| next-intl                    | Internationalization (i18n)  |
+| @dnd-kit                     | Drag-and-drop ordering       |
 | Playwright                   | End-to-end testing           |
 | Jest + React Testing Library | Unit testing                 |
 
@@ -173,11 +178,11 @@ Open [http://localhost:3000](http://localhost:3000). The API runs on port `8080`
   "ConnectionStrings": {
     "DefaultConnection": "Host=localhost;Port=5432;Database=SmartBudget;Username=postgres;Password=yourpassword"
   },
-  "JwtSettings": {
-    "SecretKey": "your-secret-key-at-least-32-characters",
+  "Jwt": {
+    "Key": "your-secret-key-at-least-32-characters",
     "Issuer": "SmartBudgetPro",
     "Audience": "SmartBudgetPro",
-    "ExpirationMinutes": 60
+    "ExpiresInMinutes": 60
   },
   "Email": {
     "ApiKey": "",
@@ -246,6 +251,7 @@ docker compose up --build
 | -------------------------------------- | -------------------------------------------- | ----------------------------------- |
 | `ConnectionStrings__DefaultConnection` | PostgreSQL connection string for the backend | `Host=...;Database=SmartBudget;...` |
 | `Redis__ConnectionString`              | Upstash Redis connection string              | `your-instance.upstash.io:6379,password=...` |
+| `Jwt__Key`                             | Secret key for signing JWT tokens (min. 32 chars) | `your-secret-key-at-least-32-characters` |
 | `NEXT_PUBLIC_API_URL`                  | Public API URL used in the browser           | `http://localhost:8080/api/v1/`     |
 | `API_URL`                              | Internal API URL used by Next.js server-side | `http://backend:8080/api/v1/`       |
 
@@ -270,10 +276,10 @@ See `.env.example` for a ready-to-copy template.
 | Key                                   | Description                                           |
 | ------------------------------------- | ----------------------------------------------------- |
 | `ConnectionStrings:DefaultConnection` | PostgreSQL connection string                          |
-| `JwtSettings:SecretKey`               | Secret key for signing JWT tokens (min. 32 chars)     |
-| `JwtSettings:Issuer`                  | JWT issuer identifier                                 |
-| `JwtSettings:Audience`                | JWT audience identifier                               |
-| `JwtSettings:ExpirationMinutes`       | Token lifetime in minutes                             |
+| `Jwt:Key`                             | Secret key for signing JWT tokens (min. 32 chars)     |
+| `Jwt:Issuer`                          | JWT issuer identifier                                 |
+| `Jwt:Audience`                        | JWT audience identifier                               |
+| `Jwt:ExpiresInMinutes`                | Token lifetime in minutes                             |
 | `Email:ApiKey`                        | Brevo API key for sending emails                      |
 | `Email:FromEmail`                     | Sender email address validated in Brevo               |
 | `FrontendUrl`                         | Frontend URL used to generate the password reset link |
@@ -341,6 +347,7 @@ SmartBudget/
 │       └── SmartBudgetPro.Tests/          # xUnit unit tests
 ├── frontend/                              # Next.js 15 App Router
 │   ├── app/                              # Pages and layouts
+│   │   └── [locale]/                     # Route groups: (auth), (app), (landing), (marketing)
 │   ├── components/                       # UI and domain components
 │   ├── hooks/                            # Custom React hooks
 │   ├── e2e/                              # Playwright E2E tests

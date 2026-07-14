@@ -6,6 +6,9 @@ import { useSyncExternalStore } from "react"
 //next
 import { usePathname } from "next/navigation"
 
+// react-query / react-hook-form / zod / [lib]
+import { motion, useReducedMotion } from "framer-motion"
+
 // i18n
 import { useTranslations } from "next-intl"
 
@@ -21,6 +24,9 @@ import { Separator } from "@/components/ui/separator"
 
 import { SidebarTrigger } from "@/components/ui/sidebar"
 
+// hooks
+import { useThemeTransition } from "@/hooks/useThemeTransition"
+
 export function SiteHeader() {
   const mounted = useSyncExternalStore(
     () => () => { },
@@ -32,7 +38,9 @@ export function SiteHeader() {
   const t = useTranslations("siteHeader")
   const tNav = useTranslations("nav")
 
-  const { resolvedTheme, theme, setTheme } = useTheme()
+  const { resolvedTheme, theme } = useTheme()
+  const { changeTheme } = useThemeTransition()
+  const shouldReduceMotion = useReducedMotion()
 
   const PAGE_KEYS = ["dashboard", "transactions", "categories", "reports", "plans"] as const
   
@@ -57,7 +65,12 @@ export function SiteHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-10 flex h-(--header-height) shrink-0 items-center gap-2 border-b bg-background transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)">
+    <motion.header
+      initial={shouldReduceMotion ? false : { y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
+      className="sticky top-0 z-10 flex h-(--header-height) shrink-0 items-center gap-2 border-b bg-background transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height)"
+    >
       <div className="flex w-full items-center gap-1 px-4 lg:gap-2 lg:px-6">
         <SidebarTrigger className="-ml-1" />
         <Separator
@@ -71,7 +84,7 @@ export function SiteHeader() {
           <Button
             variant="outline"
             size="icon-sm"
-            onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+            onClick={(event) => changeTheme(currentTheme === "dark" ? "light" : "dark", event)}
             aria-label={themeLabel}
             disabled={!mounted}
           >
@@ -80,6 +93,6 @@ export function SiteHeader() {
           </Button>
         </div>
       </div>
-    </header>
+    </motion.header>
   )
 }

@@ -543,7 +543,8 @@
         "Top 5 maiores gastos do mês"
       ]
     },
-    "upgradeSuccess": "Bem-vindo ao Premium! Aproveite todos os recursos."
+    "upgradeSuccess": "Bem-vindo ao Premium! Aproveite todos os recursos.",
+    "viewFullPlans": "Ver planos completos"
   },
   "checkout": {
     "title": "Finalizar assinatura",
@@ -579,10 +580,13 @@
     "register": "Criar conta",
     "email": "E-mail",
     "password": "Senha",
+    "confirmPassword": "Confirmar senha",
     "name": "Nome",
     "forgotPassword": "Esqueceu a senha?",
     "noAccount": "Não tem uma conta?",
     "alreadyHaveAccount": "Já tem uma conta?",
+    "loginTagline": "Continue no controle. Seus dados financeiros te esperam.",
+    "registerTagline": "Comece hoje a construir uma relação mais saudável com seu dinheiro.",
     "forgotPasswordPage": {
       "title": "Esqueceu sua senha?",
       "description": "Informe seu e-mail e enviaremos um link de recuperação.",
@@ -602,6 +606,130 @@
       "successToast": "Senha alterada com sucesso!",
       "invalidToken": "Este link de recuperação é inválido ou já expirou. Solicite um novo link.",
       "requestNewLink": "Solicitar novo link"
+    }
+  },
+  "landing": {
+    "meta": {
+      "title": "SmartBudget — Controle real do orçamento, não apenas acompanhamento passivo",
+      "description": "O SmartBudget define limites de gastos em tempo real por categoria e avisa antes de você gastar demais. Grátis para começar."
+    },
+    "nav": {
+      "features": "Funcionalidades",
+      "demo": "Ver na prática",
+      "openSource": "Open Source",
+      "plans": "Planos",
+      "login": "Entrar",
+      "cta": "Criar conta grátis",
+      "goToDashboard": "Ir para o dashboard"
+    },
+    "hero": {
+      "headline": "Saiba que está gastando demais antes que isso aconteça de verdade.",
+      "subhead": "O SmartBudget define limites reais para cada categoria e avisa você em tempo real — não no fim do mês, quando já é tarde para fazer alguma coisa.",
+      "primaryCta": "Ver funcionando",
+      "secondaryCta": "Criar conta grátis",
+      "scrollHint": "Veja um limite de orçamento em ação, ao vivo"
+    },
+    "demo": {
+      "title": "Isto é o que \"estar no controle\" parece de verdade",
+      "description": "Defina um limite por categoria. Gaste. Veja o indicador atualizar em tempo real — bem antes de bater 100%.",
+      "previousSlide": "Slide anterior",
+      "nextSlide": "Próximo slide",
+      "goToSlide": "Ir para o slide {number}",
+      "slides": {
+        "budgetProgress": {
+          "title": "Acompanhe seus orçamentos",
+          "description": "Progresso em tempo real de cada orçamento por categoria, atualizado a cada gasto.",
+          "category": "Restaurantes",
+          "used": "{percentage}% utilizado",
+          "remaining": "{amount} restantes"
+        },
+        "categoryDistribution": {
+          "title": "Veja para onde o dinheiro vai",
+          "description": "A distribuição das despesas do mês por categoria, em um relance.",
+          "totalLabel": "Despesas do mês",
+          "categories": {
+            "housing": "Moradia",
+            "food": "Alimentação",
+            "transport": "Transporte",
+            "leisure": "Lazer",
+            "other": "Outros"
+          }
+        },
+        "incomeExpense": {
+          "title": "Receitas x despesas",
+          "description": "Compare receitas e despesas mês a mês para identificar tendências cedo.",
+          "income": "Receitas",
+          "expense": "Despesas",
+          "months": {
+            "jan": "Jan",
+            "feb": "Fev",
+            "mar": "Mar",
+            "apr": "Abr",
+            "may": "Mai",
+            "jun": "Jun"
+          }
+        },
+        "financialRisk": {
+          "title": "Conheça seu risco financeiro",
+          "description": "Um indicador único mostrando o quanto seu orçamento depende de gastos fixos.",
+          "badge": "Risco financeiro",
+          "averageIncome": "Renda média (3 meses)",
+          "fixedExpenses": "Gastos fixos mensais",
+          "status": {
+            "warning": "Atenção"
+          },
+          "warningMessage": "Atenção: seus gastos fixos estão se aproximando do limite recomendado."
+        }
+      }
+    },
+    "glimpse": {
+      "title": "Seu mês inteiro, em uma tela",
+      "description": "Saldo, receitas, despesas e o progresso de cada orçamento — o dashboard real do SmartBudget.",
+      "caption": "Captura de tela real do produto, em modo escuro.",
+      "alt": "Dashboard do SmartBudget mostrando saldo atual, receitas e despesas do mês, indicadores rápidos e progresso dos orçamentos por categoria."
+    },
+    "features": {
+      "title": "Feito para quem quer controle de verdade",
+      "description": "Sem planilhas abandonadas, sem jargão financeiro.",
+      "items": {
+        "limits": {
+          "title": "Limites que realmente seguram",
+          "description": "Defina um limite mensal por categoria. O SmartBudget acompanha os gastos em tempo real e avisa antes de você ultrapassar."
+        },
+        "reports": {
+          "title": "Relatórios que você realmente usa",
+          "description": "Exporte um relatório limpo em PDF ou Excel todo mês — para o imposto de renda, para dividir com alguém, ou só para a sua própria tranquilidade."
+        },
+        "language": {
+          "title": "Funciona no seu idioma",
+          "description": "Suporte completo em português do Brasil e inglês, sem tradução pela metade."
+        },
+        "premium": {
+          "title": "Grátis para começar, transparente sobre o premium",
+          "description": "As ferramentas essenciais de orçamento são gratuitas. O premium libera relatórios e insights mais avançados quando você precisar."
+        }
+      }
+    },
+    "proof": {
+      "title": "Construído em código aberto",
+      "description": "O SmartBudget ainda não tem uma base de usuários para exibir — mas você pode conferir o código, os testes e as análises de segurança você mesmo.",
+      "ciLabel": "CI passando em todo commit",
+      "sonarLabel": "Quality Gate do SonarCloud: aprovado",
+      "snykLabel": "Scan de segurança do Snyk: sem vulnerabilidades conhecidas",
+      "repoLink": "Ver o repositório no GitHub"
+    },
+    "finalCta": {
+      "title": "Pronto para ver de verdade para onde vai o seu dinheiro?",
+      "description": "Crie uma conta grátis em menos de um minuto. Sem cartão de crédito.",
+      "primaryCta": "Criar conta grátis",
+      "secondaryCta": "Entrar"
+    },
+    "footer": {
+      "tagline": "Controle real do orçamento, não apenas acompanhamento passivo.",
+      "loginLink": "Entrar",
+      "plansLink": "Planos e preços",
+      "languageLabel": "Idioma",
+      "rights": "© {year} SmartBudget. Código aberto no GitHub."
     }
   }
 }

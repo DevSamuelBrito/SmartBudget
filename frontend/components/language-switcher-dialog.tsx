@@ -14,6 +14,8 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog"
 
+import { BrazilFlagIcon, UnitedStatesFlagIcon } from "@/components/shared/flag-icons"
+
 // types
 import { type AppLocale } from "@/i18n/routing"
 
@@ -74,7 +76,8 @@ export function LanguageSwitcherDialog({
                         onClick={() => onChangeLocale("pt-BR")}
                         disabled={isChangingLocale}
                     >
-                        🇧🇷 PT-BR
+                        <BrazilFlagIcon />
+                        PT-BR
                     </Button>
 
                     <Button
@@ -88,7 +91,8 @@ export function LanguageSwitcherDialog({
                         onClick={() => onChangeLocale("en")}
                         disabled={isChangingLocale}
                     >
-                        🇺🇸 EN
+                        <UnitedStatesFlagIcon />
+                        EN
                     </Button>
                 </div>
             </DialogContent>
