@@ -15,8 +15,8 @@ namespace SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCatego
 
             var skip = (input.Page - 1) * input.PageSize;
 
-            var categories = await transactionCategoryRepository.GetByUserIdPagedAsync(input.UserId, skip, input.PageSize);
-            var totalCount = await transactionCategoryRepository.CountByUserIdAsync(input.UserId);
+            var categories = await transactionCategoryRepository.GetByUserIdPagedAsync(input.UserId, skip, input.PageSize, input.Name, input.Icon);
+            var totalCount = await transactionCategoryRepository.CountByUserIdAsync(input.UserId, input.Name, input.Icon);
 
             var items = categories.Select(c => new TransactionCategoryDto(
                 c.Id,

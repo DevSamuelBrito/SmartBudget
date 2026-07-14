@@ -69,7 +69,7 @@ public class GetDashboardOverviewUseCaseTests
     // Cria uma transação de Expense recorrente no mês alvo (conta como fixedExpense)
     private static FinancialTransaction MakeFixedExpense(decimal amount)
     {
-        var category = TransactionCategory.Create(UserId, "Moradia", "🏠");
+        var category = TransactionCategory.Create(UserId, "Moradia", "Home");
         return FinancialTransaction.Create(
             UserId,
             categoryId: category.Id,

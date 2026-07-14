@@ -4,7 +4,7 @@
 import { useState } from "react";
 
 // next-intl
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // Libs
 import { Cell, Legend, Pie, PieChart } from "recharts";
@@ -31,11 +31,13 @@ import {
     type ChartConfig,
 } from "@/components/ui/chart";
 
+import { EmptyState } from "./EmptyState";
+
 // Types
 import type { DashboardCategoryExpense } from "../types";
 
 // Utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 type CategoryDistributionFlipCardProps = {
     pieData: DashboardCategoryExpense[];
@@ -74,8 +76,10 @@ export function CategoryDistributionFlipCard({
     categoryExpenses,
 }: Readonly<CategoryDistributionFlipCardProps>) {
     const t = useTranslations("dashboard");
+    const locale = useLocale();
 
     const [showBarView, setShowBarView] = useState(false);
+    const isEmpty = pieData.length === 0 && categoryExpenses.length === 0;
     const dynamicColors = buildCategoryColors(Math.max(pieData.length, categoryExpenses.length));
 
     const getColor = (index: number) => {
@@ -98,6 +102,24 @@ export function CategoryDistributionFlipCard({
         value: item.amount,
         fill: getColor(index),
     }));
+
+    if (isEmpty) {
+        return (
+            <Card className="border-border/70 bg-card/90 backdrop-blur">
+                <CardHeader>
+                    <CardTitle>{t("charts.categoryDistribution.title")}</CardTitle>
+                    <CardDescription>{t("charts.categoryDistribution.pieDescription")}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <EmptyState
+                        icon={PieChartIcon}
+                        title={t("emptyState.title")}
+                        description={t("charts.categoryDistribution.emptyState")}
+                    />
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <div className="perspective-[1400px]">
@@ -185,7 +207,7 @@ export function CategoryDistributionFlipCard({
                                             {formatCurrency(category.amount)}
                                         </span>
                                         <span className="text-xs text-muted-foreground tabular-nums">
-                                            ({category.percentage.toFixed(0)}%)
+                                            ({formatPercentage(category.percentage, locale, 0)}%)
                                         </span>
                                     </div>
                                 </div>

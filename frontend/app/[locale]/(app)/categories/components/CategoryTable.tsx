@@ -4,9 +4,9 @@
 import { useRef } from "react";
 
 // i18n
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
-import { Pencil, Trash2 } from "lucide-react";
+import { Blocks, Pencil, Trash2 } from "lucide-react";
 
 // ui
 import { Button } from "@/components/ui/button";
@@ -29,7 +29,7 @@ import { ThemeIcon } from "./theme-icons";
 import type { BudgetByPeriodApi, CategoryApi, CategoryTheme } from "../types";
 
 // utils
-import { formatCurrency } from "@/lib/utils/formatters";
+import { formatCurrency, formatPercentage } from "@/lib/utils/formatters";
 
 
 function getProgressClassName(status: BudgetByPeriodApi["status"]) {
@@ -63,7 +63,11 @@ export function CategoryTable({
     budgetsByCategoryId,
 }: Readonly<CategoryTableProps>) {
     const t = useTranslations("categories");
+
+    const locale = useLocale();
+
     const scrollAreaRef = useRef<HTMLDivElement | null>(null);
+
 
 
     function getTheme(iconKey: CategoryApi["icon"]) {
@@ -71,6 +75,19 @@ export function CategoryTable({
     }
 
     const renderTableBody = () => {
+        if (categories.length === 0) {
+            return (
+                <TableRow>
+                    <TableCell colSpan={7} className="h-52 text-center">
+                        <div className="flex flex-col items-center gap-3 text-muted-foreground">
+                            <Blocks className="size-10 opacity-30" />
+                            <span className="text-sm">{t("table.empty")}</span>
+                        </div>
+                    </TableCell>
+                </TableRow>
+            );
+        }
+
         return categories.map((category) => {
             const theme = getTheme(category.icon);
             const budget = budgetsByCategoryId.get(category.id);
@@ -113,7 +130,7 @@ export function CategoryTable({
                                     indicatorClassName={getProgressClassName(budget.status)}
                                 />
                                 <p className="text-xs text-muted-foreground">
-                                    {budget.percentage.toFixed(1)}%
+                                    {formatPercentage(budget.percentage, locale, 0)}%
                                 </p>
                             </div>
                         ) : (

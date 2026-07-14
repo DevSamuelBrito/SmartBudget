@@ -16,7 +16,7 @@ public class RecurringTransactionJob(
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var nextExecution = GetNextExecution(now);
 
             logger.LogInformation(
@@ -36,7 +36,7 @@ public class RecurringTransactionJob(
 
     private static DateTime GetNextExecution(DateTime now)
     {
-        var firstDayOfCurrentMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Local);
+        var firstDayOfCurrentMonth = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
 
         return now < firstDayOfCurrentMonth
             ? firstDayOfCurrentMonth
@@ -47,7 +47,7 @@ public class RecurringTransactionJob(
     {
         while (!cancellationToken.IsCancellationRequested)
         {
-            var remaining = targetTime - DateTime.Now;
+            var remaining = targetTime - DateTime.UtcNow;
 
             if (remaining <= TimeSpan.Zero)
             {

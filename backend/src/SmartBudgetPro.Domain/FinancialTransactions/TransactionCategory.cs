@@ -7,6 +7,16 @@ public class TransactionCategory
     private const int MaxNameLength = 100;
     private const int MaxIconLength = 200;
 
+    // Keep in sync manually with the frontend iconMap in
+    // frontend/app/[locale]/(app)/categories/components/theme-icons.tsx —
+    // whenever a new icon is added there, add its exact name here too.
+    private static readonly HashSet<string> ValidIcons = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "ShoppingBasket", "Lightbulb", "Droplets", "Wifi", "BusFront", "HeartPulse",
+        "Cross", "Gamepad2", "Utensils", "Car", "Home", "GraduationCap", "Receipt",
+        "ShoppingBag", "Plane", "Gem", "Trophy", "Crown", "Rocket", "Sparkles", "Star", "Zap",
+    };
+
     public Guid Id { get; private set; }
     public Guid UserId { get; private set; }
     public string Name { get; private set; } = string.Empty;
@@ -32,6 +42,8 @@ public class TransactionCategory
         if (normalizedIcon.Length > MaxIconLength)
             throw new BusinessBadRequestException($"Icon must have at most {MaxIconLength} characters.");
 
+        if (normalizedIcon.Length > 0 && !ValidIcons.Contains(normalizedIcon))
+            throw new BusinessBadRequestException("Invalid icon name.");
 
         Id = Guid.NewGuid();
         UserId = userId;
@@ -58,12 +70,15 @@ public class TransactionCategory
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void ChangeIcon(string newIcon)  // ← e o método para editar
+    public void ChangeIcon(string newIcon)
     {
         var normalizedIcon = string.IsNullOrWhiteSpace(newIcon) ? string.Empty : newIcon.Trim();
 
         if (normalizedIcon.Length > MaxIconLength)
             throw new BusinessBadRequestException($"Icon must have at most {MaxIconLength} characters.");
+
+        if (normalizedIcon.Length > 0 && !ValidIcons.Contains(normalizedIcon))
+            throw new BusinessBadRequestException("Invalid icon name.");
 
         Icon = normalizedIcon;
         UpdatedAt = DateTime.UtcNow;

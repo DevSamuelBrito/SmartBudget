@@ -7,12 +7,17 @@ using SmartBudgetPro.Application.UseCases.Budget.GetBudgetByID;
 using SmartBudgetPro.Application.UseCases.Budget.GetBudgetsByPeriod;
 using SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
 using SmartBudgetPro.Application.UseCases.Auth.Login;
+using SmartBudgetPro.Application.UseCases.Auth.RefreshToken;
+using SmartBudgetPro.Application.UseCases.Auth.Logout;
+using SmartBudgetPro.Application.UseCases.Auth.ForgotPassword;
+using SmartBudgetPro.Application.UseCases.Auth.ResetPassword;
 using SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCategory;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardOverview;
 using SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
 using SmartBudgetPro.Application.UseCases.Dashboard.SaveDashboardConfig;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinancialTransaction;
 using SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinancialTransaction;
+using SmartBudgetPro.Application.UseCases.Reports.GetMonthlyReport;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
 using SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction;
 using SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory;
@@ -71,8 +76,16 @@ public static class DependencyInjection
         services.AddScoped<GetDashboardConfigUseCase>();
         services.AddScoped<SaveDashboardConfigUseCase>();
 
+        //reports
+        services.AddScoped<GetMonthlyReportUseCase>();
+
         //auth
         services.AddScoped<LoginUseCase>();
+        services.AddScoped<RefreshTokenUseCase>();
+        services.AddScoped<LogoutUseCase>();
+        services.AddScoped<ForgotPasswordUseCase>();
+        services.AddScoped<ResetPasswordUseCase>();
+        services.AddValidatorsFromAssemblyContaining<RefreshTokenUseCaseInputValidator>();
 
         return services;
     }

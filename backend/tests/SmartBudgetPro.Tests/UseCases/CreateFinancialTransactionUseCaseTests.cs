@@ -52,7 +52,7 @@ public class CreateFinancialTransactionUseCaseTests
     public async Task Execute_WhenExpenseCreated_ShouldRecalculateBudget()
     {
         // Arrange
-        var category = TransactionCategory.Create(UserId, "Alimentação", "🍔");
+        var category = TransactionCategory.Create(UserId, "Alimentação", "Utensils");
         var categoryId = category.Id;
         var budget = Budget.Create(UserId, categoryId, TransactionDate.Year, TransactionDate.Month, 500m);
 
@@ -95,7 +95,7 @@ public class CreateFinancialTransactionUseCaseTests
     public async Task Execute_WhenNoBudgetExists_ShouldNotThrow()
     {
         // Arrange
-        var category = TransactionCategory.Create(UserId, "Farmácia", "💊");
+        var category = TransactionCategory.Create(UserId, "Farmácia", "Cross");
         var categoryId = category.Id;
 
         _categoryRepoMock

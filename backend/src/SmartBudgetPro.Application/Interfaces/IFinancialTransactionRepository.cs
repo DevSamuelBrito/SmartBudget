@@ -27,18 +27,26 @@ namespace SmartBudgetPro.Application.Interfaces
         Task<IEnumerable<FinancialTransaction>> GetByUserIdAsync(Guid userId);
 
         /// <summary>
-        /// Retrieves a page of financial transactions for a specific user.
+        /// Retrieves a page of financial transactions for a specific user with optional filters.
         /// </summary>
-        /// <param name="userId">The unique identifier of the user.</param>
-        /// <param name="skip">How many records to skip.</param>
-        /// <param name="take">How many records to take.</param>
-        Task<IEnumerable<FinancialTransaction>> GetByUserIdPagedAsync(Guid userId, int skip, int take);
+        Task<IEnumerable<FinancialTransaction>> GetByUserIdPagedAsync(
+            Guid userId, int skip, int take,
+            string? description = null,
+            Guid? categoryId = null,
+            DateTime? date = null,
+            FinancialTransactionType? type = null,
+            RecurrenceType? recurrence = null);
 
         /// <summary>
-        /// Counts all financial transactions for a specific user.
+        /// Counts financial transactions for a specific user with optional filters.
         /// </summary>
-        /// <param name="userId">The unique identifier of the user.</param>
-        Task<int> CountByUserIdAsync(Guid userId);
+        Task<int> CountByUserIdAsync(
+            Guid userId,
+            string? description = null,
+            Guid? categoryId = null,
+            DateTime? date = null,
+            FinancialTransactionType? type = null,
+            RecurrenceType? recurrence = null);
 
         /// <summary>
         /// Retrieves a financial transaction by its identifier.
@@ -85,5 +93,10 @@ namespace SmartBudgetPro.Application.Interfaces
         /// Returns the sum of all expense transactions for a given category and period.
         /// </summary>
         Task<decimal> GetTotalExpensesByCategoryAndPeriodAsync(Guid categoryId, int year, int month);
+
+        /// <summary>
+        /// Retrieves all financial transactions for a specific user within a given month and year.
+        /// </summary>
+        Task<IEnumerable<FinancialTransaction>> GetByUserIdAndPeriodAsync(Guid userId, int year, int month);
     }
 }

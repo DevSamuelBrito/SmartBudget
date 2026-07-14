@@ -7,16 +7,11 @@ import { useState } from "react"
 import { useTranslations } from "next-intl"
 
 // libs
-import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon, LayoutDashboardIcon, FlagIcon } from "lucide-react"
+import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon, LayoutDashboardIcon, SettingsIcon } from "lucide-react"
 
 import { useQueryClient } from "@tanstack/react-query"
 
 // Components
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
 
 import {
   DropdownMenu,
@@ -37,7 +32,7 @@ import {
 
 import { DashboardCustomizerSheet } from "@/app/[locale]/(app)/dashboard/components/DashboardCustomizerSheet"
 
-import { LanguageSwitcherDialog } from "@/components/language-switcher-dialog"
+import { SettingsDialog } from "@/components/settings-dialog"
 
 import { UserAccountDialog } from "@/components/user-account-dialog"
 
@@ -78,7 +73,7 @@ export function NavUser({
 
   const [accountDialogOpen, setAccountDialogOpen] = useState(false)
 
-  const [localeDialogOpen, setLocaleDialogOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
@@ -94,7 +89,7 @@ export function NavUser({
   const handleChangeLocale = async (locale: AppLocale) => {
     setIsChangingLocale(true)
     await setLocaleAction(locale)
-    setLocaleDialogOpen(false)
+    setSettingsOpen(false)
     window.location.reload()
     setIsChangingLocale(false)
   }
@@ -109,10 +104,6 @@ export function NavUser({
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
-                <Avatar className="h-8 w-8 rounded-lg grayscale">
-                  <AvatarImage src={user.avatar} alt={displayUser.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{displayUser.name}</span>
                   <span className="truncate text-xs text-muted-foreground">
@@ -130,10 +121,6 @@ export function NavUser({
             >
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                  <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarImage src={user.avatar} alt={displayUser.name} />
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-                  </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">{displayUser.name}</span>
                     <span className="truncate text-xs text-muted-foreground">
@@ -153,9 +140,9 @@ export function NavUser({
                   <LayoutDashboardIcon />
                   {t("customizeDashboard")}
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setLocaleDialogOpen(true)}>
-                  <FlagIcon />
-                  {t("language")}
+                <DropdownMenuItem onSelect={() => setSettingsOpen(true)}>
+                  <SettingsIcon />
+                  {t("settings")}
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
@@ -176,9 +163,9 @@ export function NavUser({
           setDisplayUser(nextProfile)
         }}
       />
-      <LanguageSwitcherDialog
-        open={localeDialogOpen}
-        onOpenChange={setLocaleDialogOpen}
+      <SettingsDialog
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
         isChangingLocale={isChangingLocale}
         onChangeLocale={handleChangeLocale}
       />

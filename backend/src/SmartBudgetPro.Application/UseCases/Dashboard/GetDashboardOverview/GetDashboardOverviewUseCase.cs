@@ -72,6 +72,26 @@ public class GetDashboardOverviewUseCase(
             ? BuildExpenseEvolutionByMonth(monthBuckets, periodStart)
             : null;
 
+        var savingsRate = user.IsPremium
+            ? BuildSavingsRate(monthIncome, monthExpense)
+            : null;
+
+        var monthlyComparison = user.IsPremium
+            ? BuildMonthlyComparison(monthBuckets, periodStart, monthIncome, monthExpense)
+            : null;
+
+        var topExpenses = user.IsPremium
+            ? BuildTopExpenses(monthTransactions, categoryById)
+            : null;
+
+        var cashFlow = user.IsPremium
+            ? BuildCashFlow(monthTransactions, targetYear, targetMonth)
+            : null;
+
+        var budgetHealth = user.IsPremium
+            ? BuildBudgetHealth(budgetProgress)
+            : null;
+
         var daysDivisor = GetAverageDaysDivisor(targetYear, targetMonth, now);
 
         return new GetDashboardOverviewUseCaseOutput(
@@ -96,7 +116,12 @@ public class GetDashboardOverviewUseCase(
             BalanceEvolution: balanceEvolution,
             BudgetProgress: budgetProgress,
             Alerts: alerts,
-            ExpenseEvolutionByMonth: expenseEvolutionByMonth);
+            ExpenseEvolutionByMonth: expenseEvolutionByMonth,
+            SavingsRate: savingsRate,
+            MonthlyComparison: monthlyComparison,
+            TopExpenses: topExpenses,
+            CashFlow: cashFlow,
+            BudgetHealth: budgetHealth);
     }
 
     private static (decimal TotalIncome, decimal TotalExpense, decimal MonthIncome, decimal MonthExpense) CalculateKpis(
@@ -245,7 +270,7 @@ public class GetDashboardOverviewUseCase(
 
         for (var day = 1; day <= daysInMonth; day++)
         {
-            var date = new DateTime(targetYear, targetMonth, day);
+            var date = new DateTime(targetYear, targetMonth, day, 0, 0, 0, DateTimeKind.Utc);
 
             if (dailyNetByDate.TryGetValue(date, out var dailyNet))
                 runningBalance += dailyNet;
@@ -296,18 +321,13 @@ public class GetDashboardOverviewUseCase(
                     ? "BudgetExceeded"
                     : "BudgetWarning";
 
-                var message = type == "BudgetExceeded"
-                    ? $"A categoria {budget.CategoryName} excedeu o budget mensal."
-                    : $"A categoria {budget.CategoryName} atingiu {budget.Percentage:F1}% do budget mensal.";
-
                 return new DashboardAlertDto(
                     type,
                     budget.BudgetId,
                     budget.TransactionCategoryId,
                     budget.CategoryName,
                     budget.Percentage,
-                    budget.Status,
-                    message);
+                    budget.Status);
             })
             .ToList();
     }
@@ -364,6 +384,111 @@ public class GetDashboardOverviewUseCase(
         }
 
         return expenseEvolutionByMonth;
+    }
+
+    private static DashboardSavingsRateDto BuildSavingsRate(decimal monthIncome, decimal monthExpense)
+    {
+        var savedAmount = monthIncome - monthExpense;
+        var rate = monthIncome == 0m ? 0m : (savedAmount / monthIncome) * 100m;
+        var status = rate >= 20m ? "Great" : rate >= 10m ? "Ok" : "Low";
+        return new DashboardSavingsRateDto(rate, savedAmount, status);
+    }
+
+    private static DashboardMonthlyComparisonDto BuildMonthlyComparison(
+        Dictionary<(int Year, int Month), (decimal Income, decimal Expense)> monthBuckets,
+        DateTime periodStart,
+        decimal monthIncome,
+        decimal monthExpense)
+    {
+        var prevDate = periodStart.AddMonths(-1);
+        monthBuckets.TryGetValue((prevDate.Year, prevDate.Month), out var prev);
+
+        var prevBalance = prev.Income - prev.Expense;
+        var curBalance = monthIncome - monthExpense;
+
+        var incomeVariation = prev.Income == 0m ? 0m : ((monthIncome - prev.Income) / prev.Income) * 100m;
+        var expenseVariation = prev.Expense == 0m ? 0m : ((monthExpense - prev.Expense) / prev.Expense) * 100m;
+        var balanceVariation = prevBalance == 0m ? 0m : ((curBalance - prevBalance) / Math.Abs(prevBalance)) * 100m;
+
+        return new DashboardMonthlyComparisonDto(
+            prev.Income, prev.Expense, prevBalance,
+            incomeVariation, expenseVariation, balanceVariation);
+    }
+
+    private static List<DashboardTopExpenseDto> BuildTopExpenses(
+        List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> monthTransactions,
+        Dictionary<Guid, SmartBudgetPro.Domain.Transactions.TransactionCategory> categoryById)
+    {
+        return monthTransactions
+            .Where(t => t.Type == FinancialTransactionType.Expense)
+            .OrderByDescending(t => t.Amount)
+            .ThenByDescending(t => t.TransactionDate)
+            .ThenByDescending(t => t.Id)
+            .Take(5)
+            .Select(t =>
+            {
+                SmartBudgetPro.Domain.Transactions.TransactionCategory? category = null;
+                if (t.TransactionCategoryId.HasValue)
+                    categoryById.TryGetValue(t.TransactionCategoryId.Value, out category);
+
+                return new DashboardTopExpenseDto(
+                    t.Description,
+                    category?.Name,
+                    category?.Icon,
+                    t.Amount,
+                    t.TransactionDate);
+            })
+            .ToList();
+    }
+
+    private static List<DashboardCashFlowDto> BuildCashFlow(
+        List<SmartBudgetPro.Domain.Transactions.FinancialTransaction> monthTransactions,
+        int targetYear,
+        int targetMonth)
+    {
+        var daysInMonth = DateTime.DaysInMonth(targetYear, targetMonth);
+        var result = new List<DashboardCashFlowDto>(5);
+
+        for (var week = 1; week <= 5; week++)
+        {
+            var dayStart = (week - 1) * 7 + 1;
+            if (dayStart > daysInMonth) break;
+
+            var dayEnd = Math.Min(week * 7, daysInMonth);
+            var weekStart = new DateTime(targetYear, targetMonth, dayStart, 0, 0, 0, DateTimeKind.Utc);
+            var weekEndExclusive = new DateTime(targetYear, targetMonth, dayEnd, 0, 0, 0, DateTimeKind.Utc).AddDays(1);
+
+            var income = monthTransactions
+                .Where(t => t.Type == FinancialTransactionType.Income
+                    && t.TransactionDate >= weekStart && t.TransactionDate < weekEndExclusive)
+                .Sum(t => t.Amount);
+
+            var expense = monthTransactions
+                .Where(t => t.Type == FinancialTransactionType.Expense
+                    && t.TransactionDate >= weekStart && t.TransactionDate < weekEndExclusive)
+                .Sum(t => t.Amount);
+
+            result.Add(new DashboardCashFlowDto(week, income, expense));
+        }
+
+        return result;
+    }
+
+    private static DashboardBudgetHealthDto BuildBudgetHealth(List<DashboardBudgetProgressDto> budgetProgress)
+    {
+        var totalBudgets = budgetProgress.Count;
+
+        if (totalBudgets == 0)
+            return new DashboardBudgetHealthDto(100m, 0, 0, 0, "Healthy");
+
+        var okCount = budgetProgress.Count(b => b.Status == BudgetStatus.Ok);
+        var warningCount = budgetProgress.Count(b => b.Status == BudgetStatus.Warning);
+        var exceededCount = budgetProgress.Count(b => b.Status == BudgetStatus.Exceeded);
+
+        var score = (okCount * 100m + warningCount * 50m) / totalBudgets;
+        var status = score >= 80m ? "Healthy" : score >= 50m ? "Moderate" : "AtRisk";
+
+        return new DashboardBudgetHealthDto(score, okCount, warningCount, exceededCount, status);
     }
 
     private static decimal ToSignedAmount(SmartBudgetPro.Domain.Transactions.FinancialTransaction transaction)

@@ -8,7 +8,15 @@ import { getServerApiBaseUrl } from "@/lib/server-api";
 import type { PagedResult, PaginationParams } from "@/types/pagination";
 
 //types
-import type { TransactionApi } from "../types";
+import type { FinancialTransactionType, RecurrenceType, TransactionApi } from "../types";
+
+export type TransactionFilters = {
+  description?: string;
+  categoryId?: string;
+  date?: string;
+  type?: FinancialTransactionType;
+  recurrence?: RecurrenceType;
+};
 
 export type CreateTransactionRequest = {
   userId: string;
@@ -50,9 +58,14 @@ export const getTransactionsServer = async ({
 export const getTransactions = async ({
   page = 1,
   pageSize = 10,
-}: PaginationParams = {}) => {
+  description,
+  categoryId,
+  date,
+  type,
+  recurrence,
+}: PaginationParams & TransactionFilters = {}) => {
   const response = await api.get<PagedResult<TransactionApi>>("/transactions", {
-    params: { page, pageSize },
+    params: { page, pageSize, description, categoryId, date, type, recurrence },
   });
 
   return response.data;

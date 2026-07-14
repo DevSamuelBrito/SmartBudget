@@ -57,6 +57,11 @@ type UpsertBudgetPayload = {
   limitAmount: number;
 };
 
+type AppliedFilters = {
+  name: string;
+  icon: string;
+};
+
 type UseCategoriesProps = {
   initialCategories: PagedResult<CategoryApi>;
   initialBudgets: BudgetByPeriodApi[];
@@ -88,7 +93,13 @@ export function useCategories({
 
   const [page, setPage] = useState(1);
 
-  const [search, setSearch] = useState("");
+  const [pendingName, setPendingName] = useState("");
+  const [pendingIcon, setPendingIcon] = useState("");
+
+  const [appliedFilters, setAppliedFilters] = useState<AppliedFilters>({
+    name: "",
+    icon: "",
+  });
 
   const [selectedPeriod, setSelectedPeriod] = useState<BudgetPeriod>({
     month: initialMonth,
@@ -96,9 +107,18 @@ export function useCategories({
   });
 
   const categoriesQuery = useQuery<PagedResult<CategoryApi>>({
-    queryKey: ["categories", userId, { page, pageSize }],
-    queryFn: () => getCategories({ page, pageSize }),
-    initialData: page === 1 ? initialCategories : undefined,
+    queryKey: ["categories", userId, { page, pageSize, ...appliedFilters }],
+    queryFn: () =>
+      getCategories({
+        page,
+        pageSize,
+        name: appliedFilters.name || undefined,
+        icon: appliedFilters.icon || undefined,
+      }),
+    initialData:
+      page === 1 && !appliedFilters.name && !appliedFilters.icon
+        ? initialCategories
+        : undefined,
     staleTime: Infinity,
   });
 
@@ -222,31 +242,13 @@ export function useCategories({
     },
   });
 
-  function createCategory(payload: CategoryFormValues) {
-    createCategoryMutation.mutate(payload);
-  }
-
   function handleCreateCategory(payload: CategoryFormValues) {
-    createCategory(payload);
+    createCategoryMutation.mutate(payload);
   }
 
   function handleUpdateCategory(payload: UpdateCategoryPayload) {
     updateCategoryMutation.mutate(payload);
   }
-
-  function setSearchValue(value: string) {
-    setSearch(value);
-  }
-
-  const normalizedSearch = search.trim().toLowerCase();
-
-  const filteredCategories = categories.filter((category) => {
-    if (!normalizedSearch) {
-      return true;
-    }
-
-    return category.name.toLowerCase().includes(normalizedSearch);
-  });
 
   function handleDeleteCategory(categoryId: string) {
     deleteCategoryMutation.mutate(categoryId);
@@ -256,8 +258,23 @@ export function useCategories({
     upsertBudgetMutation.mutate(payload);
   }
 
+  function handleSearch() {
+    setAppliedFilters({
+      name: pendingName?.trim() ?? "",
+      icon: pendingIcon ?? "",
+    });
+    setPage(1);
+  }
+
+  function handleClearFilters() {
+    setPendingName("");
+    setPendingIcon("");
+    setAppliedFilters({ name: "", icon: "" });
+    setPage(1);
+  }
+
   return {
-    categories: filteredCategories,
+    categories,
     page,
     setPage,
     totalPages: pagedCategories?.totalPages ?? 0,
@@ -273,8 +290,14 @@ export function useCategories({
     isUpdatingCategory: updateCategoryMutation.isPending,
     isDeletingCategory: deleteCategoryMutation.isPending,
 
-    search,
-    setSearch: setSearchValue,
+    pendingName,
+    setPendingName,
+    pendingIcon,
+    setPendingIcon,
+    appliedFilters,
+    handleSearch,
+    handleClearFilters,
+
     iconThemes,
     handleDeleteCategory,
 

@@ -8,7 +8,7 @@ export async function createCategoryHelper(
   const categoryName = name ?? `E2E Cat ${Date.now()}`;
 
   await page.goto("/categories");
-  await page.getByRole("button", { name: "Criar nova categoria" }).click();
+  await page.getByRole("button", { name: "Nova categoria" }).click();
   await page.getByLabel("Nome").fill(categoryName);
   await page.getByRole("button", { name: "Salvar" }).click();
   await expect(page.getByText(categoryName)).toBeVisible({ timeout: 8000 });

@@ -8,6 +8,11 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: ${ConnectionStrings__DefaultConnection}
+      Redis__ConnectionString: ${Redis__ConnectionString}
+      Jwt__Key: ${Jwt__Key}
+      Email__ApiKey: ${Email__ApiKey}
+      Email__FromEmail: ${Email__FromEmail}
+      FrontendUrl: ${FrontendUrl}
 
   frontend:
     build:
@@ -15,6 +20,8 @@ services:
       dockerfile: Dockerfile
       args:
         NEXT_PUBLIC_API_URL: http://localhost:8080/api/v1/
+        NEXT_PUBLIC_APP_URL: http://localhost:3000
+
     ports:
       - "3000:3000"
     environment:

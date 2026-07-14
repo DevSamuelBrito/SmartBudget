@@ -32,10 +32,17 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<FinancialTransaction>> GetByUserIdPagedAsync(Guid userId, int skip, int take)
+        public async Task<IEnumerable<FinancialTransaction>> GetByUserIdPagedAsync(
+            Guid userId, int skip, int take,
+            string? description = null,
+            Guid? categoryId = null,
+            DateTime? date = null,
+            FinancialTransactionType? type = null,
+            RecurrenceType? recurrence = null)
         {
-            return await context.FinancialTransactions
-                .Where(t => t.UserId == userId)
+            var query = BuildFilteredQuery(userId, description, categoryId, date, type, recurrence);
+
+            return await query
                 .OrderByDescending(t => t.TransactionDate)
                 .ThenByDescending(t => t.CreatedAt)
                 .ThenByDescending(t => t.Id)
@@ -44,10 +51,50 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                 .ToListAsync();
         }
 
-        public async Task<int> CountByUserIdAsync(Guid userId)
+        public async Task<int> CountByUserIdAsync(
+            Guid userId,
+            string? description = null,
+            Guid? categoryId = null,
+            DateTime? date = null,
+            FinancialTransactionType? type = null,
+            RecurrenceType? recurrence = null)
         {
-            return await context.FinancialTransactions
-                .CountAsync(t => t.UserId == userId);
+            var query = BuildFilteredQuery(userId, description, categoryId, date, type, recurrence);
+
+            return await query.CountAsync();
+        }
+
+        private IQueryable<FinancialTransaction> BuildFilteredQuery(
+            Guid userId,
+            string? description,
+            Guid? categoryId,
+            DateTime? date,
+            FinancialTransactionType? type,
+            RecurrenceType? recurrence)
+        {
+            var query = context.FinancialTransactions.Where(t => t.UserId == userId);
+
+            var normalizedDescription = description?.Trim();
+            if (!string.IsNullOrWhiteSpace(normalizedDescription))
+                query = query.Where(t => t.Description.ToLower().Contains(normalizedDescription.ToLower()));
+
+            if (categoryId.HasValue)
+                query = query.Where(t => t.TransactionCategoryId == categoryId.Value);
+
+            if (date.HasValue)
+            {
+                var startOfDay = DateTime.SpecifyKind(date.Value.Date, DateTimeKind.Utc);
+                var endOfDay = startOfDay.AddDays(1);
+                query = query.Where(t => t.TransactionDate >= startOfDay && t.TransactionDate < endOfDay);
+            }
+
+            if (type.HasValue)
+                query = query.Where(t => t.Type == type.Value);
+
+            if (recurrence.HasValue)
+                query = query.Where(t => t.Recurrence == recurrence.Value);
+
+            return query;
         }
 
         public async Task<FinancialTransaction?> GetByIdAsync(Guid transactionId)
@@ -90,6 +137,16 @@ namespace SmartBudgetPro.Infrastructure.Persistence.Repositories
                     && t.TransactionDate.Year == year
                     && t.TransactionDate.Month == month)
                 .SumAsync(t => t.Amount);
+        }
+
+        public async Task<IEnumerable<FinancialTransaction>> GetByUserIdAndPeriodAsync(Guid userId, int year, int month)
+        {
+            return await context.FinancialTransactions
+                .Where(t => t.UserId == userId
+                    && t.TransactionDate.Year == year
+                    && t.TransactionDate.Month == month)
+                .OrderBy(t => t.TransactionDate)
+                .ToListAsync();
         }
     }
 }

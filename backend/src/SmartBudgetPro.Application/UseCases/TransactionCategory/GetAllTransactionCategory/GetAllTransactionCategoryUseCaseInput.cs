@@ -5,4 +5,6 @@ namespace SmartBudgetPro.Application.TransactionCategory.GetAllTransactionCatego
 public record GetAllTransactionCategoryUseCaseInput : PagedQuery
 {
     public Guid UserId { get; init; }
+    public string? Name { get; init; }
+    public string? Icon { get; init; }
 }

@@ -14,8 +14,12 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.GetAllTransaction
             await validator.ValidateAndThrowAsync(input);
 
             var skip = (input.Page - 1) * input.PageSize;
-            var transactions = await transactionRepository.GetByUserIdPagedAsync(input.UserId, skip, input.PageSize);
-            var totalCount = await transactionRepository.CountByUserIdAsync(input.UserId);
+            var transactions = await transactionRepository.GetByUserIdPagedAsync(
+                input.UserId, skip, input.PageSize,
+                input.Description, input.CategoryId, input.Date, input.Type, input.Recurrence);
+            var totalCount = await transactionRepository.CountByUserIdAsync(
+                input.UserId,
+                input.Description, input.CategoryId, input.Date, input.Type, input.Recurrence);
 
             var items = transactions.Select(t => new FinancialTransactionDTO(
                 t.Id,

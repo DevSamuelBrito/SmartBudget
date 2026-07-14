@@ -19,13 +19,17 @@
         "description": "Income - expenses"
       }
     },
+    "emptyState": {
+      "title": "No data available"
+    },
     "charts": {
       "quickInsights": {
         "title": "Quick insights",
         "description": "Daily averages for the month",
         "dailyIncome": "Daily income average",
         "dailyExpense": "Daily expense average",
-        "netBalance": "Daily net balance"
+        "netBalance": "Daily net balance",
+        "emptyState": "Add transactions to view quick insights"
       },
       "latestTransactions": {
         "title": "Latest transactions",
@@ -34,7 +38,8 @@
         "expenseLegend": "Expense",
         "empty": "No transactions found.",
         "showing": "Showing the latest {count} transactions.",
-        "viewAll": "View all"
+        "viewAll": "View all",
+        "emptyState": "Add transactions to view your recent entries"
       },
       "budgetProgress": {
         "title": "Budget progress",
@@ -42,18 +47,21 @@
         "empty": "No budget defined for this period.",
         "used": "{percentage}% used",
         "remaining": "{amount} remaining",
-        "manageCategories": "Manage categories"
+        "manageCategories": "Manage categories",
+        "emptyState": "Set up budgets by category to track your spending"
       },
       "balanceEvolution": {
         "title": "Balance evolution",
         "description": "Accumulated balance throughout the month",
-        "balance": "Balance"
+        "balance": "Balance",
+        "emptyState": "Add transactions to view your balance evolution"
       },
       "incomeExpense": {
         "title": "Income vs expenses",
         "description": "Monthly comparison",
         "income": "Income",
         "expense": "Expenses",
+        "emptyState": "Add transactions to compare income and expenses",
         "months": {
           "jan": "Jan",
           "feb": "Feb",
@@ -72,7 +80,58 @@
       "expenseEvolution": {
         "title": "Expense evolution",
         "description": "Monthly expenses over the last 6 months",
-        "expense": "Expenses"
+        "expense": "Expenses",
+        "emptyState": "Add expenses to view the spending evolution"
+      },
+      "savingsRate": {
+        "title": "Savings rate",
+        "description": "Percentage of monthly income saved",
+        "rateLabel": "of income",
+        "savedAmount": "saved this month",
+        "status": {
+          "great": "Great",
+          "ok": "Ok",
+          "low": "Low"
+        },
+        "emptyState": "No income recorded for this period"
+      },
+      "monthlyComparison": {
+        "title": "Monthly comparison",
+        "description": "Current month vs previous month",
+        "metric": "Metric",
+        "previous": "Previous",
+        "variation": "Change",
+        "income": "Income",
+        "expense": "Expenses",
+        "balance": "Balance",
+        "footer": "Variation compared to the previous month",
+        "emptyState": "No data from the previous month to compare"
+      },
+      "topExpenses": {
+        "title": "Top expenses",
+        "description": "Top 5 expenses of the month",
+        "emptyState": "No expenses recorded for this period"
+      },
+      "cashFlow": {
+        "title": "Weekly cash flow",
+        "description": "Income and expenses by week of the month",
+        "income": "Income",
+        "expense": "Expenses",
+        "weekLabel": "Wk",
+        "emptyState": "No transactions for this period"
+      },
+      "budgetHealth": {
+        "title": "Budget health",
+        "description": "Overall score of this month's budgets",
+        "ok": "On track",
+        "warning": "Warning",
+        "exceeded": "Exceeded",
+        "status": {
+          "healthy": "Healthy",
+          "moderate": "Moderate",
+          "atRisk": "At risk"
+        },
+        "emptyState": "No budgets configured"
       },
       "categoryDistribution": {
         "title": "Expenses by category",
@@ -81,7 +140,8 @@
         "listDescription": "Distribution of monthly expenses relative to the total.",
         "empty": "No expenses for this period.",
         "pieToggleLabel": "Show spending by category",
-        "listToggleLabel": "Show expenses as pie chart"
+        "listToggleLabel": "Show expenses as pie chart",
+        "emptyState": "Add categorized expenses to view the distribution"
       },
       "financialRisk": {
         "title": "Financial risk",
@@ -97,12 +157,16 @@
           "warning": "Warning",
           "risk": "Risk",
           "noData": "No data"
-        }
+        },
+        "emptyState": "Add income and expenses to calculate your financial risk"
       }
     },
     "alerts": {
       "title": "Alerts",
-      "description": "Budgets that need attention"
+      "description": "Budgets that need attention",
+      "empty": "All clear! No active alerts at the moment.",
+      "budgetExceeded": "The category {categoryName} has exceeded the monthly budget.",
+      "budgetWarning": "The category {categoryName} has reached {percentage}% of the monthly budget."
     },
     "customizer": {
       "title": "Customize dashboard",
@@ -121,7 +185,12 @@
         "balanceEvolutionChart": "Balance evolution",
         "incomeExpenseBarChart": "Income vs expenses",
         "categoryDistributionFlipCard": "Category distribution",
-        "expenseEvolutionChart": "Expense evolution"
+        "expenseEvolutionChart": "Expense evolution",
+        "savingsRateCard": "Savings rate",
+        "monthlyComparisonCard": "Monthly comparison",
+        "topExpensesCard": "Top expenses",
+        "cashFlowChart": "Weekly cash flow",
+        "budgetHealthCard": "Budget health"
       },
       "premiumBadge": "Premium"
     }
@@ -143,28 +212,34 @@
   "transactions": {
     "searchPlaceholder": "Search transaction by description",
     "createButton": "Add new Transaction",
+    "filters": {
+      "descriptionPlaceholder": "Search by description...",
+      "categoryPlaceholder": "Filter by category",
+      "datePlaceholder": "Date",
+      "typePlaceholder": "Type",
+      "allTypes": "All types",
+      "recurrencePlaceholder": "Recurrence",
+      "allRecurrences": "All",
+      "searchButton": "Search",
+      "clearButton": "Clear"
+    },
     "pagination": {
       "previous": "Previous",
       "next": "Next"
     },
     "table": {
+      "empty": "No transactions found.",
       "amount": "Amount",
       "date": "Date",
       "type": "Type",
       "recurrence": "Recurrence",
       "description": "Description",
       "category": "Category",
-      "autoGenerated": "Auto",
-      "originTransaction": "Origin transaction",
-      "createdAt": "Created at",
-      "updatedAt": "Updated at",
       "actions": "Actions"
     },
     "actions": {
       "editAriaLabel": "Edit {description}",
-      "deleteAriaLabel": "Delete {description}",
-      "autoGeneratedAriaLabel": "Automatic",
-      "notAutoGeneratedAriaLabel": "Not automatic"
+      "deleteAriaLabel": "Delete {description}"
     },
     "types": {
       "receita": "Income",
@@ -173,7 +248,8 @@
     },
     "recurrence": {
       "unica": "One-time",
-      "recorrente": "Recurring"
+      "recorrente": "🔄 Recurring",
+      "recorrenteAuto": "🔄 Recurring (auto)"
     },
     "form": {
       "createTitle": "Add new transaction",
@@ -207,7 +283,14 @@
   },
   "categories": {
     "searchPlaceholder": "Search category by name",
-    "createButton": "Create new category",
+    "createButton": "New category",
+    "filters": {
+      "namePlaceholder": "Search by name...",
+      "iconPlaceholder": "Filter by icon",
+      "allIcons": "All icons",
+      "searchButton": "Search",
+      "clearButton": "Clear"
+    },
     "pagination": {
       "previous": "Previous",
       "next": "Next"
@@ -219,7 +302,8 @@
       "spent": "Spent",
       "remaining": "Remaining",
       "progress": "Progress",
-      "actions": "Actions"
+      "actions": "Actions",
+      "empty": "No categories found."
     },
     "actions": {
       "setBudget": "Set budget",
@@ -273,11 +357,59 @@
       "yearAriaLabel": "Year"
     }
   },
+  "reports": {
+    "title": "Reports",
+    "generateButton": "Generate Report",
+    "generatingButton": "Generating...",
+    "selectPeriodMessage": "Select a period and click \"Generate report\" to preview the PDF.",
+    "loadingPreview": "Loading preview...",
+    "downloadPdf": "Download PDF",
+    "preparingPdf": "Preparing PDF...",
+    "exportExcel": "Export Excel",
+    "exportingExcel": "Exporting...",
+    "exportExcelSuccess": "Report exported successfully.",
+    "exportExcelError": "Could not export the report.",
+    "summary": {
+      "income": "Total Income",
+      "expense": "Total Expenses",
+      "balance": "Balance"
+    },
+    "transactionsTable": {
+      "title": "Monthly transactions",
+      "date": "Date",
+      "description": "Description",
+      "category": "Category",
+      "type": "Type",
+      "amount": "Amount",
+      "typeIncome": "Income",
+      "typeExpense": "Expense",
+      "typeTransfer": "Transfer",
+      "empty": "No transactions found for this period."
+    },
+    "categoriesTable": {
+      "title": "Categories and budgets",
+      "category": "Category",
+      "budget": "Budget",
+      "spent": "Spent",
+      "status": "Progress",
+      "empty": "No budget defined for this period."
+    },
+    "pdf": {
+      "title": "Monthly Report — {month} {year}",
+      "percentageUsed": "% Used",
+      "statusOk": "Within budget",
+      "statusWarning": "Warning",
+      "statusExceeded": "Exceeded",
+      "statusNone": "No budget",
+      "generatedAt": "Generated on {date}"
+    }
+  },
   "nav": {
     "dashboard": "Dashboard",
     "categories": "Categories",
     "transactions": "Transactions",
     "newTransaction": "New Transaction",
+    "reports": "Reports",
     "plans": "Plans"
   },
   "user": {
@@ -286,6 +418,7 @@
     "notifications": "Notifications",
     "customizeDashboard": "Customize Dashboard",
     "language": "Language",
+    "settings": "Settings",
     "logout": "Log out",
     "loggingOut": "Logging out..."
   },
@@ -297,6 +430,19 @@
   "languageSwitcher": {
     "title": "Language",
     "description": "Choose the application language."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your preferences.",
+    "language": {
+      "title": "Language"
+    },
+    "theme": {
+      "title": "Appearance",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
   },
   "account": {
     "title": "My Account",
@@ -329,7 +475,13 @@
     "updateSuccess": "Information updated successfully!",
     "updateError": "Could not update the information.",
     "passwordSuccess": "Password changed successfully!",
-    "passwordError": "Could not change the password."
+    "passwordError": "Could not change the password.",
+    "subscription": {
+      "title": "Plan",
+      "description": "Your current subscription plan.",
+      "premium": "Premium",
+      "free": "Free"
+    }
   },
   "notFound": {
     "title": "Page not found",
@@ -349,47 +501,234 @@
     "notFound": "Page not found"
   },
   "plans": {
-    "title": "Plans",
-    "description": "Choose the plan that best suits your needs.",
+    "title": "Choose your plan",
+    "description": "Start for free and upgrade whenever you're ready.",
     "currentPlan": "Current plan",
+    "active": "✓ Active",
+    "backToApp": "Back to app",
     "free": {
       "title": "Free",
       "description": "Essential tools to get started with your finances.",
       "price": "$0",
       "period": "/ month",
       "cta": "Current plan",
+      "continueWithFree": "Continue with Free",
       "features": [
-        "Up to 50 transactions per month",
-        "Up to 5 categories",
-        "Basic dashboard",
-        "Budget tracking"
+        "Transactions and categories",
+        "Basic category icons",
+        "Dashboard with KPIs and essential charts",
+        "Monthly budget tracking"
       ]
     },
     "premium": {
       "title": "Premium",
       "description": "Full access to advanced features and unlimited data.",
       "price": "$9.90",
+      "originalPrice": "$9.90 / month",
+      "promoPrice": "Free",
       "period": "/ month",
       "cta": "Subscribe to Premium",
+      "getPremium": "Get Premium",
       "upgrading": "Processing...",
+      "ribbon": "FREE",
       "features": [
-        "Unlimited transactions",
-        "Unlimited categories",
-        "Advanced dashboard with customization",
+        "Everything in Free",
+        "Exclusive category icons",
+        "Customizable dashboard with advanced components",
+        "Savings rate and monthly comparison",
+        "Weekly cash flow",
+        "Budget health score",
         "Financial risk analysis",
-        "Priority support"
+        "Top 5 biggest expenses of the month"
       ]
     },
-    "upgradeSuccess": "Welcome to Premium! Enjoy all the features."
+    "upgradeSuccess": "Welcome to Premium! Enjoy all the features.",
+    "viewFullPlans": "View full plans"
+  },
+  "checkout": {
+    "title": "Complete your subscription",
+    "subtitle": "Enter your card details to confirm.",
+    "backToPlans": "Back to plans",
+    "planSummary": {
+      "title": "Order summary",
+      "plan": "Plan",
+      "price": "Amount",
+      "originalPrice": "$9.90 / month",
+      "free": "Free"
+    },
+    "form": {
+      "cardName": "Name on card",
+      "cardNamePlaceholder": "As it appears on the card",
+      "cardNumber": "Card number",
+      "expiry": "Expiry",
+      "cvv": "CVV"
+    },
+    "processing": "Processing...",
+    "submit": "Confirm subscription",
+    "successToast": "🎉 Welcome to Premium!",
+    "errorToast": "Payment processing error. Please try again."
+  },
+  "validation": {
+    "emailInvalid": "Please enter a valid email.",
+    "passwordMin": "Password must be at least 6 characters.",
+    "nameMin": "Please enter your name.",
+    "passwordsDoNotMatch": "Passwords do not match."
   },
   "auth": {
     "login": "Sign in",
     "register": "Create account",
     "email": "Email",
     "password": "Password",
+    "confirmPassword": "Confirm password",
     "name": "Name",
     "forgotPassword": "Forgot your password?",
     "noAccount": "Don't have an account?",
-    "alreadyHaveAccount": "Already have an account?"
+    "alreadyHaveAccount": "Already have an account?",
+    "loginTagline": "Stay in control. Your financial data is waiting for you.",
+    "registerTagline": "Start today building a healthier relationship with your money.",
+    "forgotPasswordPage": {
+      "title": "Forgot your password?",
+      "description": "Enter your email and we will send you a recovery link.",
+      "emailLabel": "Email",
+      "submitButton": "Send recovery link",
+      "submitting": "Sending...",
+      "backToLogin": "Back to login",
+      "successMessage": "If this email is registered, you will receive a recovery link shortly."
+    },
+    "resetPasswordPage": {
+      "title": "Reset password",
+      "description": "Set your new access password.",
+      "newPasswordLabel": "New password",
+      "confirmPasswordLabel": "Confirm new password",
+      "submitButton": "Reset password",
+      "submitting": "Resetting...",
+      "successToast": "Password changed successfully!",
+      "invalidToken": "This recovery link is invalid or has already expired. Please request a new link.",
+      "requestNewLink": "Request new link"
+    }
+  },
+  "landing": {
+    "meta": {
+      "title": "SmartBudget — Real budget control, not passive tracking",
+      "description": "SmartBudget sets real-time spending limits by category and warns you before you overspend. Free to start."
+    },
+    "nav": {
+      "features": "Features",
+      "demo": "See it in action",
+      "openSource": "Open Source",
+      "plans": "Plans",
+      "login": "Log in",
+      "cta": "Create free account",
+      "goToDashboard": "Go to dashboard"
+    },
+    "hero": {
+      "headline": "Know you're overspending before you actually do.",
+      "subhead": "SmartBudget sets real limits on every category and warns you in real time — not at the end of the month, when it's too late to do anything about it.",
+      "primaryCta": "See it in action",
+      "secondaryCta": "Create free account",
+      "scrollHint": "Watch a real budget limit in motion"
+    },
+    "demo": {
+      "title": "This is what \"in control\" actually looks like",
+      "description": "Set a limit per category. Spend against it. Watch the indicator update in real time — long before you hit 100%.",
+      "previousSlide": "Previous slide",
+      "nextSlide": "Next slide",
+      "goToSlide": "Go to slide {number}",
+      "slides": {
+        "budgetProgress": {
+          "title": "Track your budgets",
+          "description": "Real-time progress for every category budget, updated as you spend.",
+          "category": "Dining out",
+          "used": "{percentage}% used",
+          "remaining": "{amount} remaining"
+        },
+        "categoryDistribution": {
+          "title": "See where it goes",
+          "description": "A breakdown of monthly expenses by category, at a glance.",
+          "totalLabel": "This month's expenses",
+          "categories": {
+            "housing": "Housing",
+            "food": "Food",
+            "transport": "Transport",
+            "leisure": "Leisure",
+            "other": "Other"
+          }
+        },
+        "incomeExpense": {
+          "title": "Income vs expenses",
+          "description": "Compare monthly income and expenses to spot trends early.",
+          "income": "Income",
+          "expense": "Expenses",
+          "months": {
+            "jan": "Jan",
+            "feb": "Feb",
+            "mar": "Mar",
+            "apr": "Apr",
+            "may": "May",
+            "jun": "Jun"
+          }
+        },
+        "financialRisk": {
+          "title": "Know your financial risk",
+          "description": "A single indicator showing how exposed your budget is to fixed costs.",
+          "badge": "Financial risk",
+          "averageIncome": "Average income (3 months)",
+          "fixedExpenses": "Monthly fixed expenses",
+          "status": {
+            "warning": "Warning"
+          },
+          "warningMessage": "Heads up: your fixed expenses are getting close to the recommended limit."
+        }
+      }
+    },
+    "glimpse": {
+      "title": "Your whole month, one screen",
+      "description": "Balance, income, expenses, and every budget's progress — the real SmartBudget dashboard.",
+      "caption": "Actual product screenshot, shown in dark mode.",
+      "alt": "SmartBudget dashboard showing current balance, monthly income and expenses, quick insights, and budget progress by category."
+    },
+    "features": {
+      "title": "Built for people who want real control",
+      "description": "No abandoned spreadsheets, no finance jargon.",
+      "items": {
+        "limits": {
+          "title": "Limits that actually hold",
+          "description": "Set a monthly limit per category. SmartBudget tracks spending against it in real time and flags it before you cross the line."
+        },
+        "reports": {
+          "title": "Reports you'll actually use",
+          "description": "Export a clean PDF or Excel report every month — for taxes, for a partner, or just for your own peace of mind."
+        },
+        "language": {
+          "title": "Works in your language",
+          "description": "Full English and Brazilian Portuguese support, not a half-translated afterthought."
+        },
+        "premium": {
+          "title": "Free to start, honest about premium",
+          "description": "The core budgeting tools are free. Premium unlocks deeper reports and advanced insights when you're ready."
+        }
+      }
+    },
+    "proof": {
+      "title": "Built in the open",
+      "description": "SmartBudget doesn't have a user base to show off yet — but you can check the code, the tests, and the security scans yourself.",
+      "ciLabel": "CI passing on every commit",
+      "sonarLabel": "SonarCloud quality gate: passing",
+      "snykLabel": "Snyk security scan: no known vulnerabilities",
+      "repoLink": "View the repository on GitHub"
+    },
+    "finalCta": {
+      "title": "Ready to actually see where your money goes?",
+      "description": "Create a free account in under a minute. No credit card required.",
+      "primaryCta": "Create free account",
+      "secondaryCta": "Log in"
+    },
+    "footer": {
+      "tagline": "Real budget control, not passive tracking.",
+      "loginLink": "Log in",
+      "plansLink": "Plans & pricing",
+      "languageLabel": "Language",
+      "rights": "© {year} SmartBudget. Open source on GitHub."
+    }
   }
 }

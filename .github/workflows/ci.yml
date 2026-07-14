@@ -35,10 +35,21 @@ jobs:
           NEXT_PUBLIC_API_URL: http://localhost:5163
         run: npm run build
 
+      - name: Run tests with coverage
+        run: npm test -- --coverage --coverageReporters=lcov --passWithNoTests
+
+      - name: Check coverage file
+        run: |
+          echo "Looking for lcov.info..."
+          find . -name "lcov.info" 2>/dev/null
+          ls -la coverage/ 2>/dev/null || echo "coverage/ directory not found"
+
       - name: SonarCloud Scan Frontend
         uses: SonarSource/sonarqube-scan-action@v6
         with:
           projectBaseDir: frontend
+          args: >
+            -Dsonar.javascript.lcov.reportPaths=frontend/coverage/lcov.info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -64,10 +75,17 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
 
+      - name: Run tests with coverage
+        run: dotnet test --collect:"XPlat Code Coverage" --results-directory ./coverage
+        working-directory: backend
+
       - name: SonarCloud Scan Backend
         uses: SonarSource/sonarqube-scan-action@v6
         with:
           projectBaseDir: backend
+          args: >
+            -Dsonar.cs.coveragePlugin=cobertura
+            -Dsonar.cs.cobertura.reportsPaths=**/coverage.cobertura.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

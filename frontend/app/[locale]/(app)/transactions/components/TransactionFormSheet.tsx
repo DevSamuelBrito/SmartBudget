@@ -1,7 +1,7 @@
 "use client";
 
 // react
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // i18n
 import { useTranslations } from "next-intl";
@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // lucide
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, CircleHelp, Loader2 } from "lucide-react";
 
 // react-hook-form
 import { useForm, useWatch } from "react-hook-form";
@@ -19,7 +19,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { format } from "date-fns";
 
 // components
-import { ThemeIcon } from "@/app/[locale]/(app)/categories/components/theme-icons";
+import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/[locale]/(app)/categories/components/theme-icons";
 
 import { ICONT_THEME } from "@/app/[locale]/(app)/categories/constants/icons-theme";
 
@@ -71,6 +71,10 @@ type TransactionFormSheetProps = {
     isSubmitting?: boolean;
 };
 
+const isThemeIconKey = (iconKey: string | null | undefined): iconKey is ThemeIconKey => {
+    return Boolean(iconKey && iconKey in iconMap);
+};
+
 const defaultTransactionValues: TransactionFormValues = {
     amount: 1,
     transactionDate: "",
@@ -104,32 +108,45 @@ export function TransactionFormSheet({
         { label: t("recurrence.recorrente"), value: 1 },
     ] as const;
 
-    const formValues = useMemo<TransactionFormValues>(() => {
-        if (!open || !transaction) {
-            return defaultTransactionValues;
-        }
-
-        return {
-            amount: transaction.amount,
-            transactionDate: transaction.transactionDate.slice(0, 10),
-            transactionType: transaction.type,
-            recurrence: transaction.recurrence,
-            description: transaction.description,
-            transactionCategoryId: transaction.type === 3 ? null : transaction.transactionCategoryId,
-        };
-    }, [open, transaction]);
-
     const {
         register,
         handleSubmit,
         control,
         setValue,
+        reset,
         formState: { errors },
     } = useForm<TransactionFormValues>({
         resolver: zodResolver(transactionFormSchema),
         defaultValues: defaultTransactionValues,
-        values: formValues,
     });
+
+    const [categoryQuery, setCategoryQuery] = useState("");
+    const [categoryOpen, setCategoryOpen] = useState(false);
+    const [dateOpen, setDateOpen] = useState(false);
+
+    const [prevOpen, setPrevOpen] = useState(open);
+    
+    if (prevOpen !== open) {
+        setPrevOpen(open);
+        if (open && !transaction) setCategoryQuery("");
+    }
+
+    useEffect(() => {
+        if (!open) return;
+
+        if (transaction) {
+            reset({
+                amount: transaction.amount,
+                transactionDate: transaction.transactionDate.slice(0, 10),
+                transactionType: transaction.type,
+                recurrence: transaction.recurrence,
+                description: transaction.description,
+                transactionCategoryId: transaction.type === 3 ? null : transaction.transactionCategoryId,
+            });
+        } else {
+            reset(defaultTransactionValues);
+        }
+    }, [open, transaction, reset]);
 
     const transactionCategoryId = useWatch({ control, name: "transactionCategoryId" });
 
@@ -137,10 +154,6 @@ export function TransactionFormSheet({
     const transactionType = useWatch({ control, name: "transactionType" });
     const recurrence = useWatch({ control, name: "recurrence" });
     const isTransferTransaction = transactionType === 3;
-
-    const [categoryQuery, setCategoryQuery] = useState("");
-    const [categoryOpen, setCategoryOpen] = useState(false);
-    const [dateOpen, setDateOpen] = useState(false);
 
     const selectedCategory = useMemo(() => {
         return categories.find((category) => category.id === transactionCategoryId) ?? null;
@@ -404,7 +417,11 @@ export function TransactionFormSheet({
                                     <div
                                         className={`flex size-8 items-center justify-center rounded-lg text-white ${selectedCategoryTheme.colorClass}`}
                                     >
-                                        <ThemeIcon iconKey={selectedCategory.icon} className="size-4" />
+                                        {isThemeIconKey(selectedCategory.icon) ? (
+                                            <ThemeIcon iconKey={selectedCategory.icon} className="size-4" />
+                                        ) : (
+                                            <CircleHelp className="size-4" />
+                                        )}
                                     </div>
                                 </div>
                             )}
@@ -458,7 +475,11 @@ export function TransactionFormSheet({
                                                 <div
                                                     className={`flex size-8 items-center justify-center rounded-lg text-white ${ICONT_THEME.find((item) => item.iconKey === category.icon)?.colorClass ?? "bg-muted"}`}
                                                 >
-                                                    <ThemeIcon iconKey={category.icon} className="size-4" />
+                                                    {isThemeIconKey(category.icon) ? (
+                                                        <ThemeIcon iconKey={category.icon} className="size-4" />
+                                                    ) : (
+                                                        <CircleHelp className="size-4" />
+                                                    )}
                                                 </div>
                                                 <span className="truncate">{category.name}</span>
                                             </button>

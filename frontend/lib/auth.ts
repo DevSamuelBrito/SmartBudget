@@ -1,9 +1,9 @@
 "use server";
 
-//next
+// next
 import { cookies } from "next/headers";
 
-//jose
+// jose
 import { decodeJwt } from "jose";
 
 type ProblemDetailsPayload = {
@@ -28,7 +28,6 @@ export const getServerUserId = async (): Promise<string> => {
   return userId;
 };
 
-
 export const authFetch = async (
   input: RequestInfo | URL,
   init?: RequestInit,
@@ -36,18 +35,17 @@ export const authFetch = async (
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
+  if (!token) {
+    throw new Error("Token not found.");
+  }
+
   const headers = new Headers(init?.headers);
 
   headers.set("Content-Type", "application/json");
+  
+  headers.set("Authorization", `Bearer ${token}`);
 
-  if (token) {
-    headers.set("Authorization", `Bearer ${token}`);
-  }
-
-  const response = await fetch(input, {
-    ...init,
-    headers,
-  });
+  const response = await fetch(input, { ...init, headers });
 
   if (!response.ok) {
     const problemDetails = (await response
@@ -56,8 +54,7 @@ export const authFetch = async (
       .catch(() => null)) as ProblemDetailsPayload | null;
 
     const detailMessage =
-      problemDetails?.detail ??
-      `Request failed with status ${response.status}.`;
+      problemDetails?.detail ?? `Request failed with status ${response.status}.`;
 
     throw new Error(detailMessage);
   }

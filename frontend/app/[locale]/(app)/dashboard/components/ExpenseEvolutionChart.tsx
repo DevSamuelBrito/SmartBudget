@@ -6,6 +6,8 @@ import { useTranslations } from "next-intl";
 // Libs
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
+import { TrendingDown } from "lucide-react";
+
 // Components
 import {
   Card,
@@ -20,6 +22,8 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+
+import { EmptyState } from "./EmptyState";
 
 // Types
 import type { DashboardExpenseByMonth } from "../types";
@@ -46,6 +50,8 @@ export function ExpenseEvolutionChart({ data }: Readonly<ExpenseEvolutionChartPr
     expense: item.expense,
   }));
 
+  const isEmpty = data.every((item) => item.expense === 0);
+
   return (
     <Card className="border-border/70 bg-card/90 backdrop-blur">
       <CardHeader>
@@ -53,7 +59,14 @@ export function ExpenseEvolutionChart({ data }: Readonly<ExpenseEvolutionChartPr
         <CardDescription>{t("charts.expenseEvolution.description")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="aspect-auto h-[280px] w-full">
+        {isEmpty ? (
+          <EmptyState
+            icon={TrendingDown}
+            title={t("emptyState.title")}
+            description={t("charts.expenseEvolution.emptyState")}
+          />
+        ) : (
+        <ChartContainer config={chartConfig} className="aspect-auto h-70 w-full">
           <BarChart data={chartData} barGap={4}>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -80,6 +93,7 @@ export function ExpenseEvolutionChart({ data }: Readonly<ExpenseEvolutionChartPr
             <Bar dataKey="expense" fill="var(--color-expense)" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );

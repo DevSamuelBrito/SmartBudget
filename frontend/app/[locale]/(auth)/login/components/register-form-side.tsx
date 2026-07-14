@@ -3,6 +3,11 @@
 // React
 import type { ComponentProps } from "react";
 
+//next
+import Image from "next/image";
+
+import Link from "next/link";
+
 // external
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -16,6 +21,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 import { Card, CardContent } from "@/components/ui/card";
+
 import {
     Field,
     FieldDescription,
@@ -24,6 +30,13 @@ import {
 } from "@/components/ui/field";
 
 import { Input } from "@/components/ui/input";
+
+// utils
+import { cn } from "@/lib/utils";
+
+import { ThemeToggle } from "@/components/theme-toggle";
+
+import { LanguageToggle } from "@/components/language-toggle";
 
 // actions
 import { registerAction } from "@/app/actions/auth-actions";
@@ -44,6 +57,7 @@ export function RegisterFormSide({
     ...props
 }: RegisterFormSideProps) {
     const t = useTranslations("auth");
+    const tVal = useTranslations();
 
     const {
         register,
@@ -56,6 +70,7 @@ export function RegisterFormSide({
             name: "",
             email: "",
             password: "",
+            confirmPassword: "",
         },
     });
 
@@ -74,17 +89,29 @@ export function RegisterFormSide({
     };
 
     return (
-        <div className={className} {...props}>
-            <Card className="h-full overflow-hidden p-0">
+        <div className={cn("h-full", className)} {...props}>
+            <Card className="relative h-full overflow-hidden p-0">
+                <div className="absolute right-3 top-3 z-10 flex items-center gap-1 rounded-full bg-background/80 p-1 shadow-sm backdrop-blur-sm">
+                    <ThemeToggle />
+                    <LanguageToggle />
+                </div>
                 <CardContent className="grid h-full p-0 md:grid-cols-2">
                     <div className="relative hidden bg-muted md:block">
-                        <img
-                            src="/placeholder.svg"
-                            alt=""
-                            className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                        <Image
+                            src="/images/registerImage.jpg"
+                            fill
+                            alt="Register Image"
+                            className="object-cover brightness-[0.8]"
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+                        <div className="absolute inset-x-6 bottom-6">
+                            <Link href="/" className="text-2xl font-bold text-white">
+                                SmartBudget
+                            </Link>
+                            <p className="mt-1 text-sm text-white/90">{t("registerTagline")}</p>
+                        </div>
                     </div>
-                    <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
+                    <form className="flex flex-col justify-center p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
                         <FieldGroup>
                             <div className="flex flex-col items-center gap-2 text-center">
                                 <h1 className="text-2xl font-bold">{t("register")}</h1>
@@ -96,7 +123,7 @@ export function RegisterFormSide({
                                 <FieldLabel htmlFor="name">{t("name")}</FieldLabel>
                                 <Input id="name" type="text" {...register("name")} />
                                 {errors.name && (
-                                    <p className="text-sm text-destructive">{errors.name.message}</p>
+                                    <p className="text-sm text-destructive">{tVal(errors.name.message as string)}</p>
                                 )}
                             </Field>
                             <Field>
@@ -108,7 +135,7 @@ export function RegisterFormSide({
                                     {...register("email")}
                                 />
                                 {errors.email && (
-                                    <p className="text-sm text-destructive">{errors.email.message}</p>
+                                    <p className="text-sm text-destructive">{tVal(errors.email.message as string)}</p>
                                 )}
                             </Field>
                             <Field>
@@ -119,7 +146,18 @@ export function RegisterFormSide({
                                     {...register("password")}
                                 />
                                 {errors.password && (
-                                    <p className="text-sm text-destructive">{errors.password.message}</p>
+                                    <p className="text-sm text-destructive">{tVal(errors.password.message as string)}</p>
+                                )}
+                            </Field>
+                            <Field>
+                                <FieldLabel htmlFor="confirmPassword">{t("confirmPassword")}</FieldLabel>
+                                <Input
+                                    id="confirmPassword"
+                                    type="password"
+                                    {...register("confirmPassword")}
+                                />
+                                {errors.confirmPassword && (
+                                    <p className="text-sm text-destructive">{tVal(errors.confirmPassword.message as string)}</p>
                                 )}
                             </Field>
                             <Field>

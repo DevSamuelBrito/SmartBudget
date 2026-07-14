@@ -22,13 +22,15 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 
 ### Funcionalidades
 
-- **Autenticação** — Cadastro e login seguros com JWT armazenado em cookies HttpOnly
+- **Autenticação** — Cadastro e login seguros com JWT armazenado em cookies HttpOnly, rotação de refresh token via Redis e recuperação de senha por e-mail (esqueci minha senha/reset de senha)
 - **Transações** — Criação, edição, exclusão e filtro de receitas e despesas
 - **Categorias** — Categorias personalizáveis com ícones, cores e ordenação por drag-and-drop
 - **Orçamentos** — Limites mensais por categoria com indicadores de gasto em tempo real
-- **Dashboard** — Gráficos e resumos de receitas, despesas, saldo e distribuição por categoria
+- **Dashboard** — Dashboard customizável com gráficos e resumos de receitas, despesas, saldo e distribuição por categoria
+- **Relatórios** — Geração de relatório mensal com exportação em PDF e Excel, com suporte a múltiplos idiomas
 - **Planos premium** — Sistema de assinatura para desbloquear funcionalidades avançadas
 - **Internacionalização** — Interface totalmente traduzida em inglês e português (pt-BR)
+- **Landing page** — Site institucional público com destaque de funcionalidades, demo interativa de orçamento e comparação de planos
 
 ---
 
@@ -36,41 +38,49 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 
 ### Backend
 
-| Tecnologia | Uso |
-|---|---|
-| .NET 10 / C# | Runtime e linguagem |
-| ASP.NET Core | Framework REST API |
-| Entity Framework Core | ORM |
-| PostgreSQL (Neon) | Banco de dados principal |
-| Clean Architecture | Arquitetura em camadas |
-| FluentValidation | Validação de entradas |
-| JWT | Tokens de autenticação |
-| xUnit + Moq + FluentAssertions | Testes unitários |
+| Tecnologia                     | Uso                                                   |
+| ------------------------------ | ----------------------------------------------------- |
+| .NET 10 / C#                   | Runtime e linguagem                                   |
+| ASP.NET Core                   | Framework REST API                                    |
+| Entity Framework Core          | ORM                                                   |
+| PostgreSQL (Neon)              | Banco de dados principal                              |
+| Redis (Upstash)                | Armazenamento de refresh tokens com expiração automática via TTL |
+| Clean Architecture             | Arquitetura em camadas                                |
+| FluentValidation               | Validação de entradas                                 |
+| JWT                            | Tokens de autenticação                                |
+| Asp.Versioning                 | Versionamento de API via URL (`/api/v1/...`)          |
+| ClosedXML                      | Geração de relatórios Excel                           |
+| xUnit + Moq + FluentAssertions | Testes unitários                                      |
+| Brevo                          | Serviço de e-mail transacional (recuperação de senha) |
 
 ### Frontend
 
-| Tecnologia | Uso |
-|---|---|
-| Next.js 15 / React 19 | Framework de UI (App Router) |
-| TypeScript (strict) | Tipagem estática |
-| Tailwind CSS 4 | Estilização |
-| shadcn/ui | Biblioteca de componentes |
-| TanStack React Query | Gerenciamento de estado servidor |
-| React Hook Form + Zod | Formulários e validação |
-| Axios | Cliente HTTP |
-| Recharts | Visualização de dados |
-| Playwright | Testes end-to-end |
-| Jest + React Testing Library | Testes unitários |
+| Tecnologia                   | Uso                              |
+| ---------------------------- | -------------------------------- |
+| Next.js 15 / React 19        | Framework de UI (App Router)     |
+| TypeScript (strict)          | Tipagem estática                 |
+| Tailwind CSS 4               | Estilização                      |
+| shadcn/ui                    | Biblioteca de componentes        |
+| TanStack React Query         | Gerenciamento de estado servidor |
+| React Hook Form + Zod        | Formulários e validação          |
+| Axios                        | Cliente HTTP                     |
+| Recharts                     | Visualização de dados            |
+| @react-pdf/renderer          | Geração de relatórios PDF        |
+| Framer Motion                | Animações e efeitos de movimento |
+| next-intl                    | Internacionalização (i18n)       |
+| @dnd-kit                     | Ordenação por drag-and-drop      |
+| Playwright                   | Testes end-to-end                |
+| Jest + React Testing Library | Testes unitários                 |
 
 ### DevOps
 
-| Ferramenta | Uso |
-|---|---|
-| Docker + Docker Compose | Ambiente local containerizado |
-| GitHub Actions | Pipeline de CI (lint, build, testes) |
-| SonarCloud | Qualidade de código e cobertura |
-| Snyk | Varredura de vulnerabilidades em dependências |
-| CodeRabbit | Code review automático em PRs |
+| Ferramenta              | Uso                                           |
+| ----------------------- | --------------------------------------------- |
+| Docker + Docker Compose | Ambiente local containerizado                 |
+| GitHub Actions          | Pipeline de CI (lint, build, testes)          |
+| SonarCloud              | Qualidade de código e cobertura               |
+| Snyk                    | Varredura de vulnerabilidades em dependências |
+| CodeRabbit              | Code review automático em PRs                 |
 
 ---
 
@@ -168,12 +178,18 @@ Acesse [http://localhost:3000](http://localhost:3000). A API roda na porta `8080
   "ConnectionStrings": {
     "DefaultConnection": "Host=localhost;Port=5432;Database=SmartBudget;Username=postgres;Password=suasenha"
   },
-  "JwtSettings": {
-    "SecretKey": "sua-chave-secreta-com-pelo-menos-32-caracteres",
+  "Jwt": {
+    "Key": "sua-chave-secreta-com-pelo-menos-32-caracteres",
     "Issuer": "SmartBudgetPro",
     "Audience": "SmartBudgetPro",
-    "ExpirationMinutes": 60
-  }
+    "ExpiresInMinutes": 60
+  },
+  "Email": {
+    "ApiKey": "",
+    "FromEmail": "",
+    "FromName": "SmartBudget"
+  },
+  "FrontendUrl": ""
 }
 ```
 
@@ -231,37 +247,42 @@ docker compose up --build
 
 ### `.env` (Docker — raiz do projeto)
 
-| Variável | Descrição | Exemplo |
-|---|---|---|
-| `ConnectionStrings__DefaultConnection` | String de conexão do PostgreSQL para o backend | `Host=...;Database=SmartBudget;...` |
-| `NEXT_PUBLIC_API_URL` | URL pública da API usada no navegador | `http://localhost:8080/api/v1/` |
-| `API_URL` | URL interna da API usada pelo Next.js no servidor | `http://backend:8080/api/v1/` |
+| Variável                               | Descrição                                         | Exemplo                             |
+| -------------------------------------- | ------------------------------------------------- | ----------------------------------- |
+| `ConnectionStrings__DefaultConnection` | String de conexão do PostgreSQL para o backend    | `Host=...;Database=SmartBudget;...` |
+| `Redis__ConnectionString`              | String de conexão do Redis (Upstash)              | `your-instance.upstash.io:6379,password=...` |
+| `Jwt__Key`                             | Chave secreta para assinar tokens JWT (mín. 32 caracteres) | `your-secret-key-at-least-32-characters` |
+| `NEXT_PUBLIC_API_URL`                  | URL pública da API usada no navegador             | `http://localhost:8080/api/v1/`     |
+| `API_URL`                              | URL interna da API usada pelo Next.js no servidor | `http://backend:8080/api/v1/`       |
 
 Consulte o `.env.example` para um template pronto para copiar.
 
 ### `frontend/.env.local` (desenvolvimento local)
 
-| Variável | Descrição | Exemplo |
-|---|---|---|
-| `NEXT_PUBLIC_API_URL` | URL da API para requisições do navegador | `http://localhost:8080/api/v1/` |
-| `API_URL` | URL da API para o lado servidor do Next.js | `http://localhost:8080/api/v1/` |
+| Variável              | Descrição                                  | Exemplo                         |
+| --------------------- | ------------------------------------------ | ------------------------------- |
+| `NEXT_PUBLIC_API_URL` | URL da API para requisições do navegador   | `http://localhost:8080/api/v1/` |
+| `API_URL`             | URL da API para o lado servidor do Next.js | `http://localhost:8080/api/v1/` |
 
 ### `frontend/.env.test` (testes E2E)
 
-| Variável | Descrição | Exemplo |
-|---|---|---|
-| `E2E_EMAIL` | E-mail da conta de teste usada pelo Playwright | `test@example.com` |
-| `E2E_PASSWORD` | Senha da conta de teste usada pelo Playwright | `Test@123` |
+| Variável       | Descrição                                      | Exemplo            |
+| -------------- | ---------------------------------------------- | ------------------ |
+| `E2E_EMAIL`    | E-mail da conta de teste usada pelo Playwright | `test@example.com` |
+| `E2E_PASSWORD` | Senha da conta de teste usada pelo Playwright  | `Test@123`         |
 
 ### `backend/src/SmartBudgetPro.API/appsettings.Development.json` (desenvolvimento local)
 
-| Chave | Descrição |
-|---|---|
-| `ConnectionStrings:DefaultConnection` | String de conexão do PostgreSQL |
-| `JwtSettings:SecretKey` | Chave secreta para assinar tokens JWT (mín. 32 caracteres) |
-| `JwtSettings:Issuer` | Identificador do emissor do JWT |
-| `JwtSettings:Audience` | Identificador da audiência do JWT |
-| `JwtSettings:ExpirationMinutes` | Tempo de vida do token em minutos |
+| Chave                                 | Descrição                                                  |
+| ------------------------------------- | ---------------------------------------------------------- |
+| `ConnectionStrings:DefaultConnection` | String de conexão do PostgreSQL                            |
+| `Jwt:Key`                             | Chave secreta para assinar tokens JWT (mín. 32 caracteres) |
+| `Jwt:Issuer`                          | Identificador do emissor do JWT                            |
+| `Jwt:Audience`                        | Identificador da audiência do JWT                          |
+| `Jwt:ExpiresInMinutes`                | Tempo de vida do token em minutos                          |
+| `Email:ApiKey`                        | Chave de API do Brevo para envio de e-mails                |
+| `Email:FromEmail`                     | E-mail remetente validado no Brevo                         |
+| `FrontendUrl`                         | URL do frontend para geração do link de reset de senha     |
 
 ---
 
@@ -326,6 +347,7 @@ SmartBudget/
 │       └── SmartBudgetPro.Tests/          # Testes unitários com xUnit
 ├── frontend/                              # Next.js 15 App Router
 │   ├── app/                              # Páginas e layouts
+│   │   └── [locale]/                     # Grupos de rotas: (auth), (app), (landing), (marketing)
 │   ├── components/                       # Componentes de UI e domínio
 │   ├── hooks/                            # Custom React hooks
 │   ├── e2e/                              # Testes E2E com Playwright
@@ -340,8 +362,6 @@ SmartBudget/
 
 ## Screenshots
 
-> As screenshots serão adicionadas aqui. Coloque as imagens em `docs/screenshots/`.
-
 ![Dashboard](./docs/screenshots/dashboard.png)
 ![Transações](./docs/screenshots/transactions.png)
 ![Categorias](./docs/screenshots/categories.png)
@@ -353,12 +373,12 @@ SmartBudget/
 
 Contribuições são bem-vindas. O projeto segue uma estratégia simples de branches:
 
-| Branch | Finalidade |
-|---|---|
-| `main` | Código estável, pronto para produção |
-| `develop` | Branch de integração do trabalho em andamento |
+| Branch      | Finalidade                                          |
+| ----------- | --------------------------------------------------- |
+| `main`      | Código estável, pronto para produção                |
+| `develop`   | Branch de integração do trabalho em andamento       |
 | `feature/*` | Novas funcionalidades criadas a partir de `develop` |
-| `fix/*` | Correções de bugs criadas a partir de `develop` |
+| `fix/*`     | Correções de bugs criadas a partir de `develop`     |
 
 **Fluxo de trabalho:**
 

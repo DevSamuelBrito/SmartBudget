@@ -6,11 +6,14 @@ import * as React from "react"
 //next
 import Link from "next/link"
 
+// react-query / react-hook-form / zod / [lib]
+import { motion, useReducedMotion } from "framer-motion"
+
 // i18n
 import { useTranslations } from "next-intl"
 
 //icons
-import { LayoutDashboardIcon, CommandIcon, ArrowLeftRight, Tags, Sparkles } from "lucide-react"
+import { LayoutDashboardIcon, ArrowLeftRight, Tags, Sparkles, FileTextIcon } from "lucide-react"
 
 //components
 import { NavMain } from "@/components/nav-main"
@@ -40,6 +43,7 @@ export function AppSidebar({
   user: SidebarUser
 }) {
   const t = useTranslations("nav")
+  const shouldReduceMotion = useReducedMotion()
 
   const navMain = [
     {
@@ -58,6 +62,11 @@ export function AppSidebar({
       icon: <Tags />,
     },
     {
+      title: t("reports"),
+      url: "reports",
+      icon: <FileTextIcon />,
+    },
+    {
       title: t("plans"),
       url: "plans",
       icon: <Sparkles />,
@@ -66,33 +75,39 @@ export function AppSidebar({
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:p-1.5!"
-            >
-              <Link href="/dashboard">
-                <CommandIcon className="size-5!" />
-                <span className="text-base font-semibold">SmartBudget PRO</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
-      <SidebarContent>
-        <NavMain items={navMain} />
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser
-          user={{
-            name: user.name,
-            email: user.email,
-            avatar: user.avatar ?? "/avatars/shadcn.jpg",
-          }}
-        />
-      </SidebarFooter>
+      <motion.div
+        initial={shouldReduceMotion ? false : { x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="flex h-full w-full flex-col"
+      >
+        <SidebarHeader>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                asChild
+                className="data-[slot=sidebar-menu-button]:p-1.5!"
+              >
+                <Link href="/dashboard">
+                  <span className="text-base font-semibold text-primary">SmartBudget PRO</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarHeader>
+        <SidebarContent>
+          <NavMain items={navMain} />
+        </SidebarContent>
+        <SidebarFooter>
+          <NavUser
+            user={{
+              name: user.name,
+              email: user.email,
+              avatar: user.avatar ?? "/avatars/shadcn.jpg",
+            }}
+          />
+        </SidebarFooter>
+      </motion.div>
     </Sidebar>
   )
 }

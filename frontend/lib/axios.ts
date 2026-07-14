@@ -1,4 +1,4 @@
-import axios, { type AxiosError } from "axios";
+import axios, { type AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 type ApiErrorPayload = {
   detail?: string;
@@ -11,9 +11,43 @@ export const api = axios.create({
   withCredentials: true,
 });
 
+let refreshPromise: Promise<boolean> | null = null;
+
 api.interceptors.response.use(
   (response) => response,
-  (error: AxiosError<ApiErrorPayload>) => {
+  async (error: AxiosError<ApiErrorPayload>) => {
+    const originalRequest = error.config as
+      | (InternalAxiosRequestConfig & { _retry?: boolean })
+      | undefined;
+
+    if (
+      error.response?.status === 401 &&
+      originalRequest &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      if (!refreshPromise) {
+        refreshPromise = axios
+          .post("/api/auth/refresh", null, { withCredentials: true })
+          .then(() => true)
+          .catch(() => false)
+          .finally(() => {
+            refreshPromise = null;
+          });
+      }
+
+      const refreshed = await refreshPromise;
+
+      if (refreshed) {
+        return api(originalRequest);
+      }
+
+      window.location.href = "/login";
+      
+      return new Promise(() => {});
+    }
+
     const apiMessage =
       error.response?.data?.detail ??
       error.response?.data?.error ??

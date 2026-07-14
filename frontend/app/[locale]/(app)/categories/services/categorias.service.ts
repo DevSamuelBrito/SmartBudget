@@ -22,14 +22,21 @@ type UpdateCategoryRequest = {
   icon: CategoryApi["icon"];
 };
 
+type GetCategoriesParams = PaginationParams & {
+  name?: string;
+  icon?: string;
+};
+
 export const getCategories = async ({
   page = 1,
   pageSize = 10,
-}: PaginationParams = {}) => {
+  name,
+  icon,
+}: GetCategoriesParams = {}) => {
   const response = await api.get<PagedResult<CategoryApi>>(
     "/transactionCategories",
     {
-      params: { page, pageSize },
+      params: { page, pageSize, name: name || undefined, icon: icon || undefined },
     },
   );
 
