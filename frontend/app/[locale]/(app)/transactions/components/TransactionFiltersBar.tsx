@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { format } from "date-fns";
 
 // icons
-import { CalendarIcon, Search, X } from "lucide-react";
+import { CalendarIcon, CircleHelp, Search, X } from "lucide-react";
 
 // components
 import { Button } from "@/components/ui/button";
@@ -28,7 +28,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { ThemeIcon } from "@/app/[locale]/(app)/categories/components/theme-icons";
+import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/[locale]/(app)/categories/components/theme-icons";
 import { ICONT_THEME } from "@/app/[locale]/(app)/categories/constants/icons-theme";
 
 // types
@@ -53,6 +53,10 @@ type TransactionFiltersBarProps = {
 };
 
 const ALL_VALUE = "__all__";
+
+const isThemeIconKey = (iconKey: string | null | undefined): iconKey is ThemeIconKey => {
+    return Boolean(iconKey && iconKey in iconMap);
+};
 
 export function TransactionFiltersBar({
     pendingFilters,
@@ -145,7 +149,11 @@ export function TransactionFiltersBar({
                 {selectedFilterCategory && selectedFilterCategoryTheme && (
                     <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
                         <div className={`flex size-6 items-center justify-center rounded text-white ${selectedFilterCategoryTheme.colorClass}`}>
-                            <ThemeIcon iconKey={selectedFilterCategory.icon} className="size-3" />
+                            {isThemeIconKey(selectedFilterCategory.icon) ? (
+                                <ThemeIcon iconKey={selectedFilterCategory.icon} className="size-3" />
+                            ) : (
+                                <CircleHelp className="size-3" />
+                            )}
                         </div>
                     </div>
                 )}
@@ -186,7 +194,11 @@ export function TransactionFiltersBar({
                                     className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition hover:bg-accent hover:text-accent-foreground"
                                 >
                                     <div className={`flex size-6 items-center justify-center rounded text-white ${ICONT_THEME.find((i) => i.iconKey === category.icon)?.colorClass ?? "bg-muted"}`}>
-                                        <ThemeIcon iconKey={category.icon} className="size-3" />
+                                        {isThemeIconKey(category.icon) ? (
+                                            <ThemeIcon iconKey={category.icon} className="size-3" />
+                                        ) : (
+                                            <CircleHelp className="size-3" />
+                                        )}
                                     </div>
                                     <span className="truncate">{category.name}</span>
                                 </button>

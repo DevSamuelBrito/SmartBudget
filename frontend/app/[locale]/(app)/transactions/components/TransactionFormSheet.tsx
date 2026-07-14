@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // lucide
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, CircleHelp, Loader2 } from "lucide-react";
 
 // react-hook-form
 import { useForm, useWatch } from "react-hook-form";
@@ -19,7 +19,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { format } from "date-fns";
 
 // components
-import { ThemeIcon } from "@/app/[locale]/(app)/categories/components/theme-icons";
+import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/[locale]/(app)/categories/components/theme-icons";
 
 import { ICONT_THEME } from "@/app/[locale]/(app)/categories/constants/icons-theme";
 
@@ -69,6 +69,10 @@ type TransactionFormSheetProps = {
     onOpenChange: (open: boolean) => void;
     onSubmit: (values: TransactionFormValues) => void;
     isSubmitting?: boolean;
+};
+
+const isThemeIconKey = (iconKey: string | null | undefined): iconKey is ThemeIconKey => {
+    return Boolean(iconKey && iconKey in iconMap);
 };
 
 const defaultTransactionValues: TransactionFormValues = {
@@ -413,7 +417,11 @@ export function TransactionFormSheet({
                                     <div
                                         className={`flex size-8 items-center justify-center rounded-lg text-white ${selectedCategoryTheme.colorClass}`}
                                     >
-                                        <ThemeIcon iconKey={selectedCategory.icon} className="size-4" />
+                                        {isThemeIconKey(selectedCategory.icon) ? (
+                                            <ThemeIcon iconKey={selectedCategory.icon} className="size-4" />
+                                        ) : (
+                                            <CircleHelp className="size-4" />
+                                        )}
                                     </div>
                                 </div>
                             )}
@@ -467,7 +475,11 @@ export function TransactionFormSheet({
                                                 <div
                                                     className={`flex size-8 items-center justify-center rounded-lg text-white ${ICONT_THEME.find((item) => item.iconKey === category.icon)?.colorClass ?? "bg-muted"}`}
                                                 >
-                                                    <ThemeIcon iconKey={category.icon} className="size-4" />
+                                                    {isThemeIconKey(category.icon) ? (
+                                                        <ThemeIcon iconKey={category.icon} className="size-4" />
+                                                    ) : (
+                                                        <CircleHelp className="size-4" />
+                                                    )}
                                                 </div>
                                                 <span className="truncate">{category.name}</span>
                                             </button>

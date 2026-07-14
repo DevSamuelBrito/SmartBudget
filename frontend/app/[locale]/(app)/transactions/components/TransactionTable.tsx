@@ -7,7 +7,7 @@ import { useRef } from "react";
 import { useTranslations } from "next-intl";
 
 // libs
-import { Pencil, ReceiptText, Trash2 } from "lucide-react";
+import { CircleHelp, Pencil, ReceiptText, Trash2 } from "lucide-react";
 
 // ui
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 // components
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-import { ThemeIcon } from "@/app/[locale]/(app)/categories/components/theme-icons";
+import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/[locale]/(app)/categories/components/theme-icons";
 
 import { ICONT_THEME } from "@/app/[locale]/(app)/categories/constants/icons-theme";
 
@@ -34,6 +34,10 @@ type TransactionTableProps = {
     transactions: TransactionWithCategory[];
     onEdit?: (transaction: TransactionWithCategory) => void;
     onDelete?: (transaction: TransactionWithCategory) => void;
+};
+
+const isThemeIconKey = (iconKey: string | null | undefined): iconKey is ThemeIconKey => {
+    return Boolean(iconKey && iconKey in iconMap);
 };
 
 const TransactionTable = ({ transactions, onEdit, onDelete }: TransactionTableProps) => {
@@ -61,7 +65,11 @@ const TransactionTable = ({ transactions, onEdit, onDelete }: TransactionTablePr
                 <div
                     className={`flex size-7 items-center justify-center rounded-md text-white ${theme?.colorClass ?? "bg-muted"}`}
                 >
-                    <ThemeIcon iconKey={transaction.category.icon} className="size-4" />
+                    {isThemeIconKey(transaction.category.icon) ? (
+                        <ThemeIcon iconKey={transaction.category.icon} className="size-4" />
+                    ) : (
+                        <CircleHelp className="size-4" />
+                    )}
                 </div>
                 <span className="truncate">{transaction.category.name}</span>
             </div>
