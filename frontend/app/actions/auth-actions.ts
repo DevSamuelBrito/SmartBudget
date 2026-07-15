@@ -99,10 +99,12 @@ export async function loginAction(
 
     const cookieStore = await cookies();
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     const COOKIE_BASE = {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax" as const,
+      secure: isProduction,
+      sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
       path: "/",
     };
 
@@ -127,10 +129,8 @@ export async function loginAction(
     };
 
     cookieStore.set("user-data", JSON.stringify(userData), {
+      ...COOKIE_BASE,
       httpOnly: false,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
       maxAge: 7 * 24 * 60 * 60,
     });
 
