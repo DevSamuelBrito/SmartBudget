@@ -9,6 +9,9 @@ import { decodeJwt } from "jose";
 // lib
 import { routing } from "./i18n/routing";
 
+//libs
+import { getCookieBase } from "./lib/cookie-config";
+
 const intlMiddleware = createMiddleware(routing);
 
 interface RefreshApiResponse {
@@ -17,12 +20,7 @@ interface RefreshApiResponse {
   refreshToken: string;
 }
 
-const COOKIE_BASE = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
-  path: "/",
-};
+const COOKIE_BASE = getCookieBase();
 
 const REFRESH_TOKEN_MAX_AGE_SECONDS = 7 * 24 * 60 * 60;
 
@@ -128,10 +126,7 @@ export default async function middleware(request: NextRequest) {
         };
 
         response.cookies.set("user-data", JSON.stringify(updatedUserData), {
-          httpOnly: false,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "lax" as const,
-          path: "/",
+          ...getCookieBase({ httpOnly: false }),
           maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS,
         });
       } catch {

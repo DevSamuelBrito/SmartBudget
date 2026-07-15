@@ -10,6 +10,9 @@ import { decodeJwt } from "jose";
 
 import { getServerApiBaseUrl } from "@/lib/server-api";
 
+//libs
+import { getCookieBase } from "@/lib/cookie-config";
+
 interface LoginInput {
   email: string;
   password: string;
@@ -99,14 +102,7 @@ export async function loginAction(
 
     const cookieStore = await cookies();
 
-    const isProduction = process.env.NODE_ENV === "production";
-
-    const COOKIE_BASE = {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
-      path: "/",
-    };
+    const COOKIE_BASE = getCookieBase();
 
     cookieStore.set("token", data.accessToken, {
       ...COOKIE_BASE,

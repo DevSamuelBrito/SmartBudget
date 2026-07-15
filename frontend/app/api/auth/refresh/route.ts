@@ -6,18 +6,16 @@ import { NextResponse } from "next/server";
 // jose
 import { decodeJwt } from "jose";
 
+//libs
+import { getCookieBase } from "@/lib/cookie-config";
+
 interface RefreshApiResponse {
   accessToken: string;
   expiresInSeconds: number;
   refreshToken: string;
 }
 
-const COOKIE_BASE = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
-  path: "/",
-};
+const COOKIE_BASE = getCookieBase();
 
 const REFRESH_TOKEN_MAX_AGE_SECONDS = 7 * 24 * 60 * 60;
 
@@ -83,10 +81,7 @@ export async function POST() {
       };
       
       response.cookies.set("user-data", JSON.stringify(updatedUserData), {
-        httpOnly: false,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax" as const,
-        path: "/",
+        ...getCookieBase({ httpOnly: false }),
         maxAge: REFRESH_TOKEN_MAX_AGE_SECONDS,
       });
     } catch {
