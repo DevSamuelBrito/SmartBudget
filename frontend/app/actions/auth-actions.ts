@@ -224,10 +224,11 @@ export async function resetPasswordAction(input: {
 
 export async function logoutAction(): Promise<void> {
   const cookieStore = await cookies();
+  const COOKIE_BASE = getCookieBase();
 
-  cookieStore.delete("token");
-  cookieStore.delete("refresh-token");
-  cookieStore.delete("user-data");
+  cookieStore.delete({ name: "token", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
+  cookieStore.delete({ name: "refresh-token", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
+  cookieStore.delete({ name: "user-data", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
 
   redirect("/login");
 }
