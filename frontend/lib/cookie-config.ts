@@ -2,6 +2,7 @@ type CookieBaseOptions = {
   httpOnly: boolean;
   secure: boolean;
   sameSite: "none" | "lax";
+  domain: string | undefined;
   path: string;
 };
 
@@ -14,6 +15,7 @@ export function getCookieBase(
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? "none" : "lax",
+    domain: isProduction ? ".smartbudget-app.com" : undefined,
     path: "/",
     ...overrides,
   };
