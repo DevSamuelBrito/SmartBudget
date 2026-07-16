@@ -99,7 +99,7 @@ export function useTransactions({
   });
 
   const categoriesQuery = useQuery<CategoryApi[]>({
-    queryKey: ["categories-options", userId],
+    queryKey: ["categories", userId, "options"],
     queryFn: getCategoryOptions,
     staleTime: Infinity,
   });

@@ -76,22 +76,22 @@ export default async function middleware(request: NextRequest) {
       const loginPath = locale ? `/${locale}/login` : "/login";
       const redirectRes = NextResponse.redirect(new URL(loginPath, request.url));
 
-      redirectRes.cookies.delete("token");
+      redirectRes.cookies.delete({ name: "token", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
 
-      redirectRes.cookies.delete("refresh-token");
+      redirectRes.cookies.delete({ name: "refresh-token", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
 
-      redirectRes.cookies.delete("user-data");
+      redirectRes.cookies.delete({ name: "user-data", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
 
       return redirectRes;
     }
 
     const response = intlMiddleware(request);
 
-    response.cookies.delete("token");
+    response.cookies.delete({ name: "token", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
 
-    response.cookies.delete("refresh-token");
+    response.cookies.delete({ name: "refresh-token", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
 
-    response.cookies.delete("user-data");
+    response.cookies.delete({ name: "user-data", domain: COOKIE_BASE.domain, path: COOKIE_BASE.path });
 
     return response;
   }

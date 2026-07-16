@@ -4,7 +4,7 @@
 import { useMemo, useState } from "react";
 
 // i18n
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // date
 import { format } from "date-fns";
@@ -31,8 +31,12 @@ import {
 import { ThemeIcon, iconMap, type ThemeIconKey } from "@/app/[locale]/(app)/categories/components/theme-icons";
 import { ICONT_THEME } from "@/app/[locale]/(app)/categories/constants/icons-theme";
 
+// utils
+import { getDateFnsLocale } from "@/lib/date-locale";
+
 // types
 import type { CategoryApi } from "@/app/[locale]/(app)/categories/types";
+import type { AppLocale } from "@/i18n/routing";
 import type { FinancialTransactionType, RecurrenceType } from "../types";
 
 type AppliedFilters = {
@@ -67,6 +71,8 @@ export function TransactionFiltersBar({
     onClearFilters,
 }: TransactionFiltersBarProps) {
     const t = useTranslations("transactions");
+    const locale = useLocale() as AppLocale;
+    const calendarLocale = getDateFnsLocale(locale);
 
     const [dateOpen, setDateOpen] = useState(false);
     const [categoryQuery, setCategoryQuery] = useState("");
@@ -221,7 +227,7 @@ export function TransactionFiltersBar({
                     >
                         <CalendarIcon className="size-4 shrink-0" />
                         {selectedDate
-                            ? format(selectedDate, "dd/MM/yyyy")
+                            ? format(selectedDate, "dd/MM/yyyy", { locale: calendarLocale })
                             : <span>{t("filters.datePlaceholder")}</span>
                         }
                     </Button>
@@ -229,6 +235,7 @@ export function TransactionFiltersBar({
                 <PopoverContent className="w-auto overflow-hidden p-0" align="start">
                     <Calendar
                         mode="single"
+                        locale={calendarLocale}
                         selected={selectedDate}
                         defaultMonth={selectedDate}
                         captionLayout="dropdown"
