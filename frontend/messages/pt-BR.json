@@ -501,6 +501,10 @@
     "notFound": "Página não encontrada"
   },
   "plans": {
+    "meta": {
+      "title": "Planos e Preços",
+      "description": "Compare os planos Free e Premium do SmartBudget PRO e escolha o ideal para organizar seu orçamento pessoal, categorias e transações."
+    },
     "title": "Escolha seu plano",
     "description": "Comece gratuitamente e faça upgrade quando quiser.",
     "currentPlan": "Plano atual",
@@ -576,6 +580,14 @@
     "passwordsDoNotMatch": "As senhas não coincidem."
   },
   "auth": {
+    "loginMeta": {
+      "title": "Entrar",
+      "description": "Acesse sua conta SmartBudget PRO e continue no controle das suas categorias, orçamentos e transações."
+    },
+    "registerMeta": {
+      "title": "Criar conta grátis",
+      "description": "Crie sua conta gratuita no SmartBudget PRO e comece agora a organizar seu orçamento pessoal e suas finanças."
+    },
     "login": "Entrar",
     "register": "Criar conta",
     "email": "E-mail",
@@ -611,7 +623,16 @@
   "landing": {
     "meta": {
       "title": "SmartBudget — Controle real do orçamento, não apenas acompanhamento passivo",
-      "description": "O SmartBudget define limites de gastos em tempo real por categoria e avisa antes de você gastar demais. Grátis para começar."
+      "description": "O SmartBudget define limites de gastos em tempo real por categoria e avisa antes de você gastar demais. Grátis para começar.",
+      "keywords": [
+        "controle financeiro",
+        "controle financeiro pessoal",
+        "orçamento pessoal",
+        "app de finanças",
+        "app de orçamento",
+        "gestão de gastos",
+        "planejamento financeiro"
+      ]
     },
     "nav": {
       "features": "Funcionalidades",

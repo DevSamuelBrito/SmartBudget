@@ -501,6 +501,10 @@
     "notFound": "Page not found"
   },
   "plans": {
+    "meta": {
+      "title": "Plans & Pricing",
+      "description": "Compare SmartBudget PRO's Free and Premium plans and pick the right one to organize your personal budget, categories, and transactions."
+    },
     "title": "Choose your plan",
     "description": "Start for free and upgrade whenever you're ready.",
     "currentPlan": "Current plan",
@@ -575,6 +579,14 @@
     "passwordsDoNotMatch": "Passwords do not match."
   },
   "auth": {
+    "loginMeta": {
+      "title": "Sign in",
+      "description": "Sign in to your SmartBudget PRO account and stay in control of your categories, budgets, and transactions."
+    },
+    "registerMeta": {
+      "title": "Create your free account",
+      "description": "Create your free SmartBudget PRO account and start organizing your personal budget and finances today."
+    },
     "login": "Sign in",
     "register": "Create account",
     "email": "Email",
@@ -610,7 +622,15 @@
   "landing": {
     "meta": {
       "title": "SmartBudget — Real budget control, not passive tracking",
-      "description": "SmartBudget sets real-time spending limits by category and warns you before you overspend. Free to start."
+      "description": "SmartBudget sets real-time spending limits by category and warns you before you overspend. Free to start.",
+      "keywords": [
+        "personal finance control",
+        "personal budget",
+        "budgeting app",
+        "personal finance app",
+        "expense tracking",
+        "financial planning"
+      ]
     },
     "nav": {
       "features": "Features",
