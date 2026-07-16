@@ -20,11 +20,13 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Development", policy =>
+    options.AddPolicy("Default", policy =>
     {
         policy.WithOrigins(
                 "http://localhost:3000",
-                "https://smartbudget-production.vercel.app"
+                "https://smartbudget-production.vercel.app",
+                "https://smartbudget-app.com",
+                "https://www.smartbudget-app.com"
                )
               .AllowAnyHeader()
               .AllowAnyMethod()
@@ -51,7 +53,7 @@ if (app.Environment.IsDevelopment())
     app.MapApiDocumentation();
 }
 
-app.UseCors("Development");
+app.UseCors("Default");
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
