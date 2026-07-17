@@ -227,7 +227,7 @@ export function TransactionFiltersBar({
                     >
                         <CalendarIcon className="size-4 shrink-0" />
                         {selectedDate
-                            ? format(selectedDate, "dd/MM/yyyy", { locale: calendarLocale })
+                            ? format(selectedDate, "P", { locale: calendarLocale })
                             : <span>{t("filters.datePlaceholder")}</span>
                         }
                     </Button>

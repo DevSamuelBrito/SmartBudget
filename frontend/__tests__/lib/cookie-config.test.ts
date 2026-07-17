@@ -5,8 +5,17 @@ describe("getCookieBase", () => {
   const originalCookieDomain = process.env.COOKIE_DOMAIN;
 
   afterEach(() => {
-    (process.env as { NODE_ENV: string }).NODE_ENV = originalNodeEnv;
-    process.env.COOKIE_DOMAIN = originalCookieDomain;
+    if (originalNodeEnv === undefined) {
+      delete process.env.NODE_ENV;
+    } else {
+      (process.env as { NODE_ENV: string }).NODE_ENV = originalNodeEnv;
+    }
+
+    if (originalCookieDomain === undefined) {
+      delete process.env.COOKIE_DOMAIN;
+    } else {
+      process.env.COOKIE_DOMAIN = originalCookieDomain;
+    }
   });
 
   it("uses SameSite=None and Secure in production, for cross-site cookies", () => {
