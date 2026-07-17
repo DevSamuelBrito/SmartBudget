@@ -74,15 +74,15 @@ export function KpiCards({ kpis }: Readonly<KpiCardsProps>) {
           <motion.div key={card.label} variants={staggerItem}>
             <Card className="border-border/70 bg-card/90 backdrop-blur @container/card">
               <CardHeader className="space-y-0 pb-2">
-                <CardDescription>{card.label}</CardDescription>
-                <div className="flex items-start justify-between gap-4">
-                  <CardTitle className="text-2xl font-semibold tabular-nums @[220px]/card:text-3xl">
-                    {formatCurrency(card.value)}
-                  </CardTitle>
+                <div className="flex items-center gap-2">
                   <div className={`rounded-full border border-border/60 p-2 ${card.tone}`}>
                     <Icon className="size-4" />
                   </div>
+                  <CardDescription>{card.label}</CardDescription>
                 </div>
+                <CardTitle className="text-2xl font-semibold tabular-nums @[220px]/card:text-3xl">
+                  {formatCurrency(card.value)}
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">{card.description}</p>

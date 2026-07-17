@@ -33,6 +33,7 @@ import {
     RectangleHorizontalIcon,
     InfoIcon,
     LockIcon,
+    Loader2,
 } from "lucide-react";
 
 // Components
@@ -309,7 +310,8 @@ export function DashboardCustomizerSheet({
                             disabled={saveMutation.isPending}
                             className="w-full"
                         >
-                            {saveMutation.isPending ? t("customizer.saving") : t("customizer.save")}
+                            {saveMutation.isPending && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
+                            {t("customizer.save")}
                         </Button>
                     </SheetFooter>
                 </SheetContent>

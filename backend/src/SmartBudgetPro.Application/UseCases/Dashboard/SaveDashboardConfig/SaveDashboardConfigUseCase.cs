@@ -25,10 +25,10 @@ public class SaveDashboardConfigUseCase(
         if (user is null)
             throw new UserNotFoundException();
 
-        var hasPremiumComponent = input.Items.Any(item =>
-            PremiumFeatures.DashboardComponentKeys.Contains(item.ComponentKey));
+        var hasVisiblePremiumComponent = input.Items.Any(item =>
+            item.Visible && PremiumFeatures.DashboardComponentKeys.Contains(item.ComponentKey));
 
-        if (hasPremiumComponent && !user.IsPremium)
+        if (hasVisiblePremiumComponent && !user.IsPremium)
             throw new PremiumPlanRequiredException("Premium plan required to use this dashboard component.");
 
         var configs = input.Items.Select(item =>
