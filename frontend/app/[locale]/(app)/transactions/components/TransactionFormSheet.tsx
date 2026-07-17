@@ -4,7 +4,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 // i18n
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 // zod
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,8 +54,13 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 
+// utils
+import { getDateFnsLocale } from "@/lib/date-locale";
+
 // types
 import type { CategoryApi } from "@/app/[locale]/(app)/categories/types";
+
+import type { AppLocale } from "@/i18n/routing";
 
 import { transactionFormSchema, type TransactionFormValues } from "../schemas/transaction.schema";
 
@@ -96,6 +101,8 @@ export function TransactionFormSheet({
     "use no memo";
 
     const t = useTranslations("transactions");
+    const locale = useLocale() as AppLocale;
+    const calendarLocale = getDateFnsLocale(locale);
 
     const transactionTypeOptions = [
         { label: t("types.receita"), value: 1 },
@@ -280,7 +287,7 @@ export function TransactionFormSheet({
                                 >
                                     <CalendarIcon className="size-4" />
                                     {selectedTransactionDate ? (
-                                        format(selectedTransactionDate, "PPP", { locale: undefined })
+                                        format(selectedTransactionDate, "PPP", { locale: calendarLocale })
                                     ) : (
                                         <span>{t("form.datePlaceholder")}</span>
                                     )}
@@ -289,6 +296,7 @@ export function TransactionFormSheet({
                             <PopoverContent className="w-auto overflow-hidden p-0" align="start">
                                 <Calendar
                                     mode="single"
+                                    locale={calendarLocale}
                                     selected={selectedTransactionDate}
                                     defaultMonth={selectedTransactionDate}
                                     captionLayout="dropdown"
