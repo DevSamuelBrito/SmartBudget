@@ -17,6 +17,9 @@ import { useForm } from "react-hook-form";
 
 import { toast } from "sonner";
 
+// icons
+import { Loader2 } from "lucide-react";
+
 // components
 import { Button } from "@/components/ui/button";
 
@@ -162,7 +165,8 @@ export function RegisterFormSide({
                             </Field>
                             <Field>
                                 <Button type="submit" disabled={isSubmitting}>
-                                    {isSubmitting ? `${t("register")}...` : t("register")}
+                                    {isSubmitting && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
+                                    {t("register")}
                                 </Button>
                             </Field>
                             <FieldDescription className="text-center">

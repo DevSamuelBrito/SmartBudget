@@ -15,6 +15,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 //toast
 import { toast } from "sonner"
 
+//icons
+import { Loader2 } from "lucide-react"
+
 //components
 import { Button } from "@/components/ui/button"
 
@@ -271,7 +274,8 @@ export function UserAccountDialog({
                             type="submit"
                             disabled={profileMutation.isPending}
                         >
-                            {profileMutation.isPending ? t("saving") : t("saveChanges")}
+                            {profileMutation.isPending && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
+                            {t("saveChanges")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -353,7 +357,8 @@ export function UserAccountDialog({
                             type="submit"
                             disabled={changePasswordMutation.isPending}
                         >
-                            {changePasswordMutation.isPending ? t("changePassword.saving") : t("changePassword.save")}
+                            {changePasswordMutation.isPending && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
+                            {t("changePassword.save")}
                         </Button>
                     </SheetFooter>
                 </SheetContent>
