@@ -1,4 +1,6 @@
 using FluentAssertions;
+using FluentValidation;
+using FluentValidation.Results;
 using Moq;
 using SmartBudgetPro.Application.Common;
 using SmartBudgetPro.Application.Interfaces;
@@ -12,13 +14,23 @@ public class GetDashboardConfigUseCaseTests
 {
     private readonly Mock<IUserDashboardConfigRepository> _repoMock = new();
     private readonly Mock<IUserRepository> _userRepoMock = new();
+    private readonly Mock<IValidator<GetDashboardConfigUseCaseInput>> _validatorMock = new();
     private readonly GetDashboardConfigUseCase _sut;
 
     private static readonly Guid UserId = Guid.NewGuid();
 
     public GetDashboardConfigUseCaseTests()
     {
-        _sut = new GetDashboardConfigUseCase(_repoMock.Object, _userRepoMock.Object);
+        _sut = new GetDashboardConfigUseCase(
+            _validatorMock.Object,
+            _repoMock.Object,
+            _userRepoMock.Object);
+
+        // Validator nunca lança por padrão nos testes.
+        _validatorMock
+            .Setup(v => v.ValidateAsync(
+                It.IsAny<GetDashboardConfigUseCaseInput>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new ValidationResult());
     }
 
     private GetDashboardConfigUseCaseInput BuildInput() => new() { UserId = UserId };

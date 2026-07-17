@@ -1,3 +1,4 @@
+using FluentValidation;
 using SmartBudgetPro.Application.Common;
 using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
@@ -5,6 +6,7 @@ using SmartBudgetPro.Application.Interfaces;
 namespace SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
 
 public class GetDashboardConfigUseCase(
+    IValidator<GetDashboardConfigUseCaseInput> validator,
     IUserDashboardConfigRepository repository,
     IUserRepository userRepository)
 {
@@ -28,6 +30,8 @@ public class GetDashboardConfigUseCase(
 
     public async Task<IEnumerable<DashboardConfigItemOutput>> ExecuteAsync(GetDashboardConfigUseCaseInput input)
     {
+        await validator.ValidateAndThrowAsync(input);
+
         var user = await userRepository.GetByIdAsync(input.UserId);
 
         if (user is null)
