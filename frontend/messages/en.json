@@ -489,6 +489,13 @@
     "body": "You can go back to the home page to continue browsing SmartBudget PRO.",
     "homeButton": "Return to the app"
   },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred while processing your request.",
+    "body": "You can try again or go back to the SmartBudget PRO home page.",
+    "retryButton": "Try again",
+    "homeButton": "Back to home"
+  },
   "common": {
     "save": "Save",
     "cancel": "Cancel",
