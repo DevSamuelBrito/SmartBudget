@@ -1,8 +1,12 @@
+using SmartBudgetPro.Application.Common;
+using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.Dashboard.GetDashboardConfig;
 
-public class GetDashboardConfigUseCase(IUserDashboardConfigRepository repository)
+public class GetDashboardConfigUseCase(
+    IUserDashboardConfigRepository repository,
+    IUserRepository userRepository)
 {
     private static readonly List<DashboardConfigItemOutput> DefaultConfig =
     [
@@ -24,17 +28,29 @@ public class GetDashboardConfigUseCase(IUserDashboardConfigRepository repository
 
     public async Task<IEnumerable<DashboardConfigItemOutput>> ExecuteAsync(GetDashboardConfigUseCaseInput input)
     {
+        var user = await userRepository.GetByIdAsync(input.UserId);
+
+        if (user is null)
+            throw new UserNotFoundException();
+
         var configs = (await repository.GetByUserIdAsync(input.UserId)).ToList();
 
-        if (configs.Count == 0)
+        var items = configs.Count == 0
+            ? DefaultConfig
+            : configs.Select(c => new DashboardConfigItemOutput(
+                c.ComponentKey,
+                c.Order,
+                c.Columns,
+                c.Visible));
+
+        if (user.IsPremium)
         {
-            return DefaultConfig;
+            return items;
         }
 
-        return configs.Select(c => new DashboardConfigItemOutput(
-            c.ComponentKey,
-            c.Order,
-            c.Columns,
-            c.Visible));
+        return items.Select(item =>
+            PremiumFeatures.DashboardComponentKeys.Contains(item.ComponentKey)
+                ? item with { Visible = false }
+                : item);
     }
 }
