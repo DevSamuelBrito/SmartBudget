@@ -21,6 +21,9 @@ import { useForm } from "react-hook-form";
 
 import { toast } from "sonner";
 
+// icons
+import { Loader2 } from "lucide-react";
+
 // components
 import { Button } from "@/components/ui/button";
 
@@ -129,7 +132,8 @@ export function LoginFormSide({ onSignUpClick, className, ...props }: LoginFormS
               </Field>
               <Field>
                 <Button data-testid="login-submit-button" type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? `${t("login")}...` : t("login")}
+                  {isSubmitting && <Loader2 className="size-4 animate-spin text-muted-foreground" />}
+                  {t("login")}
                 </Button>
               </Field>
               <FieldDescription className="text-center">

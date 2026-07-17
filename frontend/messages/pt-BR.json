@@ -489,6 +489,13 @@
     "body": "Você pode voltar para a página inicial para continuar navegando pelo SmartBudget PRO.",
     "homeButton": "Voltar ao App"
   },
+  "error": {
+    "title": "Algo deu errado",
+    "description": "Ocorreu um erro inesperado ao processar sua solicitação.",
+    "body": "Você pode tentar novamente ou voltar para a página inicial do SmartBudget PRO.",
+    "retryButton": "Tentar novamente",
+    "homeButton": "Voltar ao início"
+  },
   "common": {
     "save": "Salvar",
     "cancel": "Cancelar",

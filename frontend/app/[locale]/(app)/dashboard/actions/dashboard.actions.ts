@@ -8,19 +8,28 @@ import { getServerApiBaseUrl } from "@/lib/server-api";
 
 import type { DashboardConfigItem } from "../types";
 
-export async function saveDashboardConfigAction(items: DashboardConfigItem[]) {
-  const baseUrl = getServerApiBaseUrl();
+type ActionResult = { success: true } | { success: false; error: string };
 
-  const response = await authFetch(`${baseUrl}dashboard/config`, {
-    method: "PUT",
-    body: JSON.stringify(items),
-  });
+export async function saveDashboardConfigAction(
+  items: DashboardConfigItem[],
+): Promise<ActionResult> {
+  try {
+    const baseUrl = getServerApiBaseUrl();
 
-  if (!response.ok) {
-    throw new Error("Failed to save dashboard config.");
+    await authFetch(`${baseUrl}dashboard/config`, {
+      method: "PUT",
+      body: JSON.stringify(items),
+    });
+
+    const userId = await getServerUserId();
+
+    revalidateTag(`dashboard-config-${userId}`, "default");
+
+    return { success: true };
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Failed to save dashboard config.";
+
+    return { success: false, error: message };
   }
-
-  const userId = await getServerUserId();
-
-  revalidateTag(`dashboard-config-${userId}`, "default");
 }
