@@ -28,8 +28,13 @@ export function useSaveDashboardConfig(onSuccess?: () => void) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (items: DashboardConfigItem[]) =>
-      saveDashboardConfigAction(items),
+    mutationFn: async (items: DashboardConfigItem[]) => {
+      const result = await saveDashboardConfigAction(items);
+
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+    },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["dashboard-config"] });
       toast.success("Dashboard customizado com sucesso!");
