@@ -10,7 +10,8 @@ public class CreateBudgetUseCase(
     IBudgetRepository budgetRepository,
     IUserRepository userRepository,
     ITransactionCategoryRepository transactionCategoryRepository,
-    IValidator<CreateBudgetUseCaseInput> validator)
+    IValidator<CreateBudgetUseCaseInput> validator,
+    IAuditLogger auditLogger)
 {
     public async Task<BudgetDto> ExecuteAsync(CreateBudgetUseCaseInput input)
     {
@@ -46,6 +47,13 @@ public class CreateBudgetUseCase(
             input.LimitAmount);
 
         await budgetRepository.AddAsync(budget);
+
+        await auditLogger.LogAsync(
+            input.UserId,
+            "BudgetCreated",
+            "Budget",
+            budget.Id,
+            null);
 
         return new BudgetDto(
             budget.Id,

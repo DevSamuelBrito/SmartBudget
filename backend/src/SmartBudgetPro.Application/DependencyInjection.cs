@@ -1,5 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using SmartBudgetPro.Application.Interfaces;
+using SmartBudgetPro.Application.Services;
 using SmartBudgetPro.Application.UseCases.Budget.CreateBudget;
 using SmartBudgetPro.Application.UseCases.Budget.DeleteBudget;
 using SmartBudgetPro.Application.UseCases.Budget.GetAllBudget;
@@ -36,6 +38,9 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        //audit log
+        services.AddScoped<IAuditLogger, AuditLogger>();
+
         //user
         services.AddScoped<CreateUserUseCase>();
         services.AddScoped<UpdateUserUseCase>();

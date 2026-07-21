@@ -7,7 +7,7 @@ import { useState } from "react"
 import { useTranslations } from "next-intl"
 
 // libs
-import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon, LayoutDashboardIcon, SettingsIcon } from "lucide-react"
+import { EllipsisVerticalIcon, CircleUserRoundIcon, LogOutIcon, LayoutDashboardIcon, SettingsIcon, HelpCircleIcon } from "lucide-react"
 
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -35,6 +35,8 @@ import { DashboardCustomizerSheet } from "@/app/[locale]/(app)/dashboard/compone
 import { SettingsDialog } from "@/components/settings-dialog"
 
 import { UserAccountDialog } from "@/components/user-account-dialog"
+
+import { HowItWorksDialog } from "@/components/how-it-works-dialog"
 
 // contexts
 import { useAuth } from "@/contexts/auth-context"
@@ -74,6 +76,8 @@ export function NavUser({
   const [accountDialogOpen, setAccountDialogOpen] = useState(false)
 
   const [settingsOpen, setSettingsOpen] = useState(false)
+
+  const [howItWorksOpen, setHowItWorksOpen] = useState(false)
 
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
@@ -144,6 +148,10 @@ export function NavUser({
                   <SettingsIcon />
                   {t("settings")}
                 </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setHowItWorksOpen(true)}>
+                  <HelpCircleIcon />
+                  {t("howItWorks")}
+                </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem onSelect={handleLogout} disabled={isLoggingOut}>
@@ -169,6 +177,7 @@ export function NavUser({
         isChangingLocale={isChangingLocale}
         onChangeLocale={handleChangeLocale}
       />
+      <HowItWorksDialog open={howItWorksOpen} onOpenChange={setHowItWorksOpen} />
     </>
   )
 }
