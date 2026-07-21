@@ -9,6 +9,7 @@ namespace SmartBudgetPro.API.Controllers;
 public class HealthController : ControllerBase
 {
     [HttpGet]
+    [HttpHead]
     public IActionResult Get()
     {
         return Ok(new { status = "healthy", timestamp = DateTime.UtcNow.ToString("o") });
