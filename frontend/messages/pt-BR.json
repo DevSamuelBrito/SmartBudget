@@ -799,7 +799,7 @@
     "glimpse": {
       "title": "Seu mês inteiro, em uma tela",
       "description": "Saldo, receitas, despesas e o progresso de cada orçamento — o dashboard real do SmartBudget.",
-      "caption": "Captura de tela real do produto, em modo escuro.",
+      "caption": "Captura de tela real do produto.",
       "alt": "Dashboard do SmartBudget mostrando saldo atual, receitas e despesas do mês, indicadores rápidos e progresso dos orçamentos por categoria."
     },
     "features": {

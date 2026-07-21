@@ -28,11 +28,19 @@ export function DashboardGlimpse() {
 
           <div className="overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
             <Image
-              src="/images/dashboard.png"
+              src="/images/dashboardLight.png"
               alt={t("alt")}
               width={1390}
               height={750}
-              className="h-auto w-full"
+              className="h-auto w-full dark:hidden"
+              sizes="(min-width: 1024px) 55vw, 100vw"
+            />
+            <Image
+              src="/images/dashboardDark.png"
+              alt={t("alt")}
+              width={1390}
+              height={750}
+              className="hidden h-auto w-full dark:block"
               sizes="(min-width: 1024px) 55vw, 100vw"
             />
           </div>
