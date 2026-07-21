@@ -14,6 +14,8 @@
 
 [🇧🇷 Leia em Português](./README.pt-BR.md)
 
+🔗 **Live:** [smartbudget-app.com](https://smartbudget-app.com)
+
 ---
 
 ## About
@@ -26,11 +28,13 @@ SmartBudget is a personal finance tracker that helps users take control of their
 - **Transactions** — Create, edit, delete, and filter income and expense transactions
 - **Categories** — Fully customizable categories with icons, colors, and drag-and-drop ordering
 - **Budgets** — Monthly budget limits per category with real-time spending indicators
-- **Dashboard** — Customizable dashboard with charts and summaries for income, expenses, balance, and category breakdown
+- **Dashboard** — Customizable dashboard with charts and summaries for income, expenses, balance, and category breakdown, plus premium widgets for savings rate, monthly comparison, top expenses, cash flow, and budget health
 - **Reports** — Monthly report generation with PDF and Excel export, supporting multiple languages
 - **Premium plans** — Subscription tier system to unlock advanced features
+- **Onboarding** — Interactive "How It Works" guide walking new users through the app's core flows
 - **Internationalization** — Full UI translation in English and Brazilian Portuguese (pt-BR)
 - **Landing page** — Public marketing site with feature highlights, a live budget demo, and plan comparison
+- **Observability** — Health check endpoint, structured request logging with Serilog, and audit logging of user actions for traceability
 
 ---
 
@@ -50,6 +54,8 @@ SmartBudget is a personal finance tracker that helps users take control of their
 | JWT                            | Authentication tokens                        |
 | Asp.Versioning                 | URL-based API versioning (`/api/v1/...`)     |
 | ClosedXML                      | Excel report generation                      |
+| Serilog                        | Structured logging and request tracing       |
+| Scalar.AspNetCore              | Interactive API documentation UI             |
 | xUnit + Moq + FluentAssertions | Unit testing                                 |
 | Brevo                          | Transactional email service (password reset) |
 
@@ -69,6 +75,7 @@ SmartBudget is a personal finance tracker that helps users take control of their
 | Framer Motion                | Animations and motion effects |
 | next-intl                    | Internationalization (i18n)  |
 | @dnd-kit                     | Drag-and-drop ordering       |
+| Sonner                       | Toast notifications          |
 | Playwright                   | End-to-end testing           |
 | Jest + React Testing Library | Unit testing                 |
 

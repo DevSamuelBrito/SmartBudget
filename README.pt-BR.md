@@ -14,6 +14,8 @@
 
 [🇺🇸 Read in English](./README.md)
 
+🔗 **Acesse:** [smartbudget-app.com](https://smartbudget-app.com)
+
 ---
 
 ## Sobre o projeto
@@ -26,11 +28,13 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 - **Transações** — Criação, edição, exclusão e filtro de receitas e despesas
 - **Categorias** — Categorias personalizáveis com ícones, cores e ordenação por drag-and-drop
 - **Orçamentos** — Limites mensais por categoria com indicadores de gasto em tempo real
-- **Dashboard** — Dashboard customizável com gráficos e resumos de receitas, despesas, saldo e distribuição por categoria
+- **Dashboard** — Dashboard customizável com gráficos e resumos de receitas, despesas, saldo e distribuição por categoria, além de widgets premium de taxa de poupança, comparação mensal, maiores gastos, fluxo de caixa e saúde do orçamento
 - **Relatórios** — Geração de relatório mensal com exportação em PDF e Excel, com suporte a múltiplos idiomas
 - **Planos premium** — Sistema de assinatura para desbloquear funcionalidades avançadas
+- **Onboarding** — Guia interativo "Como usar" que apresenta os principais fluxos do app para novos usuários
 - **Internacionalização** — Interface totalmente traduzida em inglês e português (pt-BR)
 - **Landing page** — Site institucional público com destaque de funcionalidades, demo interativa de orçamento e comparação de planos
+- **Observabilidade** — Endpoint de health check, logging estruturado de requisições com Serilog e registro de auditoria (audit log) das ações do usuário para rastreabilidade
 
 ---
 
@@ -50,6 +54,8 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 | JWT                            | Tokens de autenticação                                |
 | Asp.Versioning                 | Versionamento de API via URL (`/api/v1/...`)          |
 | ClosedXML                      | Geração de relatórios Excel                           |
+| Serilog                        | Logging estruturado e rastreamento de requisições     |
+| Scalar.AspNetCore              | UI interativa de documentação da API                  |
 | xUnit + Moq + FluentAssertions | Testes unitários                                      |
 | Brevo                          | Serviço de e-mail transacional (recuperação de senha) |
 
@@ -69,6 +75,7 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 | Framer Motion                | Animações e efeitos de movimento |
 | next-intl                    | Internacionalização (i18n)       |
 | @dnd-kit                     | Ordenação por drag-and-drop      |
+| Sonner                       | Notificações toast               |
 | Playwright                   | Testes end-to-end                |
 | Jest + React Testing Library | Testes unitários                 |
 
