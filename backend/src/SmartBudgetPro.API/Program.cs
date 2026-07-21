@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Json;
 using SmartBudgetPro.API.Configuration;
 using SmartBudgetPro.API.Middlewares;
 using SmartBudgetPro.Application;
@@ -19,26 +17,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Logging.ClearProviders();
-    builder.Host.UseSerilog((context, services, loggerConfiguration) =>
-    {
-        loggerConfiguration
-            .ReadFrom.Configuration(context.Configuration)
-            .ReadFrom.Services(services)
-            .MinimumLevel.Information()
-            .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-            .Enrich.FromLogContext();
-
-        if (context.HostingEnvironment.IsDevelopment())
-        {
-            loggerConfiguration.WriteTo.Console(
-                outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}");
-        }
-        else
-        {
-            loggerConfiguration.WriteTo.Console(new JsonFormatter());
-        }
-    });
+    builder.ConfigureSerilog();
 
     builder.Services.AddApiDocumentation();
     builder.Services.AddApplication();
@@ -49,21 +28,7 @@ try
     builder.Services.AddControllers(options => options.AddVersionedApiConvention());
     builder.Services.AddProblemDetails();
 
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("Default", policy =>
-        {
-            policy.WithOrigins(
-                    "http://localhost:3000",
-                    "https://smartbudget-production.vercel.app",
-                    "https://smartbudget-app.com",
-                    "https://www.smartbudget-app.com"
-                   )
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
-        });
-    });
+    builder.Services.AddCorsPolicy();
 
     var app = builder.Build();
 
@@ -85,7 +50,7 @@ try
     }
 
     app.UseSerilogRequestLogging();
-    app.UseCors("Default");
+    app.UseCors(CorsExtensions.DefaultPolicyName);
     app.UseHttpsRedirection();
     app.UseMiddleware<ExceptionHandlingMiddleware>();
     app.UseAuthentication();
