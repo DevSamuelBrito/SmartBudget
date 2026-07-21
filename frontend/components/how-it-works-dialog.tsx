@@ -1,5 +1,8 @@
 "use client"
 
+// react
+import * as React from "react"
+
 // next
 import Link from "next/link"
 
@@ -55,16 +58,26 @@ type HowItWorksDialogProps = {
   onOpenChange: (open: boolean) => void
 }
 
-type InfoItemProps = {
+type InfoItemProps = React.ComponentProps<"div"> & {
   icon: LucideIcon
   title: string
   description?: string
   iconClassName?: string
 }
 
-function InfoItem({ icon: Icon, title, description, iconClassName }: Readonly<InfoItemProps>) {
+function InfoItem({
+  icon: Icon,
+  title,
+  description,
+  iconClassName,
+  className,
+  ...props
+}: Readonly<InfoItemProps>) {
   return (
-    <div className={cn("flex gap-3", description ? "items-start" : "items-center")}>
+    <div
+      className={cn("flex gap-3", description ? "items-start" : "items-center", className)}
+      {...props}
+    >
       <span
         className={cn(
           "flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-muted-foreground",
