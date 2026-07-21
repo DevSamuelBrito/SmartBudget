@@ -1,12 +1,12 @@
 # SmartBudget
 
-> Aplicação full-stack de controle financeiro pessoal construída com .NET 10 e Next.js 15.
+> Aplicação full-stack de controle financeiro pessoal construída com .NET 10 e Next.js 16.
 
 [![CI](https://github.com/DevSamuelBrito/SmartBudget/actions/workflows/ci.yml/badge.svg)](https://github.com/DevSamuelBrito/SmartBudget/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DevSamuelBrito_SmartBudget&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=DevSamuelBrito_SmartBudget)
 [![Known Vulnerabilities](https://snyk.io/test/github/DevSamuelBrito/SmartBudget/badge.svg)](https://snyk.io/test/github/DevSamuelBrito/SmartBudget)
 ![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)
-![Next.js](https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs)
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)
@@ -28,11 +28,12 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 - **Transações** — Criação, edição, exclusão e filtro de receitas e despesas
 - **Categorias** — Categorias personalizáveis com ícones, cores e ordenação por drag-and-drop
 - **Orçamentos** — Limites mensais por categoria com indicadores de gasto em tempo real
-- **Dashboard** — Dashboard customizável com gráficos e resumos de receitas, despesas, saldo e distribuição por categoria, além de widgets premium de taxa de poupança, comparação mensal, maiores gastos, fluxo de caixa e saúde do orçamento
+- **Dashboard** — Dashboard customizável com gráficos e resumos de receitas, despesas, saldo e distribuição por categoria, além de widgets premium de taxa de poupança, comparação mensal, maiores gastos, fluxo de caixa, saúde do orçamento e risco financeiro
 - **Relatórios** — Geração de relatório mensal com exportação em PDF e Excel, com suporte a múltiplos idiomas
 - **Planos premium** — Sistema de assinatura para desbloquear funcionalidades avançadas
 - **Onboarding** — Guia interativo "Como usar" que apresenta os principais fluxos do app para novos usuários
 - **Internacionalização** — Interface totalmente traduzida em inglês e português (pt-BR)
+- **Temas** — Alternância entre modo claro e escuro disponível em todo o app e na landing page pública
 - **Landing page** — Site institucional público com destaque de funcionalidades, demo interativa de orçamento e comparação de planos
 - **Observabilidade** — Endpoint de health check, logging estruturado de requisições com Serilog e registro de auditoria (audit log) das ações do usuário para rastreabilidade
 
@@ -52,6 +53,7 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 | Clean Architecture             | Arquitetura em camadas                                |
 | FluentValidation               | Validação de entradas                                 |
 | JWT                            | Tokens de autenticação                                |
+| BCrypt.Net-Next                | Hash e salting de senhas                              |
 | Asp.Versioning                 | Versionamento de API via URL (`/api/v1/...`)          |
 | ClosedXML                      | Geração de relatórios Excel                           |
 | Serilog                        | Logging estruturado e rastreamento de requisições     |
@@ -63,19 +65,25 @@ SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a o
 
 | Tecnologia                   | Uso                              |
 | ---------------------------- | -------------------------------- |
-| Next.js 15 / React 19        | Framework de UI (App Router)     |
+| Next.js 16 / React 19        | Framework de UI (App Router)     |
 | TypeScript (strict)          | Tipagem estática                 |
 | Tailwind CSS 4               | Estilização                      |
 | shadcn/ui                    | Biblioteca de componentes        |
 | TanStack React Query         | Gerenciamento de estado servidor |
+| @tanstack/react-table        | Tabelas de dados (transações, categorias) |
 | React Hook Form + Zod        | Formulários e validação          |
+| react-day-picker + date-fns  | Seletores de data e utilitários de data |
 | Axios                        | Cliente HTTP                     |
+| jose                         | Decodificação e verificação de JWT (middleware / edge runtime) |
 | Recharts                     | Visualização de dados            |
 | @react-pdf/renderer          | Geração de relatórios PDF        |
 | Framer Motion                | Animações e efeitos de movimento |
 | next-intl                    | Internacionalização (i18n)       |
 | @dnd-kit                     | Ordenação por drag-and-drop      |
 | Sonner                       | Notificações toast               |
+| vaul                         | Componentes de drawer para UI mobile |
+| embla-carousel-react         | Carrossel (landing page)         |
+| nprogress                    | Indicador de carregamento no topo da página |
 | Playwright                   | Testes end-to-end                |
 | Jest + React Testing Library | Testes unitários                 |
 
@@ -103,12 +111,14 @@ graph TD
     Domain["Camada Domain\n(Entidades, Regras de Negócio)"]
     Infra["Camada Infrastructure\n(EF Core, Repositórios, JWT)"]
     DB[("PostgreSQL")]
+    Redis[("Redis")]
 
     Client --> API
     API --> App
     App --> Domain
     Infra --> Domain
     Infra --> DB
+    Infra --> Redis
 
     style Domain fill:#f5f0ff,stroke:#7c3aed
     style App fill:#eff6ff,stroke:#3b82f6
@@ -149,6 +159,12 @@ graph TD
 - **Global Exception Middleware** — tratamento centralizado de erros (`ExceptionHandlingMiddleware`) traduzindo exceções em respostas HTTP consistentes
 - **Validação em Múltiplas Camadas** — FluentValidation no backend e Zod no frontend garantem integridade dos dados em toda fronteira
 - **Premium Feature Guards** — verificações de tier de assinatura aplicadas no backend (autorização) e no frontend (restrições de UI)
+
+### Observabilidade
+
+- **Logging Estruturado** — Serilog captura logs estruturados e correlacionáveis de requisição/resposta em todos os ambientes
+- **Audit Logging** — Ações sensíveis do usuário (alterações de orçamento, upgrades premium, mutações de categorias e transações) são persistidas em uma trilha de auditoria para rastreabilidade
+- **Health Check Endpoint** — Endpoint leve `/health` (`GET`/`HEAD`) para monitoramento de disponibilidade e health checks de load balancer
 
 ---
 
@@ -256,11 +272,16 @@ docker compose up --build
 
 | Variável                               | Descrição                                         | Exemplo                             |
 | -------------------------------------- | ------------------------------------------------- | ----------------------------------- |
+| `ASPNETCORE_ENVIRONMENT`               | Ambiente de hospedagem do ASP.NET Core            | `Development`                       |
 | `ConnectionStrings__DefaultConnection` | String de conexão do PostgreSQL para o backend    | `Host=...;Database=SmartBudget;...` |
 | `Redis__ConnectionString`              | String de conexão do Redis (Upstash)              | `your-instance.upstash.io:6379,password=...` |
 | `Jwt__Key`                             | Chave secreta para assinar tokens JWT (mín. 32 caracteres) | `your-secret-key-at-least-32-characters` |
+| `Email__ApiKey`                        | Chave de API do Brevo para envio de e-mails transacionais | `your-brevo-api-key`        |
+| `Email__FromEmail`                     | E-mail remetente validado no Brevo                | `your-email@example.com`            |
+| `FrontendUrl`                          | URL do frontend usada para gerar o link de reset de senha | `http://localhost:3000`     |
 | `NEXT_PUBLIC_API_URL`                  | URL pública da API usada no navegador             | `http://localhost:8080/api/v1/`     |
 | `API_URL`                              | URL interna da API usada pelo Next.js no servidor | `http://backend:8080/api/v1/`       |
+| `COOKIE_DOMAIN`                        | Domínio do cookie de autenticação em produção (permite compartilhamento entre subdomínios); deixe vazio no desenvolvimento local | `.smartbudget-app.com` |
 
 Consulte o `.env.example` para um template pronto para copiar.
 
@@ -352,7 +373,7 @@ SmartBudget/
 │   │   └── SmartBudgetPro.Shared/         # Utilitários compartilhados
 │   └── tests/
 │       └── SmartBudgetPro.Tests/          # Testes unitários com xUnit
-├── frontend/                              # Next.js 15 App Router
+├── frontend/                              # Next.js 16 App Router
 │   ├── app/                              # Páginas e layouts
 │   │   └── [locale]/                     # Grupos de rotas: (auth), (app), (landing), (marketing)
 │   ├── components/                       # Componentes de UI e domínio
