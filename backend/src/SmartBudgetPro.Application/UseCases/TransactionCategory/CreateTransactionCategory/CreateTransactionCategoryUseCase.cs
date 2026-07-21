@@ -1,4 +1,5 @@
-﻿using SmartBudgetPro.Application.Common;
+﻿using Microsoft.Extensions.Logging;
+using SmartBudgetPro.Application.Common;
 using SmartBudgetPro.Application.Common.DTOs;
 using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
@@ -7,7 +8,10 @@ using DomainCategory = SmartBudgetPro.Domain.Transactions.TransactionCategory;
 
 namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransactionCategory
 {
-    public class CreateTransactionCategoryUseCase(ITransactionCategoryRepository transactionCategoryRepository, IUserRepository userRepository)
+    public class CreateTransactionCategoryUseCase(
+        ITransactionCategoryRepository transactionCategoryRepository,
+        IUserRepository userRepository,
+        ILogger<CreateTransactionCategoryUseCase> logger)
     {
         public async Task<TransactionCategoryDto> ExecuteAsync(CreateTransactionCategoryUseCaseInput input)
         {
@@ -17,7 +21,13 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
                 throw new UserNotFoundException();
 
             if (!string.IsNullOrEmpty(input.Icon) && PremiumFeatures.Icons.Contains(input.Icon) && !user.IsPremium)
+            {
+                logger.LogWarning(
+                    "User {UserId} attempted to use premium icon {Icon} without a premium plan.",
+                    input.UserId,
+                    input.Icon);
                 throw new PremiumPlanRequiredException("Premium plan required to use this icon.");
+            }
 
             var existingCategory = await transactionCategoryRepository.GetByNameAsync(input.UserId, input.Name);
 

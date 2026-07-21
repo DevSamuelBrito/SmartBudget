@@ -18,7 +18,14 @@ public class ExceptionHandlingMiddleware(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while processing the request.");
+            logger.LogError(
+                ex,
+                "Unhandled exception {ExceptionType} occurred while processing {RequestMethod} {RequestPath}: {ExceptionMessage}. StackTrace: {StackTrace}",
+                ex.GetType().Name,
+                context.Request.Method,
+                context.Request.Path,
+                ex.Message,
+                ex.StackTrace);
             await HandleExceptionAsync(context, ex, problemDetailsService);
         }
     }

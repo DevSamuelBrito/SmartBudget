@@ -2,6 +2,7 @@
 using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Domain.Transactions;
 using FluentValidation;
+using Microsoft.Extensions.Logging;
 using DomainFinancialTransaction = SmartBudgetPro.Domain.Transactions.FinancialTransaction;
 
 namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
@@ -11,7 +12,8 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
         IValidator<CreateFinancialTransactionUseCaseInput> validator,
         IUserRepository userRepository,
         ITransactionCategoryRepository transactionCategoryRepository,
-        IBudgetRepository budgetRepository
+        IBudgetRepository budgetRepository,
+        ILogger<CreateFinancialTransactionUseCase> logger
         )
     {
         public async Task<Guid> ExecuteAsync(CreateFinancialTransactionUseCaseInput input)
@@ -46,6 +48,12 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
             );
 
             await transactionRepository.AddAsync(transaction);
+
+            logger.LogInformation(
+                "Transaction {TransactionId} of type {TransactionType} created for user {UserId}.",
+                transaction.Id,
+                input.TransactionType,
+                input.UserId);
 
             if (input.TransactionType == FinancialTransactionType.Expense && input.TransactionCategoryId.HasValue)
             {
