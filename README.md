@@ -12,6 +12,9 @@
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)
 ![Tailwind](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss)
 
+![Landing Page](./docs/screenshots/landing.png)
+![Dashboard](./docs/screenshots/dashboard.png)
+
 [🇧🇷 Leia em Português](./README.pt-BR.md)
 
 🔗 **Live:** [smartbudget-app.com](https://smartbudget-app.com)
@@ -390,10 +393,43 @@ SmartBudget/
 
 ## Screenshots
 
+- Landing Page
+![Landing Page](./docs/screenshots/landing.png)
+
+- Dashboard
 ![Dashboard](./docs/screenshots/dashboard.png)
+
+- Transactions
 ![Transactions](./docs/screenshots/transactions.png)
+![Transactions](./docs/screenshots/addTransactions.png)
+
+- Categories
 ![Categories](./docs/screenshots/categories.png)
+![Categories](./docs/screenshots/addCategorys.png)
+
+- Budgets
 ![Budgets](./docs/screenshots/budgets.png)
+
+- Reports
+![Reports](./docs/screenshots/reports.png)
+
+- Plans
+![Plans](./docs/screenshots/plans.png)
+
+- Account Settings
+![Account Settings](./docs/screenshots/account.png)
+
+- Settings
+![Settings](./docs/screenshots/settings.png)
+
+- Customize Dashboard
+![Customize Dashboard](./docs/screenshots/customizeDashboard.png)
+
+- Sign Up
+![Sign Up](./docs/screenshots/signup.png)
+
+- Sign In
+![Sign In](./docs/screenshots/signin.png)
 
 ---
 
