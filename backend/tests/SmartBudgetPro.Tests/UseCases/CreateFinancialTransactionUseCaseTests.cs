@@ -1,6 +1,7 @@
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SmartBudgetPro.Application.Interfaces;
 using SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction;
@@ -17,6 +18,8 @@ public class CreateFinancialTransactionUseCaseTests
     private readonly Mock<IUserRepository> _userRepoMock = new();
     private readonly Mock<ITransactionCategoryRepository> _categoryRepoMock = new();
     private readonly Mock<IBudgetRepository> _budgetRepoMock = new();
+    private readonly Mock<ILogger<CreateFinancialTransactionUseCase>> _loggerMock = new();
+    private readonly Mock<IAuditLogger> _auditLoggerMock = new();
     private readonly CreateFinancialTransactionUseCase _sut;
 
     private static readonly Guid UserId = Guid.NewGuid();
@@ -29,7 +32,9 @@ public class CreateFinancialTransactionUseCaseTests
             _validatorMock.Object,
             _userRepoMock.Object,
             _categoryRepoMock.Object,
-            _budgetRepoMock.Object);
+            _budgetRepoMock.Object,
+            _loggerMock.Object,
+            _auditLoggerMock.Object);
 
         // Validator nunca lança por padrão nos testes
         _validatorMock
@@ -87,6 +92,19 @@ public class CreateFinancialTransactionUseCaseTests
         // Assert
         _budgetRepoMock.Verify(r => r.UpdateAsync(budget), Times.Once);
         budget.SpentAmount.Should().Be(200m);
+
+        // Details deve conter apenas metadados não-sensíveis (nunca valor ou descrição da transação)
+        _auditLoggerMock.Verify(
+            a => a.LogAsync(
+                UserId,
+                "TransactionCreated",
+                "FinancialTransaction",
+                It.IsAny<Guid?>(),
+                It.Is<string?>(details =>
+                    details == "Type: Expense"
+                    && !details.Contains("200")
+                    && !details.Contains("Supermercado"))),
+            Times.Once);
     }
 
     // ── Cenário: Expense sem budget cadastrado ─────────────────────────────────

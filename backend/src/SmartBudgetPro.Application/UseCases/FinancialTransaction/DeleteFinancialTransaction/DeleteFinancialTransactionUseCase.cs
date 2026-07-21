@@ -6,7 +6,8 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinanci
 {
     public class DeleteFinancialTransactionUseCase(
         IFinancialTransactionRepository financialTransactionRepository,
-        IBudgetRepository budgetRepository)
+        IBudgetRepository budgetRepository,
+        IAuditLogger auditLogger)
     {
         public async Task ExecuteAsync(Guid userId, Guid transactionId)
         {
@@ -24,6 +25,13 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.DeleteFinanci
             var month = transaction.TransactionDate.Month;
 
             await financialTransactionRepository.DeleteAsync(transactionId);
+
+            await auditLogger.LogAsync(
+                userId,
+                "TransactionDeleted",
+                "FinancialTransaction",
+                transactionId,
+                null);
 
             if (wasExpense && categoryId.HasValue)
             {

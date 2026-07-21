@@ -6,7 +6,8 @@ namespace SmartBudgetPro.Application.UseCases.Budget.UpdateBudget;
 
 public class UpdateBudgetUseCase(
     IBudgetRepository budgetRepository,
-    IValidator<UpdateBudgetUseCaseInput> validator)
+    IValidator<UpdateBudgetUseCaseInput> validator,
+    IAuditLogger auditLogger)
 {
     public async Task ExecuteAsync(Guid userId, Guid id, UpdateBudgetUseCaseInput input)
     {
@@ -23,5 +24,12 @@ public class UpdateBudgetUseCase(
         budget.UpdateLimit(input.LimitAmount);
 
         await budgetRepository.UpdateAsync(budget);
+
+        await auditLogger.LogAsync(
+            userId,
+            "BudgetUpdated",
+            "Budget",
+            budget.Id,
+            null);
     }
 }

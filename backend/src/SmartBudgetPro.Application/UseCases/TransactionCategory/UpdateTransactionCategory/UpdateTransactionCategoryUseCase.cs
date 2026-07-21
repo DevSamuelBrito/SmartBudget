@@ -6,7 +6,8 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransact
 {
     public class UpdateTransactionCategoryUseCase(
         ITransactionCategoryRepository transactionCategoryRepository,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IAuditLogger auditLogger)
     {
         public async Task ExecuteAsync(Guid userId, UpdateTransactionCategoryUseCaseInput input)
         {
@@ -36,6 +37,13 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.UpdateTransact
             category.ChangeIcon(input.Icon);
 
             await transactionCategoryRepository.UpdateAsync(category);
+
+            await auditLogger.LogAsync(
+                userId,
+                "CategoryUpdated",
+                "TransactionCategory",
+                category.Id,
+                null);
         }
     }
 }

@@ -32,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IUserDashboardConfigRepository, UserDashboardConfigRepository>();
         services.AddScoped<IRefreshTokenRepository, RedisRefreshTokenRepository>();
         services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
+        services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 
         // Security
         services.AddScoped<IPasswordHasher, PasswordHasher>();

@@ -1,6 +1,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SmartBudgetPro.Application.Exceptions;
 using SmartBudgetPro.Application.Interfaces;
@@ -15,6 +16,7 @@ public class SaveDashboardConfigUseCaseTests
     private readonly Mock<IUserDashboardConfigRepository> _repoMock = new();
     private readonly Mock<IUserRepository> _userRepoMock = new();
     private readonly Mock<IValidator<SaveDashboardConfigUseCaseInput>> _validatorMock = new();
+    private readonly Mock<ILogger<SaveDashboardConfigUseCase>> _loggerMock = new();
     private readonly SaveDashboardConfigUseCase _sut;
 
     private static readonly Guid UserId = Guid.NewGuid();
@@ -24,7 +26,8 @@ public class SaveDashboardConfigUseCaseTests
         _sut = new SaveDashboardConfigUseCase(
             _repoMock.Object,
             _userRepoMock.Object,
-            _validatorMock.Object);
+            _validatorMock.Object,
+            _loggerMock.Object);
 
         // Validator nunca lança por padrão nos testes.
         // Nota: nesta versão do FluentValidation, IValidator<T>.ValidateAsync(input)

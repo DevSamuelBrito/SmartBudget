@@ -11,6 +11,7 @@ public class DeleteCategoryUseCaseTests
 {
     private readonly Mock<ITransactionCategoryRepository> _categoryRepoMock = new();
     private readonly Mock<IFinancialTransactionRepository> _transactionRepoMock = new();
+    private readonly Mock<IAuditLogger> _auditLoggerMock = new();
     private readonly DeleteTransactionCategoryUseCase _sut;
 
     private static readonly Guid UserId = Guid.NewGuid();
@@ -20,7 +21,8 @@ public class DeleteCategoryUseCaseTests
     {
         _sut = new DeleteTransactionCategoryUseCase(
             _categoryRepoMock.Object,
-            _transactionRepoMock.Object);
+            _transactionRepoMock.Object,
+            _auditLoggerMock.Object);
     }
 
     // ── Cenário: categoria não encontrada ─────────────────────────────────────
@@ -96,5 +98,15 @@ public class DeleteCategoryUseCaseTests
 
         // Assert
         _categoryRepoMock.Verify(r => r.DeleteAsync(category.Id), Times.Once);
+
+        // Details não deve conter o nome da categoria (dado do usuário)
+        _auditLoggerMock.Verify(
+            a => a.LogAsync(
+                UserId,
+                "CategoryDeleted",
+                "TransactionCategory",
+                category.Id,
+                null),
+            Times.Once);
     }
 }

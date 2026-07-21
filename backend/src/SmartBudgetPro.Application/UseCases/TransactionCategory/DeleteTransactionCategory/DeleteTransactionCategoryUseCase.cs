@@ -5,7 +5,8 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.DeleteTransact
 {
     public class DeleteTransactionCategoryUseCase(
         ITransactionCategoryRepository transactionCategoryRepository,
-        IFinancialTransactionRepository financialTransactionRepository)
+        IFinancialTransactionRepository financialTransactionRepository,
+        IAuditLogger auditLogger)
     {
         public async Task ExecuteAsync(Guid userId, DeleteTransactionCategoryUseCaseInput input)
         {
@@ -24,6 +25,13 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.DeleteTransact
                 throw new TransactionCategoryHasLinkedTransactionsException();
 
             await transactionCategoryRepository.DeleteAsync(input.id);
+
+            await auditLogger.LogAsync(
+                userId,
+                "CategoryDeleted",
+                "TransactionCategory",
+                category.Id,
+                null);
         }
     }
 }
