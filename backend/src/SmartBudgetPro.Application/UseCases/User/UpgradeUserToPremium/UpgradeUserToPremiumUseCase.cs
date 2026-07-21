@@ -22,7 +22,7 @@ public class UpgradeUserToPremiumUseCase(IUserRepository userRepository, IAuditL
                 "UserUpgradedToPremium",
                 "User",
                 user.Id,
-                $"Usuário '{user.Email}' foi promovido para o plano premium");
+                "User upgraded to premium plan");
         }
 
         return new UpgradeUserToPremiumUseCaseOutput(user.Id, user.Name, user.Email, user.IsPremium);
