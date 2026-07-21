@@ -18,25 +18,41 @@ public class ExceptionHandlingMiddleware(
         }
         catch (Exception ex)
         {
-            logger.LogError(
-                ex,
-                "Unhandled exception {ExceptionType} occurred while processing {RequestMethod} {RequestPath}: {ExceptionMessage}. StackTrace: {StackTrace}",
-                ex.GetType().Name,
-                context.Request.Method,
-                context.Request.Path,
-                ex.Message,
-                ex.StackTrace);
-            await HandleExceptionAsync(context, ex, problemDetailsService);
+            var (statusCode, message) = MapException(ex);
+
+            if (statusCode is >= 400 and < 500)
+            {
+                logger.LogWarning(
+                    "Client error {ExceptionType} ({StatusCode}) occurred while processing {RequestMethod} {RequestPath}: {ExceptionMessage}",
+                    ex.GetType().Name,
+                    statusCode,
+                    context.Request.Method,
+                    context.Request.Path,
+                    ex.Message);
+            }
+            else
+            {
+                logger.LogError(
+                    ex,
+                    "Unhandled exception {ExceptionType} ({StatusCode}) occurred while processing {RequestMethod} {RequestPath}: {ExceptionMessage}. StackTrace: {StackTrace}",
+                    ex.GetType().Name,
+                    statusCode,
+                    context.Request.Method,
+                    context.Request.Path,
+                    ex.Message,
+                    ex.StackTrace);
+            }
+
+            await HandleExceptionAsync(context, statusCode, message, problemDetailsService);
         }
     }
 
     private static async Task HandleExceptionAsync(
         HttpContext context,
-        Exception exception,
+        int statusCode,
+        string message,
         IProblemDetailsService problemDetailsService)
     {
-        var (statusCode, message) = MapException(exception);
-
         var problemDetails = new ProblemDetails
         {
             Type = $"https://httpstatuses.com/{statusCode}",
