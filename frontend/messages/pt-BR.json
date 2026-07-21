@@ -419,8 +419,94 @@
     "customizeDashboard": "Customizar Dashboard",
     "language": "Idioma",
     "settings": "Configurações",
+    "howItWorks": "Como usar",
     "logout": "Sair",
     "loggingOut": "Saindo..."
+  },
+  "howItWorks": {
+    "title": "Como o SmartBudget funciona",
+    "description": "Um guia rápido para você aproveitar todos os recursos do app.",
+    "tabs": {
+      "gettingStarted": "Primeiros Passos",
+      "dashboard": "Dashboard",
+      "transactionsBudget": "Transações",
+      "reports": "Relatórios",
+      "plans": "Planos"
+    },
+    "gettingStarted": {
+      "title": "Comece em 4 passos",
+      "description": "Siga esta sequência para configurar seu controle financeiro.",
+      "steps": {
+        "step1": {
+          "title": "Crie suas categorias",
+          "description": "Organize receitas e despesas em categorias personalizadas."
+        },
+        "step2": {
+          "title": "Defina orçamentos mensais",
+          "description": "Estabeleça limites de gasto para cada categoria."
+        },
+        "step3": {
+          "title": "Registre suas transações",
+          "description": "Lance receitas, despesas e transferências no dia a dia."
+        },
+        "step4": {
+          "title": "Acompanhe pelo dashboard",
+          "description": "Visualize sua saúde financeira em tempo real."
+        }
+      }
+    },
+    "dashboard": {
+      "customizable": {
+        "title": "Totalmente personalizável",
+        "description": "Arraste, reordene e redimensione os componentes para montar o dashboard do seu jeito."
+      },
+      "components": {
+        "title": "Componentes disponíveis",
+        "kpis": "KPIs de saldo, receitas e despesas",
+        "charts": "Gráficos de evolução e distribuição",
+        "alerts": "Alertas de orçamento",
+        "budgetProgress": "Progresso de orçamento por categoria"
+      },
+      "premiumNote": "Alguns componentes são exclusivos do plano Premium."
+    },
+    "transactionsBudget": {
+      "types": {
+        "title": "Tipos de transação",
+        "income": "Receita — dinheiro que entra",
+        "expense": "Despesa — dinheiro que sai",
+        "transfer": "Transferência — entre contas ou carteiras"
+      },
+      "recurring": {
+        "title": "Transações recorrentes",
+        "description": "Cadastre uma vez e o app repete automaticamente (aluguel, assinaturas, salário, etc.)."
+      },
+      "budgetStatus": {
+        "title": "Orçamento recalculado automaticamente",
+        "description": "A cada transação, o status do orçamento é atualizado:",
+        "ok": "Ok — dentro do limite",
+        "warning": "Atenção — perto do limite",
+        "exceeded": "Estourado — limite ultrapassado"
+      }
+    },
+    "reports": {
+      "title": "Exportação de relatórios",
+      "description": "Gere o relatório mensal completo e exporte no formato que preferir.",
+      "pdf": "Exportar em PDF",
+      "excel": "Exportar em Excel"
+    },
+    "plans": {
+      "title": "Free ou Premium",
+      "description": "Escolha o plano ideal para o seu momento financeiro.",
+      "free": {
+        "title": "Free",
+        "description": "Recursos essenciais para começar a organizar suas finanças."
+      },
+      "premium": {
+        "title": "Premium",
+        "description": "Componentes avançados do dashboard, relatórios completos e muito mais."
+      },
+      "cta": "Ver planos"
+    }
   },
   "siteHeader": {
     "toggleTheme": "Alternar tema",

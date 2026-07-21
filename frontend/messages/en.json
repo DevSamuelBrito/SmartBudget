@@ -419,8 +419,94 @@
     "customizeDashboard": "Customize Dashboard",
     "language": "Language",
     "settings": "Settings",
+    "howItWorks": "How it works",
     "logout": "Log out",
     "loggingOut": "Logging out..."
+  },
+  "howItWorks": {
+    "title": "How SmartBudget works",
+    "description": "A quick guide to help you get the most out of the app.",
+    "tabs": {
+      "gettingStarted": "Getting Started",
+      "dashboard": "Dashboard",
+      "transactionsBudget": "Transactions",
+      "reports": "Reports",
+      "plans": "Plans"
+    },
+    "gettingStarted": {
+      "title": "Get started in 4 steps",
+      "description": "Follow this sequence to set up your financial control.",
+      "steps": {
+        "step1": {
+          "title": "Create your categories",
+          "description": "Organize income and expenses into custom categories."
+        },
+        "step2": {
+          "title": "Set monthly budgets",
+          "description": "Define spending limits for each category."
+        },
+        "step3": {
+          "title": "Record your transactions",
+          "description": "Log income, expenses, and transfers as they happen."
+        },
+        "step4": {
+          "title": "Track it on the dashboard",
+          "description": "See your financial health at a glance in real time."
+        }
+      }
+    },
+    "dashboard": {
+      "customizable": {
+        "title": "Fully customizable",
+        "description": "Drag, reorder, and resize components to build the dashboard your way."
+      },
+      "components": {
+        "title": "Available components",
+        "kpis": "KPIs for balance, income, and expenses",
+        "charts": "Trend and distribution charts",
+        "alerts": "Budget alerts",
+        "budgetProgress": "Budget progress by category"
+      },
+      "premiumNote": "Some components are exclusive to the Premium plan."
+    },
+    "transactionsBudget": {
+      "types": {
+        "title": "Transaction types",
+        "income": "Income — money coming in",
+        "expense": "Expense — money going out",
+        "transfer": "Transfer — between accounts or wallets"
+      },
+      "recurring": {
+        "title": "Recurring transactions",
+        "description": "Set it up once and the app repeats it automatically (rent, subscriptions, salary, etc.)."
+      },
+      "budgetStatus": {
+        "title": "Budget recalculated automatically",
+        "description": "Every transaction updates the budget status:",
+        "ok": "Ok — within the limit",
+        "warning": "Warning — close to the limit",
+        "exceeded": "Exceeded — over the limit"
+      }
+    },
+    "reports": {
+      "title": "Report export",
+      "description": "Generate the full monthly report and export it in the format you prefer.",
+      "pdf": "Export as PDF",
+      "excel": "Export as Excel"
+    },
+    "plans": {
+      "title": "Free or Premium",
+      "description": "Choose the plan that best fits your financial journey.",
+      "free": {
+        "title": "Free",
+        "description": "Essential features to start organizing your finances."
+      },
+      "premium": {
+        "title": "Premium",
+        "description": "Advanced dashboard components, full reports, and much more."
+      },
+      "cta": "See plans"
+    }
   },
   "siteHeader": {
     "toggleTheme": "Toggle theme",
