@@ -13,7 +13,8 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
         IUserRepository userRepository,
         ITransactionCategoryRepository transactionCategoryRepository,
         IBudgetRepository budgetRepository,
-        ILogger<CreateFinancialTransactionUseCase> logger
+        ILogger<CreateFinancialTransactionUseCase> logger,
+        IAuditLogger auditLogger
         )
     {
         public async Task<Guid> ExecuteAsync(CreateFinancialTransactionUseCaseInput input)
@@ -54,6 +55,13 @@ namespace SmartBudgetPro.Application.UseCases.Transaction.CreateTransaction
                 transaction.Id,
                 input.TransactionType,
                 input.UserId);
+
+            await auditLogger.LogAsync(
+                input.UserId,
+                "TransactionCreated",
+                "FinancialTransaction",
+                transaction.Id,
+                $"Type: {input.TransactionType}");
 
             if (input.TransactionType == FinancialTransactionType.Expense && input.TransactionCategoryId.HasValue)
             {

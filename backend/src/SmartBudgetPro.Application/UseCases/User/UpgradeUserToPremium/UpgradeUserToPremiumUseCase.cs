@@ -3,7 +3,7 @@ using SmartBudgetPro.Application.Interfaces;
 
 namespace SmartBudgetPro.Application.UseCases.User.UpgradeUserToPremium;
 
-public class UpgradeUserToPremiumUseCase(IUserRepository userRepository)
+public class UpgradeUserToPremiumUseCase(IUserRepository userRepository, IAuditLogger auditLogger)
 {
     public async Task<UpgradeUserToPremiumUseCaseOutput> ExecuteAsync(Guid userId)
     {
@@ -16,6 +16,13 @@ public class UpgradeUserToPremiumUseCase(IUserRepository userRepository)
         {
             user.UpgradeToPremium();
             await userRepository.UpdateAsync(user);
+
+            await auditLogger.LogAsync(
+                user.Id,
+                "UserUpgradedToPremium",
+                "User",
+                user.Id,
+                $"Usuário '{user.Email}' foi promovido para o plano premium");
         }
 
         return new UpgradeUserToPremiumUseCaseOutput(user.Id, user.Name, user.Email, user.IsPremium);

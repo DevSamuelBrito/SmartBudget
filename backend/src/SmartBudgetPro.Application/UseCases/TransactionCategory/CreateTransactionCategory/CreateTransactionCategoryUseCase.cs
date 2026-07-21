@@ -11,7 +11,8 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
     public class CreateTransactionCategoryUseCase(
         ITransactionCategoryRepository transactionCategoryRepository,
         IUserRepository userRepository,
-        ILogger<CreateTransactionCategoryUseCase> logger)
+        ILogger<CreateTransactionCategoryUseCase> logger,
+        IAuditLogger auditLogger)
     {
         public async Task<TransactionCategoryDto> ExecuteAsync(CreateTransactionCategoryUseCaseInput input)
         {
@@ -37,6 +38,13 @@ namespace SmartBudgetPro.Application.UseCases.TransactionCategory.CreateTransact
             var category = DomainCategory.Create(input.UserId, input.Name, input.Icon);
 
             await transactionCategoryRepository.AddAsync(category);
+
+            await auditLogger.LogAsync(
+                input.UserId,
+                "CategoryCreated",
+                "TransactionCategory",
+                category.Id,
+                null);
 
             return new TransactionCategoryDto(
                 category.Id,

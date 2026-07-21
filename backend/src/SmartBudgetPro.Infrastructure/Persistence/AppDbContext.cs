@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SmartBudgetPro.Domain.AuditLogs;
 using SmartBudgetPro.Domain.Auth;
 using SmartBudgetPro.Domain.Budgets;
 using SmartBudgetPro.Domain.Dashboard;
@@ -18,6 +19,7 @@ public class AppDbContext : DbContext
     public DbSet<Budget> Budgets { get; set; }
     public DbSet<UserDashboardConfig> UserDashboardConfigs { get; set; }
     public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+    public DbSet<AuditLog> AuditLogs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

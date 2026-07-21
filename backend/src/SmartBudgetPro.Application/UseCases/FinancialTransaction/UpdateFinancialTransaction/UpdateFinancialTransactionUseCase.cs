@@ -10,7 +10,8 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinanci
         IUserRepository userRepository,
         ITransactionCategoryRepository transactionCategoryRepository,
         IBudgetRepository budgetRepository,
-        IValidator<UpdateFinancialTransactionUseCaseInput> validator)
+        IValidator<UpdateFinancialTransactionUseCaseInput> validator,
+        IAuditLogger auditLogger)
     {
         public async Task ExecuteAsync(Guid id, UpdateFinancialTransactionUseCaseInput input)
         {
@@ -55,6 +56,13 @@ namespace SmartBudgetPro.Application.UseCases.FinancialTransaction.UpdateFinanci
             );
 
             await financialTransactionRepository.UpdateAsync(financialTransaction);
+
+            await auditLogger.LogAsync(
+                input.UserId,
+                "TransactionUpdated",
+                "FinancialTransaction",
+                financialTransaction.Id,
+                null);
 
             // Recalculate budget for old category/period if it was an expense
             if (oldType == FinancialTransactionType.Expense && oldCategoryId.HasValue)

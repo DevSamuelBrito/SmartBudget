@@ -12,7 +12,8 @@ public class LoginUseCase(
     IJwtTokenGenerator jwtTokenGenerator,
     IRefreshTokenRepository refreshTokenRepository,
     IValidator<LoginUseCaseInput> validator,
-    ILogger<LoginUseCase> logger)
+    ILogger<LoginUseCase> logger,
+    IAuditLogger auditLogger)
 {
     public async Task<LoginUseCaseOutput> ExecuteAsync(LoginUseCaseInput input)
     {
@@ -33,6 +34,13 @@ public class LoginUseCase(
         await refreshTokenRepository.AddAsync(refreshToken);
 
         logger.LogInformation("User {UserId} logged in successfully.", user.Id);
+
+        await auditLogger.LogAsync(
+            user.Id,
+            "UserLoggedIn",
+            "User",
+            user.Id,
+            "Login successful");
 
         return new LoginUseCaseOutput(
             tokenResult.AccessToken,
