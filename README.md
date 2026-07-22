@@ -1,16 +1,19 @@
 # SmartBudget
 
-> A full-stack personal finance management application built with .NET 10 and Next.js 15.
+> A full-stack personal finance management application built with .NET 10 and Next.js 16.
 
 [![CI](https://github.com/DevSamuelBrito/SmartBudget/actions/workflows/ci.yml/badge.svg)](https://github.com/DevSamuelBrito/SmartBudget/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=DevSamuelBrito_SmartBudget&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=DevSamuelBrito_SmartBudget)
 [![Known Vulnerabilities](https://snyk.io/test/github/DevSamuelBrito/SmartBudget/badge.svg)](https://snyk.io/test/github/DevSamuelBrito/SmartBudget)
 ![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)
-![Next.js](https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs)
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)
 ![Tailwind](https://img.shields.io/badge/Tailwind-4-06B6D4?logo=tailwindcss)
+
+![Landing Page](./docs/screenshots/landing.png)
+![Dashboard](./docs/screenshots/dashboard.png)
 
 [🇧🇷 Leia em Português](./README.pt-BR.md)
 
@@ -28,11 +31,12 @@ SmartBudget is a personal finance tracker that helps users take control of their
 - **Transactions** — Create, edit, delete, and filter income and expense transactions
 - **Categories** — Fully customizable categories with icons, colors, and drag-and-drop ordering
 - **Budgets** — Monthly budget limits per category with real-time spending indicators
-- **Dashboard** — Customizable dashboard with charts and summaries for income, expenses, balance, and category breakdown, plus premium widgets for savings rate, monthly comparison, top expenses, cash flow, and budget health
+- **Dashboard** — Customizable dashboard with charts and summaries for income, expenses, balance, and category breakdown, plus premium widgets for savings rate, monthly comparison, top expenses, cash flow, budget health, and financial risk
 - **Reports** — Monthly report generation with PDF and Excel export, supporting multiple languages
 - **Premium plans** — Subscription tier system to unlock advanced features
 - **Onboarding** — Interactive "How It Works" guide walking new users through the app's core flows
 - **Internationalization** — Full UI translation in English and Brazilian Portuguese (pt-BR)
+- **Theming** — Light and dark mode toggle available across the app and the public landing page
 - **Landing page** — Public marketing site with feature highlights, a live budget demo, and plan comparison
 - **Observability** — Health check endpoint, structured request logging with Serilog, and audit logging of user actions for traceability
 
@@ -52,6 +56,7 @@ SmartBudget is a personal finance tracker that helps users take control of their
 | Clean Architecture             | Layered domain design                        |
 | FluentValidation               | Input validation                             |
 | JWT                            | Authentication tokens                        |
+| BCrypt.Net-Next                | Password hashing and salting                 |
 | Asp.Versioning                 | URL-based API versioning (`/api/v1/...`)     |
 | ClosedXML                      | Excel report generation                      |
 | Serilog                        | Structured logging and request tracing       |
@@ -63,19 +68,25 @@ SmartBudget is a personal finance tracker that helps users take control of their
 
 | Technology                   | Purpose                      |
 | ---------------------------- | ---------------------------- |
-| Next.js 15 / React 19        | UI framework (App Router)    |
+| Next.js 16 / React 19        | UI framework (App Router)    |
 | TypeScript (strict)          | Type safety                  |
 | Tailwind CSS 4               | Styling                      |
 | shadcn/ui                    | Component library            |
 | TanStack React Query         | Server state management      |
+| @tanstack/react-table        | Data tables (transactions, categories) |
 | React Hook Form + Zod        | Form handling and validation |
+| react-day-picker + date-fns  | Date pickers and date utilities |
 | Axios                        | HTTP client                  |
+| jose                         | JWT decoding and verification (middleware / edge runtime) |
 | Recharts                     | Data visualization           |
 | @react-pdf/renderer          | PDF report generation        |
 | Framer Motion                | Animations and motion effects |
 | next-intl                    | Internationalization (i18n)  |
 | @dnd-kit                     | Drag-and-drop ordering       |
 | Sonner                       | Toast notifications          |
+| vaul                         | Drawer components for mobile UI |
+| embla-carousel-react         | Carousel (landing page)      |
+| nprogress                    | Top-of-page loading indicator |
 | Playwright                   | End-to-end testing           |
 | Jest + React Testing Library | Unit testing                 |
 
@@ -103,12 +114,14 @@ graph TD
     Domain["Domain Layer\n(Entities, Business Rules)"]
     Infra["Infrastructure Layer\n(EF Core, Repositories, JWT)"]
     DB[("PostgreSQL")]
+    Redis[("Redis")]
 
     Client --> API
     API --> App
     App --> Domain
     Infra --> Domain
     Infra --> DB
+    Infra --> Redis
 
     style Domain fill:#f5f0ff,stroke:#7c3aed
     style App fill:#eff6ff,stroke:#3b82f6
@@ -149,6 +162,12 @@ graph TD
 - **Global Exception Middleware** — centralized error handling (`ExceptionHandlingMiddleware`) translating exceptions to consistent HTTP responses
 - **Multi-layer Validation** — FluentValidation on the backend and Zod on the frontend ensure data integrity at every boundary
 - **Premium Feature Guards** — subscription-tier checks enforced on both the backend (authorization) and frontend (UI restrictions)
+
+### Observability
+
+- **Structured Logging** — Serilog captures structured, correlatable request/response logs across environments
+- **Audit Logging** — Sensitive user actions (budget changes, premium upgrades, category and transaction mutations) are persisted to an audit trail for accountability
+- **Health Check Endpoint** — Lightweight `/health` endpoint (`GET`/`HEAD`) for uptime monitoring and load balancer probes
 
 ---
 
@@ -256,11 +275,16 @@ docker compose up --build
 
 | Variable                               | Description                                  | Example                             |
 | -------------------------------------- | -------------------------------------------- | ----------------------------------- |
+| `ASPNETCORE_ENVIRONMENT`               | ASP.NET Core hosting environment             | `Development`                       |
 | `ConnectionStrings__DefaultConnection` | PostgreSQL connection string for the backend | `Host=...;Database=SmartBudget;...` |
 | `Redis__ConnectionString`              | Upstash Redis connection string              | `your-instance.upstash.io:6379,password=...` |
 | `Jwt__Key`                             | Secret key for signing JWT tokens (min. 32 chars) | `your-secret-key-at-least-32-characters` |
+| `Email__ApiKey`                        | Brevo API key for sending transactional emails | `your-brevo-api-key`              |
+| `Email__FromEmail`                     | Sender email address validated in Brevo      | `your-email@example.com`            |
+| `FrontendUrl`                          | Frontend URL used to generate the password reset link | `http://localhost:3000`   |
 | `NEXT_PUBLIC_API_URL`                  | Public API URL used in the browser           | `http://localhost:8080/api/v1/`     |
 | `API_URL`                              | Internal API URL used by Next.js server-side | `http://backend:8080/api/v1/`       |
+| `COOKIE_DOMAIN`                        | Cookie domain for auth cookies in production (enables sharing across subdomains); leave empty for local development. ⚠️ Only configure this if every subdomain under the specified domain is trusted, since the cookie becomes valid for all of them. | `.smartbudget-app.com` |
 
 See `.env.example` for a ready-to-copy template.
 
@@ -352,7 +376,7 @@ SmartBudget/
 │   │   └── SmartBudgetPro.Shared/         # Shared utilities
 │   └── tests/
 │       └── SmartBudgetPro.Tests/          # xUnit unit tests
-├── frontend/                              # Next.js 15 App Router
+├── frontend/                              # Next.js 16 App Router
 │   ├── app/                              # Pages and layouts
 │   │   └── [locale]/                     # Route groups: (auth), (app), (landing), (marketing)
 │   ├── components/                       # UI and domain components
@@ -369,10 +393,43 @@ SmartBudget/
 
 ## Screenshots
 
+- Landing Page
+![Landing Page](./docs/screenshots/landing.png)
+
+- Dashboard
 ![Dashboard](./docs/screenshots/dashboard.png)
+
+- Transactions
 ![Transactions](./docs/screenshots/transactions.png)
+![Transactions](./docs/screenshots/addTransactions.png)
+
+- Categories
 ![Categories](./docs/screenshots/categories.png)
+![Categories](./docs/screenshots/addCategorys.png)
+
+- Budgets
 ![Budgets](./docs/screenshots/budgets.png)
+
+- Reports
+![Reports](./docs/screenshots/reports.png)
+
+- Plans
+![Plans](./docs/screenshots/plans.png)
+
+- Account Settings
+![Account Settings](./docs/screenshots/account.png)
+
+- Settings
+![Settings](./docs/screenshots/settings.png)
+
+- Customize Dashboard
+![Customize Dashboard](./docs/screenshots/customizeDashboard.png)
+
+- Sign Up
+![Sign Up](./docs/screenshots/signup.png)
+
+- Sign In
+![Sign In](./docs/screenshots/signin.png)
 
 ---
 
