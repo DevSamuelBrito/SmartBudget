@@ -1,11 +1,13 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace SmartBudgetPro.Infrastructure.Migrations
 {
+    /// <inheritdoc />
     public partial class AddIconToTransactionCategory : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -14,9 +16,10 @@ namespace SmartBudgetPro.Infrastructure.Migrations
                 type: "character varying(200)",
                 maxLength: 200,
                 nullable: false,
-                defaultValue: string.Empty);
+                defaultValue: "");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
