@@ -284,7 +284,7 @@ docker compose up --build
 | `FrontendUrl`                          | URL do frontend usada para gerar o link de reset de senha | `http://localhost:3000`     |
 | `NEXT_PUBLIC_API_URL`                  | URL pública da API usada no navegador             | `http://localhost:8080/api/v1/`     |
 | `API_URL`                              | URL interna da API usada pelo Next.js no servidor | `http://backend:8080/api/v1/`       |
-| `COOKIE_DOMAIN`                        | Domínio do cookie de autenticação em produção (permite compartilhamento entre subdomínios); deixe vazio no desenvolvimento local | `.smartbudget-app.com` |
+| `COOKIE_DOMAIN`                        | Domínio do cookie de autenticação em produção (permite compartilhamento entre subdomínios); deixe vazio no desenvolvimento local. ⚠️ Configure isso apenas se todos os subdomínios do domínio especificado forem confiáveis, já que o cookie se torna válido para todos eles. | `.smartbudget-app.com` |
 
 Consulte o `.env.example` para um template pronto para copiar.
 

@@ -284,7 +284,7 @@ docker compose up --build
 | `FrontendUrl`                          | Frontend URL used to generate the password reset link | `http://localhost:3000`   |
 | `NEXT_PUBLIC_API_URL`                  | Public API URL used in the browser           | `http://localhost:8080/api/v1/`     |
 | `API_URL`                              | Internal API URL used by Next.js server-side | `http://backend:8080/api/v1/`       |
-| `COOKIE_DOMAIN`                        | Cookie domain for auth cookies in production (enables sharing across subdomains); leave empty for local development | `.smartbudget-app.com` |
+| `COOKIE_DOMAIN`                        | Cookie domain for auth cookies in production (enables sharing across subdomains); leave empty for local development. ⚠️ Only configure this if every subdomain under the specified domain is trusted, since the cookie becomes valid for all of them. | `.smartbudget-app.com` |
 
 See `.env.example` for a ready-to-copy template.
 
