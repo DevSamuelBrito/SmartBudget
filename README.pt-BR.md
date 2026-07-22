@@ -21,6 +21,24 @@
 
 ---
 
+## Sumário
+
+- [Sobre o projeto](#sobre-o-projeto)
+- [Stack Tecnológica](#stack-tecnológica)
+- [Arquitetura](#arquitetura)
+- [Arquitetura & Padrões de Design](#arquitetura--padrões-de-design)
+- [Início Rápido (Docker)](#início-rápido-docker)
+- [Rodando Localmente (Sem Docker)](#rodando-localmente-sem-docker)
+- [Rodando com Docker](#rodando-com-docker)
+- [Variáveis de Ambiente](#variáveis-de-ambiente)
+- [Executando os Testes](#executando-os-testes)
+- [Estrutura do Repositório](#estrutura-do-repositório)
+- [Screenshots](#screenshots)
+- [Contribuindo](#contribuindo)
+- [Licença](#licença)
+
+---
+
 ## Sobre o projeto
 
 SmartBudget é um sistema de controle financeiro pessoal que ajuda usuários a organizarem suas finanças. Oferece gerenciamento de transações, limites de orçamento por categoria, um dashboard rico com gráficos e resumos, tudo protegido por autenticação JWT e disponível em múltiplos idiomas.

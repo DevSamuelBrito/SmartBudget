@@ -21,6 +21,24 @@
 
 ---
 
+## Table of Contents
+
+- [About](#about)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Architecture & Design Patterns](#architecture--design-patterns)
+- [Getting Started (Quick — Docker)](#getting-started-quick--docker)
+- [Running Locally (Without Docker)](#running-locally-without-docker)
+- [Running with Docker](#running-with-docker)
+- [Environment Variables](#environment-variables)
+- [Running Tests](#running-tests)
+- [Repository Structure](#repository-structure)
+- [Screenshots](#screenshots)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
 ## About
 
 SmartBudget is a personal finance tracker that helps users take control of their money. It offers transaction management, customizable budget limits, a rich dashboard with visual insights, and a category system — all secured by JWT authentication and available in multiple languages.
